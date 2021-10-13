@@ -1,10 +1,20 @@
-#include <Windows.h>
+#include "DxException.h"
+#include "GameApp.h"
 
-int CALLBACK WinMain(
+int APIENTRY WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-	return 0;
+	try
+	{
+		return GameApp{}.Run();
+	}
+	catch(DxException& e)
+	{
+		MessageBox(nullptr, e.ToString().c_str(), "HR Failed", MB_OK);
+	}
+
+	return -1;
 }
