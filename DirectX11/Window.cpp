@@ -20,22 +20,31 @@ Window::Window(int width, int height)
 
 	if (!RegisterClassEx(&wc))
 	{
-		MessageBox(0, "RegisterClass Failed.", 0, 0);
+		MessageBox(nullptr, "RegisterClass Failed.", nullptr, 0);
 	}
 
 	RECT r = { 0, 0, mWidth, mHeight };
 	AdjustWindowRect(&r, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	int widthApp = r.right - r.left;
+	int heightApp = r.bottom - r.top;
+
+	RECT rDesk = {};
+	HWND hDesk = GetDesktopWindow();
+	GetWindowRect(hDesk, &rDesk);
+	int widthDesk = rDesk.right - rDesk.left;
+	int heightDesk = rDesk.bottom - rDesk.top;
 
 	mhWnd = CreateWindow(
 		wc.lpszClassName, "GameApp",
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-		CW_USEDEFAULT, CW_USEDEFAULT, mWidth, mHeight,
+		(widthDesk - widthApp) / 2, (heightDesk - heightApp) / 2,
+		widthApp, heightApp,
 		nullptr, nullptr, mhInst, this
 	);
 
 	if (!mhWnd)
 	{
-		MessageBox(0, "CreateWindow Failed.", 0, 0);
+		MessageBox(nullptr, "CreateWindow Failed.", nullptr, 0);
 	}
 
 	ShowWindow(mhWnd, SW_SHOWDEFAULT);
