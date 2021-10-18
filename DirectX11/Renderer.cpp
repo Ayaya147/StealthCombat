@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "DxException.h"
+#include "ThrowMacros.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -10,7 +10,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	HRESULT hr = D3D11CreateDevice(
+	HR(D3D11CreateDevice(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		0,
@@ -20,12 +20,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 		&mDevice,
 		nullptr,
 		&mContext
-	);
-
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr, "D3D11CreateDevice Failed.", nullptr, 0);
-	}
+	));
 
 	DXGI_SWAP_CHAIN_DESC sd;
 	sd.BufferDesc.Width = width;
@@ -45,7 +40,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	sd.Flags = 0;
 
 	wrl::ComPtr<IDXGIDevice> dxgiDevice;
-	mDevice->QueryInterface(__uuidof(IDXGIDevice), &dxgiDevice);
+	HR(mDevice->QueryInterface(__uuidof(IDXGIDevice), &dxgiDevice));
 	wrl::ComPtr<IDXGIAdapter> dxgiAdapter;
 	dxgiDevice->GetParent(__uuidof(IDXGIAdapter), &dxgiAdapter);
 	wrl::ComPtr<IDXGIFactory> dxgiFactory;

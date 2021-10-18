@@ -3,9 +3,10 @@
 #include "Renderer.h"
 
 GameApp::GameApp()
+	:
+	mWindow(std::make_unique<Window>(1280, 720)),
+	mRenderer(std::make_unique<Renderer>(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight()))
 {
-	mWindow = std::make_unique<Window>(1280, 720);
-	mRenderer = std::make_unique<Renderer>(mWindow->GetHandle(), 1280, 720);
 }
 
 GameApp::~GameApp()

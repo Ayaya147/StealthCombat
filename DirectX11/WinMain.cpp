@@ -1,4 +1,4 @@
-#include "DxException.h"
+#include <Windows.h>
 #include "GameApp.h"
 
 int APIENTRY WinMain(
@@ -7,14 +7,6 @@ int APIENTRY WinMain(
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-	try
-	{
-		return GameApp{}.Run();
-	}
-	catch(DxException& e)
-	{
-		MessageBox(nullptr, e.ToString().c_str(), "HR Failed", MB_OK);
-	}
-
-	return -1;
+	GameApp{}.Run();
+	return 0;
 }
