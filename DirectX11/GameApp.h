@@ -11,4 +11,5 @@ public:
 
 private:
 	std::unique_ptr<class Window> mWindow;
+	std::unique_ptr<class Renderer> mRenderer;
 };

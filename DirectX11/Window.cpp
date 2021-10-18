@@ -53,6 +53,7 @@ Window::Window(int width, int height)
 
 Window::~Window()
 {
+	DestroyWindow(mhWnd);
 }
 
 LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
