@@ -18,10 +18,7 @@ Window::Window(int width, int height)
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = "GameApp Window";
 
-	if (!RegisterClassEx(&wc))
-	{
-		MessageBox(nullptr, "RegisterClass Failed.", nullptr, 0);
-	}
+	RegisterClassEx(&wc);
 
 	RECT r = { 0, 0, mWidth, mHeight };
 	AdjustWindowRect(&r, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
@@ -41,11 +38,6 @@ Window::Window(int width, int height)
 		widthApp, heightApp,
 		nullptr, nullptr, mhInst, this
 	);
-
-	if (!mhWnd)
-	{
-		MessageBox(nullptr, "CreateWindow Failed.", nullptr, 0);
-	}
 
 	ShowWindow(mhWnd, SW_SHOWDEFAULT);
 	UpdateWindow(mhWnd);

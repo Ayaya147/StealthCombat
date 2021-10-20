@@ -10,9 +10,6 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{705956db-bd3b-4c7d-a2ef-8d91ebc49bc7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dxerr">
-      <UniqueIdentifier>{7d92f4c2-b78e-43a4-ae39-325707e9b527}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -27,9 +24,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dxerr\dxerr.cpp">
-      <Filter>Dxerr</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -41,22 +35,8 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dxerr\dxerr.h">
-      <Filter>Dxerr</Filter>
-    </ClInclude>
-    <ClInclude Include="ThrowMacros.h">
+    <ClInclude Include="DxException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dxerr\DXGetErrorDescription.inl">
-      <Filter>Dxerr</Filter>
-    </None>
-    <None Include="Dxerr\DXGetErrorString.inl">
-      <Filter>Dxerr</Filter>
-    </None>
-    <None Include="Dxerr\DXTrace.inl">
-      <Filter>Dxerr</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "ThrowMacros.h"
+#include "DxException.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -10,7 +10,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	HR(D3D11CreateDevice(
+	ThrowIfFailed(D3D11CreateDevice(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		0,
@@ -40,16 +40,16 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	sd.Flags = 0;
 
 	wrl::ComPtr<IDXGIDevice> dxgiDevice;
-	HR(mDevice->QueryInterface(__uuidof(IDXGIDevice), &dxgiDevice));
+	ThrowIfFailed(mDevice->QueryInterface(__uuidof(IDXGIDevice), &dxgiDevice));
 	wrl::ComPtr<IDXGIAdapter> dxgiAdapter;
-	dxgiDevice->GetParent(__uuidof(IDXGIAdapter), &dxgiAdapter);
+	ThrowIfFailed(dxgiDevice->GetParent(__uuidof(IDXGIAdapter), &dxgiAdapter));
 	wrl::ComPtr<IDXGIFactory> dxgiFactory;
-	dxgiAdapter->GetParent(__uuidof(IDXGIFactory), &dxgiFactory);
-	dxgiFactory->CreateSwapChain(mDevice.Get(), &sd, &mSwapChain);
+	ThrowIfFailed(dxgiAdapter->GetParent(__uuidof(IDXGIFactory), &dxgiFactory));
+	ThrowIfFailed(dxgiFactory->CreateSwapChain(mDevice.Get(), &sd, &mSwapChain));
 
 	wrl::ComPtr<ID3D11Texture2D> backBuffer;
-	mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer);
-	mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &mRenderTargetView);
+	ThrowIfFailed(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
+	ThrowIfFailed(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &mRenderTargetView));
 
 	wrl::ComPtr<ID3D11Texture2D> depthStencilBuffer;
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
@@ -65,8 +65,8 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	depthStencilDesc.CPUAccessFlags = 0;
 	depthStencilDesc.MiscFlags = 0;
 
-	mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &depthStencilBuffer);
-	mDevice->CreateDepthStencilView(depthStencilBuffer.Get(), nullptr, &mDepthStencilView);
+	ThrowIfFailed(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &depthStencilBuffer));
+	ThrowIfFailed(mDevice->CreateDepthStencilView(depthStencilBuffer.Get(), nullptr, &mDepthStencilView));
 	mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
 	D3D11_VIEWPORT vp;
