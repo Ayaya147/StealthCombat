@@ -18,7 +18,8 @@ public:
 	{
 		_com_error err(mErrorCode);
 		std::string msg = err.ErrorMessage();
-		return mFunctionName + " failed in " + mFilename + "; line " + std::to_string(mLineNumber) + "; error: " + msg;
+		return "Function: " + mFunctionName + ";\nFile: " + mFilename +
+			";\nLine: " + std::to_string(mLineNumber) + ";\nError: " + msg;
 	}
 
 private:
@@ -28,8 +29,12 @@ private:
 	int mLineNumber = -1;
 };
 
+#ifdef DEBUG
 #define ThrowIfFailed(x)                                                  \
 {                                                                         \
     HRESULT hr__ = (x);                                                   \
     if(FAILED(hr__)) { throw DxException(hr__, #x, __FILE__, __LINE__); } \
 }
+#else
+#define ThrowIfFailed(x) (x)
+#endif

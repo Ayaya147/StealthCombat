@@ -55,6 +55,14 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
+
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case VK_ESCAPE:
+			PostQuitMessage(0);
+			return 0;
+		}
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);
