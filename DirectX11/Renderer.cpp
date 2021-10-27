@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "DxException.h"
+#include "Box.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -77,6 +78,8 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	vp.TopLeftX = 0.0f;
 	vp.TopLeftY = 0.0f;
 	mContext->RSSetViewports(1u, &vp);
+
+	mBox = std::make_unique<Box>(this);
 }
 
 Renderer::~Renderer()
@@ -88,6 +91,8 @@ void Renderer::Draw()
 	const float color[] = { 0.2f,0.2f,0.2f,1.0f };
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	mBox->Draw();
 
 	mSwapChain->Present(1, 0);
 }

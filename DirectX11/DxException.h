@@ -5,7 +5,6 @@
 class DxException
 {
 public:
-	DxException() = default;
 	DxException(HRESULT hr, const std::string& functionName, const std::string& filename, int lineNumber)
 		:
 		mErrorCode(hr),
@@ -23,10 +22,10 @@ public:
 	}
 
 private:
-	HRESULT mErrorCode = S_OK;
+	HRESULT mErrorCode;
 	std::string mFunctionName;
 	std::string mFilename;
-	int mLineNumber = -1;
+	int mLineNumber;
 };
 
 #ifdef DEBUG
