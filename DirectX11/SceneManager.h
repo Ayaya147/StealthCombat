@@ -12,9 +12,15 @@ enum class SceneType
 class SceneManager
 {
 public:
-	SceneManager();
+	SceneManager(class GameApp* app);
 	~SceneManager();
 	
+	void RunLoop();
 	void ChangeScene(SceneType scene, const class Parameter& parameter, bool stackClear);
-};
 
+	class GameApp* GetApp() { return mApp; }
+
+private:
+	class GameApp* mApp;
+	std::stack<std::shared_ptr<class AbstractScene>> mSceneStack;
+};

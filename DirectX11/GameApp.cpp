@@ -1,11 +1,13 @@
 #include "GameApp.h"
 #include "Window.h"
 #include "Renderer.h"
+#include "SceneManager.h"
 
 GameApp::GameApp()
 	:
 	mWindow(std::make_unique<Window>(1280, 720)),
-	mRenderer(std::make_unique<Renderer>(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight()))
+	mRenderer(std::make_unique<Renderer>(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight())),
+	mSceneManager(std::make_unique<SceneManager>(this))
 {
 }
 
@@ -26,7 +28,7 @@ int GameApp::Run()
 		}
 		else
 		{
-			mRenderer->Draw();
+			mSceneManager->RunLoop();
 		}
 	}
 

@@ -93,19 +93,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AbstactScene.cpp" />
+    <ClCompile Include="AbstractScene.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstactScene.h" />
+    <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="DxException.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Parameter.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Window.h" />

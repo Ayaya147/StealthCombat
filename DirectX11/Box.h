@@ -8,5 +8,5 @@ public:
 
 private:
 	class Renderer* mRenderer;
-	float mAngle = 0.f;
+	float mAngle = 0.0f;
 };

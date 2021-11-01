@@ -9,7 +9,10 @@ public:
 
 	int Run();
 
+	class Renderer* GetRenderer() { return mRenderer.get(); }
+
 private:
 	std::unique_ptr<class Window> mWindow;
 	std::unique_ptr<class Renderer> mRenderer;
+	std::unique_ptr<class SceneManager> mSceneManager;
 };
