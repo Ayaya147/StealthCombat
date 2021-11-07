@@ -9,7 +9,6 @@
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
-#pragma comment(lib,"D3DCompiler.lib")
 
 Box::Box(Renderer* renderer)
 	:

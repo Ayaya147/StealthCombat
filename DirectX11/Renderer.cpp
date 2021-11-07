@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "DxException.h"
 #include "Box.h"
+#include "TestAss.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -80,6 +81,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	mContext->RSSetViewports(1u, &vp);
 
 	mBox = std::make_unique<Box>(this);
+	mTest = std::make_unique<TestAss>(this);
 }
 
 Renderer::~Renderer()
@@ -92,7 +94,7 @@ void Renderer::Draw()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	mBox->Draw();
+	mTest->Draw();
 
 	mSwapChain->Present(1, 0);
 }

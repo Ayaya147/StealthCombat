@@ -20,9 +20,9 @@ void GameScene::GenerateOutput()
 {
 	mSceneManager->GetApp()->GetRenderer()->Draw();
 
-	if (0)
-	{
-		Parameter parameter;
-		mSceneManager->ChangeScene(SceneType::EGame, parameter, true);
-	}
+	//if (1)
+	//{
+	//	Parameter parameter;
+	//	mSceneManager->ChangeScene(SceneType::EGame, parameter, true);
+	//}
 }

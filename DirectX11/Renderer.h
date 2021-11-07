@@ -23,4 +23,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> mDepthStencilView;
 
 	std::unique_ptr<class Box> mBox;
+	std::unique_ptr<class TestAss> mTest;
 };
