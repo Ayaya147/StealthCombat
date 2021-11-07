@@ -51,6 +51,8 @@ artifacts/
 *.ilk
 *.meta
 *.obj
+!DirectX11/Assets/Models/*.obj
+!DirectX11/Assimp/bin/*
 *.pch
 *.pdb
 *.pgc
