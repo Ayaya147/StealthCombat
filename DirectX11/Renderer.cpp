@@ -90,7 +90,7 @@ Renderer::~Renderer()
 
 void Renderer::Draw()
 {
-	const float color[] = { 0.5f,0.5f,0.5f,1.0f };
+	const float color[] = { 0.2f,0.2f,0.2f,1.0f };
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
