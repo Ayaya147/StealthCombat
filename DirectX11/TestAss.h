@@ -5,6 +5,7 @@ class TestAss
 public:
 	TestAss(class Renderer* renderer);
 	void Draw();
+	void TestDxtex();
 
 private:
 	class Renderer* mRenderer;

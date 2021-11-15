@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <memory>
 #include "AbstractScene.h"
 
 class GameScene : public AbstractScene
@@ -11,6 +13,8 @@ public:
 	void Update() override;
 	void GenerateOutput() override;
 
-private:
+	void AddActor(class Actor* actor);
 
+private:
+	std::vector<std::shared_ptr<class Actor>> mActors;
 };

@@ -3,9 +3,11 @@
 #include "Parameter.h"
 #include "GameApp.h"
 #include "Renderer.h"
+#include "Actor.h"
 
 GameScene::~GameScene()
 {
+	
 }
 
 void GameScene::ProcessInput()
@@ -25,4 +27,9 @@ void GameScene::GenerateOutput()
 	//	Parameter parameter;
 	//	mSceneManager->ChangeScene(SceneType::EGame, parameter, true);
 	//}
+}
+
+void GameScene::AddActor(Actor* actor)
+{
+	mActors.emplace_back(std::shared_ptr<Actor>{actor});
 }

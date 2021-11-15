@@ -9,6 +9,7 @@
 #include <vector>
 #include "DxException.h"
 #include "Renderer.h"
+#include "dxtex/DirectXTex.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
@@ -27,11 +28,15 @@ TestAss::TestAss(Renderer* renderer)
 	};
 
 	Assimp::Importer imp;
-	const auto pModel = imp.ReadFile("Assets\\Models\\player.obj",
+	const auto pScene = imp.ReadFile("Assets\\Models\\test.obj",
 		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_ConvertToLeftHanded |
+		aiProcess_GenNormals |
+		aiProcess_CalcTangentSpace
 	);
-	const auto pMesh = pModel->mMeshes[0];
+
+	const auto pMesh = pScene->mMeshes[0];
 
 	std::vector<Vertex> vertices;
 	vertices.reserve(pMesh->mNumVertices);
@@ -98,7 +103,7 @@ TestAss::TestAss(Renderer* renderer)
 	}cbData;
 
 	cbData = {
-		{ 0.0f,0.0f,-5.0f },
+		{ 0.0f,0.0f,0.0f },
 		{ 0.05f,0.05f,0.05f },
 		{ 1.0f,1.0f,1.0f },
 		1.0f,
@@ -121,8 +126,6 @@ TestAss::TestAss(Renderer* renderer)
 
 	// bind constant buffer to pixel shader
 	mRenderer->GetContext()->PSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
-
-
 
 	// create pixel shader
 	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
@@ -167,7 +170,7 @@ TestAss::TestAss(Renderer* renderer)
 		float specularPower = 30.0f;
 		float padding[3];
 	} pmc;
-	pmc.color = DirectX::XMFLOAT3{1.0f,0.0f,0.0f};
+	pmc.color = DirectX::XMFLOAT3{ 1.0f,0.0f,0.0f };
 
 	wrl::ComPtr<ID3D11Buffer> pConstantBuffer2;
 	D3D11_BUFFER_DESC cbd2;
@@ -181,14 +184,17 @@ TestAss::TestAss(Renderer* renderer)
 	csd2.pSysMem = &pmc;
 	ThrowIfFailed(mRenderer->GetDevice()->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2));
 
-
 	mRenderer->GetContext()->PSSetConstantBuffers(1u, 1u, pConstantBuffer2.GetAddressOf());
+
+	//const auto material = pScene->mMaterials[0];
+	//
+	//material->
 
 }
 
 void TestAss::Draw()
 {
-	mAngle += 0.02f;
+	mAngle += 0.05f;
 
 	struct ConstantBuffer
 	{
@@ -197,43 +203,74 @@ void TestAss::Draw()
 	};
 
 	const auto pos = dx::XMVector3Transform(
-		dx::XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
+		dx::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f),
 		dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)
 	);
 
-	DirectX::XMMATRIX camera = dx::XMMatrixLookAtLH(pos, dx::XMVectorZero(),dx::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
+	DirectX::XMMATRIX camera = dx::XMMatrixLookAtLH(pos, dx::XMVectorZero(), dx::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
 	) * dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 
 	const ConstantBuffer cb =
-	{		
+	{
 		dx::XMMatrixTranspose(
-			dx::XMMatrixRotationZ(mAngle) *
+			//dx::XMMatrixRotationZ(mAngle) *
 			dx::XMMatrixRotationX(mAngle) *
 			dx::XMMatrixTranslation(0.0f,0.0f,5.0f) *
 			camera
 		),
 
 		dx::XMMatrixTranspose(
-			dx::XMMatrixRotationZ(mAngle) *
+			//dx::XMMatrixRotationZ(mAngle) *
 			dx::XMMatrixRotationX(mAngle) *
 			dx::XMMatrixTranslation(0.0f,0.0f,5.0f) *
 			camera *
 			dx::XMMatrixPerspectiveLH(1,9.0f / 16.0f,0.5f,100.0f)
 		),
 	};
-	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
-	D3D11_BUFFER_DESC cbd;
-	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbd.Usage = D3D11_USAGE_DYNAMIC;
-	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	cbd.MiscFlags = 0u;
-	cbd.ByteWidth = sizeof(cb);
-	cbd.StructureByteStride = 0u;
-	D3D11_SUBRESOURCE_DATA csd = {};
-	csd.pSysMem = &cb;
-	ThrowIfFailed(mRenderer->GetDevice()->CreateBuffer(&cbd, &csd, &pConstantBuffer));
+	wrl::ComPtr<ID3D11Buffer> pConstantBuffer3;
+	D3D11_BUFFER_DESC cbd3;
+	cbd3.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd3.Usage = D3D11_USAGE_DYNAMIC;
+	cbd3.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd3.MiscFlags = 0u;
+	cbd3.ByteWidth = sizeof(cb);
+	cbd3.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA csd3 = {};
+	csd3.pSysMem = &cb;
+	ThrowIfFailed(mRenderer->GetDevice()->CreateBuffer(&cbd3, &csd3, &pConstantBuffer3));
 
-	mRenderer->GetContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+	mRenderer->GetContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer3.GetAddressOf());
 
 	mRenderer->GetContext()->DrawIndexed((UINT)mNum, 0u, 0u);
+
+}
+
+void TestAss::TestDxtex()
+{
+	//ID3D11ShaderResourceView* ShaderResView;
+
+	//char ms[100];
+	//const wchar_t* filename = L"132";
+	//setlocale(LC_CTYPE, "jpn");
+	//wcstombs(ms, filename, 100);
+	//char* extension = strstr(ms, ".");
+
+
+	//if (strcmp(extension, ".tga") == 0 || strcmp(extension, ".TGA") == 0) {
+	//	dx::TexMetadata meta;
+	//	GetMetadataFromTGAFile(filename, meta);
+
+	//	std::unique_ptr<dx::ScratchImage> image(new dx::ScratchImage);
+	//	HRESULT hr = LoadFromTGAFile(filename, &meta, *image);
+	//	hr = CreateShaderResourceView(mRenderer->GetDevice(), image->GetImages(), image->GetImageCount(), meta, &ShaderResView);
+	//}
+	//else
+	//{
+	//	dx::TexMetadata meta;
+	//	dx::GetMetadataFromWICFile(filename, 0, meta);
+
+	//	std::unique_ptr<dx::ScratchImage> image(new dx::ScratchImage);
+	//	HRESULT hr = dx::LoadFromWICFile(filename, 0, &meta, *image);
+	//	hr = CreateShaderResourceView(mRenderer->GetDevice(), image->GetImages(), image->GetImageCount(), meta, &ShaderResView);
+	//}
 }

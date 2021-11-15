@@ -11,9 +11,8 @@ public:
 
 	void Draw();
 
-	Microsoft::WRL::ComPtr<ID3D11Device> GetDevice() { return mDevice.Get(); }
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> GetContext() { return mContext.Get(); }
-
+	ID3D11Device* GetDevice() const { return mDevice.Get(); }
+	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
