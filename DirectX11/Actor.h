@@ -14,9 +14,12 @@ public:
 	virtual void UpdateActor();
 
 	void ComputeWorldTransform();
-	//const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
+
+	class GameScene* GetGame() const { return mGame; }
+	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
+	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
 
 protected:
 	DirectX::XMMATRIX mWorldTransform;
@@ -24,6 +27,6 @@ protected:
 	DirectX::XMFLOAT3 mRotation;
 	float mScale;
 
-	std::vector<std::shared_ptr<class Component>> mComponents;
+	std::vector<class Component*> mComponents;
 	class GameScene* mGame;
 };

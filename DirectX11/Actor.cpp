@@ -12,6 +12,7 @@ Actor::Actor(GameScene* game)
 	mScale(1.0f),
 	mGame(game)
 {
+	mGame->AddActor(this);
 }
 
 Actor::~Actor()
@@ -53,12 +54,12 @@ void Actor::AddComponent(Component* component)
 		}
 	}
 
-	mComponents.insert(iter, std::shared_ptr<Component>{component});
+	mComponents.insert(iter, component);
 }
 
 void Actor::RemoveComponent(Component* component)
 {
-	auto iter = std::find(mComponents.begin(), mComponents.end(), std::shared_ptr<Component>{component});
+	auto iter = std::find(mComponents.begin(), mComponents.end(), component);
 	if (iter != mComponents.end())
 	{
 		mComponents.erase(iter);

@@ -1,7 +1,9 @@
 #include "Renderer.h"
 #include "DxException.h"
+#include "Mesh.h"
 #include "Box.h"
 #include "TestAss.h"
+#include "MeshComponent.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -79,9 +81,6 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	vp.TopLeftX = 0.0f;
 	vp.TopLeftY = 0.0f;
 	mContext->RSSetViewports(1u, &vp);
-
-	mBox = std::make_unique<Box>(this);
-	mTest = std::make_unique<TestAss>(this);
 }
 
 Renderer::~Renderer()
@@ -94,7 +93,31 @@ void Renderer::Draw()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	mTest->Draw();
+	for (auto mc : mMeshComps)
+	{
+		mc->Draw();
+	}
 
 	mSwapChain->Present(1, 0);
+}
+
+void Renderer::AddMeshComp(MeshComponent* mesh)
+{
+	mMeshComps.emplace_back(mesh);
+}
+
+Mesh* Renderer::GetMesh(const std::string& fileName)
+{
+	Mesh* mesh = nullptr;
+	auto iter = mMeshes.find(fileName);
+	if (iter != mMeshes.end())
+	{
+		mesh = iter->second;
+	}
+	else
+	{
+		mesh = new Mesh(fileName, this);
+		mMeshes.emplace(fileName, mesh);
+	}
+	return mesh;
 }

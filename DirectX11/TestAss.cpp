@@ -198,8 +198,8 @@ void TestAss::Draw()
 
 	struct ConstantBuffer
 	{
+		DirectX::XMMATRIX modelView;
 		DirectX::XMMATRIX modelViewProj;
-		DirectX::XMMATRIX model;
 	};
 
 	const auto pos = dx::XMVector3Transform(

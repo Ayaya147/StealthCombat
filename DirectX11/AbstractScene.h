@@ -10,6 +10,8 @@ public:
 	virtual void Update() = 0;
 	virtual void GenerateOutput() = 0;
 
+	class SceneManager* GetSceneManager() const { return mSceneManager; }
+
 protected:
 	class SceneManager* mSceneManager;
 };

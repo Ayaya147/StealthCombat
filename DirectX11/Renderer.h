@@ -1,7 +1,8 @@
 #pragma once
 #include <wrl.h>
 #include <d3d11.h>
-#include <memory>
+#include <string>
+#include <unordered_map>
 
 class Renderer
 {
@@ -10,6 +11,9 @@ public:
 	~Renderer();
 
 	void Draw();
+	void AddMeshComp(class MeshComponent* mesh);
+
+	class Mesh* GetMesh(const std::string& fileName);
 
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
@@ -21,6 +25,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mRenderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> mDepthStencilView;
 
-	std::unique_ptr<class Box> mBox;
-	std::unique_ptr<class TestAss> mTest;
+	std::unordered_map<std::string, class Mesh*> mMeshes;
+	std::vector<class MeshComponent*> mMeshComps;
 };
