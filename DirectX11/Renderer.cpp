@@ -95,7 +95,7 @@ void Renderer::Draw()
 
 	for (auto mc : mMeshComps)
 	{
-		mc->Draw();
+		mc->Draw(this);
 	}
 
 	mSwapChain->Present(1, 0);

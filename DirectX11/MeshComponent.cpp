@@ -23,9 +23,10 @@ MeshComponent::~MeshComponent()
 {
 }
 
-void MeshComponent::Draw()
+void MeshComponent::Draw(Renderer* renderer)
 {
 	float mAngle = mOwner->GetRotation().x;
+	DirectX::XMMATRIX model = mOwner->GetWorldTransform();
 
 	struct ConstantBuffer
 	{
@@ -44,16 +45,12 @@ void MeshComponent::Draw()
 	const ConstantBuffer cb =
 	{
 		dx::XMMatrixTranspose(
-			//dx::XMMatrixRotationZ(mAngle) *
-			dx::XMMatrixRotationX(mAngle) *
-			dx::XMMatrixTranslation(0.0f,0.0f,5.0f) *
+			model *
 			camera
 		),
 
 		dx::XMMatrixTranspose(
-			//dx::XMMatrixRotationZ(mAngle) *
-			dx::XMMatrixRotationX(mAngle) *
-			dx::XMMatrixTranslation(0.0f,0.0f,5.0f) *
+			model *
 			camera *
 			dx::XMMatrixPerspectiveLH(1,9.0f / 16.0f,0.5f,100.0f)
 		),
@@ -68,10 +65,9 @@ void MeshComponent::Draw()
 	cbd3.StructureByteStride = 0u;
 	D3D11_SUBRESOURCE_DATA csd3 = {};
 	csd3.pSysMem = &cb;
-	ThrowIfFailed(mOwner->GetGame()->GetSceneManager()->GetApp()->GetRenderer()->GetDevice()->CreateBuffer(&cbd3, &csd3, &pConstantBuffer3));
+	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&cbd3, &csd3, &pConstantBuffer3));
 
-	mOwner->GetGame()->GetSceneManager()->GetApp()->GetRenderer()->GetContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer3.GetAddressOf());
-
-	mOwner->GetGame()->GetSceneManager()->GetApp()->GetRenderer()->GetContext()->DrawIndexed((UINT)mMesh->GetIndicesNum(), 0u, 0u);
+	renderer->GetContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer3.GetAddressOf());
+	renderer->GetContext()->DrawIndexed((UINT)mMesh->GetIndicesNum(), 0u, 0u);
 
 }

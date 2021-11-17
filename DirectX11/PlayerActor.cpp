@@ -15,7 +15,7 @@ PlayerActor::PlayerActor(GameScene* game)
 	mc->SetMesh(mesh);
 
 	mPosition = { 0.0f,0.0f,5.0f };
-	mScale = 1.2f;
+	mScale = 1.0f;
 }
 
 void PlayerActor::UpdateActor()

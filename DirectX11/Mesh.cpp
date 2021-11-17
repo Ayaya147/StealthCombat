@@ -15,7 +15,6 @@ namespace dx = DirectX;
 
 Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 {
-
 	float scale = 0.1f;
 
 	struct Vertex
