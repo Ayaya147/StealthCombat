@@ -1,7 +1,6 @@
 #include "MeshComponent.h"
 #include "Actor.h"
 #include "AbstractScene.h"
-#include "GameScene.h"
 #include "Renderer.h"
 #include "GameApp.h"
 #include "SceneManager.h"
@@ -16,12 +15,12 @@ MeshComponent::MeshComponent(class Actor* owner)
 	:
 	Component(owner)
 {
-	mOwner->GetGame()->GetSceneManager()->GetApp()->GetRenderer()->AddMeshComp(this);
+	mOwner->GetScene()->GetSceneManager()->GetApp()->GetRenderer()->AddMeshComp(this);
 }
 
 MeshComponent::~MeshComponent()
 {
-	mOwner->GetGame()->GetSceneManager()->GetApp()->GetRenderer()->RemoveMeshComp(this);
+	mOwner->GetScene()->GetSceneManager()->GetApp()->GetRenderer()->RemoveMeshComp(this);
 }
 
 void MeshComponent::Draw(Renderer* renderer)

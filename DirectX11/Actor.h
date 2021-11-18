@@ -6,27 +6,37 @@
 class Actor
 {
 public:
-	Actor(class GameScene* game);
+	enum class ActorState
+	{
+		EActive,
+		EPaused,
+		EDead
+	};
+
+	Actor(class AbstractScene* scene);
 	virtual ~Actor();
 
-	void Update();
-	void UpdateComponents();
-	virtual void UpdateActor();
+	void Update(float deltaTime);
+	void UpdateComponents(float deltaTime);
+	virtual void UpdateActor(float deltaTime);
 
 	void ComputeWorldTransform();
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
-	class GameScene* GetGame() const { return mGame; }
+	class AbstractScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
+	ActorState GetActorState() const { return mState; }
+	void SetActorState(ActorState state) { mState = state; }
+
 
 protected:
 	DirectX::XMMATRIX mWorldTransform;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mRotation;
 	float mScale;
-
+	ActorState mState;
 	std::vector<class Component*> mComponents;
-	class GameScene* mGame;
+	class AbstractScene* mScene;
 };

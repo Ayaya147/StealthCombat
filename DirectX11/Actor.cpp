@@ -4,39 +4,44 @@
 
 namespace dx = DirectX;
 
-Actor::Actor(GameScene* game)
+Actor::Actor(AbstractScene* scene)
 	:
 	mWorldTransform(dx::XMMATRIX{}),
 	mPosition(dx::XMFLOAT3{}),
 	mRotation(dx::XMFLOAT3{}),
 	mScale(1.0f),
-	mGame(game)
+	mState(ActorState::EActive),
+	mScene(scene)
 {
-	mGame->AddActor(this);
+	mScene->AddActor(this);
 }
 
 Actor::~Actor()
 {
-	mGame->RemoveActor(this);
+	mScene->RemoveActor(this);
 	while (!mComponents.empty())
 	{
 		delete mComponents.back();
 	}
 }
 
-void Actor::Update()
+void Actor::Update(float deltaTime)
 {
 	ComputeWorldTransform();
-	UpdateComponents();
-	UpdateActor();
+	UpdateComponents(deltaTime);
+	UpdateActor(deltaTime);
 	ComputeWorldTransform();
 }
 
-void Actor::UpdateComponents()
+void Actor::UpdateComponents(float deltaTime)
 {
+	for (auto comp : mComponents)
+	{
+		comp->Update(deltaTime);
+	}
 }
 
-void Actor::UpdateActor()
+void Actor::UpdateActor(float deltaTime)
 {
 }
 

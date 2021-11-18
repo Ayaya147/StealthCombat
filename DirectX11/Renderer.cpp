@@ -4,6 +4,7 @@
 #include "Box.h"
 #include "TestAss.h"
 #include "MeshComponent.h"
+#include "Texture.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -99,6 +100,21 @@ void Renderer::Draw()
 	}
 
 	mSwapChain->Present(1, 0);
+}
+
+void Renderer::UnloadData()
+{
+	for (auto i : mTextures)
+	{
+		delete i.second;
+	}
+	mTextures.clear();
+
+	for (auto i : mMeshes)
+	{
+		delete i.second;
+	}
+	mMeshes.clear();
 }
 
 void Renderer::AddMeshComp(MeshComponent* mesh)
