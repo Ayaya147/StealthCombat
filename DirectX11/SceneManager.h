@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include <stack>
 
 enum class SceneType
@@ -22,5 +21,5 @@ public:
 
 private:
 	class GameApp* mApp;
-	std::stack<std::shared_ptr<class AbstractScene>> mSceneStack;
+	std::stack<class AbstractScene*> mSceneStack;
 };

@@ -5,9 +5,9 @@
 
 GameApp::GameApp()
 	:
-	mWindow(std::make_unique<Window>(1280, 720)),
-	mRenderer(std::make_unique<Renderer>(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight())),
-	mSceneManager(std::make_unique<SceneManager>(this))
+	mWindow(new Window(1280, 720)),
+	mRenderer(new Renderer(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight())),
+	mSceneManager(new SceneManager(this))
 {
 }
 

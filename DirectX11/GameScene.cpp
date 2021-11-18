@@ -44,3 +44,12 @@ void GameScene::AddActor(Actor* actor)
 {
 	mActors.emplace_back(actor);
 }
+
+void GameScene::RemoveActor(Actor* actor)
+{
+	auto iter = std::find(mActors.begin(), mActors.end(), actor);
+	if (iter != mActors.end())
+	{
+		mActors.erase(iter);
+	}
+}

@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 
 class GameApp
 {
@@ -9,10 +8,10 @@ public:
 
 	int Run();
 
-	class Renderer* GetRenderer() const { return mRenderer.get(); }
+	class Renderer* GetRenderer() const { return mRenderer; }
 
 private:
-	std::unique_ptr<class Window> mWindow;
-	std::unique_ptr<class Renderer> mRenderer;
-	std::unique_ptr<class SceneManager> mSceneManager;
+	class Window* mWindow;
+	class Renderer* mRenderer;
+	class SceneManager* mSceneManager;
 };

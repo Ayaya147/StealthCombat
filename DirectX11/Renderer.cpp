@@ -106,6 +106,12 @@ void Renderer::AddMeshComp(MeshComponent* mesh)
 	mMeshComps.emplace_back(mesh);
 }
 
+void Renderer::RemoveMeshComp(MeshComponent* mesh)
+{
+	auto iter = std::find(mMeshComps.begin(), mMeshComps.end(), mesh);
+	mMeshComps.erase(iter);
+}
+
 Mesh* Renderer::GetMesh(const std::string& fileName)
 {
 	Mesh* mesh = nullptr;

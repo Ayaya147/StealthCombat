@@ -12,6 +12,7 @@ public:
 
 	void Draw();
 	void AddMeshComp(class MeshComponent* mesh);
+	void RemoveMeshComp(class MeshComponent* mesh);
 
 	class Mesh* GetMesh(const std::string& fileName);
 

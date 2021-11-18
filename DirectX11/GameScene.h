@@ -13,6 +13,7 @@ public:
 	void GenerateOutput() override;
 
 	void AddActor(class Actor* actor);
+	void RemoveActor(class Actor* actor);
 
 private:
 	std::vector<class Actor*> mActors;

@@ -21,6 +21,7 @@ MeshComponent::MeshComponent(class Actor* owner)
 
 MeshComponent::~MeshComponent()
 {
+	mOwner->GetGame()->GetSceneManager()->GetApp()->GetRenderer()->RemoveMeshComp(this);
 }
 
 void MeshComponent::Draw(Renderer* renderer)

@@ -7,7 +7,7 @@ SceneManager::SceneManager(GameApp* app)
 	mApp(app)
 {
 	Parameter parameter;
-	mSceneStack.push(std::make_shared<GameScene>(this, parameter));
+	mSceneStack.emplace(new GameScene(this, parameter));
 }
 
 SceneManager::~SceneManager()
@@ -27,6 +27,7 @@ void SceneManager::ChangeScene(SceneType scene, const Parameter& parameter, bool
 	{
 		while (!mSceneStack.empty())
 		{
+			delete mSceneStack.top();
 			mSceneStack.pop();
 		}
 	}
@@ -36,7 +37,7 @@ void SceneManager::ChangeScene(SceneType scene, const Parameter& parameter, bool
 	case SceneType::ETitle:
 		break;
 	case SceneType::EGame:
-		mSceneStack.push(std::make_shared<GameScene>(this, parameter));
+		mSceneStack.emplace(new GameScene(this, parameter));
 		break;
 	case SceneType::EResult:
 		break;
