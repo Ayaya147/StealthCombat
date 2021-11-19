@@ -4,7 +4,7 @@
 
 namespace dx = DirectX;
 
-Actor::Actor(AbstractScene* scene)
+Actor::Actor(BaseScene* scene)
 	:
 	mWorldTransform(dx::XMMATRIX{}),
 	mPosition(dx::XMFLOAT3{}),

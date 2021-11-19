@@ -4,7 +4,7 @@
 class PlayerActor : public Actor
 {
 public:
-	PlayerActor(class AbstractScene* scene);
+	PlayerActor(class BaseScene* scene);
 
 	void UpdateActor(float deltaTime) override;
 };

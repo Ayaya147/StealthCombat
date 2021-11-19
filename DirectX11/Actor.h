@@ -13,7 +13,7 @@ public:
 		EDead
 	};
 
-	Actor(class AbstractScene* scene);
+	Actor(class BaseScene* scene);
 	virtual ~Actor();
 
 	void Update(float deltaTime);
@@ -24,7 +24,7 @@ public:
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
-	class AbstractScene* GetScene() const { return mScene; }
+	class BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
 	ActorState GetActorState() const { return mState; }
@@ -38,5 +38,5 @@ protected:
 	float mScale;
 	ActorState mState;
 	std::vector<class Component*> mComponents;
-	class AbstractScene* mScene;
+	class BaseScene* mScene;
 };

@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "dxtex/DirectXTex.h"
 #include "DxException.h"
+#include "Texture.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;

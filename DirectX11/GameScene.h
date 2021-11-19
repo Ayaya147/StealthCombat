@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include "AbstractScene.h"
+#include "BaseScene.h"
 
-class GameScene : public AbstractScene
+class GameScene : public BaseScene
 {
 public:
 	GameScene(class SceneManager* sm, const class Parameter& parameter);

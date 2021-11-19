@@ -1,12 +1,12 @@
 #include "PlayerActor.h"
-#include "AbstractScene.h"
+#include "BaseScene.h"
 #include "MeshComponent.h"
 #include "Mesh.h"
 #include "SceneManager.h"
 #include "GameApp.h"
 #include "Renderer.h"
 
-PlayerActor::PlayerActor(class AbstractScene* scene)
+PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
@@ -20,5 +20,5 @@ PlayerActor::PlayerActor(class AbstractScene* scene)
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
-	mRotation.x += 0.05f;
+	mRotation.x += 3.0f * deltaTime;
 }

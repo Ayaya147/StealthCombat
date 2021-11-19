@@ -1,11 +1,11 @@
-#include "AbstractScene.h"
+#include "BaseScene.h"
 #include "SceneManager.h"
 #include "GameApp.h"
 #include "Renderer.h"
 #include "Timer.h"
 #include "Actor.h"
 
-AbstractScene::AbstractScene(SceneManager* sm, const Parameter& parameter)
+BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:
 	mSceneManager(sm),
 	mTimer(new Timer()),
@@ -13,7 +13,7 @@ AbstractScene::AbstractScene(SceneManager* sm, const Parameter& parameter)
 {
 }
 
-AbstractScene::~AbstractScene()
+BaseScene::~BaseScene()
 {
 	while (!mActors.empty())
 	{
@@ -33,11 +33,11 @@ AbstractScene::~AbstractScene()
 	}
 }
 
-void AbstractScene::ProcessInput()
+void BaseScene::ProcessInput()
 {
 }
 
-void AbstractScene::Update()
+void BaseScene::Update()
 {
 	while (mTimer->Peek() <= 1.0f / 60.0f);
 	float deltaTime = mTimer->Mark();
@@ -75,12 +75,12 @@ void AbstractScene::Update()
 	}
 }
 
-void AbstractScene::GenerateOutput()
+void BaseScene::GenerateOutput()
 {
 	mSceneManager->GetApp()->GetRenderer()->Draw();
 }
 
-void AbstractScene::AddActor(Actor* actor)
+void BaseScene::AddActor(Actor* actor)
 {
 	if (mUpdatingActors)
 	{
@@ -92,7 +92,7 @@ void AbstractScene::AddActor(Actor* actor)
 	}
 }
 
-void AbstractScene::RemoveActor(Actor* actor)
+void BaseScene::RemoveActor(Actor* actor)
 {
 	auto iter = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
 	if (iter != mPendingActors.end())

@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-class AbstractScene
+class BaseScene
 {
 public:
-	AbstractScene(class SceneManager* sm, const class Parameter& parameter);
-	virtual ~AbstractScene();
+	BaseScene(class SceneManager* sm, const class Parameter& parameter);
+	virtual ~BaseScene();
 
 	virtual void ProcessInput();
 	virtual void Update();

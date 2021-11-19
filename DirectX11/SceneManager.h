@@ -21,5 +21,5 @@ public:
 
 private:
 	class GameApp* mApp;
-	std::stack<class AbstractScene*> mSceneStack;
+	std::stack<class BaseScene*> mSceneStack;
 };

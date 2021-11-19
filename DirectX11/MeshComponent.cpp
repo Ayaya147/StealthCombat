@@ -1,6 +1,6 @@
 #include "MeshComponent.h"
 #include "Actor.h"
-#include "AbstractScene.h"
+#include "BaseScene.h"
 #include "Renderer.h"
 #include "GameApp.h"
 #include "SceneManager.h"

@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <memory>
 
 class Mesh
 {
@@ -12,5 +11,7 @@ public:
 	unsigned int GetIndicesNum() const { return mNum; }
 
 private:
+	std::vector<class Texture*> mTextures;
+
 	unsigned int mNum;
 };

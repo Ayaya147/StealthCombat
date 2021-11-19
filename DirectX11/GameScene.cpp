@@ -9,7 +9,7 @@
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
-	AbstractScene(sm, parameter)
+	BaseScene(sm, parameter)
 {
 	PlayerActor* player = new PlayerActor(this);
 }
@@ -20,17 +20,17 @@ GameScene::~GameScene()
 
 void GameScene::ProcessInput()
 {
-	AbstractScene::ProcessInput();
+	BaseScene::ProcessInput();
 }
 
 void GameScene::Update()
 {
-	AbstractScene::Update();
+	BaseScene::Update();
 }
 
 void GameScene::GenerateOutput()
 {
-	AbstractScene::GenerateOutput();
+	BaseScene::GenerateOutput();
 
 	//if (1)
 	//{
