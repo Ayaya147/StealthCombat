@@ -12,7 +12,7 @@ public:
 
 	void Draw();
 	void UnloadData();
-	void AddMeshComp(class MeshComponent* mesh);
+	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
 
 	class Mesh* GetMesh(const std::string& fileName);
@@ -28,5 +28,5 @@ private:
 
 	std::unordered_map<std::string, class Mesh*> mMeshes;
 	std::unordered_map<std::string, class Texture*> mTextures;
-	std::vector<class MeshComponent*> mMeshComps;
+	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
 };

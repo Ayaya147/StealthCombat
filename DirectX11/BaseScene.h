@@ -18,9 +18,8 @@ public:
 protected:
 	std::vector<class Actor*> mActors;
 	std::vector<class Actor*> mPendingActors;
+	class Timer* mTimer;
+	bool mUpdatingActors;
 
 	class SceneManager* mSceneManager;
-	class Timer* mTimer;
-
-	bool mUpdatingActors;
 };

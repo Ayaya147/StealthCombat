@@ -4,11 +4,13 @@
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(class Actor* owner);
+	MeshComponent(class Actor* owner, class Mesh* mesh);
 	~MeshComponent();
 
-	virtual void Draw(class Renderer* renderer);
-	virtual void SetMesh(class Mesh* mesh) { mMesh = mesh; }
+	void Draw(class Renderer* renderer);
+
+	class Mesh* GetMesh() const { return mMesh; }
+	void SetMesh(class Mesh* mesh) { mMesh = mesh; }
 
 protected:
 	class Mesh* mMesh;

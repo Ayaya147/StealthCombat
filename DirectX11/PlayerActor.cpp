@@ -10,9 +10,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	MeshComponent* mc = new MeshComponent(this);
 	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh("Assets\\Models\\test.obj");
-	mc->SetMesh(mesh);
+	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mPosition = { 0.0f,0.0f,5.0f };
 	mScale = 1.0f;

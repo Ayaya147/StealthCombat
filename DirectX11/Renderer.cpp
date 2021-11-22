@@ -94,9 +94,17 @@ void Renderer::Draw()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+	std::string name;
 	for (auto mc : mMeshComps)
 	{
-		mc->Draw(this);
+		for (auto m : mc.second)
+		{
+			if (name != mc.first.data())
+			{
+				m->GetMesh()->Bind();
+			}
+			m->Draw(this);
+		}
 	}
 
 	mSwapChain->Present(1, 0);
@@ -117,15 +125,22 @@ void Renderer::UnloadData()
 	mMeshes.clear();
 }
 
-void Renderer::AddMeshComp(MeshComponent* mesh)
+void Renderer::AddMeshComp(const std::string& name, MeshComponent* mesh)
 {
-	mMeshComps.emplace_back(mesh);
+	mMeshComps[name].emplace_back(mesh);
 }
 
 void Renderer::RemoveMeshComp(MeshComponent* mesh)
 {
-	auto iter = std::find(mMeshComps.begin(), mMeshComps.end(), mesh);
-	mMeshComps.erase(iter);
+	for (auto mc : mMeshComps)
+	{
+		auto iter = std::find(mc.second.begin(), mc.second.end(), mesh);
+		if (iter != mc.second.end())
+		{
+			mc.second.erase(iter);
+			break;
+		}
+	}
 }
 
 Mesh* Renderer::GetMesh(const std::string& fileName)

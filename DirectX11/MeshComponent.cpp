@@ -11,11 +11,12 @@
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
-MeshComponent::MeshComponent(class Actor* owner)
+MeshComponent::MeshComponent(Actor* owner, Mesh* mesh)
 	:
-	Component(owner)
+	Component(owner),
+	mMesh(mesh)
 {
-	mOwner->GetScene()->GetSceneManager()->GetApp()->GetRenderer()->AddMeshComp(this);
+	mOwner->GetScene()->GetSceneManager()->GetApp()->GetRenderer()->AddMeshComp(mMesh->GetFileName(), this);
 }
 
 MeshComponent::~MeshComponent()

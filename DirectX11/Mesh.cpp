@@ -2,19 +2,20 @@
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 #include "Mesh.h"
-#include <wrl.h>
-#include <d3d11.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include "Renderer.h"
 #include "dxtex/DirectXTex.h"
-#include "DxException.h"
 #include "Texture.h"
+#include "Bindable.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
 Mesh::Mesh(const std::string& fileName, Renderer* renderer)
+	:
+	mRenderer(renderer),
+	mFileName(fileName)
 {
 	float scale = 0.1f;
 
@@ -185,5 +186,9 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 }
 
 Mesh::~Mesh()
+{
+}
+
+void Mesh::Bind(Renderer* renderer)
 {
 }
