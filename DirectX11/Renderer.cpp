@@ -101,7 +101,7 @@ void Renderer::Draw()
 		{
 			if (name != mc.first.data())
 			{
-				m->GetMesh()->Bind();
+				m->GetMesh()->Bind(this);
 			}
 			m->Draw(this);
 		}
