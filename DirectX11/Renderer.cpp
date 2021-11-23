@@ -1,8 +1,6 @@
 #include "Renderer.h"
 #include "DxException.h"
 #include "Mesh.h"
-#include "Box.h"
-#include "TestAss.h"
 #include "MeshComponent.h"
 #include "Texture.h"
 

@@ -2,6 +2,7 @@
 #include <vector>
 #include "Bindable.h"
 #include "Renderer.h"
+#include "DxException.h"
 
 class VertexBuffer : public Bindable
 {
@@ -15,7 +16,8 @@ public:
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.Usage = D3D11_USAGE_DEFAULT;
 		bd.CPUAccessFlags = 0;
-		bd.MiscFlags = UINT(mStride * vertices.size());
+		bd.MiscFlags = 0;
+		bd.ByteWidth = static_cast<UINT>(mStride * vertices.size());
 		bd.StructureByteStride = mStride;
 
 		D3D11_SUBRESOURCE_DATA sd = {};

@@ -99,8 +99,6 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Actor.cpp" />
-    <ClCompile Include="Bindable.cpp" />
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -130,7 +128,6 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <ClCompile Include="TestAss.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Topology.cpp" />
@@ -143,7 +140,6 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Bindable.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DxException.h" />
     <ClInclude Include="GameApp.h" />
@@ -157,7 +153,6 @@
     <ClInclude Include="PlayerActor.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="TestAss.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />

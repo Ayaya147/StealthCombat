@@ -14,4 +14,3 @@ private:
 	Microsoft::WRL::ComPtr<ID3DBlob> mBytecodeBlod;
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> mVertexShader;
 };
-

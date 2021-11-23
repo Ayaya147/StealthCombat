@@ -1,13 +1,15 @@
+#include <DirectXMath.h>
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 #include "Mesh.h"
-#include <d3dcompiler.h>
-#include <DirectXMath.h>
 #include "Renderer.h"
-#include "dxtex/DirectXTex.h"
-#include "Texture.h"
-#include "Bindable.h"
+#include "IndexBuffer.h"
+#include "InputLayout.h"
+#include "PixelShader.h"
+#include "Topology.h"
+#include "VertexBuffer.h"
+#include "VertexShader.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
@@ -17,7 +19,7 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 	mRenderer(renderer),
 	mFileName(fileName)
 {
-	float scale = 0.1f;
+	float scale = 1.0f;
 
 	struct Vertex
 	{
@@ -33,7 +35,6 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 		aiProcess_GenNormals |
 		aiProcess_CalcTangentSpace
 	);
-
 	const auto pMesh = pScene->mMeshes[0];
 
 	std::vector<Vertex> vertices;
@@ -56,38 +57,22 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 		indices.push_back(face.mIndices[1]);
 		indices.push_back(face.mIndices[2]);
 	}
-	mNum = (unsigned int)indices.size();
 
-	wrl::ComPtr<ID3D11Buffer> vertexBuffer;
-	D3D11_BUFFER_DESC bd = {};
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.CPUAccessFlags = 0;
-	bd.MiscFlags = 0;
-	bd.ByteWidth = UINT(sizeof(Vertex) * vertices.size());
-	bd.StructureByteStride = sizeof(Vertex);
+	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
+	{
+		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+	};
 
-	D3D11_SUBRESOURCE_DATA sd = {};
-	sd.pSysMem = vertices.data();
-	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&bd, &sd, &vertexBuffer));
+	VertexShader* vs = new VertexShader(renderer, L"ShaderBins/PhongVS.cso");
+	mIndexBuffer = new IndexBuffer(renderer, indices);
 
-	const UINT stride = sizeof(Vertex);
-	const UINT offset = 0;
-	renderer->GetContext()->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-
-	wrl::ComPtr<ID3D11Buffer> indexBuffer;
-	D3D11_BUFFER_DESC ibd = {};
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.Usage = D3D11_USAGE_DEFAULT;
-	ibd.CPUAccessFlags = 0u;
-	ibd.MiscFlags = 0u;
-	ibd.ByteWidth = UINT(mNum * sizeof(unsigned short));
-	ibd.StructureByteStride = sizeof(unsigned short);
-	D3D11_SUBRESOURCE_DATA isd = {};
-	isd.pSysMem = indices.data();
-	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&ibd, &isd, &indexBuffer));
-
-	renderer->GetContext()->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+	AddBind(new VertexBuffer(renderer, vertices));
+	AddBind(mIndexBuffer);
+	AddBind(vs);
+	AddBind(new PixelShader(renderer, L"ShaderBins/PhongPS.cso"));
+	AddBind(new InputLayout(renderer, ied, vs));
+	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	struct PointLightCBuf
 	{
@@ -121,45 +106,7 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 	D3D11_SUBRESOURCE_DATA csd = {};
 	csd.pSysMem = &cbData;
 	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&cbd, &csd, &pConstantBuffer));
-
-	// bind constant buffer to pixel shader
 	renderer->GetContext()->PSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
-
-	// create pixel shader
-	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
-	wrl::ComPtr<ID3DBlob> pBlob;
-	ThrowIfFailed(D3DReadFileToBlob(L"ShaderBins/PhongPS.cso", &pBlob));
-	ThrowIfFailed(renderer->GetDevice()->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
-
-	// bind pixel shader
-	renderer->GetContext()->PSSetShader(pPixelShader.Get(), nullptr, 0u);
-
-
-	// create vertex shader
-	wrl::ComPtr<ID3D11VertexShader> pVertexShader;
-	ThrowIfFailed(D3DReadFileToBlob(L"ShaderBins/PhongVS.cso", &pBlob));
-	ThrowIfFailed(renderer->GetDevice()->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader));
-
-	// bind vertex shader
-	renderer->GetContext()->VSSetShader(pVertexShader.Get(), nullptr, 0u);
-
-
-	wrl::ComPtr<ID3D11InputLayout> pInputLayout;
-	const D3D11_INPUT_ELEMENT_DESC ied[] =
-	{
-		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-	};
-	ThrowIfFailed(renderer->GetDevice()->CreateInputLayout(
-		ied, (UINT)std::size(ied),
-		pBlob->GetBufferPointer(),
-		pBlob->GetBufferSize(),
-		&pInputLayout
-	));
-
-	renderer->GetContext()->IASetInputLayout(pInputLayout.Get());
-
-	renderer->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	struct PSMaterialConstant
 	{
@@ -181,7 +128,6 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 	D3D11_SUBRESOURCE_DATA csd2 = {};
 	csd2.pSysMem = &pmc;
 	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2));
-
 	renderer->GetContext()->PSSetConstantBuffers(1u, 1u, pConstantBuffer2.GetAddressOf());
 }
 
@@ -191,4 +137,18 @@ Mesh::~Mesh()
 
 void Mesh::Bind(Renderer* renderer)
 {
+	for (auto b : mBinds)
+	{
+		b->Bind(renderer);
+	}
+}
+
+void Mesh::AddBind(Bindable* bind)
+{
+	mBinds.emplace_back(bind);
+}
+
+unsigned int Mesh::GetIndicesNum() const
+{
+	return mIndexBuffer->GetCount();
 }

@@ -27,20 +27,20 @@ MeshComponent::~MeshComponent()
 void MeshComponent::Draw(Renderer* renderer)
 {
 	float mAngle = mOwner->GetRotation().x;
-	DirectX::XMMATRIX model = mOwner->GetWorldTransform();
+	dx::XMMATRIX model = mOwner->GetWorldTransform();
 
 	struct ConstantBuffer
 	{
-		DirectX::XMMATRIX modelView;
-		DirectX::XMMATRIX modelViewProj;
+		dx::XMMATRIX modelView;
+		dx::XMMATRIX modelViewProj;
 	};
 
 	const auto pos = dx::XMVector3Transform(
-		dx::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f),
+		dx::XMVectorSet(0.0f, 0.0f, -4.0f, 0.0f),
 		dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)
 	);
 
-	DirectX::XMMATRIX camera = dx::XMMatrixLookAtLH(pos, dx::XMVectorZero(), dx::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
+	dx::XMMATRIX camera = dx::XMMatrixLookAtLH(pos, dx::XMVectorZero(), dx::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
 	) * dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 
 	const ConstantBuffer cb =
@@ -69,6 +69,5 @@ void MeshComponent::Draw(Renderer* renderer)
 	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&cbd3, &csd3, &pConstantBuffer3));
 
 	renderer->GetContext()->VSSetConstantBuffers(0u, 1u, pConstantBuffer3.GetAddressOf());
-	renderer->GetContext()->DrawIndexed((UINT)mMesh->GetIndicesNum(), 0u, 0u);
-
+	renderer->GetContext()->DrawIndexed(mMesh->GetIndicesNum(), 0, 0);
 }

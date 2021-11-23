@@ -1,6 +1,7 @@
 #include <d3dcompiler.h>
 #include "VertexShader.h"
 #include "Renderer.h"
+#include "DxException.h"
 
 VertexShader::VertexShader(Renderer* renderer, const std::wstring& fileName)
 {

@@ -1,6 +1,7 @@
 #include <d3dcompiler.h>
 #include "PixelShader.h"
 #include "Renderer.h"
+#include "DxException.h"
 
 PixelShader::PixelShader(Renderer* renderer, const std::wstring& fileName)
 {

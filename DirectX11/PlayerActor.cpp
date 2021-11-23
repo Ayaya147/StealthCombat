@@ -6,14 +6,13 @@
 #include "GameApp.h"
 #include "Renderer.h"
 
-PlayerActor::PlayerActor(BaseScene* scene)
+PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	:
 	Actor(scene)
 {
-	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh("Assets\\Models\\test.obj");
+	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh(fileName);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	mPosition = { 0.0f,0.0f,5.0f };
 	mScale = 1.0f;
 }
 

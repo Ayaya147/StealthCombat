@@ -9,8 +9,9 @@ public:
 	~Mesh();
 
 	void Bind(class Renderer* renderer);
+	void AddBind(class Bindable* bind);
 
-	unsigned int GetIndicesNum() const { return mNum; }
+	unsigned int GetIndicesNum() const;
 	const std::string& GetFileName() const { return mFileName; }
 
 private:
@@ -18,6 +19,6 @@ private:
 	std::vector<class Bindable*> mBinds;
 
 	class Renderer* mRenderer;
+	class IndexBuffer* mIndexBuffer;
 	std::string mFileName;
-	unsigned int mNum;
 };

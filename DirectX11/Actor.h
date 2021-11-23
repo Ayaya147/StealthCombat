@@ -24,12 +24,12 @@ public:
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
+	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion; }
 	class BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
 	ActorState GetActorState() const { return mState; }
 	void SetActorState(ActorState state) { mState = state; }
-
 
 protected:
 	DirectX::XMMATRIX mWorldTransform;

@@ -1,5 +1,6 @@
 #include "IndexBuffer.h"
 #include "Renderer.h"
+#include "DxException.h"
 
 IndexBuffer::IndexBuffer(Renderer* renderer, const std::vector<unsigned short>& indices)
 	:
