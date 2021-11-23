@@ -19,7 +19,7 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 	mRenderer(renderer),
 	mFileName(fileName)
 {
-	float scale = 1.0f;
+	float scale = 0.1f;
 
 	struct Vertex
 	{

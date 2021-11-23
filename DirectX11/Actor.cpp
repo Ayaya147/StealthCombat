@@ -11,7 +11,8 @@ Actor::Actor(BaseScene* scene)
 	mRotation(dx::XMFLOAT3{}),
 	mScale(1.0f),
 	mState(ActorState::EActive),
-	mScene(scene)
+	mScene(scene),
+	mRecomputeWorldTransform(true)
 {
 	mScene->AddActor(this);
 }
@@ -27,10 +28,13 @@ Actor::~Actor()
 
 void Actor::Update(float deltaTime)
 {
-	ComputeWorldTransform();
-	UpdateComponents(deltaTime);
-	UpdateActor(deltaTime);
-	ComputeWorldTransform();
+	if (mState == ActorState::EActive)
+	{
+		ComputeWorldTransform();
+		UpdateComponents(deltaTime);
+		UpdateActor(deltaTime);
+		ComputeWorldTransform();
+	}
 }
 
 void Actor::UpdateComponents(float deltaTime)
@@ -47,9 +51,14 @@ void Actor::UpdateActor(float deltaTime)
 
 void Actor::ComputeWorldTransform()
 {
-	mWorldTransform = dx::XMMatrixScaling(mScale, mScale, mScale);
-	mWorldTransform *= dx::XMMatrixRotationX(mRotation.x);
-	mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+	if (mRecomputeWorldTransform)
+	{
+		mRecomputeWorldTransform = false;
+
+		mWorldTransform = dx::XMMatrixScaling(mScale, mScale, mScale);
+		mWorldTransform *= dx::XMMatrixRotationX(mRotation.x);
+		mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+	}
 }
 
 void Actor::AddComponent(Component* component)

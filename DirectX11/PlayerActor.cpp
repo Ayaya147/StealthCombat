@@ -13,10 +13,11 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh(fileName);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	mScale = 1.0f;
+	SetScale(1.0f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
-	mRotation.x += 3.0f * deltaTime;
+	DirectX::XMFLOAT3 rotation = GetRotation();
+	SetRotation(DirectX::XMFLOAT3{ rotation.x + 3.0f * deltaTime,rotation.y,rotation.z });
 }

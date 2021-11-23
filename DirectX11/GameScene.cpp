@@ -15,15 +15,15 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter)
 {
-	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\test11.obj");
+	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\test.obj");
 	player->SetPosition(dx::XMFLOAT3{ 4.0f,0.0f,5.0f });
 	player = new PlayerActor(this, "Assets\\Models\\suzanne.obj");
 	player->SetPosition(dx::XMFLOAT3{ 2.0f,0.0f,5.0f });
-	player = new PlayerActor(this, "Assets\\Models\\test11.obj");
+	player = new PlayerActor(this, "Assets\\Models\\test.obj");
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,5.0f });
 	player = new PlayerActor(this, "Assets\\Models\\suzanne.obj");
 	player->SetPosition(dx::XMFLOAT3{ -2.0f,0.0f,5.0f });
-	player = new PlayerActor(this, "Assets\\Models\\test11.obj");
+	player = new PlayerActor(this, "Assets\\Models\\test.obj");
 	player->SetPosition(dx::XMFLOAT3{ -4.0f,0.0f,5.0f });
 }
 

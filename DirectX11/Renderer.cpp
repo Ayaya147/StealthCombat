@@ -97,9 +97,10 @@ void Renderer::Draw()
 	{
 		for (auto m : mc.second)
 		{
-			if (name != mc.first.data())
+			if (name != mc.first)
 			{
 				m->GetMesh()->Bind(this);
+				name = mc.first;
 			}
 			m->Draw(this);
 		}

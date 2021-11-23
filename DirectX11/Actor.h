@@ -24,17 +24,20 @@ public:
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
 
-	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion; }
+	void SetActorState(ActorState state) { mState = state; }
+	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion; mRecomputeWorldTransform = true; }
+	void SetScale(float scale) { mScale = scale;  mRecomputeWorldTransform = true;}
+	void SetRotation(const DirectX::XMFLOAT3& rotation) { mRotation = rotation; mRecomputeWorldTransform = true; }
 	class BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
 	ActorState GetActorState() const { return mState; }
-	void SetActorState(ActorState state) { mState = state; }
 
-protected:
+private:
 	DirectX::XMMATRIX mWorldTransform;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mRotation;
+	bool mRecomputeWorldTransform;
 	float mScale;
 	ActorState mState;
 	std::vector<class Component*> mComponents;
