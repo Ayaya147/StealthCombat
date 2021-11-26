@@ -1,6 +1,10 @@
 #include "Actor.h"
 #include "GameScene.h"
 #include "Component.h"
+#include "TransformCBuffer.h"
+#include "GameApp.h"
+#include "Renderer.h"
+#include "SceneManager.h"
 
 namespace dx = DirectX;
 
@@ -12,7 +16,8 @@ Actor::Actor(BaseScene* scene)
 	mScale(1.0f),
 	mState(ActorState::EActive),
 	mScene(scene),
-	mRecomputeWorldTransform(true)
+	mRecomputeWorldTransform(true),
+	mTransformCBuffer(nullptr)
 {
 	mScene->AddActor(this);
 }
@@ -23,6 +28,12 @@ Actor::~Actor()
 	while (!mComponents.empty())
 	{
 		delete mComponents.back();
+	}
+
+	if (mTransformCBuffer)
+	{
+		delete mTransformCBuffer;
+		mTransformCBuffer = nullptr;
 	}
 }
 
@@ -47,6 +58,14 @@ void Actor::UpdateComponents(float deltaTime)
 
 void Actor::UpdateActor(float deltaTime)
 {
+}
+
+void Actor::Bind(Renderer* renderer)
+{
+	if (mTransformCBuffer)
+	{
+		mTransformCBuffer->Bind(renderer);
+	}
 }
 
 void Actor::ComputeWorldTransform()

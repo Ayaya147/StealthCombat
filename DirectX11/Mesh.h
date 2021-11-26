@@ -5,7 +5,7 @@
 class Mesh
 {
 public:
-	Mesh(const std::string& fileName, class Renderer* renderer);
+	Mesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
 	~Mesh();
 
 	void Bind(class Renderer* renderer);

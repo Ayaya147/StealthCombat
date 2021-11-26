@@ -10,11 +10,12 @@
 #include "Topology.h"
 #include "VertexBuffer.h"
 #include "VertexShader.h"
+#include "ConstantBuffer.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
-Mesh::Mesh(const std::string& fileName, Renderer* renderer)
+Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
 	:
 	mRenderer(renderer),
 	mFileName(fileName)
@@ -64,15 +65,20 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
-	VertexShader* vs = new VertexShader(renderer, L"ShaderBins/PhongVS.cso");
+	std::wstring VSName = L"ShaderBins/" + shaderName + L"VS.cso";
+	std::wstring PSName = L"ShaderBins/" + shaderName + L"PS.cso";
+
+	VertexShader* vs = new VertexShader(renderer, VSName);
 	mIndexBuffer = new IndexBuffer(renderer, indices);
 
-	AddBind(new VertexBuffer(renderer, vertices));
-	AddBind(mIndexBuffer);
-	AddBind(vs);
-	AddBind(new PixelShader(renderer, L"ShaderBins/PhongPS.cso"));
-	AddBind(new InputLayout(renderer, ied, vs));
-	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	struct PSMaterialConstant
+	{
+		DirectX::XMFLOAT3 color;
+		float specularIntensity = 0.6f;
+		float specularPower = 30.0f;
+		float padding[3];
+	} pmc;
+	pmc.color = DirectX::XMFLOAT3{ 1.0f,0.0f,0.0f };
 
 	struct PointLightCBuf
 	{
@@ -84,7 +90,6 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 		float attLin;
 		float attQuad;
 	}cbData;
-
 	cbData = {
 		{ 0.0f,0.0f,0.0f },
 		{ 0.05f,0.05f,0.05f },
@@ -95,40 +100,14 @@ Mesh::Mesh(const std::string& fileName, Renderer* renderer)
 		0.0075f,
 	};
 
-	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
-	D3D11_BUFFER_DESC cbd;
-	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbd.Usage = D3D11_USAGE_DEFAULT;
-	cbd.CPUAccessFlags = 0u;
-	cbd.MiscFlags = 0u;
-	cbd.ByteWidth = sizeof(cbData);
-	cbd.StructureByteStride = 0u;
-	D3D11_SUBRESOURCE_DATA csd = {};
-	csd.pSysMem = &cbData;
-	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&cbd, &csd, &pConstantBuffer));
-	renderer->GetContext()->PSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
-
-	struct PSMaterialConstant
-	{
-		DirectX::XMFLOAT3 color;
-		float specularIntensity = 0.6f;
-		float specularPower = 30.0f;
-		float padding[3];
-	} pmc;
-	pmc.color = DirectX::XMFLOAT3{ 1.0f,0.0f,0.0f };
-
-	wrl::ComPtr<ID3D11Buffer> pConstantBuffer2;
-	D3D11_BUFFER_DESC cbd2;
-	cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbd2.Usage = D3D11_USAGE_DEFAULT;
-	cbd2.CPUAccessFlags = 0u;
-	cbd2.MiscFlags = 0u;
-	cbd2.ByteWidth = sizeof(pmc);
-	cbd2.StructureByteStride = 0u;
-	D3D11_SUBRESOURCE_DATA csd2 = {};
-	csd2.pSysMem = &pmc;
-	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2));
-	renderer->GetContext()->PSSetConstantBuffers(1u, 1u, pConstantBuffer2.GetAddressOf());
+	AddBind(new VertexBuffer(renderer, vertices));
+	AddBind(mIndexBuffer);
+	AddBind(vs);
+	AddBind(new PixelShader(renderer, PSName));
+	AddBind(new InputLayout(renderer, ied, vs));
+	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	AddBind(new PixelConstantBuffer<PointLightCBuf>(renderer, cbData, 0));
+	AddBind(new PixelConstantBuffer<PSMaterialConstant>(renderer, pmc, 1));
 }
 
 Mesh::~Mesh()

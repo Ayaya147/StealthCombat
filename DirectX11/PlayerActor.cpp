@@ -5,12 +5,16 @@
 #include "SceneManager.h"
 #include "GameApp.h"
 #include "Renderer.h"
+#include "TransformCBuffer.h"
 
 PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	:
 	Actor(scene)
 {
-	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh(fileName);
+
+	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetApp()->GetRenderer(), this));
+
+	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh(fileName, L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	SetScale(1.0f);

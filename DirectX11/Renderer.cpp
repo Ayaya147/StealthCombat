@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "Texture.h"
+#include "Actor.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -102,6 +103,7 @@ void Renderer::Draw()
 				m->GetMesh()->Bind(this);
 				name = mc.first;
 			}
+			m->GetOwner()->Bind(this);
 			m->Draw(this);
 		}
 	}
@@ -142,7 +144,7 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-Mesh* Renderer::GetMesh(const std::string& fileName)
+Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderName)
 {
 	Mesh* mesh = nullptr;
 	auto iter = mMeshes.find(fileName);
@@ -152,7 +154,7 @@ Mesh* Renderer::GetMesh(const std::string& fileName)
 	}
 	else
 	{
-		mesh = new Mesh(fileName, this);
+		mesh = new Mesh(this, fileName, shaderName);
 		mMeshes.emplace(fileName, mesh);
 	}
 	return mesh;

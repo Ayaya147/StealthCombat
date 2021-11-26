@@ -8,4 +8,6 @@ public:
 	PlayerActor(class BaseScene* scene, const std::string& fileName);
 
 	void UpdateActor(float deltaTime) override;
+
+private:
 };

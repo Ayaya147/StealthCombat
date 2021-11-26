@@ -20,6 +20,8 @@ public:
 	void UpdateComponents(float deltaTime);
 	virtual void UpdateActor(float deltaTime);
 
+	virtual void Bind(class Renderer* renderer);
+
 	void ComputeWorldTransform();
 	void AddComponent(class Component* component);
 	void RemoveComponent(class Component* component);
@@ -28,6 +30,8 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion; mRecomputeWorldTransform = true; }
 	void SetScale(float scale) { mScale = scale;  mRecomputeWorldTransform = true;}
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { mRotation = rotation; mRecomputeWorldTransform = true; }
+	void SetTransformCBuffer(class TransformCBuffer* buffer) { mTransformCBuffer = buffer; }
+
 	class BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
@@ -42,4 +46,5 @@ private:
 	ActorState mState;
 	std::vector<class Component*> mComponents;
 	class BaseScene* mScene;
+	class TransformCBuffer* mTransformCBuffer;
 };
