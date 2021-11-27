@@ -15,7 +15,7 @@ public:
 	void RemoveActor(class Actor* actor);
 
 	class SceneManager* GetSceneManager() const { return mSceneManager; }
-	virtual class PointLightActor* GetLight() const = 0;
+	virtual class PointLightActor* GetLight() const { return nullptr; };
 
 protected:
 	std::vector<class Actor*> mActors;

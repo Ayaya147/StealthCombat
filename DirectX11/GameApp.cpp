@@ -13,6 +13,9 @@ GameApp::GameApp()
 
 GameApp::~GameApp()
 {
+	delete mSceneManager;
+	delete mRenderer;
+	delete mWindow;
 }
 
 int GameApp::Run()
