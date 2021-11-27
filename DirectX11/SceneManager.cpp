@@ -12,6 +12,11 @@ SceneManager::SceneManager(GameApp* app)
 
 SceneManager::~SceneManager()
 {
+	while (!mSceneStack.empty())
+	{
+		delete mSceneStack.top();
+		mSceneStack.pop();
+	}
 }
 
 void SceneManager::RunLoop()
