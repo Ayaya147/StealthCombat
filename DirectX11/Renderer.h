@@ -18,6 +18,7 @@ public:
 	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
+	void SetScene(class BaseScene* scene) { mScene = scene; }
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
@@ -29,4 +30,6 @@ private:
 	std::unordered_map<std::string, class Mesh*> mMeshes;
 	std::unordered_map<std::string, class Texture*> mTextures;
 	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
+
+	class BaseScene* mScene;
 };

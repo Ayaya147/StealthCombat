@@ -4,7 +4,7 @@
 #include "MeshComponent.h"
 #include "Texture.h"
 #include "Actor.h"
-#include "GameScene.h"
+#include "BaseScene.h"
 #include "PointLightActor.h"
 
 namespace wrl = Microsoft::WRL;
@@ -95,6 +95,7 @@ void Renderer::Draw()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+	mScene->GetLight()->BindPointLight(this);
 	std::string name;
 	for (auto mc : mMeshComps)
 	{
@@ -103,7 +104,6 @@ void Renderer::Draw()
 			if (name != mc.first)
 			{
 				m->GetMesh()->Bind(this);
-				m->GetOwner()->GetScene()->GetLight()->BindPointLight(this);
 				name = mc.first;
 			}
 			m->GetOwner()->Bind(this);

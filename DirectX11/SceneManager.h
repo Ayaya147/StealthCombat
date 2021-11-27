@@ -18,6 +18,7 @@ public:
 	void ChangeScene(SceneType scene, const class Parameter& parameter, bool stackClear);
 
 	class GameApp* GetApp() { return mApp; }
+	//const std::stack<class BaseScene*>& GetScene() const { return mSceneStack; }
 
 private:
 	class GameApp* mApp;
