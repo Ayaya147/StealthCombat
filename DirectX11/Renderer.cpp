@@ -4,6 +4,8 @@
 #include "MeshComponent.h"
 #include "Texture.h"
 #include "Actor.h"
+#include "GameScene.h"
+#include "PointLightActor.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -101,6 +103,7 @@ void Renderer::Draw()
 			if (name != mc.first)
 			{
 				m->GetMesh()->Bind(this);
+				m->GetOwner()->GetScene()->GetLight()->BindPointLight(this);
 				name = mc.first;
 			}
 			m->GetOwner()->Bind(this);

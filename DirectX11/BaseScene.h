@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+
 class BaseScene
 {
 public:
@@ -14,6 +15,7 @@ public:
 	void RemoveActor(class Actor* actor);
 
 	class SceneManager* GetSceneManager() const { return mSceneManager; }
+	virtual class PointLightActor* GetLight() const = 0;
 
 protected:
 	std::vector<class Actor*> mActors;

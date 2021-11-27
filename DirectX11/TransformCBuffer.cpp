@@ -1,4 +1,5 @@
 #include "TransformCBuffer.h"
+#include "ConstantBuffer.h"
 #include "Renderer.h"
 #include "Actor.h"
 
@@ -33,7 +34,7 @@ TransformCBuffer::~TransformCBuffer()
 void TransformCBuffer::Bind(Renderer* renderer)
 {
 	const auto pos = dx::XMVector3Transform(
-		dx::XMVectorSet(0.0f, 0.0f, -4.0f, 0.0f),
+		dx::XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
 		dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)
 	);
 

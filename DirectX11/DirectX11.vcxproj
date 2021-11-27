@@ -109,6 +109,7 @@
     <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PlayerActor.cpp" />
+    <ClCompile Include="PointLightActor.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <FxCompile Include="PhongPS.hlsl">
@@ -153,6 +154,7 @@
     <ClInclude Include="Parameter.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PlayerActor.h" />
+    <ClInclude Include="PointLightActor.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Texture.h" />

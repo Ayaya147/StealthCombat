@@ -1,7 +1,9 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Bindable.h"
-#include "ConstantBuffer.h"
+
+template<class C>
+class VertexConstantBuffer;
 
 class TransformCBuffer : public Bindable
 {

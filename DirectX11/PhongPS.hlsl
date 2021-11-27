@@ -1,4 +1,4 @@
-cbuffer LightCBuf : register(b0)
+cbuffer LightCBuf : register(b1)
 {
     float3 lightPos;
     float3 ambient;
@@ -9,7 +9,7 @@ cbuffer LightCBuf : register(b0)
     float attQuad;
 };
 
-cbuffer ObjectCBuf : register(b1)
+cbuffer ObjectCBuf : register(b0)
 {
     float3 materialColor;
     float specularIntensity;

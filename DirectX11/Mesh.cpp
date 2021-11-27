@@ -80,38 +80,21 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	} pmc;
 	pmc.color = DirectX::XMFLOAT3{ 1.0f,0.0f,0.0f };
 
-	struct PointLightCBuf
-	{
-		alignas(16) DirectX::XMFLOAT3 pos;
-		alignas(16) DirectX::XMFLOAT3 ambient;
-		alignas(16) DirectX::XMFLOAT3 diffuseColor;
-		float diffuseIntensity;
-		float attConst;
-		float attLin;
-		float attQuad;
-	}cbData;
-	cbData = {
-		{ 0.0f,0.0f,0.0f },
-		{ 0.05f,0.05f,0.05f },
-		{ 1.0f,1.0f,1.0f },
-		1.0f,
-		1.0f,
-		0.045f,
-		0.0075f,
-	};
-
 	AddBind(new VertexBuffer(renderer, vertices));
 	AddBind(mIndexBuffer);
 	AddBind(vs);
 	AddBind(new PixelShader(renderer, PSName));
 	AddBind(new InputLayout(renderer, ied, vs));
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	AddBind(new PixelConstantBuffer<PointLightCBuf>(renderer, cbData, 0));
-	AddBind(new PixelConstantBuffer<PSMaterialConstant>(renderer, pmc, 1));
+	AddBind(new PixelConstantBuffer<PSMaterialConstant>(renderer, pmc, 0));
 }
 
 Mesh::~Mesh()
 {
+	for (auto b : mBinds)
+	{
+		delete b;
+	}
 }
 
 void Mesh::Bind(Renderer* renderer)

@@ -34,7 +34,8 @@ public:
 
 	class BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
-	const DirectX::XMFLOAT3& GetRotation() const{ return mRotation; }
+	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
+	const DirectX::XMFLOAT3& GetRotation() const { return mRotation; }
 	ActorState GetActorState() const { return mState; }
 
 private:
@@ -44,7 +45,7 @@ private:
 	bool mRecomputeWorldTransform;
 	float mScale;
 	ActorState mState;
-	std::vector<class Component*> mComponents;
 	class BaseScene* mScene;
+	std::vector<class Component*> mComponents;	
 	class TransformCBuffer* mTransformCBuffer;
 };
