@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
+    <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PlayerActor.cpp" />
@@ -142,6 +144,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DxException.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
+    <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Parameter.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PlayerActor.h" />

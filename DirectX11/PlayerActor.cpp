@@ -1,6 +1,7 @@
 #include "PlayerActor.h"
 #include "BaseScene.h"
 #include "MeshComponent.h"
+#include "MoveComponent.h"
 #include "Mesh.h"
 #include "SceneManager.h"
 #include "GameApp.h"
@@ -13,15 +14,17 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 {
 
 	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetApp()->GetRenderer(), this));
+	SetScale(1.0f);
 
 	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh(fileName, L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	SetScale(1.0f);
+	MoveComponent* move = new MoveComponent(this);
+	move->SetAngularSpeed(3.0f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
-	DirectX::XMFLOAT3 rotation = GetRotation();
-	SetRotation(DirectX::XMFLOAT3{ rotation.x + 3.0f * deltaTime,rotation.y,rotation.z });
+	//DirectX::XMFLOAT3 rotation = GetRotation();
+	//SetRotation(DirectX::XMFLOAT3{ rotation.x + 3.0f * deltaTime,rotation.y,rotation.z });
 }

@@ -20,7 +20,7 @@ PointLightActor::PointLightActor(BaseScene* scene, const std::string& fileName)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	SetScale(1.0f);
-	SetPosition({ 0.0f,0.0f,10.0f });
+	SetPosition({ 0.0f,0.0f,0.0f });
 	PointLightCBuf data =
 	{
 		GetPosition(),
