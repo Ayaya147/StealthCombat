@@ -3,7 +3,6 @@
 #include "Mesh.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
-#include "GameApp.h"
 #include "Renderer.h"
 #include "ConstantBuffer.h"
 #include "TransformCBuffer.h"
@@ -14,9 +13,9 @@ PointLightActor::PointLightActor(BaseScene* scene, const std::string& fileName)
 	mBuffer1(nullptr),
 	mBuffer2(nullptr)
 {
-	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetApp()->GetRenderer(), this));
+	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
 
-	Mesh* mesh = GetScene()->GetSceneManager()->GetApp()->GetRenderer()->GetMesh(fileName, L"Basic");
+	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Basic");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	SetScale(1.0f);
@@ -31,8 +30,8 @@ PointLightActor::PointLightActor(BaseScene* scene, const std::string& fileName)
 		0.045f,
 		0.0075f,
 	};
-	mBuffer1 = new PixelConstantBuffer<PointLightCBuf>(scene->GetSceneManager()->GetApp()->GetRenderer(), data, 1);
-	mBuffer2 = new PixelConstantBuffer<PSColorConstant>(scene->GetSceneManager()->GetApp()->GetRenderer(), colorConst);
+	mBuffer1 = new PixelConstantBuffer<PointLightCBuf>(scene->GetSceneManager()->GetRenderer(), data, 1);
+	mBuffer2 = new PixelConstantBuffer<PSColorConstant>(scene->GetSceneManager()->GetRenderer(), colorConst);
 }
 
 PointLightActor::~PointLightActor()

@@ -7,7 +7,7 @@ GameApp::GameApp()
 	:
 	mWindow(new Window(1280, 720)),
 	mRenderer(new Renderer(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight())),
-	mSceneManager(new SceneManager(this))
+	mSceneManager(new SceneManager(mRenderer))
 {
 }
 

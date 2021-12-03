@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include <string>
 #include <unordered_map>
+#include <DirectXMath.h>
 
 class Renderer
 {
@@ -18,6 +19,9 @@ public:
 	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
+	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
+	const DirectX::XMMATRIX& GetProjectionMatrix() const { return mProjection; }
+	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
 
 private:
@@ -30,6 +34,9 @@ private:
 	std::unordered_map<std::string, class Mesh*> mMeshes;
 	std::unordered_map<std::string, class Texture*> mTextures;
 	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
+
+	DirectX::XMMATRIX mView;
+	DirectX::XMMATRIX mProjection;
 
 	class BaseScene* mScene;
 };

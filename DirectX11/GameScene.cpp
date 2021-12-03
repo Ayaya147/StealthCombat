@@ -8,6 +8,7 @@
 #include "PointLightActor.h"
 #include "Timer.h"
 #include "MeshComponent.h"
+#include "CameraComponent.h"
 #include "Mesh.h"
 
 namespace dx = DirectX;
@@ -16,6 +17,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter)
 {
+	Actor* camera = new Actor(this);
+	camera->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,-5.0f });
+	CameraComponent* cc = new CameraComponent(camera);
+
 	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\suzanne.obj");
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,5.0f });
 	player = new PlayerActor(this, "Assets\\Models\\test.obj");

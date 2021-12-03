@@ -2,16 +2,15 @@
 #include "Parameter.h"
 #include "GameScene.h"
 #include "Renderer.h"
-#include "GameApp.h"
 
-SceneManager::SceneManager(GameApp* app)
+SceneManager::SceneManager(Renderer* renderer)
 	:
-	mApp(app)
+	mRenderer(renderer)
 {
 	Parameter parameter;
 	mSceneStack.emplace(new GameScene(this, parameter));
 
-	mApp->GetRenderer()->SetScene(mSceneStack.top());
+	mRenderer->SetScene(mSceneStack.top());
 }
 
 SceneManager::~SceneManager()
@@ -52,5 +51,5 @@ void SceneManager::ChangeScene(SceneType scene, const Parameter& parameter, bool
 		break;
 	}
 
-	mApp->GetRenderer()->SetScene(mSceneStack.top());
+	mRenderer->SetScene(mSceneStack.top());
 }

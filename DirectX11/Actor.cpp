@@ -2,7 +2,6 @@
 #include "GameScene.h"
 #include "Component.h"
 #include "TransformCBuffer.h"
-#include "GameApp.h"
 #include "Renderer.h"
 #include "SceneManager.h"
 
@@ -75,7 +74,7 @@ void Actor::ComputeWorldTransform()
 		mRecomputeWorldTransform = false;
 
 		mWorldTransform = dx::XMMatrixScaling(mScale, mScale, mScale);
-		mWorldTransform *= dx::XMMatrixRotationX(mRotation.x);
+		mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
 		mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
 	}
 }

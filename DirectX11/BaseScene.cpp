@@ -1,6 +1,5 @@
 #include "BaseScene.h"
 #include "SceneManager.h"
-#include "GameApp.h"
 #include "Renderer.h"
 #include "Timer.h"
 #include "Actor.h"
@@ -24,7 +23,7 @@ BaseScene::~BaseScene()
 		delete mPendingActors.back();
 	}
 
-	mSceneManager->GetApp()->GetRenderer()->UnloadData();
+	mSceneManager->GetRenderer()->UnloadData();
 
 	if (mTimer)
 	{
@@ -77,7 +76,7 @@ void BaseScene::Update()
 
 void BaseScene::GenerateOutput()
 {
-	mSceneManager->GetApp()->GetRenderer()->Draw();
+	mSceneManager->GetRenderer()->Draw();
 }
 
 void BaseScene::AddActor(Actor* actor)

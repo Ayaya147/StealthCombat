@@ -11,16 +11,16 @@ enum class SceneType
 class SceneManager
 {
 public:
-	SceneManager(class GameApp* app);
+	SceneManager(class Renderer* renderer);
 	~SceneManager();
 	
 	void RunLoop();
 	void ChangeScene(SceneType scene, const class Parameter& parameter, bool stackClear);
 
-	class GameApp* GetApp() { return mApp; }
+	class Renderer* GetRenderer() { return mRenderer; }
 	//const std::stack<class BaseScene*>& GetScene() const { return mSceneStack; }
 
 private:
-	class GameApp* mApp;
+	class Renderer* mRenderer;
 	std::stack<class BaseScene*> mSceneStack;
 };

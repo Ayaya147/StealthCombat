@@ -33,15 +33,9 @@ TransformCBuffer::~TransformCBuffer()
 
 void TransformCBuffer::Bind(Renderer* renderer)
 {
-	const auto pos = dx::XMVector3Transform(
-		dx::XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
-		dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)
-	);
-
-	dx::XMMATRIX camera = dx::XMMatrixLookAtLH(pos, dx::XMVectorZero(), dx::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-	) * dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
-	dx::XMMATRIX projection = dx::XMMatrixPerspectiveLH(1, 9.0f / 16.0f, 0.5f, 100.0f);
-	dx::XMMATRIX modelView = mOwner->GetWorldTransform() * camera;
+	dx::XMMATRIX view = renderer->GetViewMatrix();
+	dx::XMMATRIX projection = renderer->GetProjectionMatrix();
+	dx::XMMATRIX modelView = mOwner->GetWorldTransform() * view;
 
 	const Transforms tf =
 	{
