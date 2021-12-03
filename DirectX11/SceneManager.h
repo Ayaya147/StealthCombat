@@ -1,6 +1,9 @@
 #pragma once
 #include <stack>
 
+class Renderer;
+class Parameter;
+
 enum class SceneType
 {
 	ETitle,
@@ -11,16 +14,16 @@ enum class SceneType
 class SceneManager
 {
 public:
-	SceneManager(class Renderer* renderer);
+	SceneManager(Renderer* renderer);
 	~SceneManager();
 	
 	void RunLoop();
-	void ChangeScene(SceneType scene, const class Parameter& parameter, bool stackClear);
+	void ChangeScene(SceneType scene, const Parameter& parameter, bool stackClear);
 
-	class Renderer* GetRenderer() { return mRenderer; }
+	Renderer* GetRenderer() { return mRenderer; }
 	//const std::stack<class BaseScene*>& GetScene() const { return mSceneStack; }
 
 private:
-	class Renderer* mRenderer;
+	Renderer* mRenderer;
 	std::stack<class BaseScene*> mSceneStack;
 };

@@ -2,16 +2,18 @@
 #include <vector>
 #include "Bindable.h"
 
+class VertexShader;
+
 class InputLayout : public Bindable
 {
 public:
 	InputLayout(
-		class Renderer* renderer,
+		Renderer* renderer,
 		const std::vector<D3D11_INPUT_ELEMENT_DESC>& layout,
-		class VertexShader* vs
+		VertexShader* vs
 	);
 
-	void Bind(class Renderer* renderer) override;
+	void Bind(Renderer* renderer) override;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> mInputLayout;

@@ -5,6 +5,11 @@
 #include <unordered_map>
 #include <DirectXMath.h>
 
+class BaseScene;
+class Texture;
+class Mesh;
+class MeshComponent;
+
 class Renderer
 {
 public:
@@ -13,16 +18,16 @@ public:
 
 	void Draw();
 	void UnloadData();
-	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
-	void RemoveMeshComp(class MeshComponent* mesh);
+	void AddMeshComp(const std::string& name, MeshComponent* mesh);
+	void RemoveMeshComp(MeshComponent* mesh);
 
-	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName);
+	Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
 	const DirectX::XMMATRIX& GetProjectionMatrix() const { return mProjection; }
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
-	void SetScene(class BaseScene* scene) { mScene = scene; }
+	void SetScene(BaseScene* scene) { mScene = scene; }
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
@@ -31,12 +36,12 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mRenderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> mDepthStencilView;
 
-	std::unordered_map<std::string, class Mesh*> mMeshes;
-	std::unordered_map<std::string, class Texture*> mTextures;
-	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
+	std::unordered_map<std::string, Mesh*> mMeshes;
+	std::unordered_map<std::string, Texture*> mTextures;
+	std::unordered_map<std::string, std::vector<MeshComponent*>> mMeshComps;
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
 
-	class BaseScene* mScene;
+	BaseScene* mScene;
 };

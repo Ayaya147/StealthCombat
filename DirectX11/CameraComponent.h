@@ -5,7 +5,7 @@
 class CameraComponent : public Component
 {
 public:
-	CameraComponent(class Actor* owner, int updateOrder = 200);
+	CameraComponent(Actor* owner, int updateOrder = 200);
 
 	void Update(float deltaTime) override;
 

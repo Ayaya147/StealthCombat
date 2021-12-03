@@ -8,11 +8,11 @@ class PixelConstantBuffer;
 class PointLightActor : public Actor
 {
 public:
-	PointLightActor(class BaseScene* scene, const std::string& fileName);
+	PointLightActor(BaseScene* scene, const std::string& fileName);
 	~PointLightActor();
 
-	void Bind(class Renderer* renderer) override;
-	void BindPointLight(class Renderer* renderer);
+	void Bind(Renderer* renderer) override;
+	void BindPointLight(Renderer* renderer);
 
 private:
 	struct PointLightCBuf

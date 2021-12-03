@@ -2,23 +2,28 @@
 #include <string>
 #include <vector>
 
+class Renderer;
+class Bindable;
+class Texture;
+class IndexBuffer;
+
 class Mesh
 {
 public:
-	Mesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
+	Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
 	~Mesh();
 
-	void Bind(class Renderer* renderer);
-	void AddBind(class Bindable* bind);
+	void Bind(Renderer* renderer);
+	void AddBind(Bindable* bind);
 
 	unsigned int GetIndicesNum() const;
 	const std::string& GetFileName() const { return mFileName; }
 
 private:
-	std::vector<class Texture*> mTextures;
-	std::vector<class Bindable*> mBinds;
+	std::vector<Texture*> mTextures;
+	std::vector<Bindable*> mBinds;
 
-	class Renderer* mRenderer;
-	class IndexBuffer* mIndexBuffer;
+	Renderer* mRenderer;
+	IndexBuffer* mIndexBuffer;
 	std::string mFileName;
 };

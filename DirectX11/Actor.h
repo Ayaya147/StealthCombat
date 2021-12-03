@@ -3,6 +3,11 @@
 #include <memory>
 #include <DirectXMath.h>
 
+class BaseScene;
+class Renderer;
+class Component;
+class TransformCBuffer;
+
 class Actor
 {
 public:
@@ -13,26 +18,26 @@ public:
 		EDead
 	};
 
-	Actor(class BaseScene* scene);
+	Actor(BaseScene* scene);
 	virtual ~Actor();
 
 	void Update(float deltaTime);
 	void UpdateComponents(float deltaTime);
 	virtual void UpdateActor(float deltaTime);
 
-	virtual void Bind(class Renderer* renderer);
+	virtual void Bind(Renderer* renderer);
 
 	void ComputeWorldTransform();
-	void AddComponent(class Component* component);
-	void RemoveComponent(class Component* component);
+	void AddComponent(Component* component);
+	void RemoveComponent(Component* component);
 
 	void SetActorState(ActorState state) { mState = state; }
 	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion; mRecomputeWorldTransform = true; }
 	void SetScale(float scale) { mScale = scale;  mRecomputeWorldTransform = true;}
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { mRotation = rotation; mRecomputeWorldTransform = true; }
-	void SetTransformCBuffer(class TransformCBuffer* buffer) { mTransformCBuffer = buffer; }
+	void SetTransformCBuffer(TransformCBuffer* buffer) { mTransformCBuffer = buffer; }
 
-	class BaseScene* GetScene() const { return mScene; }
+	BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
 	const DirectX::XMFLOAT3& GetRotation() const { return mRotation; }
@@ -45,7 +50,8 @@ private:
 	bool mRecomputeWorldTransform;
 	float mScale;
 	ActorState mState;
-	class BaseScene* mScene;
+	BaseScene* mScene;
+	TransformCBuffer* mTransformCBuffer;
+
 	std::vector<class Component*> mComponents;	
-	class TransformCBuffer* mTransformCBuffer;
 };

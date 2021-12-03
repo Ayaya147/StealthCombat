@@ -1,5 +1,9 @@
 #pragma once
 
+class Window;
+class Renderer;
+class SceneManager;
+
 class GameApp
 {
 public:
@@ -8,10 +12,10 @@ public:
 
 	int Run();
 
-	class Renderer* GetRenderer() const { return mRenderer; }
+	Renderer* GetRenderer() const { return mRenderer; }
 
 private:
-	class Window* mWindow;
-	class Renderer* mRenderer;
-	class SceneManager* mSceneManager;
+	Window* mWindow;
+	Renderer* mRenderer;
+	SceneManager* mSceneManager;
 };
