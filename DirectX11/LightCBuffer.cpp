@@ -19,7 +19,8 @@ void LightCBuffer::Bind(Renderer* renderer)
 {
 	Constant c = {};
 	c.ambientLight = renderer->GetAmbientLight();
-	c.cameraPos = dx::XMFLOAT3{ 0.0f,0.0f,-5.0f };
+	dx::XMMATRIX invView = dx::XMMatrixInverse(nullptr, renderer->GetViewMatrix());
+	dx::XMStoreFloat3(&c.cameraPos, invView.r[3]);
 	c.specPower = 10;
 
 	mCBuffer->Update(renderer, c);

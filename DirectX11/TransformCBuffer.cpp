@@ -35,11 +35,11 @@ void TransformCBuffer::Bind(Renderer* renderer)
 {
 	dx::XMMATRIX view = renderer->GetViewMatrix();
 	dx::XMMATRIX projection = renderer->GetProjectionMatrix();
-	dx::XMMATRIX modelView = mOwner->GetWorldTransform() * view;
+	dx::XMMATRIX worldTransform = mOwner->GetWorldTransform();
 
 	const Transforms tf =
 	{
-		dx::XMMatrixTranspose(mOwner->GetWorldTransform()),
+		dx::XMMatrixTranspose(worldTransform),
 		dx::XMMatrixTranspose(view * projection)
 	};
 

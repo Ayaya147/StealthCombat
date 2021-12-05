@@ -13,7 +13,7 @@ namespace wrl = Microsoft::WRL;
 
 Renderer::Renderer(HWND hWnd, int width, int height)
 	:
-	mProjection(dx::XMMatrixPerspectiveLH(1, 9.0f / 16.0f, 0.5f, 100.0f))
+	mProjection(dx::XMMatrixPerspectiveLH(1, 9.0f / 16.0f, 0.5f, 200.0f))
 {
 	UINT createDeviceFlags = 0;
 #ifdef DEBUG

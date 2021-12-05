@@ -18,7 +18,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetSceneManager()->GetRenderer();
 
 	Actor* camera = new Actor(this);
-	camera->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,-5.0f });
+	camera->SetPosition(dx::XMFLOAT3{ 0.0f,8.0f,-0.01f });
 	CameraComponent* cc = new CameraComponent(camera);
 
 	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\suzanne.obj");
@@ -35,10 +35,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Mesh* mesh = renderer->GetMesh("Assets\\Models\\plane.obj", L"Phong");
 	MeshComponent* mc = new MeshComponent(plane, mesh);
 
-	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.2f, 0.2f, 0.2f });
+	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.3f, 0.3f, 0.3f });
 	DirectionalLight dir = {};
-	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
-	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
+	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, 0.0f };
+	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
 	dir.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
 	renderer->SetDirectionalLight(dir);
 }
