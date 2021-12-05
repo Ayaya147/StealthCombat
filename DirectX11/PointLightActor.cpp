@@ -18,7 +18,7 @@ PointLightActor::PointLightActor(BaseScene* scene, const std::string& fileName)
 	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Basic");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	SetScale(1.0f);
+	SetScale(1.5f);
 	SetPosition({ 0.0f,0.0f,0.0f });
 	PointLightCBuf data =
 	{
