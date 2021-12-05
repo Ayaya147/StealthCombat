@@ -1,12 +1,9 @@
 #include "GameScene.h"
 #include "SceneManager.h"
 #include "Parameter.h"
-#include "GameApp.h"
 #include "Renderer.h"
 #include "Actor.h"
 #include "PlayerActor.h"
-#include "PointLightActor.h"
-#include "Timer.h"
 #include "MeshComponent.h"
 #include "CameraComponent.h"
 #include "Mesh.h"
@@ -18,12 +15,14 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter)
 {
+	Renderer* renderer = GetSceneManager()->GetRenderer();
+
 	Actor* camera = new Actor(this);
-	camera->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,-10.0f });
+	camera->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,-5.0f });
 	CameraComponent* cc = new CameraComponent(camera);
 
 	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\suzanne.obj");
-	player->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,5.0f });
+	player->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,2.0f });
 	player = new PlayerActor(this, "Assets\\Models\\test.obj");
 	player->SetPosition(dx::XMFLOAT3{ 2.0f,0.0f,0.0f });
 	player = new PlayerActor(this, "Assets\\Models\\test.obj");
@@ -32,11 +31,16 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Actor* plane = new Actor(this);
 	plane->SetScale(1.0f);
 	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-1.0f,0.0f });
-	plane->SetTransformCBuffer(new TransformCBuffer(GetSceneManager()->GetRenderer(), plane));
-	Mesh* mesh = GetSceneManager()->GetRenderer()->GetMesh("Assets\\Models\\plane.obj", L"Phong");
+	plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
+	Mesh* mesh = renderer->GetMesh("Assets\\Models\\plane.obj", L"Phong");
 	MeshComponent* mc = new MeshComponent(plane, mesh);
 
-	mLight = new PointLightActor(this, "Assets\\Models\\PointLight.obj");
+	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.2f, 0.2f, 0.2f });
+	DirectionalLight dir = {};
+	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
+	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
+	dir.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
+	renderer->SetDirectionalLight(dir);
 }
 
 GameScene::~GameScene()

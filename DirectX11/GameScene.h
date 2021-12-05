@@ -12,8 +12,5 @@ public:
 	void Update() override;
 	void GenerateOutput() override;
 
-	PointLightActor* GetLight() const override { return mLight; }
-
 private:
-	PointLightActor* mLight;
 };

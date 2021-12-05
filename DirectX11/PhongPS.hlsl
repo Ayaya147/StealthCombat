@@ -1,37 +1,32 @@
-cbuffer LightCBuf : register(b1)
+cbuffer CBuf : register(b0)
 {
-    float3 lightPos;
-    float3 ambient;
-    float3 diffuseColor;
-    float diffuseIntensity;
-    float attConst;
-    float attLin;
-    float attQuad;
+    float3 cameraPos;
+    float3 ambientLight;
+    float specPower;
 };
 
-cbuffer ObjectCBuf : register(b0)
+cbuffer DirectLightCBuf : register(b1)
 {
-    float3 materialColor;
-    float specularIntensity;
-    float specularPower;
+    float3 direction;
+    float diffuseColor;
+    float specColor;
 };
 
-
-float4 main(float3 worldPos : Position, float3 n : Normal) : SV_Target
+float4 main(float3 worldPos : Position, float3 worldNor : Normal) : SV_Target
 {
-	// fragment to light vector data
-    const float3 vToL = lightPos - worldPos;
-    const float distToL = length(vToL);
-    const float3 dirToL = vToL / distToL;
-	// attenuation
-    const float att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
-	// diffuse intensity
-    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, n));
-	// reflected light vector
-    const float3 w = n * dot(vToL, n);
-    const float3 r = w * 2.0f - vToL;
-	// calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-    const float3 specular = att * (diffuseColor * diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(worldPos))), specularPower);
-	// final color
-    return float4(saturate((diffuse + ambient + specular) * materialColor), 1.0f);
+    float3 n = normalize(worldNor);
+    float3 l = normalize(-direction);
+    float3 v = normalize(cameraPos - worldPos);
+    float3 r = normalize(reflect(-l, n));
+    
+    float3 phong = ambientLight;
+    float nDotL = dot(n, l);
+    if( nDotL > 0 )
+    {
+        float3 diffuse = diffuseColor * nDotL;
+        float3 specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
+        phong += diffuse + specular;
+    }
+    
+    return float4(saturate(phong * float3(1.0f, 0.0f, 0.0f)), 1.0f);
 }

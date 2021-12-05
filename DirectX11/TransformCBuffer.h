@@ -16,10 +16,10 @@ public:
 	void Bind(Renderer* renderer) override;
 
 private:
-	struct  Transforms
+	struct Transforms
 	{
-		DirectX::XMMATRIX modelView;
-		DirectX::XMMATRIX modelViewProj;
+		DirectX::XMMATRIX mWorldTransform;
+		DirectX::XMMATRIX mViewProj;
 	};
 
 	static VertexConstantBuffer<Transforms>* mBuffer;

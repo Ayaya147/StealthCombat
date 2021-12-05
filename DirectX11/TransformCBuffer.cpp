@@ -39,8 +39,8 @@ void TransformCBuffer::Bind(Renderer* renderer)
 
 	const Transforms tf =
 	{
-		dx::XMMatrixTranspose(modelView),
-		dx::XMMatrixTranspose(modelView * projection)
+		dx::XMMatrixTranspose(mOwner->GetWorldTransform()),
+		dx::XMMatrixTranspose(view * projection)
 	};
 
 	mBuffer->Update(renderer, tf);
