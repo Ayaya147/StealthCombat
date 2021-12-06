@@ -11,6 +11,8 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "ConstantBuffer.h"
+#include "Sampler.h"
+#include "Texture.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
@@ -71,22 +73,13 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	VertexShader* vs = new VertexShader(renderer, VSName);
 	mIndexBuffer = new IndexBuffer(renderer, indices);
 
-	//struct PSMaterialConstant
-	//{
-	//	DirectX::XMFLOAT3 color;
-	//	float specularIntensity = 0.6f;
-	//	float specularPower = 30.0f;
-	//	float padding[3];
-	//} pmc;
-	//pmc.color = DirectX::XMFLOAT3{ 1.0f,0.0f,0.0f };
-
 	AddBind(new VertexBuffer(renderer, vertices));
 	AddBind(mIndexBuffer);
 	AddBind(vs);
 	AddBind(new PixelShader(renderer, PSName));
 	AddBind(new InputLayout(renderer, ied, vs));
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	//AddBind(new PixelConstantBuffer<PSMaterialConstant>(renderer, pmc, 0));
+	AddBind(new Sampler(renderer));
 }
 
 Mesh::~Mesh()

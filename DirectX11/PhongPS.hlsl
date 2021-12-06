@@ -12,6 +12,8 @@ cbuffer DirectLightCBuf : register(b1)
     float specColor;
 };
 
+SamplerState samplerState : register(s0);
+
 float4 main(float3 worldPos : Position, float3 worldNor : Normal) : SV_Target
 {
     float3 n = normalize(worldNor);

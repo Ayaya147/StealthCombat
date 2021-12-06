@@ -114,6 +114,7 @@
     <ClCompile Include="PlayerActor.cpp" />
     <ClCompile Include="PointLightActor.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <FxCompile Include="PhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -162,6 +163,7 @@
     <ClInclude Include="PlayerActor.h" />
     <ClInclude Include="PointLightActor.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Sampler.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
