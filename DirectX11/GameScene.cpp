@@ -21,21 +21,21 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	camera->SetPosition(dx::XMFLOAT3{ 0.0f,8.0f,-0.01f });
 	CameraComponent* cc = new CameraComponent(camera);
 
-	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\suzanne.obj");
-	player->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,2.0f });
-	player = new PlayerActor(this, "Assets\\Models\\test.obj");
-	player->SetPosition(dx::XMFLOAT3{ 2.0f,0.0f,0.0f });
-	player = new PlayerActor(this, "Assets\\Models\\test.obj");
-	player->SetPosition(dx::XMFLOAT3{ -2.0f,0.0f,0.0f });
+	PlayerActor* player = new PlayerActor(this, "Assets\\Models\\test.obj");
+	player->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });
+	//player = new PlayerActor(this, "Assets\\Models\\test.obj");
+	//player->SetPosition(dx::XMFLOAT3{ 2.0f,0.0f,0.0f });
+	//player = new PlayerActor(this, "Assets\\Models\\test.obj");
+	//player->SetPosition(dx::XMFLOAT3{ -2.0f,0.0f,0.0f });
 
-	Actor* plane = new Actor(this);
-	plane->SetScale(1.0f);
-	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-1.0f,0.0f });
-	plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
-	Mesh* mesh = renderer->GetMesh("Assets\\Models\\plane.obj", L"Phong");
-	MeshComponent* mc = new MeshComponent(plane, mesh);
+	//Actor* plane = new Actor(this);
+	//plane->SetScale(1.0f);
+	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,-1.0f,0.0f });
+	//plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
+	//Mesh* mesh = renderer->GetMesh("Assets\\Models\\plane.obj", L"Phong");
+	//MeshComponent* mc = new MeshComponent(plane, mesh);
 
-	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.3f, 0.3f, 0.3f });
+	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
 	DirectionalLight dir = {};
 	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, 0.0f };
 	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
