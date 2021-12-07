@@ -25,11 +25,5 @@ void CameraComponent::Update(float deltaTime)
 		dx::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
 	) * dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 
-	SetViewMatrix(view);
-}
-
-void CameraComponent::SetViewMatrix(const DirectX::XMMATRIX& view)
-{
-	BaseScene* scene = mOwner->GetScene();
-	scene->GetSceneManager()->GetRenderer()->SetViewMatrix(view);
+	mOwner->GetScene()->GetSceneManager()->GetRenderer()->SetViewMatrix(view);
 }

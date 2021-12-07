@@ -20,10 +20,8 @@ public:
 	const std::string& GetFileName() const { return mFileName; }
 
 private:
-	std::vector<Texture*> mTextures;
+	//std::vector<Texture*> mTextures;
 	std::vector<Bindable*> mBinds;
-
-	Renderer* mRenderer;
 	IndexBuffer* mIndexBuffer;
 	std::string mFileName;
 };

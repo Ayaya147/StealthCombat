@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Blender.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="Blender.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />

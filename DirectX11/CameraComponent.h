@@ -8,7 +8,4 @@ public:
 	CameraComponent(Actor* owner, int updateOrder = 200);
 
 	void Update(float deltaTime) override;
-
-private:
-	void SetViewMatrix(const DirectX::XMMATRIX& view);
 };

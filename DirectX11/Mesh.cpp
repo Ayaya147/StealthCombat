@@ -13,14 +13,14 @@
 #include "ConstantBuffer.h"
 #include "Sampler.h"
 #include "Texture.h"
+#include "Blender.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
 Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
 	:
-	mRenderer(renderer),
-	mFileName(fileName)
+	mFileName("Assets\\Models\\" + fileName + ".obj")
 {
 	float scale = 0.1f;
 
@@ -32,7 +32,7 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	};
 
 	Assimp::Importer imp;
-	const auto pScene = imp.ReadFile(fileName,
+	const auto pScene = imp.ReadFile(mFileName,
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
 		aiProcess_ConvertToLeftHanded |
@@ -70,9 +70,9 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
-	std::wstring VSName = L"ShaderBins/" + shaderName + L"VS.cso";
-	std::wstring PSName = L"ShaderBins/" + shaderName + L"PS.cso";
-	std::string texName = "ShaderBins/" + fileName + "PS.cso";
+	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
+	std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
+	std::string texName = "Assets\\Models\\" + fileName + ".png";
 
 	VertexShader* vs = new VertexShader(renderer, VSName);
 	mIndexBuffer = new IndexBuffer(renderer, indices);
@@ -83,8 +83,9 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	AddBind(new PixelShader(renderer, PSName));
 	AddBind(new InputLayout(renderer, ied, vs));
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	AddBind(new Texture(renderer, "Assets\\Models\\test.png"));
 	AddBind(new Sampler(renderer));
+	AddBind(new Blender(renderer, true));
+	AddBind(new Texture(renderer, texName));
 }
 
 Mesh::~Mesh()
