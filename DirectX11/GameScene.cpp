@@ -26,6 +26,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	player->SetScale(5.0f);
 	player = new PlayerActor(this, "test");
 	player->SetPosition(dx::XMFLOAT3{ 2.0f,0.0f,0.0f });
+	player->SetScale(2.0f);
 
 	Actor* plane = new Actor(this);
 	plane->SetScale(1.0f);
@@ -33,7 +34,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
 	Mesh* mesh = renderer->GetMesh("plane", L"Phong");
 	MeshComponent* mc = new MeshComponent(plane, mesh);
-
 	plane = new Actor(this);
 	plane->SetScale(1.0f);
 	plane->SetPosition(dx::XMFLOAT3{ 2.0f,2.0f,0.0f });

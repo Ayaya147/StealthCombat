@@ -18,7 +18,7 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	MoveComponent* move = new MoveComponent(this);
-	move->SetAngularSpeed(2.0f);
+	move->SetAngularSpeed(1.0f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
