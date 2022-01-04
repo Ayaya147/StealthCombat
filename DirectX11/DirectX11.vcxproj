@@ -112,11 +112,20 @@
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="PixelShader.cpp" />
+    <ClCompile Include="PlaneActor.cpp" />
     <ClCompile Include="PlayerActor.cpp" />
     <ClCompile Include="PointLightActor.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <FxCompile Include="PhongNormalMapPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="PhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -138,6 +147,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuffer.cpp" />
+    <ClCompile Include="TransformCBufferDouble.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -162,6 +172,7 @@
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Parameter.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="PlaneActor.h" />
     <ClInclude Include="PlayerActor.h" />
     <ClInclude Include="PointLightActor.h" />
     <ClInclude Include="Renderer.h" />
@@ -171,6 +182,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCBuffer.h" />
+    <ClInclude Include="TransformCBufferDouble.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />

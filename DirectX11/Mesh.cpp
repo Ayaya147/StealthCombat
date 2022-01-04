@@ -72,7 +72,9 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 
 	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
 	std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
-	std::string texName = "Assets\\Models\\" + fileName + ".png";
+	//std::wstring PSName = L"ShaderBins\\PhongNormalMapPS.cso";
+	std::string texName1 = "Assets\\Models\\normal2.png";
+	//std::string texName2 = "Assets\\Models\\normal2.png";
 
 	VertexShader* vs = new VertexShader(renderer, VSName);
 	mIndexBuffer = new IndexBuffer(renderer, indices);
@@ -85,7 +87,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	AddBind(new Sampler(renderer));
 	AddBind(new Blender(renderer, true));
-	AddBind(new Texture(renderer, texName));
+	AddBind(new Texture(renderer, texName1, 0));
+	//AddBind(new Texture(renderer, texName2, 1));
 }
 
 Mesh::~Mesh()

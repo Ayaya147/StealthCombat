@@ -10,18 +10,19 @@ class VertexConstantBuffer;
 class TransformCBuffer : public Bindable
 {
 public:
-	TransformCBuffer(Renderer* renderer, class Actor* actor, UINT slot = 0);
+	TransformCBuffer(Renderer* renderer, Actor* actor, UINT slot = 0);
 	~TransformCBuffer();
 
 	void Bind(Renderer* renderer) override;
 
-private:
+protected:
 	struct Transforms
 	{
 		DirectX::XMMATRIX mWorldTransform;
 		DirectX::XMMATRIX mViewProj;
 	};
 
+private:
 	static VertexConstantBuffer<Transforms>* mBuffer;
 	static UINT mCount;
 	Actor* mOwner;
