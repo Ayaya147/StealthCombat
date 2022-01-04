@@ -13,5 +13,5 @@ public:
 	void Bind(Renderer* renderer) override;
 
 private:
-	TransformCBufferDouble* mBuffer;
+	TransformCBuffer* mBuffer;
 };

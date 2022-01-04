@@ -17,10 +17,10 @@ struct VSOut
 VSOut main(float3 pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : TexCoord)
 {
     VSOut vso;
-    vso.worldPos = mul(pos, (float3x3) worldTransform);
+    vso.worldPos = (float3)mul(float4(pos, 1.0f), worldTransform);
     vso.worldNor = mul(n, (float3x3) worldTransform);
-    vso.worldTan = mul(tan, (float3x3) worldTransform);
-    vso.worldBitan = mul(bitan, (float3x3) worldTransform);
+    vso.worldTan = mul(float3(1.0f, 0.0f, 0.0f), (float3x3) worldTransform);
+    vso.worldBitan = mul(float3(0.0f, 0.0f, 1.0f), (float3x3) worldTransform);
     vso.pos = mul(float4(pos, 1.0f), mul(worldTransform, viewProj));
     vso.tc = tc;
     

@@ -13,4 +13,6 @@ public:
 	void GenerateOutput() override;
 
 private:
+	class Actor* mCamera;
+	float mSpeed = -3.0f;
 };

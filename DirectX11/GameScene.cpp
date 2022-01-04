@@ -18,9 +18,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 {
 	Renderer* renderer = GetSceneManager()->GetRenderer();
 
-	Actor* camera = new Actor(this);
-	camera->SetPosition(dx::XMFLOAT3{ 0.0f,5.0f,-0.001f });
-	CameraComponent* cc = new CameraComponent(camera);
+	mCamera = new Actor(this);
+	mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,4.0f, 0.0f });
+	CameraComponent* cc = new CameraComponent(mCamera);
 
 	//PlayerActor* player = new PlayerActor(this, "slime");
 	//player->SetPosition(dx::XMFLOAT3{ -2.0f,0.0f,0.0f });
@@ -40,23 +40,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-5.0f,5.0f });
 	plane = new PlaneActor(this);
 	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-5.0f,-5.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ 5.0f,-5.0f,5.0f });
 
-
-	//Actor* plane = new Actor(this);
-	//plane->SetScale(1.0f);
-	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });
-	//plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
-	//Mesh* mesh = renderer->GetMesh("plane", L"Phong");
-	//MeshComponent* mc = new MeshComponent(plane, mesh);
-	//plane = new Actor(this);
-	//plane->SetScale(1.0f);
-	//plane->SetPosition(dx::XMFLOAT3{ 2.0f,2.0f,0.0f });
-	//plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
-	//mc = new MeshComponent(plane, mesh);
-
-	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.3f, 0.3f, 0.3f });
+	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
 	DirectionalLight dir = {};
-	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -0.0f };
+	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
 	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
 	dir.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
 	renderer->SetDirectionalLight(dir);
@@ -74,6 +63,21 @@ void GameScene::ProcessInput()
 void GameScene::Update()
 {
 	BaseScene::Update();
+
+	//dx::XMFLOAT3 pos = mCamera->GetPosition();
+	//pos.z = pos.z + mSpeed * 0.016f;
+
+	//if (pos.z >= 0)
+	//{
+	//	mSpeed *= -1;
+	//	pos.z = -0.001f;
+	//}
+	//else if (pos.z <= -15.0f)
+	//{
+	//	mSpeed *= -1;
+	//}
+
+	//mCamera->SetPosition(pos);
 }
 
 void GameScene::GenerateOutput()
