@@ -15,4 +15,5 @@ public:
 
 private:
 	static PixelConstantBuffer<Transforms>* mPBuffer;
+	static UINT mCount1;
 };

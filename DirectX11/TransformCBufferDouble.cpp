@@ -6,11 +6,14 @@
 namespace dx = DirectX;
 
 PixelConstantBuffer<TransformCBuffer::Transforms>* TransformCBufferDouble::mPBuffer = nullptr;
+UINT TransformCBufferDouble::mCount1 = 0;
 
 TransformCBufferDouble::TransformCBufferDouble(Renderer* renderer, Actor* actor, UINT slot)
 	:
 	TransformCBuffer(renderer,actor,0)
 {
+	mCount1++;
+
 	if (!mPBuffer)
 	{
 		mPBuffer = new PixelConstantBuffer<Transforms>(renderer, slot);
@@ -19,7 +22,13 @@ TransformCBufferDouble::TransformCBufferDouble(Renderer* renderer, Actor* actor,
 
 TransformCBufferDouble::~TransformCBufferDouble()
 {
-	delete mPBuffer;
+	mCount1--;
+
+	if (mCount1 == 0)
+	{
+		delete mPBuffer;
+		mPBuffer = nullptr;
+	}
 }
 
 void TransformCBufferDouble::Bind(Renderer* renderer)

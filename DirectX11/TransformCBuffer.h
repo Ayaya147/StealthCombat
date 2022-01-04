@@ -22,9 +22,9 @@ protected:
 		DirectX::XMMATRIX mViewProj;
 	};
 
-	static UINT mCount;
 	Actor* mOwner;
 
 private:
 	static VertexConstantBuffer<Transforms>* mBuffer;
+	static UINT mCount;
 };

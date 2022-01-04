@@ -30,6 +30,17 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	//player->SetScale(2.0f);
 
 	PlaneActor* plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-5.0f,0.0f });
+
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ 5.0f,-5.0f,0.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ -5.0f,-5.0f,0.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-5.0f,5.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ 0.0f,-5.0f,-5.0f });
+
 
 	//Actor* plane = new Actor(this);
 	//plane->SetScale(1.0f);
@@ -43,7 +54,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	//plane->SetTransformCBuffer(new TransformCBuffer(renderer, plane));
 	//mc = new MeshComponent(plane, mesh);
 
-	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
+	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.3f, 0.3f, 0.3f });
 	DirectionalLight dir = {};
 	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -0.0f };
 	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
