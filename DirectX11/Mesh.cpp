@@ -28,6 +28,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	{
 		dx::XMFLOAT3 pos;
 		dx::XMFLOAT3 n;
+		dx::XMFLOAT3 tangent;
+		dx::XMFLOAT3 bitangent;
 		dx::XMFLOAT2 tc;
 	};
 
@@ -48,6 +50,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		vertices.push_back({
 			{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
 			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mTangents[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mBitangents[i]),
 			*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
 		});
 	}
@@ -67,12 +71,13 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	{
 		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Tangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Bitangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,36,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,48,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
 	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
 	std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
-	//std::wstring PSName = L"ShaderBins\\PhongNormalMapPS.cso";
 	std::string texName1 = "Assets\\Models\\normal2.png";
 	//std::string texName2 = "Assets\\Models\\normal2.png";
 

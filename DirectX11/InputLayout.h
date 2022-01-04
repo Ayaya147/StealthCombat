@@ -18,4 +18,3 @@ public:
 private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> mInputLayout;
 };
-

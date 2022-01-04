@@ -21,15 +21,21 @@ cbuffer TransformCBuf : register(b2)
 SamplerState splr : register(s0);
 Texture2D nmap : register(t0);
 
-float4 main(float3 worldPos : Position, float3 worldNor : Normal, float2 tc : TexCoord) : SV_Target
+float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : TexCoord) : SV_Target
 {
-    float3 normalSample = nmap.Sample(splr, tc).xyz;
-    worldNor.x = normalSample.x * 2.0f - 1.0f;
-    worldNor.y = -normalSample.y * 2.0f + 1.0f;
-    worldNor.z = -normalSample.z;
-    worldNor = mul(worldNor, (float3x3)worldTransform);
+    float3 localNormal = nmap.Sample(splr, tc).xyz;
+    localNormal = localNormal * 2.0f - 1.0f;
+    float3 normal = worldNor;
+    
+    normal = tan * localNormal.x + bitan * localNormal.y + normal * localNormal.z;
+    
+    //const float3 normalSample = nmap.Sample(splr, tc).xyz;
+    //worldNor.x = normalSample.x * 2.0f - 1.0f;
+    //worldNor.y = -normalSample.y * 2.0f + 1.0f;
+    //worldNor.z = -normalSample.z;
+    //worldNor = mul(worldNor, (float3x3)worldTransform);
 
-    float3 n = normalize(worldNor);
+    float3 n = normalize(normal);
     float3 l = normalize(-direction);
     float3 v = normalize(cameraPos - worldPos);
     float3 r = normalize(reflect(-l, n));

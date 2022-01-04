@@ -1,5 +1,5 @@
 #include "PlaneActor.h"
-#include "TransformCBuffer.h"
+#include "TransformCBufferDouble.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "BaseScene.h"
@@ -10,11 +10,17 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
+	mBuffer = new TransformCBufferDouble(scene->GetSceneManager()->GetRenderer(), this, 2);
 	SetScale(1.0f);
 
-	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
+	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
+	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"PhongNormalMap");
 	MeshComponent* mc = new MeshComponent(this, mesh);
+}
+
+PlaneActor::~PlaneActor()
+{
+	delete mBuffer;
 }
 
 void PlaneActor::UpdateActor(float deltaTime)
@@ -23,5 +29,5 @@ void PlaneActor::UpdateActor(float deltaTime)
 
 void PlaneActor::Bind(Renderer* renderer)
 {
-	Actor::Bind(renderer);
+	mBuffer->Bind(renderer);
 }

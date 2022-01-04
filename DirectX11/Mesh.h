@@ -11,7 +11,7 @@ class Mesh
 {
 public:
 	Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
-	~Mesh();
+	virtual ~Mesh();
 
 	void Bind(Renderer* renderer);
 	void AddBind(Bindable* bind);

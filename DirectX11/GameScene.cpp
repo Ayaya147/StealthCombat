@@ -45,7 +45,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
 	DirectionalLight dir = {};
-	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, 0.0f };
+	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -0.0f };
 	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
 	dir.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
 	renderer->SetDirectionalLight(dir);
