@@ -20,7 +20,7 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
+	Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int test = 1);
 	virtual ~Mesh();
 
 	void Bind(Renderer* renderer);

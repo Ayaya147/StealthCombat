@@ -12,11 +12,11 @@ cbuffer DirectLightCBuf : register(b1)
     float specColor;
 };
 
-cbuffer TransformCBuf : register(b2)
-{
-    matrix worldTransform;
-    matrix viewProj;
-};
+//cbuffer TransformCBuf : register(b2)
+//{
+//    matrix worldTransform;
+//    matrix viewProj;
+//};
 
 SamplerState splr : register(s0);
 Texture2D nmap0 : register(t0);

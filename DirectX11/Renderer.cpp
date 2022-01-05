@@ -160,7 +160,7 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderName)
+Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderName, int test)
 {
 	Mesh* mesh = nullptr;
 	auto iter = mMeshes.find(fileName);
@@ -170,7 +170,7 @@ Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderN
 	}
 	else
 	{
-		mesh = new Mesh(this, fileName, shaderName);
+		mesh = new Mesh(this, fileName, shaderName, test);
 		mMeshes.emplace(fileName, mesh);
 	}
 	return mesh;

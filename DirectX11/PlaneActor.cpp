@@ -1,5 +1,5 @@
 #include "PlaneActor.h"
-#include "TransformCBufferDouble.h"
+#include "TransformCBuffer.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -15,11 +15,11 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	mBuffer = new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this, 0);
+	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
 	SetScale(1.0f);
 
 	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
-	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"PhongNormalMap");
+	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"PhongNormalMap",0);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mCount = mesh->GetCount();
@@ -38,7 +38,6 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 PlaneActor::~PlaneActor()
 {
-	delete mBuffer;
 }
 
 void PlaneActor::UpdateActor(float deltaTime)
@@ -47,19 +46,16 @@ void PlaneActor::UpdateActor(float deltaTime)
 
 	D3D11_MAPPED_SUBRESOURCE msr;
 	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
+	//renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
 	Vertex* vertex = static_cast<Vertex*>(msr.pData);
 
 	for (int i = 0; i < mCount; i++)
 	{
-		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.01f * deltaTime, vertex[i].tc0.y + 0.02f * deltaTime };
-		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.03f * deltaTime, vertex[i].tc1.y - 0.01f * deltaTime };
+		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.002f * deltaTime, vertex[i].tc0.y + 0.005f * deltaTime };
+		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.008f * deltaTime, vertex[i].tc1.y - 0.005f * deltaTime };
 	}
 
 	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
-}
-
-void PlaneActor::Bind(Renderer* renderer)
-{
-	mBuffer->Bind(renderer);
+	//mVertexBuffer->Bind(renderer);
 }

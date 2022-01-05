@@ -22,12 +22,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,15.0f,0.0f });
 	CameraComponent* cc = new CameraComponent(mCamera);
 
-	//PlayerActor* player = new PlayerActor(this, "slime");
-	//player->SetPosition(dx::XMFLOAT3{ -2.0f,0.0f,0.0f });
-	//player->SetScale(5.0f);
-	//player = new PlayerActor(this, "test");
-	//player->SetPosition(dx::XMFLOAT3{ 2.0f,0.0f,0.0f });
-	//player->SetScale(2.0f);
+	PlayerActor* player = new PlayerActor(this, "slime");
+	player->SetPosition(dx::XMFLOAT3{ -2.0f,5.0f,0.0f });
+	player->SetScale(3.0f);
+	player = new PlayerActor(this, "test");
+	player->SetPosition(dx::XMFLOAT3{ 2.0f,5.0f,0.0f });
+	player->SetScale(1.0f);
 
 	PlaneActor* plane = new PlaneActor(this);
 	plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });

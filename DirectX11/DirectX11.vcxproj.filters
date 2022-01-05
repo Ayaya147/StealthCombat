@@ -129,9 +129,6 @@
     <ClCompile Include="PlaneActor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="TransformCBufferDouble.cpp">
-      <Filter>Source Files\Bindable</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -226,9 +223,6 @@
     </ClInclude>
     <ClInclude Include="PlaneActor.h">
       <Filter>Header Files\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformCBufferDouble.h">
-      <Filter>Header Files\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ PointLightActor::PointLightActor(BaseScene* scene, const std::string& fileName)
 {
 	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
 
-	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Basic");
+	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Basic",1);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	SetScale(1.5f);
