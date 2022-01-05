@@ -7,6 +7,15 @@ class Bindable;
 class Texture;
 class IndexBuffer;
 
+struct Vertex
+{
+	DirectX::XMFLOAT3 pos;
+	DirectX::XMFLOAT3 n;
+	DirectX::XMFLOAT3 tangent;
+	DirectX::XMFLOAT3 bitangent;
+	DirectX::XMFLOAT2 tc;
+};
+
 class Mesh
 {
 public:
@@ -18,10 +27,14 @@ public:
 
 	unsigned int GetIndicesNum() const;
 	const std::string& GetFileName() const { return mFileName; }
+	const std::vector<Bindable*>& GetBindables() const { return mBinds; }
+	int GetCount() { return mCount; }
+
 
 private:
 	//std::vector<Texture*> mTextures;
 	std::vector<Bindable*> mBinds;
 	IndexBuffer* mIndexBuffer;
 	std::string mFileName;
+	int mCount;
 };

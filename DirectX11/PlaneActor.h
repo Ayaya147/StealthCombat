@@ -2,6 +2,7 @@
 #include "Actor.h"
 
 class TransformCBufferDouble;
+class VertexBuffer;
 
 class PlaneActor : public Actor
 {
@@ -14,4 +15,6 @@ public:
 
 private:
 	TransformCBuffer* mBuffer;
+	VertexBuffer* mVertexBuffer;
+	int mCount;
 };

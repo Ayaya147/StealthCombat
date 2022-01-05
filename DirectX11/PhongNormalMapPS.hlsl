@@ -32,15 +32,14 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     localNormal1 = localNormal1 * 2.0f - 1.0f;
     float3 normal1 = tan * localNormal1.x + bitan * localNormal1.y + worldNor * localNormal1.z;
 
-    float3 normal = normal0 + normal1;
-    
-    float3 n = normalize(normal);
+    float3 n = normalize(normal0 + normal1);
     float3 l = normalize(-direction);
     float3 v = normalize(cameraPos - worldPos);
     float3 r = normalize(reflect(-l, n));
     
     float3 phong = ambientLight;
-    float nDotL = dot(n, l);
+    
+    float nDotL = dot(n, l);    
     if (nDotL > 0)
     {
         float3 diffuse = diffuseColor * nDotL;

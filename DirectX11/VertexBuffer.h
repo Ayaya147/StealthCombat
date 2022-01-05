@@ -14,8 +14,8 @@ public:
 	{
 		D3D11_BUFFER_DESC bd = {};
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.CPUAccessFlags = 0;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		bd.MiscFlags = 0;
 		bd.ByteWidth = static_cast<UINT>(mStride * vertices.size());
 		bd.StructureByteStride = mStride;
@@ -26,6 +26,7 @@ public:
 	}
 
 	void Bind(class Renderer* renderer) override;
+	ID3D11Buffer* GetVertexBuffer() { return mVertexBuffer.Get(); }
 
 private:
 	UINT mStride;

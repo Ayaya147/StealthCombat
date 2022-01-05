@@ -20,10 +20,10 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float2 tc : Te
     float3 n = normalize(worldNor);
     float3 l = normalize(-direction);
     float3 v = normalize(cameraPos - worldPos);
-    //float3 v = normalize(float3(0.0f,5.0f, -215.0f) - worldPos);
     float3 r = normalize(reflect(-l, n));
     
     float3 phong = ambientLight;
+    
     float nDotL = dot(n, l);
     if( nDotL > 0 )
     {

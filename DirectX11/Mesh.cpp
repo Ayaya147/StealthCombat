@@ -24,14 +24,7 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 {
 	float scale = 0.1f;
 
-	struct Vertex
-	{
-		dx::XMFLOAT3 pos;
-		dx::XMFLOAT3 n;
-		//dx::XMFLOAT3 tangent;
-		//dx::XMFLOAT3 bitangent;
-		dx::XMFLOAT2 tc;
-	};
+
 
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(mFileName,
@@ -42,7 +35,7 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		aiProcess_CalcTangentSpace
 	);
 	const auto pMesh = pScene->mMeshes[0];
-
+	mCount = pMesh->mNumVertices;
 	std::vector<Vertex> vertices;
 	vertices.reserve(pMesh->mNumVertices);
 	for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
@@ -50,8 +43,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		vertices.push_back({
 			{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
 			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
-			//*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mTangents[i]),
-			//*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mBitangents[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mTangents[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mBitangents[i]),
 			*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
 		});
 	}
@@ -71,9 +64,9 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	{
 		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		//{ "Tangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		//{ "Bitangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,36,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Tangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Bitangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,36,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,48,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
 	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
@@ -93,8 +86,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	AddBind(new Sampler(renderer));
 	AddBind(new Blender(renderer, true));
-	AddBind(new Texture(renderer, texName, 0));
-	//AddBind(new Texture(renderer, texName2, 1));
+	AddBind(new Texture(renderer, texName1, 0));
+	AddBind(new Texture(renderer, texName2, 1));
 }
 
 Mesh::~Mesh()
