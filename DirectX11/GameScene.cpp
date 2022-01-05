@@ -42,6 +42,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,-5.0f });
 	plane = new PlaneActor(this);
 	plane->SetPosition(dx::XMFLOAT3{ 5.0f,0.0f,5.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ -5.0f,0.0f,-5.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ 5.0f,0.0f,-5.0f });
+	plane = new PlaneActor(this);
+	plane->SetPosition(dx::XMFLOAT3{ -5.0f,0.0f,5.0f });
 
 	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
 	DirectionalLight dir = {};

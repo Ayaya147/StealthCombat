@@ -13,7 +13,8 @@ struct Vertex
 	DirectX::XMFLOAT3 n;
 	DirectX::XMFLOAT3 tangent;
 	DirectX::XMFLOAT3 bitangent;
-	DirectX::XMFLOAT2 tc;
+	DirectX::XMFLOAT2 tc0;
+	DirectX::XMFLOAT2 tc1;
 };
 
 class Mesh

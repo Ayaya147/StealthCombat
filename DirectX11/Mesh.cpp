@@ -24,8 +24,6 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 {
 	float scale = 0.1f;
 
-
-
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(mFileName,
 		aiProcess_Triangulate |
@@ -38,6 +36,7 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	mCount = pMesh->mNumVertices;
 	std::vector<Vertex> vertices;
 	vertices.reserve(pMesh->mNumVertices);
+
 	for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 	{
 		vertices.push_back({
@@ -45,6 +44,7 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
 			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mTangents[i]),
 			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mBitangents[i]),
+			*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i]),
 			*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
 		});
 	}
@@ -66,7 +66,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		{ "Tangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		{ "Bitangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,36,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,48,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TexCoordf",0,DXGI_FORMAT_R32G32_FLOAT,0,48,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TexCoords",0,DXGI_FORMAT_R32G32_FLOAT,0,56,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
 	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";

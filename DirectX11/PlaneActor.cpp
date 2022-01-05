@@ -44,14 +44,16 @@ PlaneActor::~PlaneActor()
 void PlaneActor::UpdateActor(float deltaTime)
 {
 	Renderer* renderer = GetScene()->GetSceneManager()->GetRenderer();
+
 	D3D11_MAPPED_SUBRESOURCE msr;
 	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
 
-	Vertex* vertex = (Vertex*)(msr.pData);
+	Vertex* vertex = static_cast<Vertex*>(msr.pData);
 
 	for (int i = 0; i < mCount; i++)
 	{
-		vertex[i].tc = dx::XMFLOAT2{ vertex[i].tc.x - 0.1f * deltaTime, vertex[i].tc.y - 0.1f * deltaTime };
+		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.01f * deltaTime, vertex[i].tc0.y + 0.02f * deltaTime };
+		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.03f * deltaTime, vertex[i].tc1.y - 0.01f * deltaTime };
 	}
 
 	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
