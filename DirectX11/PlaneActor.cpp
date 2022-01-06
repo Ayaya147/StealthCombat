@@ -16,7 +16,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	Actor(scene)
 {
 	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
-	SetScale(0.1f);
+	//SetScale(0.1f);
 
 	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
 	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"PhongNormalMap",0);
@@ -52,8 +52,8 @@ void PlaneActor::UpdateActor(float deltaTime)
 
 	for (int i = 0; i < mCount; i++)
 	{
-		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.002f * deltaTime, vertex[i].tc0.y + 0.005f * deltaTime };
-		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.008f * deltaTime, vertex[i].tc1.y - 0.005f * deltaTime };
+		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.0005f * deltaTime, vertex[i].tc0.y + 0.0010f * deltaTime };
+		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.0020f * deltaTime, vertex[i].tc1.y - 0.0010f * deltaTime };
 	}
 
 	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);

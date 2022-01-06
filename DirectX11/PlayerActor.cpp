@@ -12,7 +12,7 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	Actor(scene)
 {
 	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
-	SetScale(1.0f);
+	//SetScale(1.0f);
 
 	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Phong",1);
 	MeshComponent* mc = new MeshComponent(this, mesh);

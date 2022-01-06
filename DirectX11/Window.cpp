@@ -48,9 +48,7 @@ Window::Window(int width, int height)
 
 	mhWnd = CreateWindow(
 		wc.lpszClassName, "GameApp",
-		WS_POPUP,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		mWidth, mHeight,
+		WS_POPUP, 0, 0, mWidth, mHeight,
 		nullptr, nullptr, mhInst, nullptr
 	);
 #endif

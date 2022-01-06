@@ -24,8 +24,6 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 {
 	if (test == 0)
 	{
-		float scale = 0.1f;
-
 		Assimp::Importer imp;
 		const auto pScene = imp.ReadFile(mFileName,
 			aiProcess_Triangulate |
@@ -95,8 +93,6 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 	}
 	else
 	{
-		float scale = 0.1f;
-
 		struct Vertex
 		{
 			dx::XMFLOAT3 pos;
