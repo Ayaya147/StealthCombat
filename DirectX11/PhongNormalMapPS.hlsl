@@ -43,7 +43,7 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     if (nDotL > 0)
     {
         float3 diffuse = diffuseColor * nDotL;
-        float3 specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
+        float3 specular = specColor * pow(max(0.0f, dot(r, v)), 5);
         phong += diffuse + specular;
     }
 
