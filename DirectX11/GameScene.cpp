@@ -19,16 +19,17 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetSceneManager()->GetRenderer();
 
 	mCamera = new Actor(this);
-	mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,350.0f,0.0f });
+	mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,110.0f,0.0f });
 	CameraComponent* cc = new CameraComponent(mCamera);
 
 	PlayerActor* player = new PlayerActor(this, "slime");
-	player->SetPosition(dx::XMFLOAT3{ -100.0f,5.0f,0.0f });
-	player->SetScale(5.0f);
+	player->SetPosition(dx::XMFLOAT3{ -50.0f,5.0f,0.0f });
+	player->SetScale(2.0f);
 	player = new PlayerActor(this, "player");
-	player->SetPosition(dx::XMFLOAT3{ 0.0f,250.0f,0.0f });
+	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
+	player->SetScale(0.1f);
 
-	int n = 10;
+	int n = 2;
 	for (int j = 0; j < n; j++)
 	{
 		for (int i = 0; i < n; i++)
@@ -37,25 +38,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 			plane->SetPosition(dx::XMFLOAT3{ -25.0f*(n - 1) + i * 50.0f,0.0f,25.0f*(n - 1) - j * 50.0f });
 		}
 	}
-
-	//PlaneActor* plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 50.0f,0.0f,0.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ -50.0f,0.0f,0.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,50.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,-50.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 50.0f,0.0f,50.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ -50.0f,0.0f,-50.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 50.0f,0.0f,-50.0f });
-	//plane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ -50.0f,0.0f,50.0f });
 
 	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
 	DirectionalLight dir = {};

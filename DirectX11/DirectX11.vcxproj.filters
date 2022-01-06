@@ -129,6 +129,9 @@
     <ClCompile Include="PlaneActor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="PlaneActor.h">
       <Filter>Header Files\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

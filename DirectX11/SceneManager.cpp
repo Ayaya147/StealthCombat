@@ -2,6 +2,7 @@
 #include "Parameter.h"
 #include "GameScene.h"
 #include "Renderer.h"
+#include "Random.h"
 
 SceneManager::SceneManager(Renderer* renderer)
 	:
@@ -11,6 +12,8 @@ SceneManager::SceneManager(Renderer* renderer)
 	mSceneStack.emplace(new GameScene(this, parameter));
 
 	mRenderer->SetScene(mSceneStack.top());
+
+	Random::Initialize();
 }
 
 SceneManager::~SceneManager()

@@ -13,7 +13,7 @@ namespace wrl = Microsoft::WRL;
 
 Renderer::Renderer(HWND hWnd, int width, int height)
 	:
-	mProjection(dx::XMMatrixPerspectiveLH(1, static_cast<float>(height) / static_cast<float>(width), 0.5f, 1000.0f))
+	mProjection(dx::XMMatrixPerspectiveLH(1, static_cast<float>(height) / static_cast<float>(width), 0.5f, 500.0f))
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
