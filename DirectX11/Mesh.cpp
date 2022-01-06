@@ -42,7 +42,8 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 		{
 			vertices.push_back({
-				{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
+				//{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
+				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mVertices[i]),
 				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
 				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mTangents[i]),
 				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mBitangents[i]),
@@ -118,10 +119,11 @@ Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& 
 		for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
 		{
 			vertices.push_back({
-				{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
+				//{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
+				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mVertices[i]),
 				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
 				*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
-				});
+			});
 		}
 
 		std::vector<unsigned short> indices;

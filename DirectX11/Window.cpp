@@ -20,6 +20,7 @@ Window::Window(int width, int height)
 
 	RegisterClassEx(&wc);
 
+#ifdef DEBUG
 	RECT r = { 0, 0, mWidth, mHeight };
 	AdjustWindowRect(&r, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
 	int widthApp = r.right - r.left;
@@ -36,8 +37,23 @@ Window::Window(int width, int height)
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		(widthDesk - widthApp) / 2, (heightDesk - heightApp) / 2,
 		widthApp, heightApp,
-		nullptr, nullptr, mhInst, this
+		nullptr, nullptr, mhInst, nullptr
 	);
+#else
+	RECT rDesk = {};
+	HWND hDesk = GetDesktopWindow();
+	GetWindowRect(hDesk, &rDesk);
+	mWidth = rDesk.right - rDesk.left;
+	mHeight = rDesk.bottom - rDesk.top;
+
+	mhWnd = CreateWindow(
+		wc.lpszClassName, "GameApp",
+		WS_POPUP,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		mWidth, mHeight,
+		nullptr, nullptr, mhInst, nullptr
+	);
+#endif
 
 	ShowWindow(mhWnd, SW_SHOWDEFAULT);
 	UpdateWindow(mhWnd);

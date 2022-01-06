@@ -16,7 +16,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	Actor(scene)
 {
 	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
-	SetScale(1.0f);
+	SetScale(0.1f);
 
 	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
 	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"PhongNormalMap",0);
