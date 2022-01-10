@@ -22,9 +22,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,110.0f,0.0f });
 	CameraComponent* cc = new CameraComponent(mCamera);
 
-	PlayerActor* player = new PlayerActor(this, "slime");
+	PlayerActor* player = new PlayerActor(this, "sphere");
 	player->SetPosition(dx::XMFLOAT3{ -50.0f,5.0f,0.0f });
-	player->SetScale(2.0f);
+	player->SetScale(1.0f);
 	player = new PlayerActor(this, "player");
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
 	player->SetScale(0.1f);

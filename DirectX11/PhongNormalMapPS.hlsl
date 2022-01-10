@@ -12,12 +12,6 @@ cbuffer DirectLightCBuf : register(b1)
     float specColor;
 };
 
-//cbuffer TransformCBuf : register(b2)
-//{
-//    matrix worldTransform;
-//    matrix viewProj;
-//};
-
 SamplerState splr : register(s0);
 Texture2D nmap0 : register(t0);
 Texture2D nmap1 : register(t1);
@@ -47,5 +41,5 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
         phong += diffuse + specular;
     }
 
-    return float4(saturate(phong), 1.0f) * float4(0.1f, 0.6f, 1.0f, 1.0f);
+    return float4(saturate(phong), 1.0f) * float4(0.1f, 0.5f, 1.0f, 1.0f);
 }
