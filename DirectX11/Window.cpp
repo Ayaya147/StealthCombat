@@ -3,7 +3,8 @@
 Window::Window(int width, int height)
 	:
 	mWidth(width),
-	mHeight(height)
+	mHeight(height),
+	mhInst(GetModuleHandle(nullptr))
 {
 	WNDCLASSEX wc = {};
 	wc.cbSize = sizeof(wc);

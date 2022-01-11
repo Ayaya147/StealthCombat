@@ -1,11 +1,12 @@
 #pragma once
-#include <queue>
-#include <bitset>
-#include <optional>
+#include <dinput.h>
 
 class InputSystem
 {
 public:
-	InputSystem() {};
-	~InputSystem() {};
+	InputSystem();
+	~InputSystem();
+
+private:
+	LPDIRECTINPUT8 mDInput;
 };
