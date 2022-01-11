@@ -9,17 +9,10 @@ class BaseScene;
 class Texture;
 class Mesh;
 class MeshComponent;
-class LightCBuffer;
+class Light;
 
 template<class C>
 class PixelConstantBuffer;
-
-struct DirectionalLight
-{
-	alignas(16) DirectX::XMFLOAT3 mDirection;
-	alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
-	alignas(16) DirectX::XMFLOAT3 mSpecColor;
-};
 
 class Renderer
 {
@@ -37,13 +30,13 @@ public:
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
 	const DirectX::XMMATRIX& GetProjectionMatrix() const { return mProjection; }
-	const DirectX::XMFLOAT3& GetAmbientLight() const { return mAmbientLight; }
-	const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
+	//const DirectX::XMFLOAT3& GetAmbientLight() const { return mAmbientLight; }
+	//const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
 
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
 	void SetScene(BaseScene* scene) { mScene = scene; }
-	void SetAmbientLight(const DirectX::XMFLOAT3& ambient) { mAmbientLight = ambient; }
-	void SetDirectionalLight(const DirectionalLight& direct) { mDirLight = direct; }
+	//void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
+	//void SetDirectionalLight(const class DirectionalLight& direct);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
@@ -59,9 +52,9 @@ private:
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
 
-	DirectX::XMFLOAT3 mAmbientLight;
-	DirectionalLight mDirLight;
-	LightCBuffer* mLightCBuffer;
+	//DirectX::XMFLOAT3 mAmbientLight;
+	//DirectionalLight mDirLight;
+	Light* mLight;
 
 	BaseScene* mScene;
 };

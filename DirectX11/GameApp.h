@@ -1,5 +1,6 @@
 #pragma once
 
+class InputSystem;
 class Window;
 class Renderer;
 class SceneManager;
@@ -15,6 +16,7 @@ public:
 	Renderer* GetRenderer() const { return mRenderer; }
 
 private:
+	InputSystem* mInputSystem;
 	Window* mWindow;
 	Renderer* mRenderer;
 	SceneManager* mSceneManager;

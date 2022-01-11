@@ -6,7 +6,7 @@
 #include "Actor.h"
 #include "BaseScene.h"
 #include "PointLightActor.h"
-#include "LightCBuffer.h"
+#include "Light.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -93,7 +93,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	vp.TopLeftY = 0.0f;
 	mContext->RSSetViewports(1, &vp);
 
-	mLightCBuffer = new LightCBuffer(this);
+	mLight = new Light(this);
 }
 
 Renderer::~Renderer()
@@ -106,7 +106,7 @@ void Renderer::Draw()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	mLightCBuffer->Bind(this);
+	mLight->Bind(this);
 	std::string name;
 	for (auto mc : mMeshComps)
 	{
@@ -139,7 +139,7 @@ void Renderer::UnloadData()
 	}
 	mMeshes.clear();
 
-	delete mLightCBuffer;
+	delete mLight;
 }
 
 void Renderer::AddMeshComp(const std::string& name, MeshComponent* mesh)
@@ -175,3 +175,11 @@ Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderN
 	}
 	return mesh;
 }
+
+//void Renderer::SetAmbientLight(const DirectX::XMFLOAT3 & ambient)
+//{
+//}
+//
+//void Renderer::SetDirectionalLight(const DirectionalLight & direct)
+//{
+//}
