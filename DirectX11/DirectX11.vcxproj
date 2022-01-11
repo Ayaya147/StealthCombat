@@ -101,6 +101,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Blender.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="CloudActor.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="Blender.h" />
     <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="CloudActor.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DxException.h" />

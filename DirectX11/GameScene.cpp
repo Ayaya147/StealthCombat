@@ -18,18 +18,19 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 {
 	Renderer* renderer = GetSceneManager()->GetRenderer();
 
-	mCamera = new Actor(this);
-	mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,110.0f,0.0f });
-	CameraComponent* cc = new CameraComponent(mCamera);
+	//mCamera = new Actor(this);
+	//mCamera->SetPosition(dx::XMFLOAT3{ 0.0f,110.0f,0.0f });
+	//CameraComponent* cc = new CameraComponent(mCamera);
 
-	PlayerActor* player = new PlayerActor(this, "sphere");
-	player->SetPosition(dx::XMFLOAT3{ -50.0f,5.0f,0.0f });
-	player->SetScale(1.0f);
-	player = new PlayerActor(this, "player");
+	//PlayerActor* player = new PlayerActor(this, "sphere");
+	//player->SetPosition(dx::XMFLOAT3{ -5.0f,100.0f,0.0f });
+	//player->SetScale(0.1f);
+	PlayerActor* player = new PlayerActor(this, "player");
+	CameraComponent* cc = new CameraComponent(player);
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
 	player->SetScale(0.1f);
 
-	int n = 2;
+	int n = 5;
 	for (int j = 0; j < n; j++)
 	{
 		for (int i = 0; i < n; i++)

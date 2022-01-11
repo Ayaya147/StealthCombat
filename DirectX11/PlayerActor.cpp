@@ -14,12 +14,12 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
 	//SetScale(1.0f);
 
-	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Phong", 1);
-	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Raymarching", 1);
+	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Phong", 1);
+	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Raymarching", 1);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	MoveComponent* move = new MoveComponent(this);
-	move->SetAngularSpeed(1.0f);
+	move->SetAngularSpeed(0.1f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)

@@ -8,22 +8,27 @@ namespace dx = DirectX;
 
 CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 	:
-	Component(owner, updateOrder)
+	Component(owner, updateOrder),
+	mTargetDist(10.0f)
 {
 }
 
 void CameraComponent::Update(float deltaTime)
 {
-	const auto cameraPos = dx::XMVector3Transform(
-		dx::XMLoadFloat3(&mOwner->GetPosition()),
-		dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)
-	);
+	dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{ 
+		mOwner->GetPosition().x,
+		mOwner->GetPosition().y + mTargetDist,
+		mOwner->GetPosition().z 
+	};
+
+	dx::XMFLOAT3 rot = mOwner->GetRotation();
+	dx::XMFLOAT3 forward = dx::XMFLOAT3{ sin(rot.y),0.0f,cos(rot.y) };
 
 	dx::XMMATRIX view = dx::XMMatrixLookAtLH(
-		cameraPos,
-		dx::XMVectorZero(),
-		dx::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f)
-	) * dx::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
+		dx::XMLoadFloat3(&cameraPos),
+		dx::XMLoadFloat3(&mOwner->GetPosition()),
+		dx::XMLoadFloat3(&forward)
+	);
 
 	mOwner->GetScene()->GetSceneManager()->GetRenderer()->SetViewMatrix(view);
 }

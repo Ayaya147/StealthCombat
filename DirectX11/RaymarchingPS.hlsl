@@ -22,26 +22,26 @@ float Sphere_d(float3 pos, float size)
 
 float4 main(float3 worldPos : Position, float3 worldNor : Normal, float2 tc : TexCoord) : SV_Target
 {
-    //float3 raydir = normalize(worldPos - cameraPos);
-    //float3 cur = cameraPos;
+    float3 raydir = normalize(worldPos - cameraPos);
+    float3 cur = cameraPos;
     
-    //float3 col = float3(0.0f, 0.0f, 0.0f);
+    float3 col = float3(0.0f, 0.0f, 0.0f);
     
-    //float size = 100.0f;
+    float size = 10.0f;
     
-    //for (int i = 0; i < 16; i++)
-    //{
-    //    float d = Sphere_d(cur, size);
+    for (int i = 0; i < 16; i++)
+    {
+        float d = Sphere_d(cur, size);
         
-    //    if( d < 0.0001)
-    //    {
-    //        col = tex.Sample(splr, tc);
-    //        break;
-    //    }
+        if (d < 0.0001)
+        {
+            col = tex.Sample(splr, tc);
+            break;
+        }
         
-    //    cur += raydir * d;
+        cur += raydir * d;
         
-    //}
+    }
     
-    return float4(tex.Sample(splr, tc));
+    return float4(col, 1.0f);
 }
