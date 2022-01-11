@@ -6,10 +6,10 @@
 
 GameApp::GameApp()
 	:
-	mInputSystem(new InputSystem()),
 	mWindow(new Window(1280, 720)),
+	mInputSystem(new InputSystem()),
 	mRenderer(new Renderer(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight())),
-	mSceneManager(new SceneManager(mRenderer))
+	mSceneManager(new SceneManager(mRenderer, mInputSystem))
 {
 }
 

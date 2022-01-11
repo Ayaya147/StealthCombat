@@ -3,10 +3,12 @@
 #include "GameScene.h"
 #include "Renderer.h"
 #include "Random.h"
+#include "InputSystem.h"
 
-SceneManager::SceneManager(Renderer* renderer)
+SceneManager::SceneManager(Renderer* renderer, InputSystem* input)
 	:
-	mRenderer(renderer)
+	mRenderer(renderer),
+	mInputSystem(input)
 {
 	Parameter parameter;
 	mSceneStack.emplace(new GameScene(this, parameter));

@@ -24,6 +24,8 @@ public:
 	void Update(float deltaTime);
 	void UpdateComponents(float deltaTime);
 	virtual void UpdateActor(float deltaTime);
+	void ProcessInput();
+	virtual void ActorInput();
 
 	virtual void Bind(Renderer* renderer);
 

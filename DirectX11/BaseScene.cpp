@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Timer.h"
 #include "Actor.h"
+#include "InputSystem.h"
 
 BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:
@@ -34,6 +35,14 @@ BaseScene::~BaseScene()
 
 void BaseScene::ProcessInput()
 {
+	GetSceneManager()->GetInputSystem()->Update();
+
+	mUpdatingActors = true;
+	for (auto actor : mActors)
+	{
+		actor->ProcessInput();
+	}
+	mUpdatingActors = false;
 }
 
 void BaseScene::Update()

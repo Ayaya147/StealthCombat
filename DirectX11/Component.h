@@ -8,7 +8,8 @@ public:
 	Component(Actor* owner, int updateOrder = 100);
 	virtual ~Component();
 
-	virtual void Update(float deltaTime);
+	virtual void Update(float deltaTime) {};
+	virtual void ProcessInput() {}
 
 	int GetUpdateOrder() const { return mUpdateOrder; }
 	Actor* GetOwner() const { return mOwner; }

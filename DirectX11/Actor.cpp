@@ -59,6 +59,22 @@ void Actor::UpdateActor(float deltaTime)
 {
 }
 
+void Actor::ProcessInput()
+{
+	if (mState == ActorState::EActive)
+	{
+		for (auto comp : mComponents)
+		{
+			comp->ProcessInput();
+		}
+		ActorInput();
+	}
+}
+
+void Actor::ActorInput()
+{
+}
+
 void Actor::Bind(Renderer* renderer)
 {
 	if (mTransformCBuffer)

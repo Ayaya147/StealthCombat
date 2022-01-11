@@ -16,8 +16,8 @@ public:
 	Renderer* GetRenderer() const { return mRenderer; }
 
 private:
-	InputSystem* mInputSystem;
 	Window* mWindow;
+	InputSystem* mInputSystem;
 	Renderer* mRenderer;
 	SceneManager* mSceneManager;
 };

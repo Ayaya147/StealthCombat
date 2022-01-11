@@ -16,6 +16,6 @@ void MoveComponent::Update(float deltaTime)
 	dx::XMFLOAT3 rotation = mOwner->GetRotation();
 	//rotation.x += mAngularSpeed * deltaTime;
 	rotation.y += mAngularSpeed * deltaTime;
-	rotation.z -= mAngularSpeed * deltaTime;
+	rotation.z -= mAngularSpeed * 2 * deltaTime;
 	mOwner->SetRotation(rotation);
 }

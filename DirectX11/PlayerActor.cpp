@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "TransformCBuffer.h"
+#include "InputSystem.h"
 
 PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	:
@@ -18,12 +19,28 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Raymarching", 1);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	MoveComponent* move = new MoveComponent(this);
-	move->SetAngularSpeed(0.2f);
+	mMoveComponent = new MoveComponent(this);
+	//move->SetAngularSpeed(0.2f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
 	//DirectX::XMFLOAT3 rotation = GetRotation();
 	//SetRotation(DirectX::XMFLOAT3{ rotation.x + 3.0f * deltaTime,rotation.y,rotation.z });
+}
+
+void PlayerActor::ActorInput()
+{
+	InputSystem* input = GetScene()->GetSceneManager()->GetInputSystem();
+
+	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_RIGHT))
+	{
+		//input->SetVibration(255);
+		mMoveComponent->SetAngularSpeed(0.2f);
+	}
+	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_LEFT))
+	{
+		//input->SetVibration(255);
+		mMoveComponent->SetAngularSpeed(-0.2f);
+	}
 }
