@@ -2,7 +2,6 @@ cbuffer CBuf : register(b0)
 {
     float3 cameraPos;
     float3 ambientLight;
-    float specPower;
 };
 
 cbuffer DirectLightCBuf : register(b1)
@@ -30,14 +29,15 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     float3 l = normalize(-direction);
     float3 v = normalize(cameraPos - worldPos);
     float3 r = normalize(reflect(-l, n));
-    
+    float specPower = 5.0f;
+
     float3 phong = ambientLight;
     
     float nDotL = dot(n, l);    
     if (nDotL > 0)
     {
         float3 diffuse = diffuseColor * nDotL;
-        float3 specular = specColor * pow(max(0.0f, dot(r, v)), 5);
+        float3 specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
         phong += diffuse + specular;
     }
 

@@ -25,7 +25,7 @@ BaseScene::~BaseScene()
 		delete mPendingActors.back();
 	}
 
-	mSceneManager->GetRenderer()->UnloadData();
+	GetRenderer()->UnloadData();
 
 	if (mTimer)
 	{
@@ -36,7 +36,7 @@ BaseScene::~BaseScene()
 
 void BaseScene::ProcessInput()
 {
-	GetSceneManager()->GetInputSystem()->Update();
+	GetInputSystem()->Update();
 
 	mUpdatingActors = true;
 	for (auto actor : mActors)
@@ -86,7 +86,7 @@ void BaseScene::Update()
 
 void BaseScene::GenerateOutput()
 {
-	mSceneManager->GetRenderer()->Draw();
+	GetRenderer()->Draw();
 }
 
 void BaseScene::AddActor(Actor* actor)
@@ -116,4 +116,19 @@ void BaseScene::RemoveActor(Actor* actor)
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
 	}
+}
+
+Renderer* BaseScene::GetRenderer()
+{
+	return mSceneManager->GetRenderer();
+}
+
+InputSystem* BaseScene::GetInputSystem()
+{
+	return mSceneManager->GetInputSystem();
+}
+
+Window* BaseScene::GetWindow()
+{
+	return mSceneManager->GetWindow();
 }

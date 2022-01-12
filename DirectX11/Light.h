@@ -4,6 +4,13 @@
 template<class C>
 class PixelConstantBuffer;
 
+struct DirectionalLightConstant
+{
+	alignas(16) DirectX::XMFLOAT3 mDirection;
+	alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
+	alignas(16) DirectX::XMFLOAT3 mSpecColor;
+};
+
 class Light
 {
 public:
@@ -12,20 +19,14 @@ public:
 
 	void Bind(class Renderer* renderer);
 
+	void SetAmbientLight(const DirectX::XMFLOAT3& ambient) { mAmbientLight = ambient; }
+	void SetDirectionalLight(const DirectionalLightConstant& direct) { mDirLight = direct; }
+
 private:
 	struct ObjectConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 cameraPos;
 		alignas(16) DirectX::XMFLOAT3 ambientLight;
-		float specPower;
-		float padding[3];
-	};
-
-	struct DirectionalLightConstant
-	{
-		alignas(16) DirectX::XMFLOAT3 mDirection;
-		alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
-		alignas(16) DirectX::XMFLOAT3 mSpecColor;
 	};
 
 	DirectX::XMFLOAT3 mAmbientLight;

@@ -14,10 +14,12 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	:
 	Actor(scene)
 {
-	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
+	Renderer* renderer = GetScene()->GetRenderer();
+
+	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 	//SetScale(1.0f);
 
-	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Phong", 1);
+	Mesh* mesh = renderer->GetMesh(fileName, L"Phong", 1);
 	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh(fileName, L"Raymarching", 1);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
@@ -33,8 +35,8 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 void PlayerActor::ActorInput()
 {
-	InputSystem* input = GetScene()->GetSceneManager()->GetInputSystem();
-	Keyboard* keyboard = GetScene()->GetSceneManager()->GetWindow()->keyboard;
+	InputSystem* input = GetScene()->GetInputSystem();
+	Keyboard* keyboard = GetScene()->GetWindow()->keyboard;
 
 	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_RIGHT))
 	{

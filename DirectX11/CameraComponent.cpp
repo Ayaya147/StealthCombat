@@ -30,5 +30,5 @@ void CameraComponent::Update(float deltaTime)
 		dx::XMLoadFloat3(&forward)
 	);
 
-	mOwner->GetScene()->GetSceneManager()->GetRenderer()->SetViewMatrix(view);
+	mOwner->GetScene()->GetRenderer()->SetViewMatrix(view);
 }

@@ -16,11 +16,13 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	SetTransformCBuffer(new TransformCBuffer(scene->GetSceneManager()->GetRenderer(), this));
+	Renderer* renderer = GetScene()->GetRenderer();
+
+	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 	SetScale(1.0f);
 
 	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
-	Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"PhongNormalMap",0);
+	Mesh* mesh = renderer->GetMesh("plane", L"PhongNormalMap",0);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mCount = mesh->GetCount();
@@ -43,7 +45,7 @@ PlaneActor::~PlaneActor()
 
 void PlaneActor::UpdateActor(float deltaTime)
 {
-	Renderer* renderer = GetScene()->GetSceneManager()->GetRenderer();
+	Renderer* renderer = GetScene()->GetRenderer();
 
 	D3D11_MAPPED_SUBRESOURCE msr;
 	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);

@@ -24,13 +24,11 @@ public:
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
 	const DirectX::XMMATRIX& GetProjectionMatrix() const { return mProjection; }
-	//const DirectX::XMFLOAT3& GetAmbientLight() const { return mAmbientLight; }
-	//const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
 
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
-	//void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
-	//void SetDirectionalLight(const class DirectionalLight& direct);
+	void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
+	void SetDirectionalLight(const struct DirectionalLightConstant& direct);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
@@ -46,9 +44,6 @@ private:
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
 
-	//DirectX::XMFLOAT3 mAmbientLight;
-	//DirectionalLight mDirLight;
 	class Light* mLight;
-
 	class BaseScene* mScene;
 };

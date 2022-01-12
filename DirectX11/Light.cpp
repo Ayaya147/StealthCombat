@@ -26,7 +26,6 @@ void Light::Bind(Renderer* renderer)
 	c.ambientLight = mAmbientLight;
 	dx::XMMATRIX invView = dx::XMMatrixInverse(nullptr, renderer->GetViewMatrix());
 	dx::XMStoreFloat3(&c.cameraPos, invView.r[3]);
-	c.specPower = 20;
 
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);

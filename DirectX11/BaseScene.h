@@ -14,7 +14,9 @@ public:
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 
-	class SceneManager* GetSceneManager() const { return mSceneManager; }
+	class Renderer* GetRenderer();
+	class InputSystem* GetInputSystem();
+	class Window* GetWindow();
 
 protected:
 	std::vector<class Actor*> mActors;

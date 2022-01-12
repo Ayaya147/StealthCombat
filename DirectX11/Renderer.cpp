@@ -175,10 +175,12 @@ Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderN
 	return mesh;
 }
 
-//void Renderer::SetAmbientLight(const DirectX::XMFLOAT3 & ambient)
-//{
-//}
-//
-//void Renderer::SetDirectionalLight(const DirectionalLight & direct)
-//{
-//}
+void Renderer::SetAmbientLight(const DirectX::XMFLOAT3& ambient)
+{
+	mLight->SetAmbientLight(ambient);
+}
+
+void Renderer::SetDirectionalLight(const DirectionalLightConstant& direct)
+{
+	mLight->SetDirectionalLight(direct);
+}

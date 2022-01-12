@@ -16,8 +16,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter)
 {
-	Renderer* renderer = GetSceneManager()->GetRenderer();
-
 	PlayerActor* player = new PlayerActor(this, "player");
 	CameraComponent* cc = new CameraComponent(player);
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });

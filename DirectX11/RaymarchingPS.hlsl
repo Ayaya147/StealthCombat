@@ -2,7 +2,6 @@ cbuffer CBuf : register(b0)
 {
     float3 cameraPos;
     float3 ambientLight;
-    float specPower;
 };
 
 cbuffer DirectLightCBuf : register(b1)
