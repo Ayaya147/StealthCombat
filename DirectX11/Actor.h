@@ -38,6 +38,7 @@ public:
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
 	const DirectX::XMFLOAT3& GetRotation() const { return mRotation; }
+	DirectX::XMFLOAT3 GetForward() const { return DirectX::XMFLOAT3{ sin(mRotation.y),0.0f,cos(mRotation.y) }; }
 	ActorState GetActorState() const { return mState; }
 
 private:

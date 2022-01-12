@@ -21,9 +21,7 @@ void CameraComponent::Update(float deltaTime)
 		mOwner->GetPosition().z 
 	};
 
-	dx::XMFLOAT3 rot = mOwner->GetRotation();
-	dx::XMFLOAT3 forward = dx::XMFLOAT3{ sin(rot.y),0.0f,cos(rot.y) };
-
+	dx::XMFLOAT3 forward = mOwner->GetForward();
 	dx::XMMATRIX view = dx::XMMatrixLookAtLH(
 		dx::XMLoadFloat3(&cameraPos),
 		dx::XMLoadFloat3(&mOwner->GetPosition()),
