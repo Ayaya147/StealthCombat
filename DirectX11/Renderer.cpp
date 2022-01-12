@@ -5,7 +5,6 @@
 #include "Texture.h"
 #include "Actor.h"
 #include "BaseScene.h"
-#include "PointLightActor.h"
 #include "Light.h"
 
 namespace dx = DirectX;

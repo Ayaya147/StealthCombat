@@ -1,20 +1,18 @@
 #pragma once
 
-class Actor;
-
 class Component
 {
 public:
-	Component(Actor* owner, int updateOrder = 100);
+	Component(class Actor* owner, int updateOrder = 100);
 	virtual ~Component();
 
 	virtual void Update(float deltaTime) {};
 	virtual void ProcessInput() {}
 
 	int GetUpdateOrder() const { return mUpdateOrder; }
-	Actor* GetOwner() const { return mOwner; }
+	class Actor* GetOwner() const { return mOwner; }
 
 protected:
-	Actor* mOwner;
+	class Actor* mOwner;
 	int mUpdateOrder;
 };

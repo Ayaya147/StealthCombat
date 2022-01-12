@@ -7,10 +7,10 @@ class PixelConstantBuffer;
 class Light
 {
 public:
-	Light(Renderer* renderer);
+	Light(class Renderer* renderer);
 	~Light();
 
-	void Bind(Renderer* renderer);
+	void Bind(class Renderer* renderer);
 
 private:
 	struct ObjectConstant

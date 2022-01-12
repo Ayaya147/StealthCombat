@@ -2,18 +2,16 @@
 #include <DirectXMath.h>
 #include "Bindable.h"
 
-class Actor;
-
 template<class C>
 class VertexConstantBuffer;
 
 class TransformCBuffer : public Bindable
 {
 public:
-	TransformCBuffer(Renderer* renderer, Actor* actor, UINT slot = 0);
+	TransformCBuffer(class Renderer* renderer, class Actor* actor, UINT slot = 0);
 	~TransformCBuffer();
 
-	void Bind(Renderer* renderer) override;
+	void Bind(class Renderer* renderer) override;
 
 protected:
 	struct Transforms
@@ -22,7 +20,7 @@ protected:
 		DirectX::XMMATRIX mViewProj;
 	};
 
-	Actor* mOwner;
+	class Actor* mOwner;
 
 private:
 	static VertexConstantBuffer<Transforms>* mBuffer;

@@ -6,9 +6,9 @@
 class Texture : public Bindable
 {
 public:
-	Texture(Renderer* renderer, const std::string& fileName, UINT slot = 0);
+	Texture(class Renderer* renderer, const std::string& fileName, UINT slot = 0);
 	
-	void Bind(Renderer* renderer) override;
+	void Bind(class Renderer* renderer) override;
 	void LoadTexture(const std::string& fileName);
 
 private:

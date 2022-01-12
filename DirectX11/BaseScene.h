@@ -1,32 +1,25 @@
 #pragma once
 #include <vector>
 
-class SceneManager;
-class Parameter;
-class Actor;
-class PointLightActor;
-class Timer;
-
 class BaseScene
 {
 public:
-	BaseScene(SceneManager* sm, const Parameter& parameter);
+	BaseScene(class SceneManager* sm, const class Parameter& parameter);
 	virtual ~BaseScene();
 
 	virtual void ProcessInput();
 	virtual void Update();
 	virtual void GenerateOutput();
 
-	void AddActor(Actor* actor);
-	void RemoveActor(Actor* actor);
+	void AddActor(class Actor* actor);
+	void RemoveActor(class Actor* actor);
 
-	SceneManager* GetSceneManager() const { return mSceneManager; }
-	virtual PointLightActor* GetLight() const { return nullptr; };
+	class SceneManager* GetSceneManager() const { return mSceneManager; }
 
 protected:
 	std::vector<class Actor*> mActors;
 	std::vector<class Actor*> mPendingActors;
-	Timer* mTimer;
-	SceneManager* mSceneManager;
+	class Timer* mTimer;
+	class SceneManager* mSceneManager;
 	bool mUpdatingActors;
 };

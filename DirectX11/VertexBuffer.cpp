@@ -1,5 +1,4 @@
 #include "VertexBuffer.h"
-#include "Renderer.h"
 
 void VertexBuffer::Bind(Renderer* renderer)
 {

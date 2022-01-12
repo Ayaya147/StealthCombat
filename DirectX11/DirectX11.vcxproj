@@ -117,7 +117,6 @@
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PlaneActor.cpp" />
     <ClCompile Include="PlayerActor.cpp" />
-    <ClCompile Include="PointLightActor.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Sampler.cpp" />
@@ -204,7 +203,6 @@
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PlaneActor.h" />
     <ClInclude Include="PlayerActor.h" />
-    <ClInclude Include="PointLightActor.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Sampler.h" />

@@ -2,11 +2,6 @@
 #include <string>
 #include <vector>
 
-class Renderer;
-class Bindable;
-class Texture;
-class IndexBuffer;
-
 struct Vertex
 {
 	DirectX::XMFLOAT3 pos;
@@ -20,22 +15,22 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int test = 1);
+	Mesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int test = 1);
 	virtual ~Mesh();
 
-	void Bind(Renderer* renderer);
-	void AddBind(Bindable* bind);
+	void Bind(class Renderer* renderer);
+	void AddBind(class Bindable* bind);
 
 	unsigned int GetIndicesNum() const;
 	const std::string& GetFileName() const { return mFileName; }
-	const std::vector<Bindable*>& GetBindables() const { return mBinds; }
+	const std::vector<class Bindable*>& GetBindables() const { return mBinds; }
 	int GetCount() { return mCount; }
 
 
 private:
 	//std::vector<Texture*> mTextures;
-	std::vector<Bindable*> mBinds;
-	IndexBuffer* mIndexBuffer;
+	std::vector<class Bindable*> mBinds;
+	class IndexBuffer* mIndexBuffer;
 	std::string mFileName;
 	int mCount;
 };

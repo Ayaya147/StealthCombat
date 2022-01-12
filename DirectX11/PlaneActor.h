@@ -1,17 +1,15 @@
 #pragma once
 #include "Actor.h"
 
-class VertexBuffer;
-
 class PlaneActor : public Actor
 {
 public:
-	PlaneActor(BaseScene* scene);
+	PlaneActor(class BaseScene* scene);
 	~PlaneActor();
 
 	void UpdateActor(float deltaTime) override;
 
 private:
-	VertexBuffer* mVertexBuffer;
+	class VertexBuffer* mVertexBuffer;
 	int mCount;
 };

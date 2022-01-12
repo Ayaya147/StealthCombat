@@ -4,9 +4,9 @@
 class Sampler : public Bindable
 {
 public:
-	Sampler(Renderer* renderer);
+	Sampler(class Renderer* renderer);
 
-	void Bind(Renderer* renderer) override;
+	void Bind(class Renderer* renderer) override;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> mSampler;

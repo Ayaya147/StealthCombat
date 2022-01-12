@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Actor.h"
 #include "InputSystem.h"
+#include "Parameter.h"
 
 BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:

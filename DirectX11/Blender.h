@@ -6,9 +6,9 @@
 class Blender : public Bindable
 {
 public:
-	Blender(Renderer* renderer, bool blending, std::optional<float> factors = {});
+	Blender(class Renderer* renderer, bool blending, std::optional<float> factors = {});
 
-	void Bind(Renderer* renderer) override;
+	void Bind(class Renderer* renderer) override;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11BlendState> mBlender;

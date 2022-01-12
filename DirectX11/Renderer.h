@@ -5,12 +5,6 @@
 #include <unordered_map>
 #include <DirectXMath.h>
 
-class BaseScene;
-class Texture;
-class Mesh;
-class MeshComponent;
-class Light;
-
 template<class C>
 class PixelConstantBuffer;
 
@@ -22,10 +16,10 @@ public:
 
 	void Draw();
 	void UnloadData();
-	void AddMeshComp(const std::string& name, MeshComponent* mesh);
-	void RemoveMeshComp(MeshComponent* mesh);
+	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
+	void RemoveMeshComp(class MeshComponent* mesh);
 
-	Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName, int test);
+	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName, int test);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
@@ -34,7 +28,7 @@ public:
 	//const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
 
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
-	void SetScene(BaseScene* scene) { mScene = scene; }
+	void SetScene(class BaseScene* scene) { mScene = scene; }
 	//void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
 	//void SetDirectionalLight(const class DirectionalLight& direct);
 
@@ -45,16 +39,16 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> mRenderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> mDepthStencilView;
 
-	std::unordered_map<std::string, Mesh*> mMeshes;
-	std::unordered_map<std::string, Texture*> mTextures;
-	std::unordered_map<std::string, std::vector<MeshComponent*>> mMeshComps;
+	std::unordered_map<std::string, class Mesh*> mMeshes;
+	std::unordered_map<std::string, class Texture*> mTextures;
+	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
 
 	//DirectX::XMFLOAT3 mAmbientLight;
 	//DirectionalLight mDirLight;
-	Light* mLight;
+	class Light* mLight;
 
-	BaseScene* mScene;
+	class BaseScene* mScene;
 };

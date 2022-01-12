@@ -25,7 +25,7 @@ public:
 		ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&bd, &sd, &mVertexBuffer));
 	}
 
-	void Bind(class Renderer* renderer) override;
+	void Bind(Renderer* renderer) override;
 	ID3D11Buffer* GetVertexBuffer() { return mVertexBuffer.Get(); }
 
 private:

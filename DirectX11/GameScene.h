@@ -5,7 +5,7 @@
 class GameScene : public BaseScene
 {
 public:
-	GameScene(SceneManager* sm, const Parameter& parameter);
+	GameScene(class SceneManager* sm, const class Parameter& parameter);
 	~GameScene();
 
 	void ProcessInput() override;
@@ -13,6 +13,4 @@ public:
 	void GenerateOutput() override;
 
 private:
-	class Actor* mCamera;
-	float mSpeed = -3.0f;
 };

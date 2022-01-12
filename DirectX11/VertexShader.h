@@ -5,9 +5,9 @@
 class VertexShader : public Bindable
 {
 public:
-	VertexShader(Renderer* renderer, const std::wstring& fileName);
+	VertexShader(class Renderer* renderer, const std::wstring& fileName);
 
-	void Bind(Renderer* renderer) override;
+	void Bind(class Renderer* renderer) override;
 	ID3DBlob* GetByteCode() const;
 	
 private:

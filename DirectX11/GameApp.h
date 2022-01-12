@@ -1,10 +1,5 @@
 #pragma once
 
-class InputSystem;
-class Window;
-class Renderer;
-class SceneManager;
-
 class GameApp
 {
 public:
@@ -13,13 +8,13 @@ public:
 
 	int Run();
 
-	Window* GetWindow() const { return mWindow; }
-	Renderer* GetRenderer() const { return mRenderer; }
-	InputSystem* GetInputSystem() const { return mInputSystem; }
+	class Window* GetWindow() const { return mWindow; }
+	class Renderer* GetRenderer() const { return mRenderer; }
+	class InputSystem* GetInputSystem() const { return mInputSystem; }
 
 private:
-	Window* mWindow;
-	InputSystem* mInputSystem;
-	Renderer* mRenderer;
-	SceneManager* mSceneManager;
+	class Window* mWindow;
+	class InputSystem* mInputSystem;
+	class Renderer* mRenderer;
+	class SceneManager* mSceneManager;
 };

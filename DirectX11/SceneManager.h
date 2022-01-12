@@ -1,10 +1,6 @@
 #pragma once
 #include <stack>
 
-class Renderer;
-class Parameter;
-class InputSystem;
-
 enum class SceneType
 {
 	ETitle,
@@ -19,10 +15,10 @@ public:
 	~SceneManager();
 	
 	void RunLoop();
-	void ChangeScene(SceneType scene, const Parameter& parameter, bool stackClear);
+	void ChangeScene(SceneType scene, const class Parameter& parameter, bool stackClear);
 
-	Renderer* GetRenderer();
-	InputSystem* GetInputSystem();
+	class Renderer* GetRenderer();
+	class InputSystem* GetInputSystem();
 	class Window* GetWindow();
 	//const std::stack<class BaseScene*>& GetScene() const { return mSceneStack; }
 

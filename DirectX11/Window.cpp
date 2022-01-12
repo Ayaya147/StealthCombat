@@ -96,7 +96,6 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 			PostQuitMessage(0);
 			return 0;
 		}
-
 	case WM_SYSKEYDOWN:
 		if (!(lParam & 0x40000000) || keyboard->AutorepeatIsEnabled())
 		{

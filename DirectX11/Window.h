@@ -1,6 +1,5 @@
 #pragma once
 #include <Windows.h>
-//#include "Keyboard.h"
 
 class Window
 {
@@ -21,5 +20,4 @@ private:
 	int mHeight;
 	HINSTANCE mhInst;
 	HWND mhWnd;
-
 };
