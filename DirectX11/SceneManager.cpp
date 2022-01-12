@@ -4,16 +4,17 @@
 #include "Renderer.h"
 #include "Random.h"
 #include "InputSystem.h"
+#include "GameApp.h"
+#include "Window.h"
 
-SceneManager::SceneManager(Renderer* renderer, InputSystem* input)
+SceneManager::SceneManager(GameApp* gameApp)
 	:
-	mRenderer(renderer),
-	mInputSystem(input)
+	mApp(gameApp)
 {
 	Parameter parameter;
 	mSceneStack.emplace(new GameScene(this, parameter));
 
-	mRenderer->SetScene(mSceneStack.top());
+	GetRenderer()->SetScene(mSceneStack.top());
 
 	Random::Initialize();
 }
@@ -56,5 +57,20 @@ void SceneManager::ChangeScene(SceneType scene, const Parameter& parameter, bool
 		break;
 	}
 
-	mRenderer->SetScene(mSceneStack.top());
+	GetRenderer()->SetScene(mSceneStack.top());
+}
+
+Renderer* SceneManager::GetRenderer()
+{
+	return mApp->GetRenderer();
+}
+
+InputSystem* SceneManager::GetInputSystem()
+{
+	return mApp->GetInputSystem();
+}
+
+Window* SceneManager::GetWindow()
+{
+	return mApp->GetWindow();
 }

@@ -1,4 +1,8 @@
 #include "Window.h"
+#include "Keyboard.h"
+
+
+Keyboard* Window::keyboard = nullptr;
 
 Window::Window(int width, int height)
 	:
@@ -56,6 +60,17 @@ Window::Window(int width, int height)
 
 	ShowWindow(mhWnd, SW_SHOWDEFAULT);
 	UpdateWindow(mhWnd);
+
+	//RAWINPUTDEVICE rid;
+	//rid.usUsagePage = 0x01; // mouse page
+	//rid.usUsage = 0x02; // mouse usage
+	//rid.dwFlags = 0;
+	//rid.hwndTarget = nullptr;
+	//if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE)
+	//{
+	//}
+
+	keyboard = new Keyboard();
 }
 
 Window::~Window()
@@ -71,6 +86,9 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		PostQuitMessage(0);
 		return 0;
 
+	case WM_KILLFOCUS:
+		keyboard->ClearState();
+
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
@@ -78,6 +96,20 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 			PostQuitMessage(0);
 			return 0;
 		}
+
+	case WM_SYSKEYDOWN:
+		if (!(lParam & 0x40000000) || keyboard->AutorepeatIsEnabled())
+		{
+			keyboard->OnKeyPressed(static_cast<unsigned char>(wParam));
+		}
+		break;
+
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		keyboard->OnKeyReleased(static_cast<unsigned char>(wParam));
+		break;
+
+		
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);

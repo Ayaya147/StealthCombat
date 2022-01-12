@@ -7,6 +7,8 @@
 #include "Renderer.h"
 #include "TransformCBuffer.h"
 #include "InputSystem.h"
+#include "Keyboard.h"
+#include "Window.h"
 
 PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 	:
@@ -32,6 +34,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 void PlayerActor::ActorInput()
 {
 	InputSystem* input = GetScene()->GetSceneManager()->GetInputSystem();
+	Keyboard* keyboard = GetScene()->GetSceneManager()->GetWindow()->keyboard;
 
 	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_RIGHT))
 	{
@@ -41,6 +44,15 @@ void PlayerActor::ActorInput()
 	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_LEFT))
 	{
 		//input->SetVibration(255);
+		mMoveComponent->SetAngularSpeed(-0.2f);
+	}
+
+	if (keyboard->KeyIsPressed('D'))
+	{
+		mMoveComponent->SetAngularSpeed(0.2f);
+	}
+	if (keyboard->KeyIsPressed('A'))
+	{
 		mMoveComponent->SetAngularSpeed(-0.2f);
 	}
 }

@@ -13,7 +13,9 @@ public:
 
 	int Run();
 
+	Window* GetWindow() const { return mWindow; }
 	Renderer* GetRenderer() const { return mRenderer; }
+	InputSystem* GetInputSystem() const { return mInputSystem; }
 
 private:
 	Window* mWindow;

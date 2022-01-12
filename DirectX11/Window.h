@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+//#include "Keyboard.h"
 
 class Window
 {
@@ -11,6 +12,8 @@ public:
 	int GetClientWidth() const noexcept { return mWidth; }
 	int GetClientHeight() const noexcept { return mHeight; }
 
+	static class Keyboard* keyboard;
+
 private:
 	static LRESULT CALLBACK MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 
@@ -18,4 +21,5 @@ private:
 	int mHeight;
 	HINSTANCE mhInst;
 	HWND mhWnd;
+
 };
