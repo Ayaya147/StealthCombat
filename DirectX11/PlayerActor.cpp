@@ -29,8 +29,17 @@ PlayerActor::PlayerActor(BaseScene* scene, const std::string& fileName)
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
-	//DirectX::XMFLOAT3 rotation = GetRotation();
-	//SetRotation(DirectX::XMFLOAT3{ rotation.x + 3.0f * deltaTime,rotation.y,rotation.z });
+	DirectX::XMFLOAT3 rotation = GetRotation();
+
+	if (rotation.z > 0.79f)
+	{
+		rotation.z = 0.79f;
+	}
+	else if (rotation.z < -0.79f)
+	{
+		rotation.z = -0.79f;
+	}
+	SetRotation(rotation);
 }
 
 void PlayerActor::ActorInput()
@@ -62,6 +71,7 @@ void PlayerActor::ActorInput()
 	{
 		mMoveComponent->SetAngularSpeed(0.0f);
 		rotation.z = GetRotation().z * 0.95f;
+		SetRotation(rotation);
 	}
 
 	if (keyboard->KeyIsPressed('W'))
@@ -73,14 +83,4 @@ void PlayerActor::ActorInput()
 		float spd = mMoveComponent->GetForwardSpeed();
 		mMoveComponent->SetForwardSpeed(spd * 0.95f);
 	}
-
-	if (rotation.z > 0.79f)
-	{
-		rotation.z = 0.79f;
-	}
-	else if (rotation.z < -0.79f)
-	{
-		rotation.z = -0.79f;
-	}
-	SetRotation(rotation);
 }
