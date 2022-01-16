@@ -14,8 +14,13 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 void MoveComponent::Update(float deltaTime)
 {
 	dx::XMFLOAT3 rotation = mOwner->GetRotation();
-	//rotation.x += mAngularSpeed * deltaTime;
 	rotation.y += mAngularSpeed * deltaTime;
 	rotation.z -= mAngularSpeed * 2 * deltaTime;
 	mOwner->SetRotation(rotation);
+
+	dx::XMFLOAT3 forward = mOwner->GetForward();
+	dx::XMFLOAT3 pos = mOwner->GetPosition();
+	pos.x += forward.x * mForwardSpeed * deltaTime;
+	pos.z += forward.z * mForwardSpeed * deltaTime;
+	mOwner->SetPosition(pos);
 }
