@@ -9,6 +9,7 @@ class CloudActor : public Actor
 {
 public:
 	CloudActor(class BaseScene* scene, const std::string& fileName);
+	~CloudActor();
 
 	void UpdateActor(float deltaTime) override {};
 	void ActorInput() override {};

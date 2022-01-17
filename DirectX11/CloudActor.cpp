@@ -24,6 +24,11 @@ CloudActor::CloudActor(BaseScene* scene, const std::string& fileName)
 	mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 2);
 }
 
+CloudActor::~CloudActor()
+{
+	delete mObjectCBuffer;
+}
+
 void CloudActor::Bind(Renderer* renderer)
 {
 	Actor::Bind(renderer);
