@@ -48,6 +48,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	CloudActor* cloud = new CloudActor(this, "cube");
 	cloud->SetPosition(dx::XMFLOAT3{ -2.0f,100.0f,0.0f });
 	cloud->SetScale(0.25f);
+	cloud = new CloudActor(this, "cube");
+	cloud->SetPosition(dx::XMFLOAT3{ 2.0f,100.0f,0.0f });
+	cloud->SetScale(0.25f);
+
 }
 
 GameScene::~GameScene()

@@ -20,17 +20,18 @@ SamplerState splr : register(s0);
 Texture2D tex : register(t0);
 
 static const float4 cloudColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-static const int  loop = 256;
+static const int  loop = 64;
 static const float size = 10.0f;
-static const float noiseScale = 2.0f;
+static const float noiseScale = 1.0f;
 static const float radius = 1.0f;
 static const float absorption = 50.0f;
 static const float opacity = 100.0f;
-//float absorptionLight = 14.8f;
-//float opacityLight = 84.0f;
-//int loopLight = 6;
-//float lightStepScale = 0.5f;
-//float4 lightColor0 = float4(1.0f, 1.0f, 1.0f, 1.0f);
+
+static const float absorptionLight = 14.8f;
+static const float opacityLight = 84.0f;
+static const int loopLight = 6;
+static const float lightStepScale = 0.5f;
+static const float4 lightColor0 = float4(1.0f, 1.0f, 1.0f, 1.0f);
 
 float hash(float n)
 {
@@ -68,7 +69,6 @@ float fbm(float3 p)
 float densityFunction(float3 p)
 {
     return fbm(p * noiseScale) * size - length(p / radius);
-    //return size - length(p);
 }
 
 float4 main(float3 worldPos : Position) : SV_Target
@@ -78,10 +78,16 @@ float4 main(float3 worldPos : Position) : SV_Target
     float3 worldDir = normalize(worldPos - cameraPos);
     
     float3 localPos = (float3) mul(worldInverse, float4(worldPos, 1.0f));
-    float3 localDir = (float3) mul(worldInverse, float4(worldDir, 1.0f));    
+    //float3 localDir = (float3) mul(worldInverse, float4(worldDir, 1.0f));
+    float3 localDir = normalize(mul((float3x3) worldInverse, worldDir));
+
     float3 localStep = localDir * step;
-    //float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f);
-    //localPos += jitter * localStep;
+    float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f);
+    localPos += jitter * localStep;
+    
+    //float lightStep = 1.0f / loopLight;
+    //float3 localLightDir = (float3) mul(worldInverse, float4(direction, 1.0f));
+    //float3 localLightStep = localLightDir * lightStep * lightStepScale;
     
     float4 color = float4(cloudColor.rgb, 0.0f);
     float transmittance = 1.0f;    
@@ -100,7 +106,30 @@ float4 main(float3 worldPos : Position) : SV_Target
                 break;
             }
             
+            //float transmittanceLight = 1.0f;
+            //float3 lightPos = localPos;
+            
+            //for (int j = 0; j < loopLight; j++)
+            //{
+            //    float densityLight = densityFunction(lightPos);
+                
+            //    if (densityLight>0.0f)
+            //    {
+            //        float dl = densityLight * lightStep;
+            //        transmittanceLight *= 1.0f - dl * absorptionLight;
+                    
+            //        if(transmittanceLight<0.01f)
+            //        {
+            //            transmittanceLight = 0.0f;
+            //            break;
+            //        }
+            //    }
+                
+            //    lightPos += localLightStep;
+            //}
+            
             color.a += opacity * d * transmittance;
+            //color.rgb += (lightColor0 * (opacityLight * d * transmittance * transmittanceLight)).rgb;
         }
         
         color = clamp(color, 0.0f, 1.0f);
