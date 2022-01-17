@@ -2,8 +2,8 @@
 #include "SceneManager.h"
 #include "Parameter.h"
 #include "Renderer.h"
-#include "Actor.h"
 #include "PlayerActor.h"
+#include "CloudActor.h"
 #include "PlaneActor.h"
 #include "MeshComponent.h"
 #include "CameraComponent.h"
@@ -31,6 +31,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
 	player->SetScale(0.1f);
 
+
+
 	int n = 5;
 	float size = 50.0f;
 	for (int j = 0; j < n; j++)
@@ -43,6 +45,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 		}
 	}
 
+	CloudActor* cloud = new CloudActor(this, "cube");
+	cloud->SetPosition(dx::XMFLOAT3{ -2.0f,100.0f,0.0f });
+	cloud->SetScale(0.25f);
 }
 
 GameScene::~GameScene()

@@ -61,11 +61,11 @@ void PlayerActor::ActorInput()
 
 	if (keyboard->KeyIsPressed('D'))
 	{
-		mMoveComponent->SetAngularSpeed(0.6f);
+		mMoveComponent->SetAngularSpeed(1.2f);
 	}
 	else if (keyboard->KeyIsPressed('A'))
 	{
-		mMoveComponent->SetAngularSpeed(-0.6f);
+		mMoveComponent->SetAngularSpeed(-1.2f);
 	}
 	else
 	{
