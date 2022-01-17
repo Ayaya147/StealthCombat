@@ -19,15 +19,13 @@ cbuffer ObjectCBuf : register(b2)
 SamplerState splr : register(s0);
 Texture2D tex : register(t0);
 
-static const float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
-static const int  loop = 32;
-static const float intensity = 0.2f;
-//static const float size = 0.5f;
+static const float4 cloudColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+static const int  loop = 256;
 static const float size = 10.0f;
-static const float noiseScale = 1.0f;
-static const float radius = 1.5f;
-//float absorption = 43.0f;
-//float opacity = 100.0f;
+static const float noiseScale = 2.0f;
+static const float radius = 1.0f;
+static const float absorption = 50.0f;
+static const float opacity = 100.0f;
 //float absorptionLight = 14.8f;
 //float opacityLight = 84.0f;
 //int loopLight = 6;
@@ -75,28 +73,37 @@ float densityFunction(float3 p)
 
 float4 main(float3 worldPos : Position) : SV_Target
 {    
+    float step = 1.0f / loop;
+
     float3 worldDir = normalize(worldPos - cameraPos);
     
-    float step = 1.0f / loop;
-    float jitter = step * hash(worldPos.x + worldPos.y * 10.0f + worldPos.z * 100.0f);
-    worldPos += jitter * worldDir;
-    
     float3 localPos = (float3) mul(worldInverse, float4(worldPos, 1.0f));
-    float3 localDir = (float3) mul(worldInverse, float4(worldDir, 1.0f));
-
+    float3 localDir = (float3) mul(worldInverse, float4(worldDir, 1.0f));    
     float3 localStep = localDir * step;
+    //float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f);
+    //localPos += jitter * localStep;
     
-    float alpha = 0.0f;
+    float4 color = float4(cloudColor.rgb, 0.0f);
+    float transmittance = 1.0f;    
     
     for (int i = 0; i < loop; i++)
     {
         float density = densityFunction(localPos);
         
-        if (density > 0.001f)
+        if (density > 0.0f)
         {
-            alpha += (1.0f - alpha) * density * intensity;
+            float d = density * step;
+            transmittance *= 1.0f - d * absorption;
+            
+            if (transmittance < 0.01f)
+            {
+                break;
+            }
+            
+            color.a += opacity * d * transmittance;
         }
         
+        color = clamp(color, 0.0f, 1.0f);
         localPos += localStep;
         
         if (!all(max(size - abs(localPos), 0.0f)))
@@ -105,7 +112,5 @@ float4 main(float3 worldPos : Position) : SV_Target
         }
     }
     
-    float4 colorOut = color;
-    colorOut.a *= alpha;
-    return colorOut;
+    return color;
 }

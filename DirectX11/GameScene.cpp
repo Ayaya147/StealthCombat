@@ -26,11 +26,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	dir.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
 	renderer->SetDirectionalLight(dir);
 
-	PlayerActor* player = new PlayerActor(this, "player");
-	CameraComponent* cc = new CameraComponent(player);
-	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
-	player->SetScale(0.1f);
-
 	int n = 5;
 	float size = 50.0f;
 	for (int j = 0; j < n; j++)
@@ -39,9 +34,16 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 		{
 			PlaneActor* plane = new PlaneActor(this);
 			float scale = plane->GetScale();
-			plane->SetPosition(dx::XMFLOAT3{ -size* scale /2.0f*(n - 1) + i * size* scale,0.0f,size* scale / 2.0f*(n - 1) - j * size* scale });
+			plane->SetPosition(dx::XMFLOAT3{ -size * scale / 2.0f*(n - 1) + i * size* scale,0.0f,size* scale / 2.0f*(n - 1) - j * size* scale });
 		}
 	}
+
+
+	PlayerActor* player = new PlayerActor(this, "player");
+	CameraComponent* cc = new CameraComponent(player);
+	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
+	player->SetScale(0.1f);
+
 
 	CloudActor* cloud = new CloudActor(this, "cube");
 	cloud->SetPosition(dx::XMFLOAT3{ -2.0f,100.0f,0.0f });
