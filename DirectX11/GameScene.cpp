@@ -31,8 +31,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
 	player->SetScale(0.1f);
 
-
-
 	int n = 5;
 	float size = 50.0f;
 	for (int j = 0; j < n; j++)
