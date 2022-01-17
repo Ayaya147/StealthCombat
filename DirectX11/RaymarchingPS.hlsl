@@ -77,10 +77,13 @@ float4 main(float3 worldPos : Position) : SV_Target
 {    
     float3 worldDir = normalize(worldPos - cameraPos);
     
+    float step = 1.0f / loop;
+    float jitter = step * hash(worldPos.x + worldPos.y * 10.0f + worldPos.z * 100.0f);
+    worldPos += jitter * worldDir;
+    
     float3 localPos = (float3) mul(worldInverse, float4(worldPos, 1.0f));
     float3 localDir = (float3) mul(worldInverse, float4(worldDir, 1.0f));
-    
-    float step = 1.0f / loop;
+
     float3 localStep = localDir * step;
     
     float alpha = 0.0f;
