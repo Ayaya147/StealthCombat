@@ -26,7 +26,7 @@ static const float opacity = 100.0f;
 static const float absorptionLight = 60.0f;
 static const float opacityLight = 80.0f;
 static const float lightStepScale = 0.4f;
-static const int loopLight = 6;
+static const int loopLight = 5;
 
 float hash(float n)
 {

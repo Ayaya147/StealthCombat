@@ -42,5 +42,5 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
         //phong += diffuse;
     }
 
-    return float4(saturate(phong), 1.0f) * float4(0.1f, 0.5f, 1.0f, 1.0f);
+    return float4(saturate(phong), 1.0f) * float4(0.0f, 0.4f, 0.9f, 1.0f);
 }
