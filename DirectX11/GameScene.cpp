@@ -19,7 +19,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 {
 	Renderer* renderer = GetRenderer();
 
-	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f });
+	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.2f, 0.2f, 0.2f });
 	DirectionalLightConstant dir = {};
 	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
 	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
@@ -38,20 +38,17 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 		}
 	}
 
-
 	PlayerActor* player = new PlayerActor(this, "player");
 	CameraComponent* cc = new CameraComponent(player);
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
 	player->SetScale(0.1f);
 
-
 	CloudActor* cloud = new CloudActor(this, "cube1");
-	cloud->SetPosition(dx::XMFLOAT3{ -2.0f,100.0f,0.0f });
+	cloud->SetPosition(dx::XMFLOAT3{ -4.0f,100.0f,0.0f });
 	cloud->SetScale(5.0f);
-	//cloud = new CloudActor(this, "cube");
-	//cloud->SetPosition(dx::XMFLOAT3{ 2.0f,100.0f,0.0f });
-	//cloud->SetScale(0.25f);
-
+	cloud = new CloudActor(this, "cube1");
+	cloud->SetPosition(dx::XMFLOAT3{ 4.0f,100.0f,0.0f });
+	cloud->SetScale(5.0f);
 }
 
 GameScene::~GameScene()

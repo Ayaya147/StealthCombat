@@ -7,8 +7,8 @@ cbuffer CBuf : register(b0)
 cbuffer DirectLightCBuf : register(b1)
 {
     float3 direction;
-    float diffuseColor;
-    float specColor;
+    float3 diffuseColor;
+    float3 specColor;
 };
 
 SamplerState splr : register(s0);
@@ -29,7 +29,7 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     float3 l = normalize(-direction);
     float3 v = normalize(cameraPos - worldPos);
     float3 r = normalize(reflect(-l, n));
-    float specPower = 5.0f;
+    float specPower = 4.0f;
 
     float3 phong = ambientLight;
     
@@ -39,6 +39,7 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
         float3 diffuse = diffuseColor * nDotL;
         float3 specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
         phong += diffuse + specular;
+        //phong += diffuse;
     }
 
     return float4(saturate(phong), 1.0f) * float4(0.1f, 0.5f, 1.0f, 1.0f);

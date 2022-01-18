@@ -7,8 +7,8 @@ cbuffer CBuf : register(b0)
 cbuffer DirectLightCBuf : register(b1)
 {
     float3 direction;
-    float diffuseColor;
-    float specColor;
+    float3 diffuseColor;
+    float3 specColor;
 };
 
 cbuffer ObjectCBuf : register(b2)
@@ -16,18 +16,17 @@ cbuffer ObjectCBuf : register(b2)
     matrix worldInverse;
 };
 
-static const float4 cloudColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+static const float4 cloudColor = float4(0.8f, 0.8f, 0.8f, 1.0f);
 static const int loop = 32;
 static const float noiseScale = 5.0f;
-static const float radius = 0.8f;
+static const float radius = 0.6f;
 static const float absorption = 50.0f;
 static const float opacity = 100.0f;
 
-//static const float absorptionLight = 14.8f;
-//static const float opacityLight = 84.0f;
-//static const int loopLight = 6;
-//static const float lightStepScale = 0.5f;
-//static const float4 lightColor0 = float4(1.0f, 1.0f, 1.0f, 1.0f);
+static const float absorptionLight = 60.0f;
+static const float opacityLight = 80.0f;
+static const float lightStepScale = 0.4f;
+static const int loopLight = 6;
 
 float hash(float n)
 {
@@ -82,6 +81,10 @@ float4 main(float3 worldPos : Position) : SV_Target
     float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f);
     localPos += jitter * localStep;
     
+    float lightStep = 1.0f / loopLight;
+    float3 localLightDir = normalize(mul((float3x3) worldInverse, -direction));
+    float3 localLightStep = localLightDir * lightStep * lightStepScale;
+    
     float4 color = float4(cloudColor.rgb, 0.0f);
     float transmittance = 1.0f;
     
@@ -99,7 +102,30 @@ float4 main(float3 worldPos : Position) : SV_Target
                 break;
             }
             
-            color.a += opacity * d * transmittance;
+            float transmittanceLight = 1.0f;
+            float3 lightPos = localPos;
+            
+            for (int j = 0; j < loopLight; j++)
+            {
+                float densityLight = densityFunction(lightPos);
+                
+                if ( densityLight > 0.0f)
+                {
+                    float dl = densityLight * lightStep;
+                    transmittanceLight *= 1.0f - dl * absorptionLight;
+                    
+                    if ( transmittanceLight < 0.01f)
+                    {
+                        transmittanceLight = 0.0f;
+                        break;
+                    }
+                }
+                
+                lightPos += localLightStep;
+            }
+            
+            color.a += cloudColor.a * (opacity * d * transmittance);
+            color.rgb += diffuseColor * (opacityLight * d * transmittance * transmittanceLight);
         }
         
         color = clamp(color, 0.0f, 1.0f);
