@@ -14,7 +14,7 @@ cbuffer DirectLightCBuf : register(b1)
 SamplerState splr : register(s0);
 Texture2D tex : register(t0);
 
-static const float specPower = 50.0f;
+static const float specPower = 20.0f;
 
 float4 main(float3 worldPos : Position, float3 worldNor : Normal, float2 tc : TexCoord) : SV_Target
 {
