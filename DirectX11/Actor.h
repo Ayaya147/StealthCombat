@@ -30,7 +30,8 @@ public:
 
 	void SetActorState(ActorState state) { mState = state; }
 	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion; mRecomputeWorldTransform = true; }
-	void SetScale(float scale) { mScale = scale;  mRecomputeWorldTransform = true;}
+	void SetScale(float scale) { mScale = DirectX::XMFLOAT3{ mScale.x*scale,mScale.y*scale ,mScale.z*scale };  mRecomputeWorldTransform = true; }
+	void SetScale(const DirectX::XMFLOAT3& scale) { mScale = scale;  mRecomputeWorldTransform = true; }
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { mRotation = rotation; mRecomputeWorldTransform = true; }
 	void SetTransformCBuffer(class TransformCBuffer* buffer) { mTransformCBuffer = buffer; }
 
@@ -38,16 +39,17 @@ public:
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
 	const DirectX::XMFLOAT3& GetRotation() const { return mRotation; }
+	const DirectX::XMFLOAT3& GetScale() const { return mScale; }
+
 	DirectX::XMFLOAT3 GetForward() const { return DirectX::XMFLOAT3{ sin(mRotation.y),0.0f,cos(mRotation.y) }; }
 	ActorState GetActorState() const { return mState; }
-	float GetScale() const { return mScale; }
 
 private:
 	DirectX::XMMATRIX mWorldTransform;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mRotation;
+	DirectX::XMFLOAT3 mScale;
 	bool mRecomputeWorldTransform;
-	float mScale;
 	ActorState mState;
 	class BaseScene* mScene;
 	class TransformCBuffer* mTransformCBuffer;

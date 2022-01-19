@@ -12,7 +12,7 @@ Actor::Actor(BaseScene* scene)
 	mWorldTransform(dx::XMMATRIX{}),
 	mPosition(dx::XMFLOAT3{}),
 	mRotation(dx::XMFLOAT3{}),
-	mScale(1.0f),
+	mScale(dx::XMFLOAT3{ 1.0f,1.0f,1.0f }),
 	mState(ActorState::EActive),
 	mScene(scene),
 	mRecomputeWorldTransform(true),
@@ -89,7 +89,7 @@ void Actor::ComputeWorldTransform()
 	{
 		mRecomputeWorldTransform = false;
 
-		mWorldTransform = dx::XMMatrixScaling(mScale, mScale, mScale);
+		mWorldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
 		mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
 		mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
 	}

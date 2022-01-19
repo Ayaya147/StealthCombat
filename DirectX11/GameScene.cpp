@@ -33,7 +33,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 		for (int i = 0; i < n; i++)
 		{
 			PlaneActor* plane = new PlaneActor(this);
-			float scale = plane->GetScale();
+			float scale = plane->GetScale().x;
 			plane->SetPosition(dx::XMFLOAT3{ -size * scale / 2.0f*(n - 1) + i * size* scale,0.0f,size* scale / 2.0f*(n - 1) - j * size* scale });
 		}
 	}
