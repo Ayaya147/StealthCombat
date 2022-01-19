@@ -15,6 +15,9 @@ SamplerState splr : register(s0);
 Texture2D nmap0 : register(t0);
 Texture2D nmap1 : register(t1);
 
+static const float4 seaColor = float4(0.0f, 0.4f, 0.9f, 1.0f);
+static const float specPower = 10.0f;
+
 float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc0 : TexCoordf, float2 tc1 : TexCoords) : SV_Target
 {
     float3 localNormal = nmap0.Sample(splr, tc0).xyz;
@@ -29,18 +32,16 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     float3 l = normalize(-direction);
     float3 v = normalize(cameraPos - worldPos);
     float3 r = normalize(reflect(-l, n));
-    float specPower = 4.0f;
 
-    float3 phong = ambientLight;
+    float3 diffuse = 0.0f;
+    float3 specular = 0.0f;
     
     float nDotL = dot(n, l);    
     if (nDotL > 0)
     {
-        float3 diffuse = diffuseColor * nDotL;
-        float3 specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
-        phong += diffuse + specular;
-        //phong += diffuse;
+        diffuse = diffuseColor * nDotL;
+        specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
     }
 
-    return float4(saturate(phong), 1.0f) * float4(0.0f, 0.4f, 0.9f, 1.0f);
+    return float4(saturate((diffuse + ambientLight) * seaColor.rgb + specular), 1.0f);
 }

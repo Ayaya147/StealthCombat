@@ -16,7 +16,7 @@ cbuffer ObjectCBuf : register(b2)
     matrix worldInverse;
 };
 
-static const float4 cloudColor = float4(0.8f, 0.8f, 0.8f, 1.0f);
+static const float4 cloudColor = float4(0.9f, 0.9f, 0.9f, 1.0f);
 static const int loop = 32;
 static const float noiseScale = 5.0f;
 static const float radius = 0.6f;
@@ -26,7 +26,7 @@ static const float opacity = 100.0f;
 static const float absorptionLight = 60.0f;
 static const float opacityLight = 80.0f;
 static const float lightStepScale = 0.4f;
-static const int loopLight = 5;
+static const int loopLight = 6;
 
 float hash(float n)
 {
