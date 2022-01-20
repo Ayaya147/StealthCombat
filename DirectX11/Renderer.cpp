@@ -1,3 +1,4 @@
+#include <dxgi.h>
 #include "Renderer.h"
 #include "DxException.h"
 #include "Mesh.h"
@@ -31,14 +32,47 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags = 0;
 
+	wrl::ComPtr<IDXGIFactory1> dxgiFactory;
+	CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
+	std::vector<wrl::ComPtr<IDXGIAdapter>> adapters;
+	wrl::ComPtr<IDXGIAdapter> tmpAdapter;
+
+	for (int i = 0; dxgiFactory->EnumAdapters(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND; i++)
+	{
+		adapters.emplace_back(tmpAdapter);
+	}
+
+	for (auto adpt : adapters)
+	{
+		DXGI_ADAPTER_DESC adesc = {};
+		adpt->GetDesc(&adesc);
+
+		std::wstring strDesc = adesc.Description;
+		if (strDesc.find(L"NVIDIA") != std::string::npos || strDesc.find(L"AMD") != std::string::npos)
+		{
+			tmpAdapter = adpt;
+			break;
+		}
+	}
+
+	D3D_DRIVER_TYPE driverType;
+	if (tmpAdapter)
+	{
+		driverType = D3D_DRIVER_TYPE_UNKNOWN;
+	}
+	else
+	{
+		driverType = D3D_DRIVER_TYPE_HARDWARE;
+	}
+
 	UINT createDeviceFlags = 0;
 #ifdef DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
 	ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
-		nullptr,
-		D3D_DRIVER_TYPE_HARDWARE,
+		tmpAdapter.Get(),
+		driverType,
 		nullptr,
 		createDeviceFlags,
 		nullptr,
