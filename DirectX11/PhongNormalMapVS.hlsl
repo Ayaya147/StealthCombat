@@ -10,21 +10,21 @@ struct VSOut
     float3 worldNor : Normal;
     float3 worldTan : Tangent;
     float3 worldBitan : Bitangent;
-    float2 tc0 : TexCoordf;
-    float2 tc1 : TexCoords;
+    float2 tc0 : Tex0Coord;
+    float2 tc1 : Tex1Coord;
     float4 pos : SV_Position;
 };
 
-VSOut main(float3 pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc0 : TexCoordf, float2 tc1 : TexCoords)
+VSOut main(float3 pos : Position, float3 n : Normal, float2 tc0 : Tex0Coord, float2 tc1 : Tex1Coord)
 {
     VSOut vso;
     vso.worldPos = (float3)mul(float4(pos, 1.0f), worldTransform);
     vso.worldNor = mul(n, (float3x3) worldTransform);
-    vso.worldTan = mul(tan, (float3x3) worldTransform);
-    vso.worldBitan = mul(bitan, (float3x3) worldTransform);
-    vso.pos = mul(float4(vso.worldPos, 1.0f), viewProj);
+    vso.worldTan = mul(float3(1.0f, 0.0f, 0.0f), (float3x3) worldTransform);
+    vso.worldBitan = mul(float3(0.0f, 0.0f, 1.0f), (float3x3) worldTransform);
     vso.tc0 = tc0;
     vso.tc1 = tc1;
-    
+    vso.pos = mul(float4(vso.worldPos, 1.0f), viewProj);
+
     return vso;
 }

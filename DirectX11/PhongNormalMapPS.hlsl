@@ -18,7 +18,7 @@ Texture2D nmap1 : register(t1);
 static const float4 seaColor = float4(0.0f, 0.5f, 0.9f, 1.0f);
 static const float specPower = 30.0f;
 
-float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc0 : TexCoordf, float2 tc1 : TexCoords) : SV_Target
+float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc0 : Tex0Coord, float2 tc1 : Tex1Coord) : SV_Target
 {
     float3 localNormal = nmap0.Sample(splr, tc0).xyz;
     localNormal = localNormal * 2.0f - 1.0f;

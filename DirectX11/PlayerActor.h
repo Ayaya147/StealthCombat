@@ -5,7 +5,7 @@
 class PlayerActor : public Actor
 {
 public:
-	PlayerActor(class BaseScene* scene, const std::string& fileName);
+	PlayerActor(class BaseScene* scene);
 
 	void UpdateActor(float deltaTime) override;
 	void ActorInput() override;

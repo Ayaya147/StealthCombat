@@ -40,6 +40,12 @@
     <Filter Include="Source Files\Component">
       <UniqueIdentifier>{7ab1f5c5-9e97-4449-96d7-d285688e3b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Model">
+      <UniqueIdentifier>{17df73f6-f5c0-45ac-bec9-a8290f7de47f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{bf8eb41e-156c-4ef7-9c06-35d410a0eaeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -68,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Source Files\Component</Filter>
@@ -138,6 +141,12 @@
     <ClCompile Include="Keyboard.cpp">
       <Filter>Source Files\System</Filter>
     </ClCompile>
+    <ClCompile Include="PlaneMesh.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -166,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MeshComponent.h">
       <Filter>Header Files\Component</Filter>
@@ -241,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="Keyboard.h">
       <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneMesh.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

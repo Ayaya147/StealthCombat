@@ -1,6 +1,6 @@
 #include "PlaneActor.h"
 #include "TransformCBuffer.h"
-#include "Mesh.h"
+#include "PlaneMesh.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "BaseScene.h"
@@ -21,11 +21,12 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 	SetScale(1.0f);
 
-	//Mesh* mesh = GetScene()->GetSceneManager()->GetRenderer()->GetMesh("plane", L"Phong");
-	Mesh* mesh = renderer->GetMesh("plane", L"PhongNormalMap",0);
-	MeshComponent* mc = new MeshComponent(this, mesh);
+	Mesh* mesh = renderer->GetMesh("plane", L"PhongNormalMap");
+	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
+	planeMesh->ParseMesh(renderer, "plane", L"PhongNormalMap",3 ,50.0f);
+	MeshComponent* mc = new MeshComponent(this, planeMesh);
 
-	mCount = mesh->GetCount();
+	mCount = planeMesh->GetVerticesCount();
 
 	for (auto b : mesh->GetBindables())
 	{
@@ -34,9 +35,6 @@ PlaneActor::PlaneActor(BaseScene* scene)
 			mVertexBuffer = vertexBuffer;
 		}
 	}
-
-	//MoveComponent* move = new MoveComponent(this);
-	//move->SetAngularSpeed(1.0f);
 }
 
 PlaneActor::~PlaneActor()
@@ -45,20 +43,19 @@ PlaneActor::~PlaneActor()
 
 void PlaneActor::UpdateActor(float deltaTime)
 {
-	Renderer* renderer = GetScene()->GetRenderer();
+	//Renderer* renderer = GetScene()->GetRenderer();
 
-	D3D11_MAPPED_SUBRESOURCE msr;
-	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
+	//D3D11_MAPPED_SUBRESOURCE msr;
 	//renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	////renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
 
-	Vertex* vertex = static_cast<Vertex*>(msr.pData);
+	//PlaneVertex* vertex = static_cast<PlaneVertex*>(msr.pData);
 
-	for (int i = 0; i < mCount; i++)
-	{
-		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.001f * deltaTime, vertex[i].tc0.y + 0.002f * deltaTime };
-		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.004f * deltaTime, vertex[i].tc1.y - 0.002f * deltaTime };
-	}
+	//for (int i = 0; i < mCount; i++)
+	//{
+	//	vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.001f * deltaTime, vertex[i].tc0.y + 0.002f * deltaTime };
+	//	vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.004f * deltaTime, vertex[i].tc1.y - 0.002f * deltaTime };
+	//}
 
-	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
-	//mVertexBuffer->Bind(renderer);
+	//renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
 }

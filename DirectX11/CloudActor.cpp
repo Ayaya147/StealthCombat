@@ -8,7 +8,7 @@
 
 namespace dx = DirectX;
 
-CloudActor::CloudActor(BaseScene* scene, const std::string& fileName)
+CloudActor::CloudActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
@@ -16,7 +16,8 @@ CloudActor::CloudActor(BaseScene* scene, const std::string& fileName)
 
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 
-	Mesh* mesh = renderer->GetMesh(fileName, L"Raymarching", 1);
+	Mesh* mesh = renderer->GetMesh("cube1", L"Raymarching");
+	mesh->ParseMesh(renderer, "cube1", L"Raymarching");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 2);

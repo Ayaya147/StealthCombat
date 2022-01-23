@@ -19,7 +19,7 @@ public:
 	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
 
-	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName, int test);
+	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }

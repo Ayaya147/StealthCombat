@@ -1,7 +1,7 @@
 #include <dxgi.h>
 #include "Renderer.h"
 #include "DxException.h"
-#include "Mesh.h"
+#include "PlaneMesh.h"
 #include "MeshComponent.h"
 #include "Texture.h"
 #include "Actor.h"
@@ -193,7 +193,7 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderName, int test)
+Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderName)
 {
 	Mesh* mesh = nullptr;
 	auto iter = mMeshes.find(fileName);
@@ -203,7 +203,14 @@ Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderN
 	}
 	else
 	{
-		mesh = new Mesh(this, fileName, shaderName, test);
+		if (fileName != "plane")
+		{
+			mesh = new Mesh(this, fileName, shaderName);
+		}
+		else
+		{
+			mesh = new PlaneMesh(this, fileName, shaderName);
+		}
 		mMeshes.emplace(fileName, mesh);
 	}
 	return mesh;

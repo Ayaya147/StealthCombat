@@ -8,7 +8,7 @@ class PixelConstantBuffer;
 class CloudActor : public Actor
 {
 public:
-	CloudActor(class BaseScene* scene, const std::string& fileName);
+	CloudActor(class BaseScene* scene);
 	~CloudActor();
 
 	void UpdateActor(float deltaTime) override {};

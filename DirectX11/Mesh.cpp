@@ -15,148 +15,12 @@
 #include "Texture.h"
 #include "Blender.h"
 
-namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
-Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int test)
+Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
 	:
 	mFileName("Assets\\Models\\" + fileName + ".obj")
 {
-	if (test == 0)
-	{
-		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(mFileName,
-			aiProcess_Triangulate |
-			aiProcess_JoinIdenticalVertices |
-			aiProcess_ConvertToLeftHanded |
-			aiProcess_GenNormals |
-			aiProcess_CalcTangentSpace
-		);
-		const auto pMesh = pScene->mMeshes[0];
-		mCount = pMesh->mNumVertices;
-		std::vector<Vertex> vertices;
-		vertices.reserve(pMesh->mNumVertices);
-
-		for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
-		{
-			vertices.push_back({
-				//{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
-				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mVertices[i]),
-				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
-				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mTangents[i]),
-				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mBitangents[i]),
-				*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i]),
-				*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
-				});
-		}
-
-		std::vector<unsigned short> indices;
-		indices.reserve(pMesh->mNumFaces * 3);
-		for (unsigned int i = 0; i < pMesh->mNumFaces; i++)
-		{
-			const auto& face = pMesh->mFaces[i];
-			assert(face.mNumIndices == 3);
-			indices.push_back(face.mIndices[0]);
-			indices.push_back(face.mIndices[1]);
-			indices.push_back(face.mIndices[2]);
-		}
-
-		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-		{
-			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "Tangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "Bitangent",0,DXGI_FORMAT_R32G32B32_FLOAT,0,36,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "TexCoordf",0,DXGI_FORMAT_R32G32_FLOAT,0,48,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "TexCoords",0,DXGI_FORMAT_R32G32_FLOAT,0,56,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		};
-
-		std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
-		std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
-		std::string texName1 = "Assets\\Models\\normal1.png";
-		std::string texName2 = "Assets\\Models\\normal2.png";
-		std::string texName = "Assets\\Models\\" + fileName + ".png";
-
-		VertexShader* vs = new VertexShader(renderer, VSName);
-		mIndexBuffer = new IndexBuffer(renderer, indices);
-
-		AddBind(new VertexBuffer(renderer, vertices));
-		AddBind(mIndexBuffer);
-		AddBind(vs);
-		AddBind(new PixelShader(renderer, PSName));
-		AddBind(new InputLayout(renderer, ied, vs));
-		AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-		AddBind(new Sampler(renderer));
-		AddBind(new Blender(renderer, true));
-		AddBind(new Texture(renderer, texName1, 0));
-		AddBind(new Texture(renderer, texName2, 1));
-	}
-	else
-	{
-		struct Vertex
-		{
-			dx::XMFLOAT3 pos;
-			dx::XMFLOAT3 n;
-			dx::XMFLOAT2 tc;
-		};
-
-		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(mFileName,
-			aiProcess_Triangulate |
-			aiProcess_JoinIdenticalVertices |
-			aiProcess_ConvertToLeftHanded |
-			aiProcess_GenNormals |
-			aiProcess_CalcTangentSpace
-		);
-		const auto pMesh = pScene->mMeshes[0];
-
-		std::vector<Vertex> vertices;
-		vertices.reserve(pMesh->mNumVertices);
-		for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
-		{
-			vertices.push_back({
-				//{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
-				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mVertices[i]),
-				*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
-				*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
-			});
-		}
-
-		std::vector<unsigned short> indices;
-		indices.reserve(pMesh->mNumFaces * 3);
-		for (unsigned int i = 0; i < pMesh->mNumFaces; i++)
-		{
-			const auto& face = pMesh->mFaces[i];
-			assert(face.mNumIndices == 3);
-			indices.push_back(face.mIndices[0]);
-			indices.push_back(face.mIndices[1]);
-			indices.push_back(face.mIndices[2]);
-		}
-
-		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-		{
-			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		};
-
-		std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
-		std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
-		std::string texName = "Assets\\Models\\" + fileName + ".png";
-
-		VertexShader* vs = new VertexShader(renderer, VSName);
-		mIndexBuffer = new IndexBuffer(renderer, indices);
-
-		AddBind(new VertexBuffer(renderer, vertices));
-		AddBind(mIndexBuffer);
-		AddBind(vs);
-		AddBind(new PixelShader(renderer, PSName));
-		AddBind(new InputLayout(renderer, ied, vs));
-		AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-		AddBind(new Sampler(renderer));
-		AddBind(new Blender(renderer, true));
-		AddBind(new Texture(renderer, texName));
-	}
 }
 
 Mesh::~Mesh()
@@ -165,6 +29,73 @@ Mesh::~Mesh()
 	{
 		delete b;
 	}
+	mBinds.clear();
+}
+
+void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
+{
+	struct Vertex
+	{
+		dx::XMFLOAT3 pos;
+		dx::XMFLOAT3 n;
+		dx::XMFLOAT2 tc;
+	};
+
+	Assimp::Importer imp;
+	const auto pScene = imp.ReadFile(mFileName,
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_ConvertToLeftHanded |
+		aiProcess_GenNormals |
+		aiProcess_CalcTangentSpace
+	);
+	const auto pMesh = pScene->mMeshes[0];
+
+	std::vector<Vertex> vertices;
+	vertices.reserve(pMesh->mNumVertices);
+	for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
+	{
+		vertices.push_back({
+			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mVertices[i]),
+			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mNormals[i]),
+			*reinterpret_cast<dx::XMFLOAT2*>(&pMesh->mTextureCoords[0][i])
+		});
+	}
+
+	std::vector<unsigned short> indices;
+	indices.reserve(pMesh->mNumFaces * 3);
+	for (unsigned int i = 0; i < pMesh->mNumFaces; i++)
+	{
+		const auto& face = pMesh->mFaces[i];
+		assert(face.mNumIndices == 3);
+		indices.push_back(face.mIndices[0]);
+		indices.push_back(face.mIndices[1]);
+		indices.push_back(face.mIndices[2]);
+	}
+
+	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
+	{
+		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
+	};
+
+	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
+	std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
+	std::string texName = "Assets\\Models\\" + fileName + ".png";
+
+	VertexShader* vs = new VertexShader(renderer, VSName);
+	mIndexBuffer = new IndexBuffer(renderer, indices);
+
+	AddBind(new VertexBuffer(renderer, vertices));
+	AddBind(mIndexBuffer);
+	AddBind(vs);
+	AddBind(new PixelShader(renderer, PSName));
+	AddBind(new InputLayout(renderer, ied, vs));
+	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	AddBind(new Sampler(renderer));
+	AddBind(new Blender(renderer, true));
+	AddBind(new Texture(renderer, texName));
 }
 
 void Mesh::Bind(Renderer* renderer)
