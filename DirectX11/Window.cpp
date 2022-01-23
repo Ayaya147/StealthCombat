@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "InputSystem.h"
 #include "Keyboard.h"
+#include "imgui/imgui_impl_win32.h"
 
 InputSystem* Window::mInput = nullptr;
 
@@ -69,17 +70,24 @@ Window::Window(int width, int height, InputSystem* input)
 	//if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE)
 	//{
 	//}
-
+	ImGui_ImplWin32_Init(mhWnd);
 	mInput = input;
 }
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(mhWnd);
 }
 
 LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+	{
+		return true;
+	}
+	//const auto imio = ImGui::GetIO();
+
 	switch (msg)
 	{
 	case WM_CLOSE:
@@ -106,9 +114,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
 		mInput->GetKeyboard()->OnKeyReleased(static_cast<unsigned char>(wParam));
-		break;
-
-		
+		break;		
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);

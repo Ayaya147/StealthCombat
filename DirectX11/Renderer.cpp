@@ -7,6 +7,8 @@
 #include "Actor.h"
 #include "BaseScene.h"
 #include "Light.h"
+#include "ImGui/imgui_impl_dx11.h"
+#include "ImGui//imgui_impl_win32.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -126,15 +128,21 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	vp.TopLeftY = 0.0f;
 	mContext->RSSetViewports(1, &vp);
 
+	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 	mLight = new Light(this);
 }
 
 Renderer::~Renderer()
 {
+	ImGui_ImplDX11_Shutdown();
 }
 
 void Renderer::Draw()
 {
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
 	const float color[] = { 0.2f,0.2f,0.2f,1.0f };
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -154,6 +162,11 @@ void Renderer::Draw()
 			m->Draw(this);
 		}
 	}
+
+	static bool show = true;
+	ImGui::ShowDemoWindow(&show);
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	mSwapChain->Present(1, 0);
 }
