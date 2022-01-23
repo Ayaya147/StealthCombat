@@ -29,9 +29,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	PlaneActor* plane = new PlaneActor(this);
 
 	PlayerActor* player = new PlayerActor(this);
-	CameraComponent* cc = new CameraComponent(player);
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
 	player->SetScale(0.1f);
+	CameraComponent* cc = new CameraComponent(player);
 
 	CloudActor* cloud = new CloudActor(this);
 	cloud->SetPosition(dx::XMFLOAT3{ -5.0f,100.0f,0.0f });

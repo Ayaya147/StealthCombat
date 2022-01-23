@@ -4,13 +4,17 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 
+InputSystem* GameApp::mInputSystem = nullptr;
+Window* GameApp::mWindow = nullptr;
+Renderer* GameApp::mRenderer = nullptr;
+SceneManager* GameApp::mSceneManager = nullptr;
+
 GameApp::GameApp()
-	:
-	mWindow(new Window(1280, 720)),
-	mInputSystem(new InputSystem()),
-	mRenderer(new Renderer(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight())),
-	mSceneManager(new SceneManager(this))
 {
+	mInputSystem = new InputSystem();
+	mWindow = new Window(1280, 720, mInputSystem);
+	mRenderer = new Renderer(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight());
+	mSceneManager = new SceneManager(this);
 }
 
 GameApp::~GameApp()

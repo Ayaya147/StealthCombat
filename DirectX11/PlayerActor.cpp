@@ -8,6 +8,7 @@
 #include "TransformCBuffer.h"
 #include "InputSystem.h"
 #include "Keyboard.h"
+#include "GamePad.h"
 #include "Window.h"
 
 PlayerActor::PlayerActor(BaseScene* scene)
@@ -29,34 +30,51 @@ void PlayerActor::UpdateActor(float deltaTime)
 {
 	DirectX::XMFLOAT3 rotation = GetRotation();
 
-	if (rotation.z > 0.79f)
+	if (rotation.z > 0.8f)
 	{
-		rotation.z = 0.79f;
+		rotation.z = 0.8f;
 	}
-	else if (rotation.z < -0.79f)
+	else if (rotation.z < -0.8f)
 	{
-		rotation.z = -0.79f;
+		rotation.z = -0.8f;
 	}
 	SetRotation(rotation);
 }
 
 void PlayerActor::ActorInput()
 {
-	InputSystem* input = GetScene()->GetInputSystem();
-	Keyboard* keyboard = GetScene()->GetWindow()->keyboard;
+	Keyboard* keyboard = GetScene()->GetInputSystem()->GetKeyboard();
+	GamePad* pad = GetScene()->GetInputSystem()->GetPad();
 
 	DirectX::XMFLOAT3 rotation = GetRotation();
 
-	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_RIGHT))
-	{
-		//input->SetVibration(255);
-		mMoveComponent->SetAngularSpeed(0.2f);
-	}
-	if (input->IsButtonTriggered(XINPUT_GAMEPAD_DPAD_LEFT))
-	{
-		//input->SetVibration(255);
-		mMoveComponent->SetAngularSpeed(-0.2f);
-	}
+	//if (pad->GetThumbLeftX() > 0)
+	//{
+	//	pad->SetRightVibration(100);
+	//	mMoveComponent->SetAngularSpeed(1.2f);
+	//}
+	//else if (pad->GetThumbLeftX() < 0)
+	//{
+	//	pad->SetLeftVibration(100);
+	//	mMoveComponent->SetAngularSpeed(-1.2f);
+	//}
+	//else
+	//{
+	//	pad->StopVibration();
+	//	mMoveComponent->SetAngularSpeed(0.0f);
+	//	rotation.z = GetRotation().z * 0.95f;
+	//	SetRotation(rotation);
+	//}
+
+	//if (pad->GetRightTrigger())
+	//{
+	//	mMoveComponent->SetForwardSpeed(10.0f);
+	//}
+	//else
+	//{
+	//	float spd = mMoveComponent->GetForwardSpeed();
+	//	mMoveComponent->SetForwardSpeed(spd * 0.95f);
+	//}
 
 	if (keyboard->KeyIsPressed('D'))
 	{
@@ -75,7 +93,7 @@ void PlayerActor::ActorInput()
 
 	if (keyboard->KeyIsPressed('W'))
 	{
-		mMoveComponent->SetForwardSpeed(20.0f);
+		mMoveComponent->SetForwardSpeed(10.0f);
 	}
 	else
 	{

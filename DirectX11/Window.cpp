@@ -1,10 +1,10 @@
 #include "Window.h"
+#include "InputSystem.h"
 #include "Keyboard.h"
 
+InputSystem* Window::mInput = nullptr;
 
-Keyboard* Window::keyboard = nullptr;
-
-Window::Window(int width, int height)
+Window::Window(int width, int height, InputSystem* input)
 	:
 	mWidth(width),
 	mHeight(height),
@@ -70,7 +70,7 @@ Window::Window(int width, int height)
 	//{
 	//}
 
-	keyboard = new Keyboard();
+	mInput = input;
 }
 
 Window::~Window()
@@ -87,7 +87,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		return 0;
 
 	case WM_KILLFOCUS:
-		keyboard->ClearState();
+		mInput->GetKeyboard()->ClearState();
 
 	case WM_KEYDOWN:
 		switch (wParam)
@@ -97,15 +97,15 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 			return 0;
 		}
 	case WM_SYSKEYDOWN:
-		if (!(lParam & 0x40000000) || keyboard->AutorepeatIsEnabled())
+		if (!(lParam & 0x40000000) || mInput->GetKeyboard()->AutorepeatIsEnabled())
 		{
-			keyboard->OnKeyPressed(static_cast<unsigned char>(wParam));
+			mInput->GetKeyboard()->OnKeyPressed(static_cast<unsigned char>(wParam));
 		}
 		break;
 
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
-		keyboard->OnKeyReleased(static_cast<unsigned char>(wParam));
+		mInput->GetKeyboard()->OnKeyReleased(static_cast<unsigned char>(wParam));
 		break;
 
 		

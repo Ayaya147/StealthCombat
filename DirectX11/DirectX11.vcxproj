@@ -104,6 +104,7 @@
     <ClCompile Include="CloudActor.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DxException.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GamePad.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="InputLayout.h" />

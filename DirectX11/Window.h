@@ -4,17 +4,16 @@
 class Window
 {
 public:
-	Window(int width, int height);
+	Window(int width, int height, class InputSystem* input);
 	~Window();
 
 	HWND GetHandle() const noexcept { return mhWnd; }
 	int GetClientWidth() const noexcept { return mWidth; }
 	int GetClientHeight() const noexcept { return mHeight; }
 
-	static class Keyboard* keyboard;
-
 private:
 	static LRESULT CALLBACK MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+	static class InputSystem* mInput;
 
 	int mWidth;
 	int mHeight;

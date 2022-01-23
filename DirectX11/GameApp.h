@@ -13,8 +13,8 @@ public:
 	class InputSystem* GetInputSystem() const { return mInputSystem; }
 
 private:
-	class Window* mWindow;
-	class InputSystem* mInputSystem;
-	class Renderer* mRenderer;
-	class SceneManager* mSceneManager;
+	static class InputSystem* mInputSystem;
+	static class Window* mWindow;
+	static class Renderer* mRenderer;
+	static class SceneManager* mSceneManager;
 };

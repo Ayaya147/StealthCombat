@@ -7,11 +7,6 @@ Light::Light(Renderer* renderer)
 {
 	mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 0);
 	mDLightCBuffer = new PixelConstantBuffer<DirectionalLightConstant>(renderer, 1);
-
-	mAmbientLight = dx::XMFLOAT3{ 0.4f, 0.4f, 0.4f };
-	mDirLight.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
-	mDirLight.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
-	mDirLight.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
 }
 
 Light::~Light()
