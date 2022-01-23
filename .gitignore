@@ -53,6 +53,8 @@ artifacts/
 *.obj
 !DirectX11/Assets/Models/*.obj
 !DirectX11/Assimp/*
+!DirectX11/Dxtex/
+!DirectX11/Dxtex/**
 *.pch
 *.pdb
 *.pgc
@@ -262,5 +264,3 @@ paket-files/
 __pycache__/
 *.pyc
 *.cso
-
-!DirectX11/Dxtex/*
