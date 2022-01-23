@@ -23,7 +23,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 	Mesh* mesh = renderer->GetMesh("plane", L"PhongNormalMap");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"PhongNormalMap",3 ,50.0f);
+	planeMesh->ParseMesh(renderer, "plane", L"PhongNormalMap",4 ,50.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 
 	mCount = planeMesh->GetVerticesCount();
@@ -43,19 +43,17 @@ PlaneActor::~PlaneActor()
 
 void PlaneActor::UpdateActor(float deltaTime)
 {
-	//Renderer* renderer = GetScene()->GetRenderer();
+	Renderer* renderer = GetScene()->GetRenderer();
 
-	//D3D11_MAPPED_SUBRESOURCE msr;
-	//renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
-	////renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+	D3D11_MAPPED_SUBRESOURCE msr;
+	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
+	PlaneVertex* vertex = static_cast<PlaneVertex*>(msr.pData);
 
-	//PlaneVertex* vertex = static_cast<PlaneVertex*>(msr.pData);
+	for (int i = 0; i < mCount; i++)
+	{
+		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.01f * deltaTime, vertex[i].tc0.y + 0.02f * deltaTime };
+		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.04f * deltaTime, vertex[i].tc1.y - 0.02f * deltaTime };
+	}
 
-	//for (int i = 0; i < mCount; i++)
-	//{
-	//	vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.001f * deltaTime, vertex[i].tc0.y + 0.002f * deltaTime };
-	//	vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.004f * deltaTime, vertex[i].tc1.y - 0.002f * deltaTime };
-	//}
-
-	//renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
+	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
 }

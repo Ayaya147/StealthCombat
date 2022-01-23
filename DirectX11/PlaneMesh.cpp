@@ -90,7 +90,7 @@ void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const
 	AddBind(vs);
 	AddBind(new PixelShader(renderer, PSName));
 	AddBind(new InputLayout(renderer, ied, vs));
-	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP));
 	AddBind(new Sampler(renderer));
 	AddBind(new Blender(renderer, true));
 	AddBind(new Texture(renderer, texName1, 0));
