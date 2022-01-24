@@ -33,12 +33,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	player->SetScale(0.1f);
 	CameraComponent* cc = new CameraComponent(player);
 
+	mCloud = new CloudActor(this);
+	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,100.0f,0.0f });
+	mCloud->SetScale(dx::XMFLOAT3{ 6.0f,6.0f,6.0f });
 	CloudActor* cloud = new CloudActor(this);
-	cloud->SetPosition(dx::XMFLOAT3{ -5.0f,100.0f,0.0f });
-	cloud->SetScale(dx::XMFLOAT3{ 4.0f,4.0f,4.0f });
-	cloud = new CloudActor(this);
 	cloud->SetPosition(dx::XMFLOAT3{ 5.0f,100.0f,0.0f });
-	cloud->SetScale(6.0f);
+	cloud->SetScale(4.0f);
 }
 
 GameScene::~GameScene()

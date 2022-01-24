@@ -17,11 +17,8 @@ GamePad::~GamePad()
 void GamePad::Update()
 {
 	XInputSetState(0, &mController.mVibration);
-
 	mController.mLastState = mController.mState;
-
 	XInputGetState(0, &mController.mState);
-
 	mController.mTrigger.Gamepad.wButtons = ((mController.mLastState.Gamepad.wButtons ^ mController.mState.Gamepad.wButtons) & mController.mState.Gamepad.wButtons);
 
 	if (abs(mController.mState.Gamepad.sThumbLX) < DEADZONE)

@@ -82,11 +82,13 @@ Window::~Window()
 
 LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	Keyboard* keyboard = mInput->GetKeyboard();
+
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
 	{
 		return true;
 	}
-	//const auto imio = ImGui::GetIO();
+	const auto imio = ImGui::GetIO();
 
 	switch (msg)
 	{
@@ -95,7 +97,8 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		return 0;
 
 	case WM_KILLFOCUS:
-		mInput->GetKeyboard()->ClearState();
+		keyboard->ClearState();
+		break;
 
 	case WM_KEYDOWN:
 		switch (wParam)
@@ -105,16 +108,32 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 			return 0;
 		}
 	case WM_SYSKEYDOWN:
+		if (imio.WantCaptureKeyboard)
+		{
+			//break;
+		}
 		if (!(lParam & 0x40000000) || mInput->GetKeyboard()->AutorepeatIsEnabled())
 		{
-			mInput->GetKeyboard()->OnKeyPressed(static_cast<unsigned char>(wParam));
+			keyboard->OnKeyPressed(static_cast<unsigned char>(wParam));
 		}
 		break;
 
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
-		mInput->GetKeyboard()->OnKeyReleased(static_cast<unsigned char>(wParam));
-		break;		
+		if (imio.WantCaptureKeyboard)
+		{
+			//break;
+		}
+		keyboard->OnKeyReleased(static_cast<unsigned char>(wParam));
+		break;
+
+	case WM_CHAR:
+		if (imio.WantCaptureKeyboard)
+		{
+			//break;
+		}
+		keyboard->OnChar(static_cast<unsigned char>(wParam));
+		break;
 	}
 
 	return DefWindowProc(hwnd, msg, wParam, lParam);

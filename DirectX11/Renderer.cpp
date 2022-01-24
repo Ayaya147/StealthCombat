@@ -5,7 +5,9 @@
 #include "MeshComponent.h"
 #include "Texture.h"
 #include "Actor.h"
+#include "CloudActor.h"
 #include "BaseScene.h"
+#include "GameScene.h"
 #include "Light.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
@@ -139,9 +141,11 @@ Renderer::~Renderer()
 
 void Renderer::Draw()
 {
+#ifdef DEBUG
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+#endif
 
 	const float color[] = { 0.2f,0.2f,0.2f,1.0f };
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
@@ -163,10 +167,15 @@ void Renderer::Draw()
 		}
 	}
 
-	static bool show = true;
-	ImGui::ShowDemoWindow(&show);
+#ifdef DEBUG
+	if (auto game = dynamic_cast<GameScene*>(mScene))
+	{
+		game->GetCloud()->ImGuiWinodow();
+	}
+
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
 
 	mSwapChain->Present(1, 0);
 }

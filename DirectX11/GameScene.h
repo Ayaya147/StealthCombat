@@ -12,5 +12,8 @@ public:
 	void Update() override;
 	void GenerateOutput() override;
 
+	class CloudActor* GetCloud() const { return mCloud; }
+
 private:
+	class CloudActor* mCloud;
 };
