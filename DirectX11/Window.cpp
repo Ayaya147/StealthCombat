@@ -46,6 +46,8 @@ Window::Window(int width, int height, InputSystem* input)
 		nullptr, nullptr, mhInst, nullptr
 	);
 #else
+	ShowCursor(FALSE);
+
 	RECT rDesk = {};
 	HWND hDesk = GetDesktopWindow();
 	GetWindowRect(hDesk, &rDesk);
