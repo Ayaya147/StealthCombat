@@ -16,8 +16,8 @@ CloudActor::CloudActor(BaseScene* scene)
 
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 
-	Mesh* mesh = renderer->GetMesh("cube1", L"Raymarching");
-	mesh->ParseMesh(renderer, "cube1", L"Raymarching");
+	Mesh* mesh = renderer->GetMesh("cube", L"Raymarching");
+	mesh->ParseMesh(renderer, "cube", L"Raymarching");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 2);

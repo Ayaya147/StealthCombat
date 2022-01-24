@@ -264,3 +264,4 @@ paket-files/
 __pycache__/
 *.pyc
 *.cso
+/DirectX11/imgui.ini
