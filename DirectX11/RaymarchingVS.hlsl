@@ -1,7 +1,7 @@
 cbuffer CBuf : register(b0)
 {
-    matrix worldTransform;
-    matrix viewProj;
+    matrix mWorldTransform;
+    matrix mViewProj;
 };
 
 struct VSOut
@@ -13,8 +13,8 @@ struct VSOut
 VSOut main(float3 pos : Position, float3 n : Normal, float2 tc : TexCoord)
 {
     VSOut vso;
-    vso.worldPos = (float3) mul(float4(pos, 1.0f), worldTransform);
-    vso.pos = mul(float4(vso.worldPos, 1.0f), viewProj);
+    vso.worldPos = (float3) mul(float4(pos, 1.0f), mWorldTransform);
+    vso.pos = mul(float4(vso.worldPos, 1.0f), mViewProj);
     
     return vso;
 }

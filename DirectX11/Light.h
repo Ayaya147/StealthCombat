@@ -25,8 +25,8 @@ public:
 private:
 	struct ObjectConstant
 	{
-		alignas(16) DirectX::XMFLOAT3 cameraPos;
-		alignas(16) DirectX::XMFLOAT3 ambientLight;
+		alignas(16) DirectX::XMFLOAT3 mCameraPos;
+		alignas(16) DirectX::XMFLOAT3 mAmbientLight;
 	};
 
 	DirectX::XMFLOAT3 mAmbientLight;

@@ -18,9 +18,9 @@ Light::~Light()
 void Light::Bind(Renderer* renderer)
 {
 	ObjectConstant c = {};
-	c.ambientLight = mAmbientLight;
+	c.mAmbientLight = mAmbientLight;
 	dx::XMMATRIX invView = dx::XMMatrixInverse(nullptr, renderer->GetViewMatrix());
-	dx::XMStoreFloat3(&c.cameraPos, invView.r[3]);
+	dx::XMStoreFloat3(&c.mCameraPos, invView.r[3]);
 
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);

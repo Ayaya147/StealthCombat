@@ -319,12 +319,6 @@
     <FxCompile Include="PhongVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="BasicPS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="BasicVS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="PhongNormalMapPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>

@@ -1,19 +1,19 @@
 cbuffer CBuf : register(b0)
 {
-    float3 cameraPos;
-    float3 ambientLight;
+    float3 mCameraPos;
+    float3 mAmbientLight;
 };
 
 cbuffer DirectLightCBuf : register(b1)
 {
-    float3 direction;
-    float3 diffuseColor;
-    float3 specColor;
+    float3 mDirection;
+    float3 mDiffuseColor;
+    float3 mSpecColor;
 };
 
 cbuffer ObjectCBuf : register(b2)
 {
-    matrix worldInverse;
+    matrix mWorldInverse;
 };
 
 static const float4 cloudColor = float4(0.9f, 0.9f, 0.9f, 1.0f);
@@ -73,16 +73,16 @@ float4 main(float3 worldPos : Position) : SV_Target
 {
     float step = 1.0f / loop;
 
-    float3 worldDir = normalize(worldPos - cameraPos);
+    float3 worldDir = normalize(worldPos - mCameraPos);
     
-    float3 localPos = (float3) mul(worldInverse, float4(worldPos, 1.0f));
-    float3 localDir = normalize(mul((float3x3) worldInverse, worldDir));
+    float3 localPos = (float3) mul(mWorldInverse, float4(worldPos, 1.0f));
+    float3 localDir = normalize(mul((float3x3) mWorldInverse, worldDir));
     float3 localStep = localDir * step;
     float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f);
     localPos += jitter * localStep;
     
     float lightStep = 1.0f / loopLight;
-    float3 localLightDir = normalize(mul((float3x3) worldInverse, -direction));
+    float3 localLightDir = normalize(mul((float3x3) mWorldInverse, -mDirection));
     float3 localLightStep = localLightDir * lightStep * lightStepScale;
     
     float4 color = float4(cloudColor.rgb, 0.0f);
@@ -125,7 +125,7 @@ float4 main(float3 worldPos : Position) : SV_Target
             }
             
             color.a += cloudColor.a * (opacity * d * transmittance);
-            color.rgb += diffuseColor * (opacityLight * d * transmittance * transmittanceLight);
+            color.rgb += mDiffuseColor * (opacityLight * d * transmittance * transmittanceLight);
         }
         
         color = clamp(color, 0.0f, 1.0f);

@@ -1,14 +1,14 @@
 cbuffer CBuf : register(b0)
 {
-    float3 cameraPos;
-    float3 ambientLight;
+    float3 mCameraPos;
+    float3 mAmbientLight;
 };
 
 cbuffer DirectLightCBuf : register(b1)
 {
-    float3 direction;
-    float3 diffuseColor;
-    float3 specColor;
+    float3 mDirection;
+    float3 mDiffuseColor;
+    float3 mSpecColor;
 };
 
 SamplerState splr : register(s0);
@@ -29,8 +29,8 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     float3 normal1 = tan * localNormal1.x + bitan * localNormal1.y + worldNor * localNormal1.z;
 
     float3 n = normalize(normal0 + normal1);
-    float3 l = normalize(-direction);
-    float3 v = normalize(cameraPos - worldPos);
+    float3 l = normalize(-mDirection);
+    float3 v = normalize(mCameraPos - worldPos);
     float3 r = normalize(reflect(-l, n));
 
     float3 diffuse = 0.0f;
@@ -39,9 +39,9 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
     float nDotL = dot(n, l);    
     if (nDotL > 0)
     {
-        diffuse = diffuseColor * nDotL;
-        specular = specColor * pow(max(0.0f, dot(r, v)), specPower);
+        diffuse = mDiffuseColor * nDotL;
+        specular = mSpecColor * pow(max(0.0f, dot(r, v)), specPower);
     }
 
-    return float4(saturate((diffuse + ambientLight) * seaColor.rgb + specular), 1.0f);
+    return float4(saturate((diffuse + mAmbientLight) * seaColor.rgb + specular), 1.0f);
 }
