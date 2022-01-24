@@ -23,7 +23,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 	Mesh* mesh = renderer->GetMesh("plane", L"PhongNormalMap");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"PhongNormalMap",4 ,50.0f);
+	planeMesh->ParseMesh(renderer, "plane", L"PhongNormalMap",10 ,50.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 
 	mCount = planeMesh->GetVerticesCount();

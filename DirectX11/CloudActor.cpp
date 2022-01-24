@@ -63,16 +63,16 @@ void CloudActor::Bind(Renderer* renderer)
 
 void CloudActor::ImGuiWinodow()
 {
-	if (ImGui::Begin("Cloud"))
+	if (ImGui::Begin("Ray Marching"))
 	{
 		ImGui::Text("Base");
-		ImGui::ColorEdit3("Color", &mData.mCloudColor.x);
+		ImGui::ColorEdit3("Cloud Color", &mData.mCloudColor.x);
 		ImGui::SliderInt("Absorption", &mData.mAbsorption, 0, 100, "%d");
 		ImGui::SliderInt("Opacity", &mData.mOpacity, 0, 100, "%d");
 		ImGui::SliderInt("Loop", &mData.mLoop, 0, 64, "%d");
 
 		ImGui::Text("Noise");
-		ImGui::SliderInt("Noise Scale", &mData.mNoiseScale, 0, 50, "%d");
+		ImGui::SliderInt("Noise Scale", &mData.mNoiseScale, 0, 64, "%d");
 		ImGui::SliderFloat("Radius", &mData.mRadius, 0.0f, 2.0f, "%.2f");
 
 		ImGui::Text("Light");
