@@ -15,12 +15,12 @@ MeshComponent::MeshComponent(Actor* owner, Mesh* mesh)
 	Component(owner),
 	mMesh(mesh)
 {
-	mOwner->GetScene()->GetRenderer()->AddMeshComp(mMesh->GetFileName(), this);
+	GetOwner()->GetScene()->GetRenderer()->AddMeshComp(mMesh->GetFileName(), this);
 }
 
 MeshComponent::~MeshComponent()
 {
-	mOwner->GetScene()->GetRenderer()->RemoveMeshComp(this);
+	GetOwner()->GetScene()->GetRenderer()->RemoveMeshComp(this);
 }
 
 void MeshComponent::Draw(Renderer* renderer)

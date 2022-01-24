@@ -8,7 +8,9 @@ public:
 	CameraComponent(class Actor* owner, int updateOrder = 200);
 
 	void Update(float deltaTime) override;
+	void ProcessInput() override;
 
 private:
 	float mTargetDist;
+	int mType;
 };

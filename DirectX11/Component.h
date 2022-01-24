@@ -12,7 +12,7 @@ public:
 	int GetUpdateOrder() const { return mUpdateOrder; }
 	class Actor* GetOwner() const { return mOwner; }
 
-protected:
+private:
 	class Actor* mOwner;
 	int mUpdateOrder;
 };
