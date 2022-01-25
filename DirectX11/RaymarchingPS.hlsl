@@ -72,6 +72,13 @@ float sphere(float3 pos, float radius)
     return length(pos) - radius;
 }
 
+float ellipsoid(float3 pos, float3 radius)
+{
+    float k0 = length(pos / radius);
+    float k1 = length(pos / (radius * radius));
+    return k0 * (k0 - 1.0f) / k1;
+}
+
 float torus(float3 pos, float2 radius)
 {
     float2 r = float2(length(pos.xz) - radius.x, pos.y);
@@ -82,6 +89,7 @@ float densityFunction(float3 p)
 {
     return fbm(p * mNoiseScale) - length(p / mRadius);
     //return 0.5f - length(p / mRadius);
+    //return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.5f, 0.2f, 0.5f));
 }
 
 float densityFunctionAnime(float3 p)
