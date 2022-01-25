@@ -39,9 +39,9 @@ void CameraComponent::Update(float deltaTime)
 		dx::XMFLOAT3 forward = GetOwner()->GetForward();
 		dx::XMFLOAT3 up = { 0.0f,1.0f,0.0f };
 		dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
-			GetOwner()->GetPosition().x - forward.x * mTargetDist,
-			GetOwner()->GetPosition().y + 5.0f,
-			GetOwner()->GetPosition().z - forward.z * mTargetDist
+			GetOwner()->GetPosition().x - forward.x * mTargetDist * 0.9f,
+			GetOwner()->GetPosition().y + 4.0f,
+			GetOwner()->GetPosition().z - forward.z * mTargetDist * 0.9f
 		};
 
 		view = dx::XMMatrixLookAtLH(

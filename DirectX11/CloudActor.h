@@ -11,8 +11,7 @@ public:
 	CloudActor(class BaseScene* scene);
 	~CloudActor();
 
-	void UpdateActor(float deltaTime) override {};
-	void ActorInput() override {};
+	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
 	void ImGuiWinodow();
 	void Reset();
@@ -35,7 +34,8 @@ private:
 		int mOpacityLight;
 		float mLightStepScale;
 		int mLoopLight;
-		float padding[3];
+		float mTime;
+		float padding[2];
 	};
 
 	CloudConstant mData;

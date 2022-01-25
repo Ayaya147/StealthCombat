@@ -17,6 +17,7 @@ public:
 	class Renderer* GetRenderer();
 	class InputSystem* GetInputSystem();
 	class Window* GetWindow();
+	float GetGameTime() const { return mGameTime; }
 
 protected:
 	std::vector<class Actor*> mActors;
@@ -24,4 +25,5 @@ protected:
 	class Timer* mTimer;
 	class SceneManager* mSceneManager;
 	bool mUpdatingActors;
+	float mGameTime;
 };

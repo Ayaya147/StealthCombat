@@ -28,6 +28,7 @@ cbuffer CloudCBuf : register(b3)
     int mOpacityLight;
     float mLightStepScale;
     int mLoopLight;
+    float mTime;
 };
 
 float hash(float n)
@@ -66,9 +67,31 @@ float fbm(float3 p)
     return f;
 }
 
+float sphere(float3 pos, float radius)
+{
+    return length(pos) - radius;
+}
+
+float torus(float3 pos, float2 radius)
+{
+    float2 r = float2(length(pos.xz) - radius.x, pos.y);
+    return length(r) - radius.y;
+}
+
 float densityFunction(float3 p)
 {
     return fbm(p * mNoiseScale) - length(p / mRadius);
+    //return 0.5f - length(p / mRadius);
+}
+
+float densityFunctionAnime(float3 p)
+{
+    float f = fbm(p * mNoiseScale);
+
+    float d1 = -sphere(p, mRadius) + f * 0.3;
+    float d2 = -torus(p, float2(mRadius * 1.5f, 0.1f)) + f * 0.2;
+    float blend = 0.5 + 0.5 * sin(mTime * 2.0f);
+    return lerp(d1, d2, blend);
 }
 
 float4 main(float3 worldPos : Position) : SV_Target
@@ -80,7 +103,7 @@ float4 main(float3 worldPos : Position) : SV_Target
     float3 localPos = (float3) mul(mWorldInverse, float4(worldPos, 1.0f));
     float3 localDir = normalize(mul((float3x3) mWorldInverse, worldDir));
     float3 localStep = localDir * step;
-    float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f);
+    float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime / 20.0f);
     localPos += jitter * localStep;
     
     float lightStep = 1.0f / mLoopLight;
@@ -92,7 +115,7 @@ float4 main(float3 worldPos : Position) : SV_Target
     
     for (int i = 0; i < mLoop; i++)
     {
-        float density = densityFunction(localPos);
+        float density = densityFunctionAnime(localPos);
         
         if (density > 0.0f)
         {
@@ -109,7 +132,7 @@ float4 main(float3 worldPos : Position) : SV_Target
             
             for (int j = 0; j < mLoopLight; j++)
             {
-                float densityLight = densityFunction(lightPos);
+                float densityLight = densityFunctionAnime(lightPos);
                 
                 if ( densityLight > 0.0f)
                 {

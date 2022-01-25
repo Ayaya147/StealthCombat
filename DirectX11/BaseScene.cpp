@@ -10,7 +10,8 @@ BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:
 	mSceneManager(sm),
 	mTimer(new Timer()),
-	mUpdatingActors(false)
+	mUpdatingActors(false),
+	mGameTime(0.0f)
 {
 }
 
@@ -54,6 +55,7 @@ void BaseScene::Update()
 	{
 		deltaTime = 0.05f;
 	}
+	mGameTime += deltaTime;
 
 	mUpdatingActors = true;
 	for (auto actor : mActors)

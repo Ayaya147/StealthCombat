@@ -48,6 +48,11 @@ CloudActor::~CloudActor()
 	}
 }
 
+void CloudActor::UpdateActor(float deltaTime)
+{
+	mData.mTime = GetScene()->GetGameTime();
+}
+
 void CloudActor::Bind(Renderer* renderer)
 {
 	Actor::Bind(renderer);
@@ -94,13 +99,14 @@ void CloudActor::Reset()
 	mData = {
 		{0.9f, 0.9f, 0.9f},
 		32,
-		5,
-		0.65f,
+		8,
+		0.2f,
 		50,
 		100,
 		60,
 		80,
 		0.4f,
-		6
+		6,
+		GetScene()->GetGameTime()
 	};
 }
