@@ -87,18 +87,18 @@ float torus(float3 pos, float2 radius)
 
 float densityFunction(float3 p)
 {
-    //return fbm(p * mNoiseScale) - length(p / mRadius);
+    return fbm(p * mNoiseScale) - length(p / mRadius);
     //return 0.5f - length(p / mRadius);
-    return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.2f));
+    //return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.2f));
 }
 
 float densityFunctionAnime(float3 p)
 {
     float f = fbm(p * mNoiseScale);
 
-    float d1 = -sphere(p, mRadius) + f * 0.3;
-    float d2 = -torus(p, float2(mRadius * 1.5f, 0.1f)) + f * 0.2;
-    float blend = 0.5 + 0.5 * sin(mTime * 2.0f);
+    float d1 = -sphere(p, mRadius) + f * 0.3f;
+    float d2 = -torus(p, float2(mRadius * 1.5f, 0.1f)) + f * 0.2f;
+    float blend = 0.5f + 0.5f * sin(mTime * 2.0f);
     return lerp(d1, d2, blend);
 }
 
@@ -111,8 +111,16 @@ float4 main(float3 worldPos : Position) : SV_Target
     float3 localPos = (float3) mul(mWorldInverse, float4(worldPos, 1.0f));
     float3 localDir = normalize(mul((float3x3) mWorldInverse, worldDir));
     float3 localStep = localDir * step;
-    float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime / 20.0f);
+    float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
     localPos += jitter * localStep;
+    
+    float3 invLocalDir = 1.0 / localDir;
+    float3 t1 = (-0.5 - localPos) * invLocalDir;
+    float3 t2 = (+0.5 - localPos) * invLocalDir;
+    float3 tmax3 = max(t1, t2);
+    float2 tmax2 = min(tmax3.xx, tmax3.yz);
+    float traverseDist = min(tmax2.x, tmax2.y);
+    int loop = floor(traverseDist / step);
     
     float lightStep = 1.0f / mLoopLight;
     float3 localLightDir = normalize(mul((float3x3) mWorldInverse, -mDirection));
@@ -121,9 +129,9 @@ float4 main(float3 worldPos : Position) : SV_Target
     float4 color = float4(mCloudColor, 0.0f);
     float transmittance = 1.0f;
     
-    for (int i = 0; i < mLoop; i++)
+    for (int i = 0; i < loop; i++)
     {
-        float density = densityFunctionAnime(localPos);
+        float density = densityFunction(localPos);
         
         if (density > 0.0f)
         {
@@ -140,7 +148,7 @@ float4 main(float3 worldPos : Position) : SV_Target
             
             for (int j = 0; j < mLoopLight; j++)
             {
-                float densityLight = densityFunctionAnime(lightPos);
+                float densityLight = densityFunction(lightPos);
                 
                 if ( densityLight > 0.0f)
                 {
@@ -164,10 +172,10 @@ float4 main(float3 worldPos : Position) : SV_Target
         color = clamp(color, 0.0f, 1.0f);
         localPos += localStep;
         
-        if (!all(max(0.5f - abs(localPos), 0.0f)))
-        {
-            break;
-        }
+        //if (!all(max(0.5f - abs(localPos), 0.0f)))
+        //{
+        //    break;
+        //}
     }
 
     return color;
