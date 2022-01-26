@@ -114,9 +114,9 @@ float4 main(float3 worldPos : Position) : SV_Target
     float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
     localPos += jitter * localStep;
     
-    float3 invLocalDir = 1.0 / localDir;
-    float3 t1 = (-0.5 - localPos) * invLocalDir;
-    float3 t2 = (+0.5 - localPos) * invLocalDir;
+    float3 invLocalDir = 1.0f / localDir;
+    float3 t1 = (-0.5f - localPos) * invLocalDir;
+    float3 t2 = (0.5f - localPos) * invLocalDir;
     float3 tmax3 = max(t1, t2);
     float2 tmax2 = min(tmax3.xx, tmax3.yz);
     float traverseDist = min(tmax2.x, tmax2.y);
