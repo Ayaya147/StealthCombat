@@ -87,9 +87,9 @@ float torus(float3 pos, float2 radius)
 
 float densityFunction(float3 p)
 {
-    return fbm(p * mNoiseScale) - length(p / mRadius);
+    //return fbm(p * mNoiseScale) - length(p / mRadius);
     //return 0.5f - length(p / mRadius);
-    //return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.5f, 0.2f, 0.5f));
+    return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.2f));
 }
 
 float densityFunctionAnime(float3 p)

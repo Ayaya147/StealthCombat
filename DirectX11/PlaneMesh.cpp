@@ -17,6 +17,7 @@ namespace dx = DirectX;
 void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int n, float size)
 {
 	mVerticesCount = n * n;
+
 	std::vector<PlaneVertex> vertices;
 	vertices.reserve(mVerticesCount);
 	for (int z = 0; z < n; z++)
@@ -26,8 +27,8 @@ void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const
 			vertices.push_back({
 				dx::XMFLOAT3{-size / 2.0f * (n-1) + size * x, 0.0f ,size / 2.0f * (n-1) - size * z},
 				dx::XMFLOAT3{0.0f,1.0f,0.0f},
-				dx::XMFLOAT2{x*1.0f,z*1.0f},
-				dx::XMFLOAT2{x*1.0f,z*1.0f}
+				dx::XMFLOAT2{x*1.0f, z*1.0f},
+				dx::XMFLOAT2{x*1.0f, z*1.0f}
 			});
 		}		
 	}
@@ -48,25 +49,6 @@ void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const
 			indices.push_back(n * 2 + n * y);
 		}
 	}
-	//for (int z = 0; z < n - 1; z++)
-	//{
-	//	for (int x = 0; x < n; x++)
-	//	{
-	//		int i = z * n + x;
-
-	//		indices[i * 2 + z * 2 + 1] = i;
-	//		indices[i * 2 + z * 2] = i + n;
-
-	//		if (z != n - 2 && x == n - 1)
-	//		{
-	//			indices[i * 2 + z * 2 + 2] = i;
-	//		}
-	//		else if (z != 0 && x == 0)
-	//		{
-	//			indices[i * 2 + z * 2 - 1] = i + n;
-	//		}
-	//	}
-	//}
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 	{
