@@ -47,7 +47,7 @@ void PlaneActor::UpdateActor(float deltaTime)
 
 	D3D11_MAPPED_SUBRESOURCE msr;
 	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
-	PlaneVertex* vertex = static_cast<PlaneVertex*>(msr.pData);
+	PlaneMesh::PlaneVertex* vertex = static_cast<PlaneMesh::PlaneVertex*>(msr.pData);
 
 	for (int i = 0; i < mCount; i++)
 	{

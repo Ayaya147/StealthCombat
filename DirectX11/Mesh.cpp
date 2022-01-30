@@ -34,13 +34,6 @@ Mesh::~Mesh()
 
 void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
 {
-	struct Vertex
-	{
-		dx::XMFLOAT3 pos;
-		dx::XMFLOAT3 n;
-		dx::XMFLOAT2 tc;
-	};
-
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(mFileName,
 		aiProcess_Triangulate |
@@ -52,8 +45,9 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 	const auto pMesh = pScene->mMeshes[0];
 
 	std::vector<Vertex> vertices;
-	vertices.reserve(pMesh->mNumVertices);
-	for (unsigned int i = 0; i < pMesh->mNumVertices; i++)
+	mVerticesCount = pMesh->mNumVertices;
+	vertices.reserve(mVerticesCount);
+	for (int i = 0; i < mVerticesCount; i++)
 	{
 		vertices.push_back({
 			*reinterpret_cast<dx::XMFLOAT3*>(&pMesh->mVertices[i]),

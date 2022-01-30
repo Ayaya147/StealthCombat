@@ -28,7 +28,7 @@ public:
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
 	void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
-	void SetDirectionalLight(const struct DirectionalLightConstant& direct);
+	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& dif, const DirectX::XMFLOAT3& spec);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;

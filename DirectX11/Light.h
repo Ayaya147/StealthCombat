@@ -4,16 +4,16 @@
 template<class C>
 class PixelConstantBuffer;
 
-struct DirectionalLightConstant
-{
-	alignas(16) DirectX::XMFLOAT3 mDirection;
-	alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
-	alignas(16) DirectX::XMFLOAT3 mSpecColor;
-};
-
 class Light
 {
 public:
+	struct DirectionalLightConstant
+	{
+		alignas(16) DirectX::XMFLOAT3 mDirection;
+		alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
+		alignas(16) DirectX::XMFLOAT3 mSpecColor;
+	};
+
 	Light(class Renderer* renderer);
 	~Light();
 

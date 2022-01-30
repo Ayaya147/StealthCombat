@@ -9,7 +9,6 @@
 #include "CameraComponent.h"
 #include "Mesh.h"
 #include "TransformCBuffer.h"
-#include "Light.h"
 
 namespace dx = DirectX;
 
@@ -20,11 +19,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetRenderer();
 
 	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.15f, 0.15f, 0.15f });
-	DirectionalLightConstant dir = {};
-	dir.mDirection = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
-	dir.mDiffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
-	dir.mSpecColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
-	renderer->SetDirectionalLight(dir);
+	dx::XMFLOAT3 direction = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
+	dx::XMFLOAT3 diffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
+	dx::XMFLOAT3 specColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
+	renderer->SetDirectionalLight(direction, diffuseColor, specColor);
 
 	PlaneActor* plane = new PlaneActor(this);
 

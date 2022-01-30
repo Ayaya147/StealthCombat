@@ -97,9 +97,11 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	dsDesc.DepthEnable = TRUE;
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	//dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 	wrl::ComPtr<ID3D11DepthStencilState> dsState;
 	ThrowIfFailed(mDevice->CreateDepthStencilState(&dsDesc, &dsState));
-	mContext->OMSetDepthStencilState(dsState.Get(), 1);
+	mContext->OMSetDepthStencilState(dsState.Get(), 0xFF);
 
 	wrl::ComPtr<ID3D11Texture2D> depthStencilBuffer;
 	D3D11_TEXTURE2D_DESC depthStencilDesc = {};
@@ -243,7 +245,12 @@ void Renderer::SetAmbientLight(const DirectX::XMFLOAT3& ambient)
 	mLight->SetAmbientLight(ambient);
 }
 
-void Renderer::SetDirectionalLight(const DirectionalLightConstant& direct)
+void Renderer::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& dif, const DirectX::XMFLOAT3& spec)
 {
-	mLight->SetDirectionalLight(direct);
+	Light::DirectionalLightConstant light;
+	light.mDirection = dir;
+	light.mDiffuseColor = dif;
+	light.mSpecColor = spec;
+
+	mLight->SetDirectionalLight(light);
 }

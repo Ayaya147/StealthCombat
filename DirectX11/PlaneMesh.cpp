@@ -16,10 +16,10 @@ namespace dx = DirectX;
 
 void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int n, float size)
 {
-	mVerticesCount = n * n;
+	SetVerticesCount(n * n);
 
 	std::vector<PlaneVertex> vertices;
-	vertices.reserve(mVerticesCount);
+	vertices.reserve(GetVerticesCount());
 	for (int z = 0; z < n; z++)
 	{
 		for (int x = 0; x < n; x++)
