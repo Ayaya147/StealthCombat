@@ -20,8 +20,10 @@ public:
 	void UnloadData();
 	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
+	void AddTranspComp(class TransparentComponent* mesh);
+	void RemoveTranspComp(class TransparentComponent* mesh);
 
-	class Mesh* GetMesh(const std::string& fileName, const std::wstring& shaderName);
+	class Mesh* GetMesh(const std::string& fileName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
@@ -42,6 +44,7 @@ private:
 	std::unordered_map<std::string, class Mesh*> mMeshes;
 	std::unordered_map<std::string, class Texture*> mTextures;
 	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
+	std::vector<class TransparentComponent*> mTranspComps;
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;

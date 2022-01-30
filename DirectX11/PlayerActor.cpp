@@ -19,7 +19,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 
-	Mesh* mesh = renderer->GetMesh("player", L"Phong");
+	Mesh* mesh = renderer->GetMesh("player");
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 

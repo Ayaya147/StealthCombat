@@ -13,10 +13,10 @@ public:
 		DirectX::XMFLOAT2 tc;
 	};
 
-	Mesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
+	Mesh(const std::string& fileName);
 	virtual ~Mesh();
 
-	void ParseMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName);
+	void ParseMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, bool textured = true);
 	void Bind(class Renderer* renderer);
 	void AddBind(class Bindable* bind);
 

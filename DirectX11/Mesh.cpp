@@ -17,7 +17,7 @@
 
 namespace dx = DirectX;
 
-Mesh::Mesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
+Mesh::Mesh(const std::string& fileName)
 	:
 	mFileName("Assets\\Models\\" + fileName + ".obj")
 {
@@ -32,7 +32,7 @@ Mesh::~Mesh()
 	mBinds.clear();
 }
 
-void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName)
+void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, bool textured)
 {
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(mFileName,
@@ -89,7 +89,10 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	AddBind(new Sampler(renderer));
 	AddBind(new Blender(renderer, true));
-	AddBind(new Texture(renderer, texName));
+	if (textured)
+	{
+		AddBind(new Texture(renderer, texName));
+	}
 }
 
 void Mesh::Bind(Renderer* renderer)

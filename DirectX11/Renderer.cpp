@@ -1,9 +1,11 @@
 #include <dxgi.h>
+#include <algorithm>
 #include "Renderer.h"
 #include "Stencil.h"
 #include "DxException.h"
 #include "PlaneMesh.h"
 #include "MeshComponent.h"
+#include "TransparentComponent.h"
 #include "Texture.h"
 #include "Actor.h"
 #include "CloudActor.h"
@@ -133,6 +135,8 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 Renderer::~Renderer()
 {
 	ImGui_ImplDX11_Shutdown();
+	delete mDepthStencilOff;
+	delete mDepthStencilOn;
 }
 
 void Renderer::Draw()
@@ -167,6 +171,7 @@ void Renderer::Draw3DScene()
 {
 	mDepthStencilOn->Bind(this);
 	mLight->Bind(this);
+
 	std::string name;
 	for (auto mc : mMeshComps)
 	{
@@ -180,6 +185,23 @@ void Renderer::Draw3DScene()
 			m->GetOwner()->Bind(this);
 			m->Draw(this);
 		}
+	}
+
+	auto zTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
+	{
+		return tc1->GetZValue() > tc2->GetZValue();
+	};
+	std::sort(mTranspComps.begin(), mTranspComps.end(), zTest);
+	bool isBind = false;
+	for (auto tc : mTranspComps)
+	{
+		if (!isBind)
+		{
+			tc->GetMesh()->Bind(this);
+			isBind = true;
+		}
+		tc->GetOwner()->Bind(this);
+		tc->Draw(this);
 	}
 }
 
@@ -223,7 +245,18 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderName)
+void Renderer::AddTranspComp(TransparentComponent* mesh)
+{
+	mTranspComps.emplace_back(mesh);
+}
+
+void Renderer::RemoveTranspComp(TransparentComponent* mesh)
+{
+	auto iter = std::find(mTranspComps.begin(), mTranspComps.end(), mesh);
+	mTranspComps.erase(iter);
+}
+
+Mesh* Renderer::GetMesh(const std::string& fileName)
 {
 	Mesh* mesh = nullptr;
 	auto iter = mMeshes.find(fileName);
@@ -235,11 +268,11 @@ Mesh* Renderer::GetMesh(const std::string& fileName, const std::wstring& shaderN
 	{
 		if (fileName != "plane")
 		{
-			mesh = new Mesh(this, fileName, shaderName);
+			mesh = new Mesh(fileName);
 		}
 		else
 		{
-			mesh = new PlaneMesh(this, fileName, shaderName);
+			mesh = new PlaneMesh(fileName);
 		}
 		mMeshes.emplace(fileName, mesh);
 	}

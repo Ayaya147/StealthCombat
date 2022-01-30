@@ -3,12 +3,8 @@
 #include "BaseScene.h"
 #include "Renderer.h"
 #include "SceneManager.h"
-#include <wrl.h>
 #include "Mesh.h"
 #include "DxException.h"
-
-namespace wrl = Microsoft::WRL;
-namespace dx = DirectX;
 
 MeshComponent::MeshComponent(Actor* owner, Mesh* mesh)
 	:

@@ -21,7 +21,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 	SetScale(1.0f);
 
-	Mesh* mesh = renderer->GetMesh("plane", L"PhongNormalMap");
+	Mesh* mesh = renderer->GetMesh("plane");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
 	planeMesh->ParseMesh(renderer, "plane", L"PhongNormalMap",10 ,50.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);

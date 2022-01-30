@@ -13,8 +13,11 @@ public:
 
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
+	float CalculateZValue();
 	void ImGuiWinodow();
 	void Reset();
+
+	float GetZValue() const { return mZValue; }
 
 private:
 	struct ObjectConstant
@@ -39,6 +42,7 @@ private:
 	};
 
 	CloudConstant mData;
+	float mZValue;
 	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;

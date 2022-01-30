@@ -1,7 +1,7 @@
 #include "CloudActor.h"
 #include "Renderer.h"
 #include "Mesh.h"
-#include "MeshComponent.h"
+#include "TransparentComponent.h"
 #include "TransformCBuffer.h"
 #include "GameScene.h"
 #include "ConstantBuffer.h"
@@ -15,7 +15,8 @@ PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = null
 
 CloudActor::CloudActor(BaseScene* scene)
 	:
-	Actor(scene)
+	Actor(scene),
+	mZValue(0.0f)
 {
 	mCount++;
 
@@ -23,9 +24,9 @@ CloudActor::CloudActor(BaseScene* scene)
 	Renderer* renderer = GetScene()->GetRenderer();
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 
-	Mesh* mesh = renderer->GetMesh("cube", L"Raymarching");
-	mesh->ParseMesh(renderer, "cube", L"Raymarching");
-	MeshComponent* mc = new MeshComponent(this, mesh);
+	Mesh* mesh = renderer->GetMesh("cube");
+	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
+	TransparentComponent* tc = new TransparentComponent(this, mesh);
 
 	if (!mObjectCBuffer)
 	{
@@ -51,6 +52,7 @@ CloudActor::~CloudActor()
 void CloudActor::UpdateActor(float deltaTime)
 {
 	mData.mTime = GetScene()->GetGameTime();
+	mZValue = CalculateZValue();
 }
 
 void CloudActor::Bind(Renderer* renderer)
@@ -64,6 +66,13 @@ void CloudActor::Bind(Renderer* renderer)
 
 	mCloudCBuffer->Update(renderer, mData);
 	mCloudCBuffer->Bind(renderer);
+}
+
+float CloudActor::CalculateZValue()
+{
+	dx::XMMATRIX view = GetScene()->GetRenderer()->GetViewMatrix();
+	dx::XMMATRIX matrix = GetWorldTransform() * view;
+	return matrix.r[3].m128_f32[2];
 }
 
 void CloudActor::ImGuiWinodow()
