@@ -20,7 +20,7 @@ cbuffer CloudCBuf : register(b3)
 {
     float3 mCloudColor;
     int mLoop;
-    int mNoiseScale;
+    float mNoiseScale;
     float mRadius;
     int mAbsorption;
     int mOpacity;
@@ -87,9 +87,9 @@ float torus(float3 pos, float2 radius)
 
 float densityFunction(float3 p)
 {
-    return fbm(p * mNoiseScale) - length(p / mRadius);
+    return fbm(p * mNoiseScale) - sphere(p / mRadius, 0.0f);
     //return 0.5f - length(p / mRadius);
-    //return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.2f));
+    //return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.1f));
 }
 
 float densityFunctionAnime(float3 p)

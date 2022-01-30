@@ -26,7 +26,7 @@ private:
 	{
 		alignas(16) DirectX::XMFLOAT3 mCloudColor;
 		int mLoop;
-		int mNoiseScale;
+		float mNoiseScale;
 		float mRadius;
 		int mAbsorption;
 		int mOpacity;
