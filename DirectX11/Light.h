@@ -7,31 +7,24 @@ class PixelConstantBuffer;
 class Light
 {
 public:
-	struct DirectionalLightConstant
-	{
-		alignas(16) DirectX::XMFLOAT3 mDirection;
-		alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
-		alignas(16) DirectX::XMFLOAT3 mSpecColor;
-	};
-
 	Light(class Renderer* renderer);
 	~Light();
 
 	void Bind(class Renderer* renderer);
 
-	void SetAmbientLight(const DirectX::XMFLOAT3& ambient) { mAmbientLight = ambient; }
-	void SetDirectionalLight(const DirectionalLightConstant& direct) { mDirLight = direct; }
+	void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
+	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec);
 
 private:
 	struct ObjectConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 mCameraPos;
 		alignas(16) DirectX::XMFLOAT3 mAmbientLight;
+		alignas(16) DirectX::XMFLOAT3 mDirection;
+		alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
+		alignas(16) DirectX::XMFLOAT3 mSpecColor;
 	};
 
-	DirectX::XMFLOAT3 mAmbientLight;
-	DirectionalLightConstant mDirLight;
-
+	ObjectConstant mObjectConstant;
 	PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
-	PixelConstantBuffer<DirectionalLightConstant>* mDLightCBuffer;
 };

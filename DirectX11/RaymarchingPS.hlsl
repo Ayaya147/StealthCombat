@@ -2,21 +2,17 @@ cbuffer CBuf : register(b0)
 {
     float3 mCameraPos;
     float3 mAmbientLight;
-};
-
-cbuffer DirectLightCBuf : register(b1)
-{
     float3 mDirection;
     float3 mDiffuseColor;
     float3 mSpecColor;
 };
 
-cbuffer ObjectCBuf : register(b2)
+cbuffer ObjectCBuf : register(b1)
 {
     matrix mWorldInverse;
 };
 
-cbuffer CloudCBuf : register(b3)
+cbuffer CloudCBuf : register(b2)
 {
     float3 mCloudColor;
     int mLoop;

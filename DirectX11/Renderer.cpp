@@ -1,5 +1,6 @@
 #include <dxgi.h>
 #include "Renderer.h"
+#include "Stencil.h"
 #include "DxException.h"
 #include "PlaneMesh.h"
 #include "MeshComponent.h"
@@ -93,16 +94,6 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	ThrowIfFailed(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
 	ThrowIfFailed(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &mRenderTargetView));
 
-	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
-	dsDesc.DepthEnable = TRUE;
-	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	//dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//dsDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
-	wrl::ComPtr<ID3D11DepthStencilState> dsState;
-	ThrowIfFailed(mDevice->CreateDepthStencilState(&dsDesc, &dsState));
-	mContext->OMSetDepthStencilState(dsState.Get(), 0xFF);
-
 	wrl::ComPtr<ID3D11Texture2D> depthStencilBuffer;
 	D3D11_TEXTURE2D_DESC depthStencilDesc = {};
 	depthStencilDesc.Width = width;
@@ -132,8 +123,11 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	vp.TopLeftY = 0.0f;
 	mContext->RSSetViewports(1, &vp);
 
-	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
+	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
+	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
 	mLight = new Light(this);
+
+	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 }
 
 Renderer::~Renderer()
@@ -153,6 +147,25 @@ void Renderer::Draw()
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+	Draw3DScene();
+	Draw2DScene();
+
+#ifdef DEBUG
+	if (auto game = dynamic_cast<GameScene*>(mScene))
+	{
+		game->GetCloud()->ImGuiWinodow();
+	}
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+#endif
+
+	mSwapChain->Present(1, 0);
+}
+
+void Renderer::Draw3DScene()
+{
+	mDepthStencilOn->Bind(this);
 	mLight->Bind(this);
 	std::string name;
 	for (auto mc : mMeshComps)
@@ -168,18 +181,11 @@ void Renderer::Draw()
 			m->Draw(this);
 		}
 	}
+}
 
-#ifdef DEBUG
-	if (auto game = dynamic_cast<GameScene*>(mScene))
-	{
-		game->GetCloud()->ImGuiWinodow();
-	}
-
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-#endif
-
-	mSwapChain->Present(1, 0);
+void Renderer::Draw2DScene()
+{
+	mDepthStencilOff->Bind(this);
 }
 
 void Renderer::UnloadData()
@@ -245,12 +251,7 @@ void Renderer::SetAmbientLight(const DirectX::XMFLOAT3& ambient)
 	mLight->SetAmbientLight(ambient);
 }
 
-void Renderer::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& dif, const DirectX::XMFLOAT3& spec)
+void Renderer::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec)
 {
-	Light::DirectionalLightConstant light;
-	light.mDirection = dir;
-	light.mDiffuseColor = dif;
-	light.mSpecColor = spec;
-
-	mLight->SetDirectionalLight(light);
+	mLight->SetDirectionalLight(dir, diff, spec);
 }

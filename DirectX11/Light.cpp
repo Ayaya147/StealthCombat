@@ -6,25 +6,30 @@ namespace dx = DirectX;
 Light::Light(Renderer* renderer)
 {
 	mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 0);
-	mDLightCBuffer = new PixelConstantBuffer<DirectionalLightConstant>(renderer, 1);
 }
 
 Light::~Light()
 {
 	delete mObjectCBuffer;
-	delete mDLightCBuffer;
 }
 
 void Light::Bind(Renderer* renderer)
 {
-	ObjectConstant c = {};
-	c.mAmbientLight = mAmbientLight;
 	dx::XMMATRIX invView = dx::XMMatrixInverse(nullptr, renderer->GetViewMatrix());
-	dx::XMStoreFloat3(&c.mCameraPos, invView.r[3]);
+	dx::XMStoreFloat3(&mObjectConstant.mCameraPos, invView.r[3]);
 
-	mObjectCBuffer->Update(renderer, c);
+	mObjectCBuffer->Update(renderer, mObjectConstant);
 	mObjectCBuffer->Bind(renderer);
+}
 
-	mDLightCBuffer->Update(renderer, mDirLight);
-	mDLightCBuffer->Bind(renderer);
+void Light::SetAmbientLight(const DirectX::XMFLOAT3& ambient)
+{
+	mObjectConstant.mAmbientLight = ambient;
+}
+
+void Light::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec)
+{
+	mObjectConstant.mDirection = dir;
+	mObjectConstant.mDiffuseColor = diff;
+	mObjectConstant.mSpecColor = spec;
 }

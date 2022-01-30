@@ -163,6 +163,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <ClCompile Include="Stencil.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Topology.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Stencil.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />

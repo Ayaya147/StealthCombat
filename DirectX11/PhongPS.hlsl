@@ -2,10 +2,6 @@ cbuffer CBuf : register(b0)
 {
     float3 mCameraPos;
     float3 mAmbientLight;
-};
-
-cbuffer DirectLightCBuf : register(b1)
-{
     float3 mDirection;
     float3 mDiffuseColor;
     float3 mSpecColor;

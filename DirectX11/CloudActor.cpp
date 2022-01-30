@@ -29,11 +29,11 @@ CloudActor::CloudActor(BaseScene* scene)
 
 	if (!mObjectCBuffer)
 	{
-		mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 2);
+		mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 1);
 	}
 	if (!mCloudCBuffer)
 	{
-		mCloudCBuffer = new PixelConstantBuffer<CloudConstant>(renderer, 3);
+		mCloudCBuffer = new PixelConstantBuffer<CloudConstant>(renderer, 2);
 	}
 }
 

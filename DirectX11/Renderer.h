@@ -15,6 +15,8 @@ public:
 	~Renderer();
 
 	void Draw();
+	void Draw3DScene();
+	void Draw2DScene();
 	void UnloadData();
 	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
@@ -28,7 +30,7 @@ public:
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
 	void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
-	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& dif, const DirectX::XMFLOAT3& spec);
+	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
@@ -44,6 +46,8 @@ private:
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
 
+	class Stencil* mDepthStencilOn;
+	class Stencil* mDepthStencilOff;
 	class Light* mLight;
 	class BaseScene* mScene;
 };
