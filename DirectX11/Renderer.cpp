@@ -6,6 +6,7 @@
 #include "PlaneMesh.h"
 #include "MeshComponent.h"
 #include "TransparentComponent.h"
+#include "SpriteComponent.h"
 #include "Texture.h"
 #include "Actor.h"
 #include "CloudActor.h"
@@ -209,6 +210,11 @@ void Renderer::Draw3DScene()
 void Renderer::Draw2DScene()
 {
 	mDepthStencilOff->Bind(this);
+
+	for (auto sprite : mSprites)
+	{
+		sprite->Draw(this);
+	}
 }
 
 void Renderer::UnloadData()
@@ -224,6 +230,27 @@ void Renderer::UnloadData()
 		delete i.second;
 	}
 	mMeshes.clear();
+}
+
+void Renderer::AddSprite(SpriteComponent* sprite)
+{
+	int myDrawOrder = sprite->GetDrawOrder();
+	auto iter = mSprites.begin();
+	for (; iter != mSprites.end(); ++iter)
+	{
+		if (myDrawOrder < (*iter)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+
+	mSprites.insert(iter, sprite);
+}
+
+void Renderer::RemoveSprite(SpriteComponent* sprite)
+{
+	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
+	mSprites.erase(iter);
 }
 
 void Renderer::AddMeshComp(const std::string& name, MeshComponent* mesh)

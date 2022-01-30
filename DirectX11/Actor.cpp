@@ -99,7 +99,7 @@ void Actor::AddComponent(Component* component)
 {
 	int order = component->GetUpdateOrder();
 	auto iter = mComponents.begin();
-	for (; iter != mComponents.end(); iter++)
+	for (; iter != mComponents.end(); ++iter)
 	{
 		if (order < (*iter)->GetUpdateOrder())
 		{

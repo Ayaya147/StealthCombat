@@ -18,6 +18,8 @@ public:
 	void Draw3DScene();
 	void Draw2DScene();
 	void UnloadData();
+	void AddSprite(class SpriteComponent* sprite);
+	void RemoveSprite(class SpriteComponent* sprite);
 	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
 	void AddTranspComp(class TransparentComponent* mesh);
@@ -45,6 +47,7 @@ private:
 	std::unordered_map<std::string, class Texture*> mTextures;
 	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
 	std::vector<class TransparentComponent*> mTranspComps;
+	std::vector<class SpriteComponent*> mSprites;
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
