@@ -135,6 +135,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 Renderer::~Renderer()
 {
 	ImGui_ImplDX11_Shutdown();
+	delete mLight;
 	delete mDepthStencilOff;
 	delete mDepthStencilOn;
 }
@@ -189,7 +190,7 @@ void Renderer::Draw3DScene()
 
 	auto zTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
 	{
-		return tc1->GetZValue() > tc2->GetZValue();
+		return tc1->GetDistFromCamera() > tc2->GetDistFromCamera();
 	};
 	std::sort(mTranspComps.begin(), mTranspComps.end(), zTest);
 	bool isBind = false;
@@ -223,8 +224,6 @@ void Renderer::UnloadData()
 		delete i.second;
 	}
 	mMeshes.clear();
-
-	delete mLight;
 }
 
 void Renderer::AddMeshComp(const std::string& name, MeshComponent* mesh)

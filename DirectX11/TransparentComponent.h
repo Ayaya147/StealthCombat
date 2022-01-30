@@ -10,7 +10,7 @@ public:
 	void Draw(class Renderer* renderer);
 
 	class Mesh* GetMesh() const { return mMesh; }
-	float GetZValue() const;
+	float GetDistFromCamera() const;
 	void SetMesh(class Mesh* mesh) { mMesh = mesh; }
 
 protected:

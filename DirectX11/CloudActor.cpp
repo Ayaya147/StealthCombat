@@ -16,7 +16,7 @@ PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = null
 CloudActor::CloudActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mZValue(0.0f)
+	mDistFromCamera(0.0f)
 {
 	mCount++;
 
@@ -52,7 +52,7 @@ CloudActor::~CloudActor()
 void CloudActor::UpdateActor(float deltaTime)
 {
 	mData.mTime = GetScene()->GetGameTime();
-	mZValue = CalculateZValue();
+	mDistFromCamera = CalcDistFromCamera();
 }
 
 void CloudActor::Bind(Renderer* renderer)
@@ -68,11 +68,15 @@ void CloudActor::Bind(Renderer* renderer)
 	mCloudCBuffer->Bind(renderer);
 }
 
-float CloudActor::CalculateZValue()
+float CloudActor::CalcDistFromCamera()
 {
 	dx::XMMATRIX view = GetScene()->GetRenderer()->GetViewMatrix();
 	dx::XMMATRIX matrix = GetWorldTransform() * view;
-	return matrix.r[3].m128_f32[2];
+	float x = matrix.r[3].m128_f32[0];
+	float y = matrix.r[3].m128_f32[1];
+	float z = matrix.r[3].m128_f32[2];
+
+	return x * x + y * y + z * z;
 }
 
 void CloudActor::ImGuiWinodow()

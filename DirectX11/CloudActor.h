@@ -13,11 +13,11 @@ public:
 
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
-	float CalculateZValue();
+	float CalcDistFromCamera();
 	void ImGuiWinodow();
 	void Reset();
 
-	float GetZValue() const { return mZValue; }
+	float GetDistFromCamera() const { return mDistFromCamera; }
 
 private:
 	struct ObjectConstant
@@ -42,7 +42,7 @@ private:
 	};
 
 	CloudConstant mData;
-	float mZValue;
+	float mDistFromCamera;
 	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;
