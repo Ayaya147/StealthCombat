@@ -43,10 +43,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mCloud->SetScale(10.0f);
 
 	Actor* sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite, false));
+	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\test.png");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 960.0f, 540.0f, 0.0f });
+	sprite->SetPosition(dx::XMFLOAT3{ -700.0f, -400.0f, 0.0f });
+	sprite->SetScale(0.5f);
 }
 
 GameScene::~GameScene()

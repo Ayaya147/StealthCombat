@@ -11,9 +11,12 @@ Texture::Texture(Renderer* renderer, const std::string& fileName, UINT slot)
 {
 	LoadTexture(fileName);
 
+	mWidth = static_cast<UINT>(mScratch.GetMetadata().width);
+	mHeight = static_cast<UINT>(mScratch.GetMetadata().height);
+
 	D3D11_TEXTURE2D_DESC textureDesc = {};
-	textureDesc.Width = static_cast<UINT>(mScratch.GetMetadata().width);
-	textureDesc.Height = static_cast<UINT>(mScratch.GetMetadata().height);
+	textureDesc.Width = mWidth;
+	textureDesc.Height = mHeight;
 	textureDesc.MipLevels = 0;
 	textureDesc.ArraySize = 1;
 	textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;

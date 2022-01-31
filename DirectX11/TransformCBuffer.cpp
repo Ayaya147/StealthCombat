@@ -8,10 +8,9 @@ namespace dx = DirectX;
 VertexConstantBuffer<TransformCBuffer::Transforms>* TransformCBuffer::mBuffer = nullptr;
 UINT TransformCBuffer::mCount = 0;
 
-TransformCBuffer::TransformCBuffer(Renderer* renderer, Actor* actor, bool is3D, UINT slot)
+TransformCBuffer::TransformCBuffer(Renderer* renderer, Actor* actor, UINT slot)
 	:
-	mOwner(actor),
-	mIs3DObject(is3D)
+	mOwner(actor)
 {
 	mCount++;
 
@@ -34,35 +33,32 @@ TransformCBuffer::~TransformCBuffer()
 
 void TransformCBuffer::Bind(Renderer* renderer)
 {
-	if (mIs3DObject)
+	dx::XMMATRIX view = renderer->GetViewMatrix();
+	dx::XMMATRIX projection = renderer->GetProjectionMatrix();
+	dx::XMMATRIX worldTransform = mOwner->GetWorldTransform();
+
+	const Transforms tf =
 	{
-		dx::XMMATRIX view = renderer->GetViewMatrix();
-		dx::XMMATRIX projection = renderer->GetProjectionMatrix();
-		dx::XMMATRIX worldTransform = mOwner->GetWorldTransform();
+		dx::XMMatrixTranspose(worldTransform),
+		dx::XMMatrixTranspose(view * projection)
+	};
 
-		const Transforms tf =
-		{
-			dx::XMMatrixTranspose(worldTransform),
-			dx::XMMatrixTranspose(view * projection)
-		};
+	mBuffer->Update(renderer, tf);
+	mBuffer->Bind(renderer);
+}
 
-		mBuffer->Update(renderer, tf);
-		mBuffer->Bind(renderer);
-	}
-	else
+void TransformCBuffer::Bind(Renderer* renderer, float width, float height)
+{
+	dx::XMMATRIX projection = renderer->GetProjectionMatrix2D();
+	dx::XMMATRIX worldTransform = mOwner->GetWorldTransform();
+	dx::XMMATRIX scaleMat = dx::XMMatrixScaling(width, height, 1.0f);
+
+	const Transforms tf =
 	{
-		dx::XMMATRIX projection = renderer->GetProjectionMatrix2D();
-		//dx::XMMATRIX worldTransform = mOwner->GetWorldTransform();
-		dx::XMMATRIX worldTransform = dx::XMMatrixIdentity();
-		//dx::XMMATRIX scaleMat = dx::XMMatrixScaling(1000.0f, 100.0f, 1.0f);
+		dx::XMMatrixTranspose(scaleMat * worldTransform),
+		dx::XMMatrixTranspose(projection)
+	};
 
-		const Transforms tf =
-		{
-			dx::XMMatrixTranspose(worldTransform),
-			dx::XMMatrixTranspose(projection)
-		};
-
-		mBuffer->Update(renderer, tf);
-		mBuffer->Bind(renderer);
-	}
+	mBuffer->Update(renderer, tf);
+	mBuffer->Bind(renderer);
 }

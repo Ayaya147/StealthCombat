@@ -23,6 +23,7 @@ public:
 	virtual void ActorInput();
 
 	virtual void Bind(class Renderer* renderer);
+	virtual void Bind(class Renderer* renderer, float width, float height);
 
 	void ComputeWorldTransform();
 	void AddComponent(class Component* component);

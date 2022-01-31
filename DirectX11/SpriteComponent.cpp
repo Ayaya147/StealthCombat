@@ -20,11 +20,7 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Draw(Renderer* renderer)
 {
-	GetOwner()->Bind(renderer);
+	GetOwner()->Bind(renderer, static_cast<float>(mTexture->GetTexWidth()), static_cast<float>(mTexture->GetTexHeight()));
 	mTexture->Bind(renderer);
 	renderer->GetContext()->Draw(4, 0);
-}
-
-void SpriteComponent::SetTexture(Texture* texture)
-{
 }

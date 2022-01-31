@@ -11,8 +11,13 @@ public:
 	void Bind(class Renderer* renderer) override;
 	void LoadTexture(const std::string& fileName);
 
+	UINT GetTexWidth() const { return mWidth; }
+	UINT GetTexHeight() const { return mHeight; }
+
 private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mTextureView;
 	DirectX::ScratchImage mScratch;
 	UINT mSlot;
+	UINT mWidth;
+	UINT mHeight;
 };

@@ -83,6 +83,14 @@ void Actor::Bind(Renderer* renderer)
 	}
 }
 
+void Actor::Bind(Renderer* renderer, float width, float height)
+{
+	if (mTransformCBuffer)
+	{
+		mTransformCBuffer->Bind(renderer, width, height);
+	}
+}
+
 void Actor::ComputeWorldTransform()
 {
 	if (mRecomputeWorldTransform)

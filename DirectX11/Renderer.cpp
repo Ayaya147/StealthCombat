@@ -28,7 +28,7 @@ namespace wrl = Microsoft::WRL;
 Renderer::Renderer(HWND hWnd, int width, int height)
 	:
 	mProjection(dx::XMMatrixPerspectiveLH(1, static_cast<float>(height) / static_cast<float>(width), 0.5f, 500.0f)),
-	mProjection2D(dx::XMMatrixOrthographicOffCenterLH(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, 0.0f, 1.0f))
+	mProjection2D(dx::XMMatrixOrthographicOffCenterLH(-960.0f, 960.0f, 540.0f, -540.0f, 0.0f, 1.0f))
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
@@ -202,11 +202,11 @@ void Renderer::Draw3DScene()
 		}
 	}
 
-	auto zTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
+	auto distTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
 	{
 		return tc1->GetDistFromCamera() > tc2->GetDistFromCamera();
 	};
-	std::sort(mTranspComps.begin(), mTranspComps.end(), zTest);
+	std::sort(mTranspComps.begin(), mTranspComps.end(), distTest);
 	bool isBind = false;
 	for (auto tc : mTranspComps)
 	{
@@ -310,18 +310,10 @@ void Renderer::Create2DBuffer()
 
 	std::vector<Vertex> vertices;
 	vertices.reserve(4);
-	//vertices.push_back({ {-0.5f,-0.5f,0.0f} ,{0.0f,0.0f} });
-	//vertices.push_back({ { 0.5f,-0.5f,0.0f} ,{1.0f,0.0f} });
-	//vertices.push_back({ {-0.5f, 0.5f,0.0f} ,{0.0f,1.0f} });
-	//vertices.push_back({ { 0.5f, 0.5f,0.0f} ,{1.0f,1.0f} });
-	float x = 960.0f;
-	float y = 540.0f;
-	float hw = 500.0f / 2.0f;
-	float hh = 200.0f / 2.0f;
-	vertices.push_back({ {x- hw,y- hh,0.0f} ,{0.0f,0.0f} });
-	vertices.push_back({ {x+ hw,y- hh,0.0f} ,{1.0f,0.0f} });
-	vertices.push_back({ {x- hw,y+ hh,0.0f} ,{0.0f,1.0f} });
-	vertices.push_back({ {x+ hw,y+ hh,0.0f} ,{1.0f,1.0f} });
+	vertices.push_back({ {-0.5f,-0.5f,0.0f} ,{0.0f,0.0f} });
+	vertices.push_back({ { 0.5f,-0.5f,0.0f} ,{1.0f,0.0f} });
+	vertices.push_back({ {-0.5f, 0.5f,0.0f} ,{0.0f,1.0f} });
+	vertices.push_back({ { 0.5f, 0.5f,0.0f} ,{1.0f,1.0f} });
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 	{
