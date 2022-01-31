@@ -77,7 +77,7 @@ void GameScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetInputSystem()->GetKeyboard()->KeyIsPressed('V'))
+	if (GetInputSystem()->GetKeyboard()->KeyIsPressed(VK_RETURN))
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);

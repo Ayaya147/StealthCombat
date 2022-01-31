@@ -13,7 +13,7 @@ SceneManager::SceneManager(GameApp* gameApp)
 	mApp(gameApp)
 {
 	Parameter parameter;
-	mSceneStack.emplace(new TitleScene(this, parameter));
+	mSceneStack.emplace(new GameScene(this, parameter));
 
 	GetRenderer()->SetScene(mSceneStack.top());
 
