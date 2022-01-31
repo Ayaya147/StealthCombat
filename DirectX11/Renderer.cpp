@@ -180,7 +180,7 @@ void Renderer::Draw()
 #ifdef DEBUG
 	if (auto game = dynamic_cast<GameScene*>(mScene))
 	{
-		//game->GetCloud()->ImGuiWinodow();
+		game->GetCloud()->ImGuiWinodow();
 	}
 
 	ImGui::Render();
@@ -261,8 +261,6 @@ void Renderer::UnloadData()
 	mMeshes.clear();
 
 	mMeshComps.clear();
-	mTranspComps.clear();
-	mSpriteComps.clear();
 }
 
 void Renderer::AddSprite(SpriteComponent* sprite)
