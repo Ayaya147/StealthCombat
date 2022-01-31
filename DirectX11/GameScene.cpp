@@ -9,6 +9,8 @@
 #include "CameraComponent.h"
 #include "Mesh.h"
 #include "TransformCBuffer.h"
+#include "SpriteComponent.h"
+#include "Texture.h"
 
 namespace dx = DirectX;
 
@@ -38,7 +40,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mCloud = new CloudActor(this);
 	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,100.0f,0.0f });
 	//mCloud->SetScale(dx::XMFLOAT3{ 10.0f,10.0f,10.0f });
-	mCloud->SetScale(6.0f);
+	mCloud->SetScale(10.0f);
+
+	Actor* sprite = new Actor(this);
+	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite, false));
+	Texture* tex = renderer->GetTexture("Assets\\Texture\\test.png");
+	SpriteComponent* sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 960.0f, 540.0f, 0.0f });
 }
 
 GameScene::~GameScene()

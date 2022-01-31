@@ -8,7 +8,7 @@ class VertexConstantBuffer;
 class TransformCBuffer : public Bindable
 {
 public:
-	TransformCBuffer(class Renderer* renderer, class Actor* actor, UINT slot = 0);
+	TransformCBuffer(class Renderer* renderer, class Actor* actor, bool is3D = true, UINT slot = 0);
 	~TransformCBuffer();
 
 	void Bind(class Renderer* renderer) override;
@@ -25,4 +25,5 @@ protected:
 private:
 	static VertexConstantBuffer<Transforms>* mBuffer;
 	static UINT mCount;
+	bool mIs3DObject;
 };

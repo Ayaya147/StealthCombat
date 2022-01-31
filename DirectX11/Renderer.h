@@ -24,12 +24,15 @@ public:
 	void RemoveMeshComp(class MeshComponent* mesh);
 	void AddTranspComp(class TransparentComponent* mesh);
 	void RemoveTranspComp(class TransparentComponent* mesh);
+	void Create2DBuffer();
 
 	class Mesh* GetMesh(const std::string& fileName);
+	class Texture* GetTexture(const std::string& fileName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
 	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
 	const DirectX::XMMATRIX& GetProjectionMatrix() const { return mProjection; }
+	const DirectX::XMMATRIX& GetProjectionMatrix2D() const { return mProjection2D; }
 
 	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
@@ -51,9 +54,16 @@ private:
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
+	DirectX::XMMATRIX mProjection2D;
 
 	class Stencil* mDepthStencilOn;
 	class Stencil* mDepthStencilOff;
 	class Light* mLight;
 	class BaseScene* mScene;
+
+	class VertexBuffer* mVertexBuffer;
+	class Topology* mTopology;
+	class InputLayout* mInputLayout;
+	class PixelShader* mPixelShader;
+	class VertexShader* mVertexShader;
 };

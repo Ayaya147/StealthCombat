@@ -4,7 +4,7 @@
 class SpriteComponent : public Component
 {
 public:
-	SpriteComponent(class Actor* owner, int drawOrder = 100);
+	SpriteComponent(class Actor* owner, class Texture* tex, int drawOrder = 100);
 	~SpriteComponent();
 
 	virtual void Draw(class Renderer* renderer);

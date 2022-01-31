@@ -2,11 +2,13 @@
 #include "Renderer.h"
 #include "Actor.h"
 #include "BaseScene.h"
+#include "Texture.h"
 
-SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
+SpriteComponent::SpriteComponent(Actor* owner,Texture* tex, int drawOrder)
 	:
 	Component(owner),
-	mDrawOrder(drawOrder)
+	mDrawOrder(drawOrder),
+	mTexture(tex)
 {
 	GetOwner()->GetScene()->GetRenderer()->AddSprite(this);
 }
@@ -18,6 +20,9 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Draw(Renderer* renderer)
 {
+	GetOwner()->Bind(renderer);
+	mTexture->Bind(renderer);
+	renderer->GetContext()->Draw(4, 0);
 }
 
 void SpriteComponent::SetTexture(Texture* texture)

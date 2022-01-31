@@ -1,7 +1,13 @@
 #include <dxgi.h>
 #include <algorithm>
 #include "Renderer.h"
+#include "Texture.h"
 #include "Stencil.h"
+#include "VertexBuffer.h"
+#include "Topology.h"
+#include "InputLayout.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 #include "DxException.h"
 #include "PlaneMesh.h"
 #include "MeshComponent.h"
@@ -21,7 +27,8 @@ namespace wrl = Microsoft::WRL;
 
 Renderer::Renderer(HWND hWnd, int width, int height)
 	:
-	mProjection(dx::XMMatrixPerspectiveLH(1, static_cast<float>(height) / static_cast<float>(width), 0.5f, 500.0f))
+	mProjection(dx::XMMatrixPerspectiveLH(1, static_cast<float>(height) / static_cast<float>(width), 0.5f, 500.0f)),
+	mProjection2D(dx::XMMatrixOrthographicOffCenterLH(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, 0.0f, 1.0f))
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
@@ -129,6 +136,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
 	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
 	mLight = new Light(this);
+	Create2DBuffer();
 
 	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 }
@@ -139,6 +147,11 @@ Renderer::~Renderer()
 	delete mLight;
 	delete mDepthStencilOff;
 	delete mDepthStencilOn;
+	delete mVertexBuffer;
+	delete mVertexShader;
+	delete mPixelShader;
+	delete mTopology;
+	delete mInputLayout;
 }
 
 void Renderer::Draw()
@@ -210,6 +223,11 @@ void Renderer::Draw3DScene()
 void Renderer::Draw2DScene()
 {
 	mDepthStencilOff->Bind(this);
+	mVertexBuffer->Bind(this);
+	mTopology->Bind(this);
+	mInputLayout->Bind(this);
+	mVertexShader->Bind(this);
+	mPixelShader->Bind(this);
 
 	for (auto sprite : mSprites)
 	{
@@ -282,6 +300,42 @@ void Renderer::RemoveTranspComp(TransparentComponent* mesh)
 	mTranspComps.erase(iter);
 }
 
+void Renderer::Create2DBuffer()
+{
+	struct Vertex
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT2 tc;
+	};
+
+	std::vector<Vertex> vertices;
+	vertices.reserve(4);
+	//vertices.push_back({ {-0.5f,-0.5f,0.0f} ,{0.0f,0.0f} });
+	//vertices.push_back({ { 0.5f,-0.5f,0.0f} ,{1.0f,0.0f} });
+	//vertices.push_back({ {-0.5f, 0.5f,0.0f} ,{0.0f,1.0f} });
+	//vertices.push_back({ { 0.5f, 0.5f,0.0f} ,{1.0f,1.0f} });
+	float x = 960.0f;
+	float y = 540.0f;
+	float hw = 500.0f / 2.0f;
+	float hh = 200.0f / 2.0f;
+	vertices.push_back({ {x- hw,y- hh,0.0f} ,{0.0f,0.0f} });
+	vertices.push_back({ {x+ hw,y- hh,0.0f} ,{1.0f,0.0f} });
+	vertices.push_back({ {x- hw,y+ hh,0.0f} ,{0.0f,1.0f} });
+	vertices.push_back({ {x+ hw,y+ hh,0.0f} ,{1.0f,1.0f} });
+
+	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
+	{
+		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TexCoord",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+	};
+
+	mVertexBuffer = new VertexBuffer(this, vertices);
+	mVertexShader = new VertexShader(this, L"ShaderBins\\SpriteVS.cso");
+	mPixelShader = new PixelShader(this, L"ShaderBins\\SpritePS.cso");
+	mTopology = new Topology(this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	mInputLayout = new InputLayout(this, ied, mVertexShader);
+}
+
 Mesh* Renderer::GetMesh(const std::string& fileName)
 {
 	Mesh* mesh = nullptr;
@@ -303,6 +357,22 @@ Mesh* Renderer::GetMesh(const std::string& fileName)
 		mMeshes.emplace(fileName, mesh);
 	}
 	return mesh;
+}
+
+Texture* Renderer::GetTexture(const std::string& fileName)
+{
+	Texture* tex = nullptr;
+	auto iter = mTextures.find(fileName);
+	if (iter != mTextures.end())
+	{
+		tex = iter->second;
+	}
+	else
+	{
+		tex = new Texture(this, fileName);
+		mTextures.emplace(fileName, tex);
+	}
+	return tex;
 }
 
 void Renderer::SetAmbientLight(const DirectX::XMFLOAT3& ambient)
