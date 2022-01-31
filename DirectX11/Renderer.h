@@ -50,7 +50,7 @@ private:
 	std::unordered_map<std::string, class Texture*> mTextures;
 	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
 	std::vector<class TransparentComponent*> mTranspComps;
-	std::vector<class SpriteComponent*> mSprites;
+	std::vector<class SpriteComponent*> mSpriteComps;
 
 	DirectX::XMMATRIX mView;
 	DirectX::XMMATRIX mProjection;
@@ -58,6 +58,10 @@ private:
 
 	class Stencil* mDepthStencilOn;
 	class Stencil* mDepthStencilOff;
+	class Blender* mBlenderOn;
+	class Blender* mBlenderOff;
+	class Sampler* mSampler;
+
 	class Light* mLight;
 	class BaseScene* mScene;
 

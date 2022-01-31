@@ -8,6 +8,8 @@
 #include "InputLayout.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "Blender.h"
+#include "Sampler.h"
 #include "DxException.h"
 #include "PlaneMesh.h"
 #include "MeshComponent.h"
@@ -135,6 +137,9 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 
 	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
 	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
+	mSampler = new Sampler(this);
+	mBlenderOn = new Blender(this, true);
+	mBlenderOff = new Blender(this, false);
 	mLight = new Light(this);
 	Create2DBuffer();
 
@@ -152,6 +157,9 @@ Renderer::~Renderer()
 	delete mPixelShader;
 	delete mTopology;
 	delete mInputLayout;
+	delete mSampler;
+	delete mBlenderOff;
+	delete mBlenderOn;
 }
 
 void Renderer::Draw()
@@ -172,7 +180,7 @@ void Renderer::Draw()
 #ifdef DEBUG
 	if (auto game = dynamic_cast<GameScene*>(mScene))
 	{
-		game->GetCloud()->ImGuiWinodow();
+		//game->GetCloud()->ImGuiWinodow();
 	}
 
 	ImGui::Render();
@@ -185,6 +193,8 @@ void Renderer::Draw()
 void Renderer::Draw3DScene()
 {
 	mDepthStencilOn->Bind(this);
+	mSampler->Bind(this);
+	mBlenderOff->Bind(this);
 	mLight->Bind(this);
 
 	std::string name;
@@ -202,6 +212,7 @@ void Renderer::Draw3DScene()
 		}
 	}
 
+	mBlenderOn->Bind(this);
 	auto distTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
 	{
 		return tc1->GetDistFromCamera() > tc2->GetDistFromCamera();
@@ -229,7 +240,7 @@ void Renderer::Draw2DScene()
 	mVertexShader->Bind(this);
 	mPixelShader->Bind(this);
 
-	for (auto sprite : mSprites)
+	for (auto sprite : mSpriteComps)
 	{
 		sprite->Draw(this);
 	}
@@ -248,13 +259,17 @@ void Renderer::UnloadData()
 		delete i.second;
 	}
 	mMeshes.clear();
+
+	mMeshComps.clear();
+	mTranspComps.clear();
+	mSpriteComps.clear();
 }
 
 void Renderer::AddSprite(SpriteComponent* sprite)
 {
 	int myDrawOrder = sprite->GetDrawOrder();
-	auto iter = mSprites.begin();
-	for (; iter != mSprites.end(); ++iter)
+	auto iter = mSpriteComps.begin();
+	for (; iter != mSpriteComps.end(); ++iter)
 	{
 		if (myDrawOrder < (*iter)->GetDrawOrder())
 		{
@@ -262,13 +277,13 @@ void Renderer::AddSprite(SpriteComponent* sprite)
 		}
 	}
 
-	mSprites.insert(iter, sprite);
+	mSpriteComps.insert(iter, sprite);
 }
 
 void Renderer::RemoveSprite(SpriteComponent* sprite)
 {
-	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
-	mSprites.erase(iter);
+	auto iter = std::find(mSpriteComps.begin(), mSpriteComps.end(), sprite);
+	mSpriteComps.erase(iter);
 }
 
 void Renderer::AddMeshComp(const std::string& name, MeshComponent* mesh)

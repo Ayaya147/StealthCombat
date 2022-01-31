@@ -45,7 +45,9 @@ CloudActor::~CloudActor()
 	if (mCount == 0)
 	{
 		delete mObjectCBuffer;
+		mObjectCBuffer = nullptr;
 		delete mCloudCBuffer;
+		mCloudCBuffer = nullptr;
 	}
 }
 

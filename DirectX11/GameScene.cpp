@@ -11,6 +11,8 @@
 #include "TransformCBuffer.h"
 #include "SpriteComponent.h"
 #include "Texture.h"
+#include "InputSystem.h"
+#include "Keyboard.h"
 
 namespace dx = DirectX;
 
@@ -48,6 +50,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -700.0f, -400.0f, 0.0f });
 	sprite->SetScale(0.5f);
+
+	sprite = new Actor(this);
+	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
+	tex = renderer->GetTexture("Assets\\Texture\\normal1.png");
+	sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });
+	sprite->SetScale(0.2f);
 }
 
 GameScene::~GameScene()
@@ -68,9 +77,9 @@ void GameScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	//if (1)
-	//{
-	//	Parameter parameter;
-	//	mSceneManager->ChangeScene(SceneType::EGame, parameter, true);
-	//}
+	if (GetInputSystem()->GetKeyboard()->KeyIsPressed('V'))
+	{
+		Parameter parameter;
+		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+	}
 }

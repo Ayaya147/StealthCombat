@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Parameter.h"
+#include "TitleScene.h"
 #include "GameScene.h"
 #include "Renderer.h"
 #include "Random.h"
@@ -12,7 +13,7 @@ SceneManager::SceneManager(GameApp* gameApp)
 	mApp(gameApp)
 {
 	Parameter parameter;
-	mSceneStack.emplace(new GameScene(this, parameter));
+	mSceneStack.emplace(new TitleScene(this, parameter));
 
 	GetRenderer()->SetScene(mSceneStack.top());
 
@@ -49,6 +50,7 @@ void SceneManager::ChangeScene(SceneType scene, const Parameter& parameter, bool
 	switch (scene)
 	{
 	case SceneType::ETitle:
+		mSceneStack.emplace(new TitleScene(this, parameter));
 		break;
 	case SceneType::EGame:
 		mSceneStack.emplace(new GameScene(this, parameter));

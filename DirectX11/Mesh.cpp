@@ -87,8 +87,6 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 	AddBind(new PixelShader(renderer, PSName));
 	AddBind(new InputLayout(renderer, ied, vs));
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	AddBind(new Sampler(renderer));
-	AddBind(new Blender(renderer, true));
 	if (textured)
 	{
 		AddBind(new Texture(renderer, texName));

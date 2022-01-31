@@ -167,6 +167,7 @@
     <ClCompile Include="Stencil.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuffer.cpp" />
     <ClCompile Include="TransparentComponent.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="Stencil.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCBuffer.h" />
     <ClInclude Include="TransparentComponent.h" />

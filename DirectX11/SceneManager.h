@@ -1,16 +1,16 @@
 #pragma once
 #include <stack>
 
-enum class SceneType
-{
-	ETitle,
-	EGame,
-	EResult,
-};
-
 class SceneManager
 {
 public:
+	enum class SceneType
+	{
+		ETitle,
+		EGame,
+		EResult,
+	};
+
 	SceneManager(class GameApp* gameApp);
 	~SceneManager();
 	
