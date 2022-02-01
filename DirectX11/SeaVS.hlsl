@@ -4,10 +4,10 @@ cbuffer CBuf : register(b0)
     matrix mViewProj;
 };
 
-//cbuffer TBuf : register(b1)
-//{
-//    float mTime;
-//}
+cbuffer TBuf : register(b1)
+{
+    float mTime;
+}
 
 struct VSOut
 {
@@ -111,12 +111,15 @@ float3 GerstnerWave_Cross(float2 amp, float freq, float steep, float speed, floa
 VSOut main(float3 vertex : Position)
 {
     VSOut o;
-    float4 vt = float4(vertex, 1.0f);
-    float4 world_pos = mul(mWorldTransform, vt);
-    o.world_pos = world_pos.xyz;
+    //float4 vt = float4(vertex, 1.0f);
+    //float4 world_pos = mul(mWorldTransform, vt);
+    //o.world_pos = (float3)world_pos;
 
-    //float time = mTime * _WaveSpeed;
-    float time = 1.0f;
+    float4 world_pos = mul(float4(vertex, 1.0f), mWorldTransform);
+    o.world_pos = (float3) mul(float4(vertex, 1.0f), mWorldTransform);
+
+    float time = mTime/20.0f * _WaveSpeed;
+    //float time = 1.0f;
     
     float3 p = 0.0;
     for (int i = 0; i < count; i++)
@@ -129,7 +132,7 @@ VSOut main(float3 vertex : Position)
     }
     world_pos.xyz += p;
 
-    o.vertex = mul(float4(o.world_pos, 1.0f), mViewProj);
+    o.vertex = mul(world_pos, mViewProj);
 
     return o;
 }

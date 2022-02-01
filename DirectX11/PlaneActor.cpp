@@ -24,7 +24,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 	Mesh* mesh = renderer->GetMesh("plane");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"Sea",10 ,50.0f);
+	planeMesh->ParseMesh(renderer, "plane", L"Sea",2 ,500.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 
 	mCount = planeMesh->GetVerticesCount();
@@ -38,15 +38,15 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	}
 
 
-	//mObjectCBuffer1 = new VertexConstantBuffer<ObjectConstant>(renderer, 1);
-	//mObjectCBuffer2 = new PixelConstantBuffer<ObjectConstant>(renderer, 1);
+	mObjectCBuffer1 = new VertexConstantBuffer<ObjectConstant>(renderer, 1);
+	mObjectCBuffer2 = new PixelConstantBuffer<ObjectConstant>(renderer, 1);
 
 }
 
 PlaneActor::~PlaneActor()
 {
-	//delete mObjectCBuffer1;
-	//delete mObjectCBuffer2;
+	delete mObjectCBuffer1;
+	delete mObjectCBuffer2;
 }
 
 void PlaneActor::UpdateActor(float deltaTime)
@@ -69,12 +69,13 @@ void PlaneActor::UpdateActor(float deltaTime)
 void PlaneActor::Bind(Renderer* renderer)
 {
 	Actor::Bind(renderer);
-	//ObjectConstant mData;
-	//mData.time = GetScene()->GetGameTime();
 
-	//mObjectCBuffer1->Update(renderer, mData);
-	//mObjectCBuffer1->Bind(renderer);	
-	//
-	//mObjectCBuffer2->Update(renderer, mData);
-	//mObjectCBuffer2->Bind(renderer);
+	ObjectConstant mData;
+	mData.time = GetScene()->GetGameTime();
+
+	mObjectCBuffer1->Update(renderer, mData);
+	mObjectCBuffer1->Bind(renderer);	
+	
+	mObjectCBuffer2->Update(renderer, mData);
+	mObjectCBuffer2->Bind(renderer);
 }

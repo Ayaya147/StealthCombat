@@ -29,18 +29,21 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	renderer->SetDirectionalLight(direction, diffuseColor, specColor);
 
 	PlaneActor* plane = new PlaneActor(this);
+	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });
+
+	float height = 150.0f;
 
 	PlayerActor* player = new PlayerActor(this);
-	player->SetPosition(dx::XMFLOAT3{ 0.0f,100.0f,0.0f });
+	player->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
 	player->SetScale(0.1f);
 	CameraComponent* cc = new CameraComponent(player);
 	
 	CloudActor* cloud = new CloudActor(this);
-	cloud->SetPosition(dx::XMFLOAT3{ 5.0f,100.0f,0.0f });
+	cloud->SetPosition(dx::XMFLOAT3{ 5.0f,height,0.0f });
 	cloud->SetScale(4.0f);
 
 	mCloud = new CloudActor(this);
-	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,100.0f,0.0f });
+	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,height,0.0f });
 	//mCloud->SetScale(dx::XMFLOAT3{ 10.0f,10.0f,10.0f });
 	mCloud->SetScale(10.0f);
 

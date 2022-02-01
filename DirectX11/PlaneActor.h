@@ -17,14 +17,14 @@ public:
 	void Bind(class Renderer* renderer) override;
 
 private:
-	//struct ObjectConstant
-	//{
-	//	float time;
-	//	float padding[3];
-	//};
+	struct ObjectConstant
+	{
+		float time;
+		float padding[3];
+	};
 
-	//VertexConstantBuffer<ObjectConstant>* mObjectCBuffer1;
-	//PixelConstantBuffer<ObjectConstant>* mObjectCBuffer2;
+	VertexConstantBuffer<ObjectConstant>* mObjectCBuffer1;
+	PixelConstantBuffer<ObjectConstant>* mObjectCBuffer2;
 
 
 	class VertexBuffer* mVertexBuffer;

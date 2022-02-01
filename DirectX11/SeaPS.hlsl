@@ -7,20 +7,18 @@ cbuffer CBuf : register(b0)
     float3 mSpecColor;
 };
 
-//cbuffer TBuf : register(b1)
-//{
-//    float mTime;
-//}
+cbuffer TBuf : register(b1)
+{
+    float mTime;
+}
 
-static const float4 seaColor = float4(0.0f, 0.5f, 0.9f, 1.0f);
-static const float specPower = 30.0f;
 static const float _WaveSpeed = 1.0f;
 static const float r = 0.02f;
 static const float _BaseColorStrength = 0.9f;
 static const float _ShallowColorStrength = 0.35f;
 static const float _Shininess = 0.27f;
 static const float _ColorHightOffset = 0.15f;
-static const float3 _SeaBaseColor = float3(0.1f, 0.22f, 0.30f);
+static const float3 _SeaBaseColor = float3(0.1f, 0.22f, 0.35f);
 static const float3 _SeaShallowColor = float3(0.29f, 0.35f, 0.14f);
 static const float3 _LightColor0 = float3(1.0f, 1.0f, 1.0f);
 static const float3 _SkyColor = float3(0.0f, 0.41f, 1.0f);
@@ -125,7 +123,7 @@ float3 GetSkyColor(float3 dir, float3 c)
 float3 OceanColor(float3 worldPos, float wave_height, float3 normal)
 {
    
-    float3 lightDir = normalize(-mAmbientLight);
+    float3 lightDir = normalize(-mDirection);
     float3 viewDir = normalize(mCameraPos - worldPos);
     float3 halfDir = normalize(lightDir + viewDir);
 	
@@ -156,8 +154,8 @@ float4 main(float3 worldPos : Position) : SV_Target
     float3 world_pos = worldPos;
     float3 geo_pos = world_pos;
 
-    //float time = mTime * _WaveSpeed;
-    float time = 1.0f;
+    float time = mTime / 20.0f * _WaveSpeed;
+    //float time = 1.0f;
     
     float3 p = 0.0;
     float3 pb = float3(0.05, 0.0, 0.0);
