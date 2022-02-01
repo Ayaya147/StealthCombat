@@ -11,9 +11,17 @@ SamplerState splr : register(s0);
 Texture2D nmap0 : register(t0);
 Texture2D nmap1 : register(t1);
 
-static const float4 seaColor = float4(0.0f, 0.5f, 0.9f, 1.0f);
+static const float3 seaColor = float3(0.0f, 0.4f, 0.9f);
 static const float specPower = 30.0f;
-//static const float f0 = 0.02f;
+static const float f0 = 0.02f;
+static const float3 _SkyColor = float3(1.0f, 1.0f, 1.0f);
+
+float3 GetSkyColor(float3 dir, float3 c)
+{
+    dir.y = max(0.0, dir.y);
+    float et = 1.0 - dir.y;
+    return (1.0 - c) * et + c, 1.0f;
+}
 
 float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc0 : Tex0Coord, float2 tc1 : Tex1Coord) : SV_Target
 {
@@ -32,15 +40,20 @@ float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : T
 
     float3 diffuse = 0.0f;
     float3 specular = 0.0f;
-    //float3 fresnel = 0.0f;
+    float fresnel = 0.0f;
+    float3 water_color = 0.0f;
     
-    float nDotL = dot(n, l);    
+    float nDotL = dot(n, l);
     if (nDotL > 0)
     {
-        diffuse = mDiffuseColor * nDotL;
+        diffuse = seaColor * nDotL * mDiffuseColor;
         specular = mSpecColor * pow(max(0.0f, dot(r, v)), specPower);
-        //fresnel = f0 + (1.0f - f0) * pow(1.0f - dot(v, n), 5.0f);
+        fresnel = f0 + (1.0f - f0) * pow(1.0f - dot(v, n), 5.0f);
+        
+        float3 sea_base_color = diffuse + mAmbientLight;
+        float3 sea_reflect_color = GetSkyColor(reflect(-v, n), _SkyColor);
+        water_color = lerp(sea_base_color, sea_reflect_color, fresnel);
     }
 
-    return float4(saturate((diffuse + mAmbientLight) * seaColor.rgb + specular), 1.0f);
+    return float4(saturate(water_color + specular), 1.0f);
 }

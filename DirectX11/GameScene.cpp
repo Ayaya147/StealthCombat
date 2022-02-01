@@ -51,12 +51,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetPosition(dx::XMFLOAT3{ -700.0f, -400.0f, 0.0f });
 	sprite->SetScale(0.5f);
 
-	sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
-	tex = renderer->GetTexture("Assets\\Texture\\normal1.png");
-	sc = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });
-	sprite->SetScale(0.2f);
+	//sprite = new Actor(this);
+	//sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
+	//tex = renderer->GetTexture("Assets\\Texture\\normal1.png");
+	//sc = new SpriteComponent(sprite, tex);
+	//sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });
+	//sprite->SetScale(0.2f);
 }
 
 GameScene::~GameScene()
