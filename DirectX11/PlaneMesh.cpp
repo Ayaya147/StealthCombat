@@ -52,10 +52,10 @@ void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 	{
-		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "Tex0Coord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "Tex1Coord",0,DXGI_FORMAT_R32G32_FLOAT,0,32,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 }
+		//{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		//{ "Tex0Coord",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		//{ "Tex1Coord",0,DXGI_FORMAT_R32G32_FLOAT,0,32,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 
 	std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
@@ -73,6 +73,6 @@ void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const
 	AddBind(new PixelShader(renderer, PSName));
 	AddBind(new InputLayout(renderer, ied, vs));
 	AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP));
-	AddBind(new Texture(renderer, texName1, 0));
-	AddBind(new Texture(renderer, texName2, 1));
+	//AddBind(new Texture(renderer, texName1, 0));
+	//AddBind(new Texture(renderer, texName2, 1));
 }

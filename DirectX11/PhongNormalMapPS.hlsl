@@ -20,7 +20,7 @@ float3 GetSkyColor(float3 dir, float3 c)
 {
     dir.y = max(0.0, dir.y);
     float et = 1.0 - dir.y;
-    return (1.0 - c) * et + c, 1.0f;
+    return (1.0 - c) * et + c;
 }
 
 float4 main(float3 worldPos : Position, float3 worldNor : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc0 : Tex0Coord, float2 tc1 : Tex1Coord) : SV_Target
