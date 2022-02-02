@@ -14,7 +14,7 @@ public:
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
 	float CalcDistFromCamera();
-	void ImGuiWinodow();
+	void ImGuiWindow();
 	void Reset();
 
 	float GetDistFromCamera() const { return mDistFromCamera; }

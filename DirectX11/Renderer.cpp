@@ -18,6 +18,7 @@
 #include "Texture.h"
 #include "Actor.h"
 #include "CloudActor.h"
+#include "PlaneActor.h"
 #include "BaseScene.h"
 #include "GameScene.h"
 #include "Light.h"
@@ -141,6 +142,7 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	mBlenderOn = new Blender(this, true);
 	mBlenderOff = new Blender(this, false);
 	mLight = new Light(this);
+
 	Create2DBuffer();
 
 	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
@@ -180,7 +182,8 @@ void Renderer::Draw()
 #ifdef DEBUG
 	if (auto game = dynamic_cast<GameScene*>(mScene))
 	{
-		game->GetCloud()->ImGuiWinodow();
+		game->GetCloud()->ImGuiWindow();
+		game->GetPlane()->ImGuiWindow();
 	}
 
 	ImGui::Render();

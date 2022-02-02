@@ -81,18 +81,18 @@ float CloudActor::CalcDistFromCamera()
 	return x * x + y * y + z * z;
 }
 
-void CloudActor::ImGuiWinodow()
+void CloudActor::ImGuiWindow()
 {
 	if (ImGui::Begin("Ray Marching"))
 	{
-		ImGui::Text("Base");
+		ImGui::Text("Cloud");
 		ImGui::ColorEdit3("Cloud Color", &mData.mCloudColor.x);
 		ImGui::SliderInt("Absorption", &mData.mAbsorption, 0, 100, "%d");
 		ImGui::SliderInt("Opacity", &mData.mOpacity, 0, 100, "%d");
 		ImGui::SliderInt("Loop", &mData.mLoop, 0, 64, "%d");
 
 		ImGui::Text("Noise");
-		ImGui::SliderFloat("Noise Scale", &mData.mNoiseScale, 0, 64, "%.1f");
+		ImGui::SliderFloat("Noise Scale", &mData.mNoiseScale, 0, 64, "%.2f");
 		ImGui::SliderFloat("Radius", &mData.mRadius, 0.0f, 2.0f, "%.2f");
 
 		ImGui::Text("Light");

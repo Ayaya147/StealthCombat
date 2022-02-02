@@ -28,7 +28,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	dx::XMFLOAT3 specColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
 	renderer->SetDirectionalLight(direction, diffuseColor, specColor);
 
-	PlaneActor* plane = new PlaneActor(this);
+	mPlane = new PlaneActor(this);
 	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });
 
 	float height = 150.0f;

@@ -12,7 +12,9 @@ public:
 	void GenerateOutput() override;
 
 	class CloudActor* GetCloud() const { return mCloud; }
+	class PlaneActor* GetPlane() const { return mPlane; }
 
 private:
 	class CloudActor* mCloud;
+	class PlaneActor* mPlane;
 };

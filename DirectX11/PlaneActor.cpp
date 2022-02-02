@@ -10,6 +10,7 @@
 #include "DxException.h"
 #include "Random.h"
 #include "ConstantBuffer.h"
+#include "ImGui/imgui.h"
 
 namespace dx = DirectX;
 
@@ -17,14 +18,14 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	Renderer* renderer = GetScene()->GetRenderer();
+	Reset();
 
+	Renderer* renderer = GetScene()->GetRenderer();
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
-	SetScale(1.0f);
 
 	Mesh* mesh = renderer->GetMesh("plane");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave",2 ,600.0f);
+	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave",2 ,500.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 
 	mCount = planeMesh->GetVerticesCount();
@@ -38,15 +39,15 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	}
 
 
-	mObjectCBuffer1 = new VertexConstantBuffer<ObjectConstant>(renderer, 1);
-	mObjectCBuffer2 = new PixelConstantBuffer<ObjectConstant>(renderer, 1);
+	mVertexCBuffer = new VertexConstantBuffer<VertexConstant>(renderer, 1);
+	mPixelCBuffer = new PixelConstantBuffer<PixelConstant>(renderer, 1);
 
 }
 
 PlaneActor::~PlaneActor()
 {
-	delete mObjectCBuffer1;
-	delete mObjectCBuffer2;
+	delete mVertexCBuffer;
+	delete mPixelCBuffer;
 }
 
 void PlaneActor::UpdateActor(float deltaTime)
@@ -64,18 +65,75 @@ void PlaneActor::UpdateActor(float deltaTime)
 	}
 
 	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
+
+	mPixelData.mTime = GetScene()->GetGameTime();
+	mVertexData.mTime = mPixelData.mTime;
+	mVertexData.mNoiseSizeLerp = mPixelData.mNoiseSizeLerp;
+	mVertexData.mNoiseStrength = mPixelData.mNoiseStrength;
+	mVertexData.mWaveSpeed = mPixelData.mWaveSpeed;
 }
 
 void PlaneActor::Bind(Renderer* renderer)
 {
 	Actor::Bind(renderer);
 
-	ObjectConstant mData;
-	mData.time = GetScene()->GetGameTime();
-
-	mObjectCBuffer1->Update(renderer, mData);
-	mObjectCBuffer1->Bind(renderer);	
+	mVertexCBuffer->Update(renderer, mVertexData);
+	mVertexCBuffer->Bind(renderer);
 	
-	mObjectCBuffer2->Update(renderer, mData);
-	mObjectCBuffer2->Bind(renderer);
+	mPixelCBuffer->Update(renderer, mPixelData);
+	mPixelCBuffer->Bind(renderer);
+}
+
+void PlaneActor::ImGuiWindow()
+{
+	if (ImGui::Begin("Gerstner Wave"))
+	{
+		ImGui::Text("Color");
+		ImGui::ColorEdit3("Sea Base Color", &mPixelData.mSeaBaseColor.x);
+		ImGui::ColorEdit3("Sea Shallow Color", &mPixelData.mSeaShallowColor.x);
+		ImGui::ColorEdit3("Light Color", &mPixelData.mLightColor.x);
+		ImGui::ColorEdit3("Sky Color", &mPixelData.mSkyColor.x);
+		ImGui::SliderFloat("Base Color Strength", &mPixelData.mBaseColorStrength, 0.0f, 2.0f, "%.2f");
+		ImGui::SliderFloat("Shallow Color Strength", &mPixelData.mShallowColorStrength, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("Color Offset", &mPixelData.mColorHeightOffset, 0.0f, 1.0f, "%.2f");
+
+		ImGui::Text("Noise");
+		ImGui::SliderFloat("Noise Strength", &mPixelData.mNoiseStrength, 0.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Noise Size", &mPixelData.mNoiseSizeLerp, 0.0f, 1.0f, "%.2f");
+
+		ImGui::Text("Other");
+		ImGui::SliderFloat("Wave Speed", &mPixelData.mWaveSpeed, 0.0f, 5.0f, "%.2f");
+		ImGui::SliderFloat("Shininess", &mPixelData.mShininess, 0.0f, 1.0f, "%.2f");
+
+		if (ImGui::Button("Reset"))
+		{
+			Reset();
+		}
+	}
+	ImGui::End();
+}
+
+void PlaneActor::Reset()
+{
+	mVertexData = {
+		GetScene()->GetGameTime(),
+		1.7f,
+		0.75f,
+		1.0f
+	};
+
+	mPixelData = {
+		{0.1f, 0.22f, 0.35f},
+		{0.48f, 0.54f, 0.19f},
+		{1.0f, 1.0f, 1.0f},
+		{0.0f, 0.4f, 1.0f},
+		GetScene()->GetGameTime(),
+		1.7f,
+		0.75f,
+		1.0f,
+		0.9f,
+		0.35f,
+		0.75f,
+		0.12f
+	};
 }

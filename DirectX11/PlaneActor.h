@@ -15,17 +15,39 @@ public:
 
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
+	void ImGuiWindow();
+	void Reset();
 
 private:
-	struct ObjectConstant
+	struct VertexConstant
 	{
-		float time;
-		float padding[3];
+		float mTime;
+		float mNoiseStrength;
+		float mNoiseSizeLerp;
+		float mWaveSpeed;
 	};
 
-	VertexConstantBuffer<ObjectConstant>* mObjectCBuffer1;
-	PixelConstantBuffer<ObjectConstant>* mObjectCBuffer2;
+	struct PixelConstant
+	{
+		alignas(16) DirectX::XMFLOAT3 mSeaBaseColor;
+		alignas(16) DirectX::XMFLOAT3 mSeaShallowColor;
+		alignas(16) DirectX::XMFLOAT3 mLightColor;
+		alignas(16) DirectX::XMFLOAT3 mSkyColor;
+		float mTime;
+		float mNoiseStrength;
+		float mNoiseSizeLerp;
+		float mWaveSpeed;
+		float mBaseColorStrength;
+		float mShallowColorStrength;
+		float mShininess;
+		float mColorHeightOffset;
+	};
 
+	VertexConstant mVertexData;
+	PixelConstant mPixelData;
+
+	VertexConstantBuffer<VertexConstant>* mVertexCBuffer;
+	PixelConstantBuffer<PixelConstant>* mPixelCBuffer;
 
 	class VertexBuffer* mVertexBuffer;
 	int mCount;

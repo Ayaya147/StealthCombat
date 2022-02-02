@@ -1,14 +1,3 @@
-cbuffer TBuf : register(b1)
-{
-    float mTime;
-}
-
-static const float _NoiseStrength = 1.26f;
-static const float _NoiseSizeLerp = 0.5;
-static const int wave_number = 8;
-static const int count = 4;
-static const float _WaveSpeed = 1.0f;
-
 static const float4 _Amplitude = float4(0.78, 0.81, 0.6, 0.27);
 static const float4 _Amplitude2 = float4(0.17, 0.12, 0.21, 0.06);
 static const float4 _Frequency = float4(0.16, 0.18, 0.21, 0.27);
@@ -52,14 +41,14 @@ float noise2(float2 st, int seed)
     return lerp(lerp(w00, w10, u.x), lerp(w01, w11, u.x), u.y);
 }
 
-float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise, float2 dir, float2 v, float time, int seed)
+float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise, float2 dir, float2 v, float time, int seed, float noiseStrength)
 {
     float3 p;
     float2 d = normalize(dir.xy);
     float q = steep;
  
     seed *= 3;
-    v += noise2(v * noise + time, seed) * _NoiseStrength;
+    v += noise2(v * noise + time, seed) * noiseStrength;
     float f = dot(d, v) * freq + time * speed;
     p.xz = q * amp * d.xy * cos(f);
     p.y = amp * sin(f);
@@ -67,13 +56,13 @@ float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise
     return p;
 }
 
-float3 GerstnerWave_Cross(float amp, float freq, float steep, float speed, float noise, float2 dir, float2 v, float time, int seed)
+float3 GerstnerWave_Cross(float amp, float freq, float steep, float speed, float noise, float2 dir, float2 v, float time, int seed, float noiseStrength, float noiseSizeLerp)
 {
     float3 p;
     float2 d = normalize(dir.xy);
     float q = steep;
  
-    float noise_strength = _NoiseStrength;
+    float noise_strength = noiseStrength;
     seed *= 3;
  
     float3 p1;
@@ -90,6 +79,6 @@ float3 GerstnerWave_Cross(float amp, float freq, float steep, float speed, float
     p2.xz = q * amp * d2.xy * cos(f2);
     p2.y = amp * sin(f2);
  
-    p = lerp(p1, p2, noise2(v * _NoiseSizeLerp + time, seed) * 0.5 + 0.5);
+    p = lerp(p1, p2, noise2(v * noiseSizeLerp + time, seed) * 0.5 + 0.5);
     return p;
 }
