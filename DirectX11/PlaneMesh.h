@@ -8,9 +8,6 @@ public:
 	struct PlaneVertex
 	{
 		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 n;
-		DirectX::XMFLOAT2 tc0;
-		DirectX::XMFLOAT2 tc1;
 	};
 
 	using Mesh::Mesh;

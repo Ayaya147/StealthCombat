@@ -6,11 +6,11 @@ cbuffer CBuf : register(b0)
 
 struct VSOut
 {
-    float2 tc : TexCoord;
-    float4 pos : SV_Position;
+    float2 tc : TEXCOORD;
+    float4 pos : SV_POSITION;
 };
 
-VSOut main(float3 pos : Position, float2 tc : TexCoord)
+VSOut main(float3 pos : POSITION, float2 tc : TEXCOORD)
 {
     VSOut vso;
     float3 worldPos = (float3) mul(float4(pos, 1.0f), mWorldTransform);

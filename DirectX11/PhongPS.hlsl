@@ -12,7 +12,7 @@ Texture2D tex : register(t0);
 
 static const float specPower = 20.0f;
 
-float4 main(float3 worldPos : Position, float3 worldNor : Normal, float2 tc : TexCoord) : SV_Target
+float4 main(float3 worldPos : POSITION, float3 worldNor : NORMAL, float2 tc : TEXCOORD) : SV_TARGET
 {
     float3 n = normalize(worldNor);
     float3 l = normalize(-mDirection);

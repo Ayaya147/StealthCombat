@@ -52,20 +52,6 @@ PlaneActor::~PlaneActor()
 
 void PlaneActor::UpdateActor(float deltaTime)
 {
-	Renderer* renderer = GetScene()->GetRenderer();
-
-	D3D11_MAPPED_SUBRESOURCE msr;
-	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
-	PlaneMesh::PlaneVertex* vertex = static_cast<PlaneMesh::PlaneVertex*>(msr.pData);
-
-	for (int i = 0; i < mCount; i++)
-	{
-		vertex[i].tc0 = dx::XMFLOAT2{ vertex[i].tc0.x - 0.01f * deltaTime, vertex[i].tc0.y + 0.02f * deltaTime };
-		vertex[i].tc1 = dx::XMFLOAT2{ vertex[i].tc1.x + 0.04f * deltaTime, vertex[i].tc1.y - 0.02f * deltaTime };
-	}
-
-	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
-
 	mPixelData.mTime = GetScene()->GetGameTime();
 	mVertexData.mTime = mPixelData.mTime;
 	mVertexData.mNoiseSizeLerp = mPixelData.mNoiseSizeLerp;

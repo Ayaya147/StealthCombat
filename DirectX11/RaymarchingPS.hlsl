@@ -27,27 +27,27 @@ cbuffer CloudCBuf : register(b2)
     float mTime;
 };
 
-float hash(float n)
+float Hash(float n)
 {
     return frac(sin(n) * 43758.5453f);
 }
 
-float noise(float3 x)
+float Noise(float3 x)
 {
     float3 p = floor(x);
     float3 f = frac(x);
     f = f * f * (3.0f - 2.0f * f);
     
     float n = p.x + p.y * 57.0f + p.z * 113.0f;
-    float res = lerp(lerp(lerp(hash(n +   0.0f), hash(n +   1.0f), f.x),
-                          lerp(hash(n +  57.0f), hash(n +  58.0f), f.x), f.y),
-                     lerp(lerp(hash(n + 113.0f), hash(n + 114.0f), f.x),
-                          lerp(hash(n + 170.0f), hash(n + 141.0f), f.x), f.y), f.z);
+    float res = lerp(lerp(lerp(Hash(n +   0.0f), Hash(n +   1.0f), f.x),
+                          lerp(Hash(n +  57.0f), Hash(n +  58.0f), f.x), f.y),
+                     lerp(lerp(Hash(n + 113.0f), Hash(n + 114.0f), f.x),
+                          lerp(Hash(n + 170.0f), Hash(n + 141.0f), f.x), f.y), f.z);
     
     return res;
 }
 
-float fbm(float3 p)
+float Fbm(float3 p)
 {
     float3x3 m = float3x3(
          0.00f,  0.80f,  0.60f,
@@ -56,49 +56,49 @@ float fbm(float3 p)
     );
     
     float f = 0.0f;
-    f += 0.5f * noise(p); p = mul(m, p) * 2.02f;
-    f += 0.3f * noise(p); p = mul(m, p) * 2.03f;
-    f += 0.2f * noise(p);
+    f += 0.5f * Noise(p); p = mul(m, p) * 2.02f;
+    f += 0.3f * Noise(p); p = mul(m, p) * 2.03f;
+    f += 0.2f * Noise(p);
     
     return f;
 }
 
-float sphere(float3 pos, float radius)
+float Sphere(float3 pos, float radius)
 {
     return length(pos) - radius;
 }
 
-float ellipsoid(float3 pos, float3 radius)
+float Ellipsoid(float3 pos, float3 radius)
 {
     float k0 = length(pos / radius);
     float k1 = length(pos / (radius * radius));
     return k0 * (k0 - 1.0f) / k1;
 }
 
-float torus(float3 pos, float2 radius)
+float Torus(float3 pos, float2 radius)
 {
     float2 r = float2(length(pos.xz) - radius.x, pos.y);
     return length(r) - radius.y;
 }
 
-float densityFunction(float3 p)
+float DensityFunction(float3 p)
 {
-    return fbm(p * mNoiseScale) - sphere(p / mRadius, 0.0f);
+    return Fbm(p * mNoiseScale) - Sphere(p / mRadius, 0.0f);
     //return 0.5f - length(p / mRadius);
-    //return fbm(p * mNoiseScale) - ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.1f));
+    //return Fbm(p * mNoiseScale) - Ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.1f));
 }
 
-float densityFunctionAnime(float3 p)
+float DensityFunctionAnime(float3 p)
 {
-    float f = fbm(p * mNoiseScale);
+    float f = Fbm(p * mNoiseScale);
 
-    float d1 = -sphere(p, mRadius) + f * 0.3f;
-    float d2 = -torus(p, float2(mRadius * 1.5f, 0.1f)) + f * 0.2f;
+    float d1 = -Sphere(p, mRadius) + f * 0.3f;
+    float d2 = -Torus(p, float2(mRadius * 1.5f, 0.1f)) + f * 0.2f;
     float blend = 0.5f + 0.5f * sin(mTime * 2.0f);
     return lerp(d1, d2, blend);
 }
 
-float4 main(float3 worldPos : Position) : SV_Target
+float4 main(float3 worldPos : POSITION) : SV_TARGET
 {
     float step = 1.0f / mLoop;
 
@@ -107,7 +107,7 @@ float4 main(float3 worldPos : Position) : SV_Target
     float3 localPos = (float3) mul(mWorldInverse, float4(worldPos, 1.0f));
     float3 localDir = normalize(mul((float3x3) mWorldInverse, worldDir));
     float3 localStep = localDir * step;
-    float jitter = hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
+    float jitter = Hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
     localPos += jitter * localStep;
     
     float3 invLocalDir = 1.0f / localDir;
@@ -127,7 +127,7 @@ float4 main(float3 worldPos : Position) : SV_Target
     
     for (int i = 0; i < loop; i++)
     {
-        float density = densityFunction(localPos);
+        float density = DensityFunction(localPos);
         
         if (density > 0.0f)
         {
@@ -144,7 +144,7 @@ float4 main(float3 worldPos : Position) : SV_Target
             
             for (int j = 0; j < mLoopLight; j++)
             {
-                float densityLight = densityFunction(lightPos);
+                float densityLight = DensityFunction(lightPos);
                 
                 if ( densityLight > 0.0f)
                 {
@@ -167,11 +167,6 @@ float4 main(float3 worldPos : Position) : SV_Target
         
         color = clamp(color, 0.0f, 1.0f);
         localPos += localStep;
-        
-        //if (!all(max(0.5f - abs(localPos), 0.0f)))
-        //{
-        //    break;
-        //}
     }
 
     return color;

@@ -6,7 +6,7 @@ cbuffer CBuf : register(b0)
     matrix mViewProj;
 };
 
-cbuffer TBuf : register(b1)
+cbuffer CBuf1 : register(b1)
 {
     float mTime;
     float mNoiseStrength;
@@ -19,31 +19,31 @@ static const int count = 4;
 
 struct VSOut
 {
-    float3 world_pos : Position;
-    float4 vertex : SV_POSITION;
+    float3 worldPos : POSITION;
+    float4 pos : SV_POSITION;
 };
 
-VSOut main(float3 vertex : Position)
+VSOut main(float3 pos : POSITION)
 {
-    VSOut o;
+    VSOut vso;
 
-    float4 world_pos = mul(float4(vertex, 1.0f), mWorldTransform);
-    o.world_pos = (float3) mul(float4(vertex, 1.0f), mWorldTransform);
+    float4 worldPos = mul(float4(pos, 1.0f), mWorldTransform);
+    vso.worldPos = (float3) mul(float4(pos, 1.0f), mWorldTransform);
 
     float time = mTime / 20.0f * mWaveSpeed;
     
     float3 p = 0.0;
     for (int i = 0; i < count; i++)
     {
-        p += GerstnerWave(amp[i], freq[i], steep[i], speed[i], noise_size[i], dir[i], world_pos.xz, time, i, mNoiseStrength);
+        p += GerstnerWave(amp[i], freq[i], steep[i], spd[i], noiseSize[i], dir[i], worldPos.xz, time, i, mNoiseStrength);
     }
     for (int j = waveNumber - count; j < waveNumber; j++)
     {
-        p += GerstnerWave_Cross(amp[j], freq[j], steep[j], speed[j], noise_size[j], dir[j], world_pos.xz, time, j, mNoiseStrength, mNoiseSizeLerp);
+        p += GerstnerWaveCross(amp[j], freq[j], steep[j], spd[j], noiseSize[j], dir[j], worldPos.xz, time, j, mNoiseStrength, mNoiseSizeLerp);
     }
-    world_pos.xyz += p;
+    worldPos.xyz += p;
 
-    o.vertex = mul(world_pos, mViewProj);
+    vso.pos = mul(worldPos, mViewProj);
 
-    return o;
+    return vso;
 }
