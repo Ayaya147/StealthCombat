@@ -121,7 +121,7 @@ void CloudActor::Reset()
 		60,
 		80,
 		0.4f,
-		6,
+		4,
 		GetScene()->GetGameTime()
 	};
 }

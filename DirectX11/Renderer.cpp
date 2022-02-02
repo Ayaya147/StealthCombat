@@ -150,7 +150,6 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 
 Renderer::~Renderer()
 {
-	ImGui_ImplDX11_Shutdown();
 	delete mLight;
 	delete mDepthStencilOff;
 	delete mDepthStencilOn;
@@ -162,6 +161,7 @@ Renderer::~Renderer()
 	delete mSampler;
 	delete mBlenderOff;
 	delete mBlenderOn;
+	ImGui_ImplDX11_Shutdown();
 }
 
 void Renderer::Draw()
