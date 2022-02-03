@@ -9,13 +9,13 @@
 #include "InputSystem.h"
 #include "Keyboard.h"
 #include "GamePad.h"
-#include "Window.h"
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
 	Renderer* renderer = GetScene()->GetRenderer();
+	SetScale(0.1f);
 
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 

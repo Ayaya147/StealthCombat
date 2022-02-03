@@ -3,6 +3,8 @@
 #include "Parameter.h"
 #include "Renderer.h"
 #include "PlayerActor.h"
+#include "EnemyActor.h"
+#include "MissileActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
 #include "MeshComponent.h"
@@ -28,9 +30,14 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	PlayerActor* player = new PlayerActor(this);
 	player->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
-	player->SetScale(0.1f);
 	CameraComponent* cc = new CameraComponent(player);
+
+	EnemyActor* enemy = new EnemyActor(this);
+	enemy->SetPosition(dx::XMFLOAT3{ 0.0f,height,5.0f });
 	
+	MissileActor* missile = new MissileActor(this);
+	missile->SetPosition(dx::XMFLOAT3{ 0.0f,height,-5.0f });
+
 	CloudActor* cloud = new CloudActor(this);
 	cloud->SetPosition(dx::XMFLOAT3{ 5.0f,height,0.0f });
 	cloud->SetScale(6.0f);

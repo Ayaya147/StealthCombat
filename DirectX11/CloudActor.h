@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include "Actor.h"
 
 template<class C>

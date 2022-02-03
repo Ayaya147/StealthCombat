@@ -195,6 +195,12 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyActor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="MissileActor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -346,6 +352,12 @@
     </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyActor.h">
+      <Filter>Header Files\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="MissileActor.h">
+      <Filter>Header Files\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

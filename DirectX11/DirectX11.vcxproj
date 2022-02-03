@@ -103,6 +103,7 @@
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CloudActor.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="EnemyActor.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
+    <ClCompile Include="MissileActor.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="PixelShader.cpp" />
@@ -219,6 +221,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DxException.h" />
+    <ClInclude Include="EnemyActor.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GameScene.h" />
@@ -238,6 +241,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
+    <ClInclude Include="MissileActor.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Parameter.h" />
     <ClInclude Include="PixelShader.h" />
