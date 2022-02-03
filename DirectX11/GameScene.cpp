@@ -52,6 +52,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
+	sprite->SetScale(0.6f);
+
+	sprite = new Actor(this);
+	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
+	tex = renderer->GetTexture("Assets\\Texture\\guide.png");
+	sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
 }
 
@@ -76,6 +83,6 @@ void GameScene::GenerateOutput()
 	if (GetInputSystem()->GetKeyboard()->KeyIsPressed(VK_RETURN))
 	{
 		Parameter parameter;
-		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 	}
 }

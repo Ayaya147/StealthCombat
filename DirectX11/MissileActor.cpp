@@ -11,7 +11,7 @@ MissileActor::MissileActor(BaseScene* scene)
 	Actor(scene)
 {
 	Renderer* renderer = GetScene()->GetRenderer();
-	SetScale(0.06f);
+	SetScale(0.08f);
 
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 
