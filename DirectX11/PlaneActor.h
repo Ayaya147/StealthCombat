@@ -31,7 +31,6 @@ private:
 	{
 		alignas(16) DirectX::XMFLOAT3 mSeaBaseColor;
 		alignas(16) DirectX::XMFLOAT3 mSeaShallowColor;
-		alignas(16) DirectX::XMFLOAT3 mLightColor;
 		alignas(16) DirectX::XMFLOAT3 mSkyColor;
 		float mTime;
 		float mNoiseStrength;

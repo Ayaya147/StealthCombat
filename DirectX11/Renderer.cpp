@@ -184,6 +184,7 @@ void Renderer::Draw()
 	{
 		game->GetCloud()->ImGuiWindow();
 		game->GetPlane()->ImGuiWindow();
+		mLight->ImGuiWindow();
 	}
 
 	ImGui::Render();
@@ -383,12 +384,7 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 	return tex;
 }
 
-void Renderer::SetAmbientLight(const DirectX::XMFLOAT3& ambient)
+void Renderer::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& ambient, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec)
 {
-	mLight->SetAmbientLight(ambient);
-}
-
-void Renderer::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec)
-{
-	mLight->SetDirectionalLight(dir, diff, spec);
+	mLight->SetDirectionalLight(dir, ambient, diff, spec);
 }

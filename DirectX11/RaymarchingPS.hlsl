@@ -1,13 +1,13 @@
 cbuffer CBuf : register(b0)
 {
     float3 mCameraPos;
-    float3 mAmbientLight;
     float3 mDirection;
+    float3 mAmbientLight;
     float3 mDiffuseColor;
     float3 mSpecColor;
 };
 
-cbuffer ObjectCBuf : register(b1)
+cbuffer CBuf1 : register(b1)
 {
     matrix mWorldInverse;
 };
@@ -83,7 +83,7 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    return Fbm(p * mNoiseScale) * 0.5f - Sphere(p, mRadius);
+    return Fbm(p * mNoiseScale) * 0.2f - Sphere(p, mRadius);
     //return Fbm(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(0.4f, 0.1f, 0.2f));
     //return Fbm(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.1f));
 }
@@ -93,7 +93,7 @@ float DensityFunctionAnime(float3 p)
     float f = Fbm(p * mNoiseScale);
 
     float d1 = f * 0.3f - Sphere(p, mRadius);
-    float d2 = f * 0.15f - Torus(p, float2(mRadius * 1.2f, 0.1f));
+    float d2 = f * 0.2f - Torus(p, float2(mRadius * 1.2f, 0.1f));
     float blend = 0.5f + 0.5f * sin(mTime * 1.5f);
     return lerp(d1, d2, blend);
 }
@@ -122,7 +122,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     float3 localLightDir = normalize(mul((float3x3) mWorldInverse, -mDirection));
     float3 localLightStep = localLightDir * lightStep * mLightStepScale;
     
-    float4 color = float4(mCloudColor, 0.0f);
+    float4 color = float4(mCloudColor + mAmbientLight, 0.0f);
     float transmittance = 1.0f;
     
     for (int i = 0; i < loop; i++)

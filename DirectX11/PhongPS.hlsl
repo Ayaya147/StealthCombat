@@ -1,8 +1,8 @@
 cbuffer CBuf : register(b0)
 {
     float3 mCameraPos;
-    float3 mAmbientLight;
     float3 mDirection;
+    float3 mAmbientLight;
     float3 mDiffuseColor;
     float3 mSpecColor;
 };

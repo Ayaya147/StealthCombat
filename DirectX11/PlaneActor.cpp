@@ -77,7 +77,6 @@ void PlaneActor::ImGuiWindow()
 		ImGui::Text("Color");
 		ImGui::ColorEdit3("Sea Base Color", &mPixelData.mSeaBaseColor.x);
 		ImGui::ColorEdit3("Sea Shallow Color", &mPixelData.mSeaShallowColor.x);
-		ImGui::ColorEdit3("Light Color", &mPixelData.mLightColor.x);
 		ImGui::ColorEdit3("Sky Color", &mPixelData.mSkyColor.x);
 		ImGui::SliderFloat("Base Color Strength", &mPixelData.mBaseColorStrength, 0.0f, 2.0f, "%.2f");
 		ImGui::SliderFloat("Shallow Color Strength", &mPixelData.mShallowColorStrength, 0.0f, 1.0f, "%.2f");
@@ -111,7 +110,6 @@ void PlaneActor::Reset()
 	mPixelData = {
 		{0.1f, 0.22f, 0.35f},
 		{0.48f, 0.54f, 0.19f},
-		{1.0f, 1.0f, 1.0f},
 		{0.0f, 0.4f, 1.0f},
 		GetScene()->GetGameTime(),
 		1.7f,

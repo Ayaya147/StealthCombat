@@ -22,14 +22,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 {
 	Renderer* renderer = GetRenderer();
 
-	renderer->SetAmbientLight(dx::XMFLOAT3{ 0.15f, 0.15f, 0.15f });
-	dx::XMFLOAT3 direction = dx::XMFLOAT3{ 0.0f, -1.0f, -1.0f };
-	dx::XMFLOAT3 diffuseColor = dx::XMFLOAT3{ 0.8f, 0.9f, 1.0f };
-	dx::XMFLOAT3 specColor = dx::XMFLOAT3{ 0.8f, 0.8f, 0.8f };
-	renderer->SetDirectionalLight(direction, diffuseColor, specColor);
-
 	mPlane = new PlaneActor(this);
-	//plane->SetPosition(dx::XMFLOAT3{ 0.0f,0.0f,0.0f });
 
 	float height = 150.0f;
 
@@ -44,22 +37,15 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	mCloud = new CloudActor(this);
 	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,height,0.0f });
-	//mCloud->SetScale(dx::XMFLOAT3{ 10.0f,10.0f,10.0f });
+	//mCloud->SetScale(dx::XMFLOAT3{ 30.0f,10.0f,30.0f });
 	mCloud->SetScale(10.0f);
 
 	Actor* sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
-	Texture* tex = renderer->GetTexture("Assets\\Texture\\test.png");
+	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ -700.0f, -400.0f, 0.0f });
-	sprite->SetScale(0.5f);
-
-	//sprite = new Actor(this);
-	//sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
-	//tex = renderer->GetTexture("Assets\\Texture\\normal1.png");
-	//sc = new SpriteComponent(sprite, tex);
-	//sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });
-	//sprite->SetScale(0.2f);
+	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
+	sprite->SetScale(0.7f);
 }
 
 GameScene::~GameScene()

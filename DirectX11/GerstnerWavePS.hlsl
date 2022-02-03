@@ -3,8 +3,8 @@
 cbuffer CBuf : register(b0)
 {
     float3 mCameraPos;
-    float3 mAmbientLight;
     float3 mDirection;
+    float3 mAmbientLight;
     float3 mDiffuseColor;
     float3 mSpecColor;
 };
@@ -13,7 +13,6 @@ cbuffer CBuf1 : register(b1)
 {
     float3 mSeaBaseColor;
     float3 mSeaShallowColor;
-    float3 mLightColor;
     float3 mSkyColor;
     float mTime;
     float mNoiseStrength;
@@ -46,18 +45,18 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
     float fresnel = r + (1.0f - r) * pow(facing, 5.0f);
     float3 reflectDir = reflect(-viewDir, normal);
 	
-    float3 diff = saturate(dot(normal, lightDir)) * mLightColor;
+    float3 diff = saturate(dot(normal, lightDir)) * mDiffuseColor;
 	
     float dotSpec = saturate(dot(reflectDir, lightDir) * 0.5f + 0.5f);
     float3 spec = (1.0f - fresnel) * saturate(lightDir.y) * pow(dotSpec, 512.0f) * (mShininess * 1.8f + 0.2f);
-    spec += spec * 25.0f * saturate(mShininess - 0.05f) * mLightColor;
+    spec += spec * 25.0f * saturate(mShininess - 0.05f) * mSpecColor;
 	
     float3 sea_reflect_color = GetSkyColor(reflectDir, mSkyColor);
     float3 sea_base_color = mSeaBaseColor * diff * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diff);
     float3 water_color = lerp(sea_base_color, sea_reflect_color, fresnel);
     float3 sea_color = water_color + mSeaShallowColor * (waveHeight * 0.5f + 0.2f) * mColorHeightOffset;
  
-    return sea_color + spec;
+    return mAmbientLight + sea_color + spec;
 }
 
 float4 main(float3 worldPos : POSITION) : SV_TARGET

@@ -11,20 +11,21 @@ public:
 	~Light();
 
 	void Bind(class Renderer* renderer);
+	void Reset();
+	void ImGuiWindow();
 
-	void SetAmbientLight(const DirectX::XMFLOAT3& ambient);
-	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec);
+	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& ambient, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec);
 
 private:
-	struct ObjectConstant
+	struct PixelConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 mCameraPos;
-		alignas(16) DirectX::XMFLOAT3 mAmbientLight;
 		alignas(16) DirectX::XMFLOAT3 mDirection;
+		alignas(16) DirectX::XMFLOAT3 mAmbientColor;
 		alignas(16) DirectX::XMFLOAT3 mDiffuseColor;
 		alignas(16) DirectX::XMFLOAT3 mSpecColor;
 	};
 
-	ObjectConstant mObjectConstant;
-	PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
+	PixelConstant mData;
+	PixelConstantBuffer<PixelConstant>* mPixelCBuffer;
 };
