@@ -49,7 +49,7 @@ float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise
     seed *= 3;
     v += Noise2(v * noise + time, seed) * noiseStrength;
     float f = dot(d, v) * freq + time * speed;
-    p.xz = steep * amp * d * cos(f);
+    p.xz = steep * amp.xx * d * cos(f);
     p.y = amp * sin(f);
  
     return p;
@@ -67,9 +67,9 @@ float3 GerstnerWaveCross(float amp, float freq, float steep, float speed, float 
     float2 v2 = v + Noise2(v * noise + time * d * 10.0f, seed * 3 + 12) * noiseStrength;
     float f1 = dot(d1, v1) * freq + time * speed;
     float f2 = dot(d2, v2) * freq + time * speed;
-    p1.xz = steep * amp * d1 * cos(f1);
+    p1.xz = steep * amp.xx * d1 * cos(f1);
     p1.y = amp * sin(f1);
-    p2.xz = steep * amp * d2 * cos(f2);
+    p2.xz = steep * amp.xx * d2 * cos(f2);
     p2.y = amp * sin(f2);
  
     float3 p = lerp(p1, p2, Noise2(v * noiseSizeLerp + time, seed) * 0.5f + 0.5f);

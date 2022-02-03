@@ -93,7 +93,7 @@ void CloudActor::ImGuiWindow()
 
 		ImGui::Text("Noise");
 		ImGui::SliderFloat("Noise Scale", &mData.mNoiseScale, 0, 64, "%.2f");
-		ImGui::SliderFloat("Radius", &mData.mRadius, 0.0f, 2.0f, "%.2f");
+		ImGui::SliderFloat("Radius", &mData.mRadius, 0.0f, 0.5f, "%.2f");
 
 		ImGui::Text("Light");
 		ImGui::SliderInt("Absorption Light", &mData.mAbsorptionLight, 0, 100, "%d");
@@ -114,9 +114,9 @@ void CloudActor::Reset()
 	mData = {
 		{0.9f, 0.9f, 0.9f},
 		32,
-		8.0f,
-		0.65f,
-		50,
+		14.0f,
+		0.2f,
+		70,
 		100,
 		60,
 		80,

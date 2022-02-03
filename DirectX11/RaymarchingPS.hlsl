@@ -83,18 +83,18 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    return Fbm(p * mNoiseScale) - Sphere(p / mRadius, 0.0f);
-    //return 0.5f - length(p / mRadius);
-    //return Fbm(p * mNoiseScale) - Ellipsoid(p / mRadius, float3(0.2f, 0.05f, 0.1f));
+    return Fbm(p * mNoiseScale) * 0.5f - Sphere(p, mRadius);
+    //return Fbm(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(0.4f, 0.1f, 0.2f));
+    //return Fbm(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.1f));
 }
 
 float DensityFunctionAnime(float3 p)
 {
     float f = Fbm(p * mNoiseScale);
 
-    float d1 = -Sphere(p, mRadius) + f * 0.3f;
-    float d2 = -Torus(p, float2(mRadius * 1.5f, 0.1f)) + f * 0.2f;
-    float blend = 0.5f + 0.5f * sin(mTime * 2.0f);
+    float d1 = f * 0.3f - Sphere(p, mRadius);
+    float d2 = f * 0.15f - Torus(p, float2(mRadius * 1.2f, 0.1f));
+    float blend = 0.5f + 0.5f * sin(mTime * 1.5f);
     return lerp(d1, d2, blend);
 }
 
@@ -127,7 +127,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     
     for (int i = 0; i < loop; i++)
     {
-        float density = DensityFunction(localPos);
+        float density = DensityFunctionAnime(localPos);
         
         if (density > 0.0f)
         {
@@ -144,7 +144,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             
             for (int j = 0; j < mLoopLight; j++)
             {
-                float densityLight = DensityFunction(lightPos);
+                float densityLight = DensityFunctionAnime(lightPos);
                 
                 if ( densityLight > 0.0f)
                 {
@@ -161,7 +161,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
                 lightPos += localLightStep;
             }
             
-            color.a += mCloudColor.x * (mOpacity * d * transmittance);
+            color.a += 1.0f * (mOpacity * d * transmittance);
             color.rgb += mDiffuseColor * (mOpacityLight * d * transmittance * transmittanceLight);
         }
         
