@@ -20,4 +20,5 @@ InputSystem::~InputSystem()
 void InputSystem::Update()
 {
 	mPad->Update();
+	mKeyboard->Update();
 }

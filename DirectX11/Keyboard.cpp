@@ -1,8 +1,36 @@
 #include "Keyboard.h"
 
+Keyboard::Keyboard()
+{
+	for (int i = 0; i < nKeys; i++)
+	{
+		count[i] = 0;
+	}
+}
+
+void Keyboard::Update()
+{
+	for (int i = 0; i < nKeys; i++)
+	{
+		if (keystates[i])
+		{
+			count[i]++;
+		}
+		else
+		{
+			count[i] = 0;
+		}
+	}
+}
+
 bool Keyboard::KeyIsPressed(unsigned char keycode) const noexcept
 {
-	return keystates[keycode];
+	return keystates[keycode] && count[keycode] == 1;
+}
+
+bool Keyboard::KeyIsHeld(unsigned char keycode) const noexcept
+{
+	return keystates[keycode] && count[keycode] >= 2;
 }
 
 std::optional<Keyboard::Event> Keyboard::ReadKey() noexcept

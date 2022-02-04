@@ -76,11 +76,11 @@ void PlayerActor::ActorInput()
 	//	mMoveComponent->SetForwardSpeed(spd * 0.95f);
 	//}
 
-	if (keyboard->KeyIsPressed('D'))
+	if (keyboard->KeyIsHeld('D') || keyboard->KeyIsPressed('D'))
 	{
 		mMoveComponent->SetAngularSpeed(1.2f);
 	}
-	else if (keyboard->KeyIsPressed('A'))
+	else if (keyboard->KeyIsHeld('A') || keyboard->KeyIsPressed('A'))
 	{
 		mMoveComponent->SetAngularSpeed(-1.2f);
 	}
@@ -92,7 +92,7 @@ void PlayerActor::ActorInput()
 		SetRotation(rotation);
 	}
 
-	if (keyboard->KeyIsPressed('W'))
+	if (keyboard->KeyIsHeld('W') || keyboard->KeyIsPressed('W'))
 	{
 		mMoveComponent->SetForwardSpeed(10.0f);
 	}

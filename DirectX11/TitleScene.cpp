@@ -20,12 +20,12 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 
 	Actor* sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
-	Texture* tex = renderer->GetTexture("Assets\\Texture\\test.png");
+	Texture* tex = renderer->GetTexture("Assets\\Texture\\0.png");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 
 	sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
-	tex = renderer->GetTexture("Assets\\Texture\\normal1.png");
+	tex = renderer->GetTexture("Assets\\Texture\\1.png");
 	sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });
 }
@@ -48,7 +48,7 @@ void TitleScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetInputSystem()->GetKeyboard()->KeyIsPressed(VK_SPACE))
+	if (GetInputSystem()->GetKeyboard()->KeyIsPressed(VK_RETURN))
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EGame, parameter, true);

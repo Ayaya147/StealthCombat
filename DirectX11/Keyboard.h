@@ -38,11 +38,14 @@ public:
 		}
 	};
 public:
-	Keyboard() = default;
+	Keyboard();
 	Keyboard(const Keyboard&) = delete;
 	Keyboard& operator=(const Keyboard&) = delete;
 
+	void Update();
+
 	bool KeyIsPressed(unsigned char keycode) const noexcept;
+	bool KeyIsHeld(unsigned char keycode) const noexcept;
 	std::optional<Event> ReadKey() noexcept;
 	bool KeyIsEmpty() const noexcept;
 	void FlushKey() noexcept;
@@ -67,6 +70,7 @@ private:
 	static constexpr unsigned int bufferSize = 16u;
 	bool autorepeatEnabled = false;
 	std::bitset<nKeys> keystates;
+	int count[nKeys];
 	std::queue<Event> keybuffer;
 	std::queue<char> charbuffer;
 };

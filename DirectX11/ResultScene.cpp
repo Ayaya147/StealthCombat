@@ -48,7 +48,7 @@ void ResultScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetInputSystem()->GetKeyboard()->KeyIsPressed('H'))
+	if (GetInputSystem()->GetKeyboard()->KeyIsPressed(VK_RETURN))
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
