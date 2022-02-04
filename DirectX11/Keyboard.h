@@ -46,6 +46,7 @@ public:
 
 	bool KeyIsPressed(unsigned char keycode) const noexcept;
 	bool KeyIsHeld(unsigned char keycode) const noexcept;
+	bool KeyIsReleased(unsigned char keycode) const noexcept;
 	std::optional<Event> ReadKey() noexcept;
 	bool KeyIsEmpty() const noexcept;
 	void FlushKey() noexcept;

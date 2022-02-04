@@ -12,25 +12,38 @@ void Keyboard::Update()
 {
 	for (int i = 0; i < nKeys; i++)
 	{
-		if (keystates[i])
+		if (keystates[i] && count[i] <= 0)
+		{
+			count[i] = 1;
+		}
+		else if (keystates[i])
 		{
 			count[i]++;
 		}
-		else
+		else if (!keystates[i] && count[i] > 0)
 		{
 			count[i] = 0;
+		}
+		else
+		{
+			count[i]--;
 		}
 	}
 }
 
 bool Keyboard::KeyIsPressed(unsigned char keycode) const noexcept
 {
-	return keystates[keycode] && count[keycode] == 1;
+	return count[keycode] == 1;
 }
 
 bool Keyboard::KeyIsHeld(unsigned char keycode) const noexcept
 {
-	return keystates[keycode] && count[keycode] >= 2;
+	return count[keycode] > 1;
+}
+
+bool Keyboard::KeyIsReleased(unsigned char keycode) const noexcept
+{
+	return count[keycode] == 0;
 }
 
 std::optional<Keyboard::Event> Keyboard::ReadKey() noexcept
