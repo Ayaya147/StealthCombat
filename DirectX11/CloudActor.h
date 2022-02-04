@@ -45,4 +45,5 @@ private:
 	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;
+	float mTimeOffset;
 };

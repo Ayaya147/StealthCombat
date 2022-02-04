@@ -5,6 +5,7 @@
 #include "TransformCBuffer.h"
 #include "GameScene.h"
 #include "ConstantBuffer.h"
+#include "Random.h"
 #include "ImGui/imgui.h"
 
 namespace dx = DirectX;
@@ -19,8 +20,9 @@ CloudActor::CloudActor(BaseScene* scene)
 	mDistFromCamera(0.0f)
 {
 	mCount++;
-
+	mTimeOffset = Random::GetFloatRange(0.0f, 10.0f);
 	Reset();
+
 	Renderer* renderer = GetScene()->GetRenderer();
 	SetTransformCBuffer(new TransformCBuffer(renderer, this));
 
@@ -53,7 +55,7 @@ CloudActor::~CloudActor()
 
 void CloudActor::UpdateActor(float deltaTime)
 {
-	mData.mTime = GetScene()->GetGameTime();
+	mData.mTime = GetScene()->GetGameTime() + mTimeOffset;
 	mDistFromCamera = CalcDistFromCamera();
 }
 

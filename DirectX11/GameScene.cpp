@@ -38,11 +38,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	MissileActor* missile = new MissileActor(this);
 	missile->SetPosition(dx::XMFLOAT3{ 0.0f,height,-5.0f });
 
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 25; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
-		cloud->SetPosition(dx::XMFLOAT3{ 5.0f+i*5.0f,height,i*5.0f });
-		cloud->SetScale(6.0f);
+		cloud->SetPosition(dx::XMFLOAT3{ 5.0f+i*4.0f,height,i*4.0f });
+		cloud->SetScale(5.0f);
 	}
 
 	mCloud = new CloudActor(this);

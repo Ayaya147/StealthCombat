@@ -47,7 +47,7 @@ float Noise(float3 x)
     return res;
 }
 
-float Fbm(float3 p)
+float FBM(float3 p)
 {
     float3x3 m = float3x3(
          0.00f,  0.80f,  0.60f,
@@ -83,14 +83,14 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    return Fbm(p * mNoiseScale) * 0.2f - Sphere(p, mRadius);
-    //return Fbm(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(0.4f, 0.1f, 0.2f));
-    //return Fbm(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.1f));
+    return FBM(p * mNoiseScale) * 0.2f - Sphere(p, mRadius);
+    //return FBM(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(0.4f, 0.1f, 0.2f));
+    //return FBM(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.1f));
 }
 
 float DensityFunctionAnime(float3 p)
 {
-    float f = Fbm(p * mNoiseScale);
+    float f = FBM(p * mNoiseScale);
 
     float d1 = f * 0.3f - Sphere(p, mRadius);
     float d2 = f * 0.2f - Torus(p, float2(mRadius * 1.2f, 0.1f));
