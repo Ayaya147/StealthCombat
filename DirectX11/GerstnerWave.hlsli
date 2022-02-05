@@ -36,7 +36,7 @@ float Noise2(float2 st, int seed)
     float w01 = dot(Rand2d(p + float2(0.0f, 1.0f), seed), f - float2(0.0f, 1.0f));
     float w11 = dot(Rand2d(p + float2(1.0f, 1.0f), seed), f - float2(1.0f, 1.0f));
 	
-    float2 u = f * f * (3.0 - 2.0 * f);
+    float2 u = f * f * (3.0f - 2.0f * f);
  
     return lerp(lerp(w00, w10, u.x), lerp(w01, w11, u.x), u.y);
 }
@@ -46,10 +46,9 @@ float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise
     float3 p = 0.0f;
     float2 d = normalize(dir);
  
-    seed *= 3;
-    v += Noise2(v * noise + time, seed) * noiseStrength;
+    v += Noise2(v * noise + time, seed * 3) * noiseStrength;
     float f = dot(d, v) * freq + time * speed;
-    p.xz = steep * amp.xx * d * cos(f);
+    p.xz = steep * amp * d * cos(f);
     p.y = amp * sin(f);
  
     return p;
@@ -58,18 +57,17 @@ float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise
 float3 GerstnerWaveCross(float amp, float freq, float steep, float speed, float noise, float2 dir, float2 v, float time, int seed, float noiseStrength, float noiseSizeLerp)
 {
     float2 d = normalize(dir);
+    float2 d1 = float2(-d.y, d.x);
     float3 p1 = 0.0f;
     float3 p2 = 0.0f;
-    float2 d1 = normalize(dir.xy);
-    float2 d2 = float2(-d.y, d.x);
  
     float2 v1 = v + Noise2(v * noise + time * d * 10.0f, seed * 3) * noiseStrength;
     float2 v2 = v + Noise2(v * noise + time * d * 10.0f, seed * 3 + 12) * noiseStrength;
-    float f1 = dot(d1, v1) * freq + time * speed;
-    float f2 = dot(d2, v2) * freq + time * speed;
-    p1.xz = steep * amp.xx * d1 * cos(f1);
+    float f1 = dot(d, v1) * freq + time * speed;
+    float f2 = dot(d1, v2) * freq + time * speed;
+    p1.xz = steep * amp * d * cos(f1);
     p1.y = amp * sin(f1);
-    p2.xz = steep * amp.xx * d2 * cos(f2);
+    p2.xz = steep * amp * d1 * cos(f2);
     p2.y = amp * sin(f2);
  
     float3 p = lerp(p1, p2, Noise2(v * noiseSizeLerp + time, seed) * 0.5f + 0.5f);

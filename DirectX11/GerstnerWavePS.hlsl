@@ -51,12 +51,12 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
     float3 spec = (1.0f - fresnel) * saturate(lightDir.y) * pow(dotSpec, 512.0f) * (mShininess * 1.8f + 0.2f);
     spec += spec * 25.0f * saturate(mShininess - 0.05f) * mSpecColor;
 	
-    float3 sea_reflect_color = GetSkyColor(reflectDir, mSkyColor);
-    float3 sea_base_color = mSeaBaseColor * diff * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diff);
-    float3 water_color = lerp(sea_base_color, sea_reflect_color, fresnel);
-    float3 sea_color = water_color + mSeaShallowColor * (waveHeight * 0.5f + 0.2f) * mColorHeightOffset;
+    float3 seaReflectColor = GetSkyColor(reflectDir, mSkyColor);
+    float3 seaBaseColor = mSeaBaseColor * diff * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diff);
+    float3 waterColor = lerp(seaBaseColor, seaReflectColor, fresnel);
+    float3 seaColor = waterColor + mSeaShallowColor * (waveHeight * 0.5f + 0.2f) * mColorHeightOffset;
  
-    return mAmbientLight + sea_color + spec;
+    return mAmbientLight + seaColor + spec;
 }
 
 float4 main(float3 worldPos : POSITION) : SV_TARGET
