@@ -28,7 +28,7 @@ VSOut main(float3 pos : POSITION)
     VSOut vso;
 
     float4 worldPos = mul(float4(pos, 1.0f), mWorldTransform);
-    vso.worldPos = (float3) mul(float4(pos, 1.0f), mWorldTransform);
+    vso.worldPos = (float3) worldPos;
 
     float time = mTime / 20.0f * mWaveSpeed;
     
