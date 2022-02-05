@@ -49,6 +49,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,height,0.0f });
 	//mCloud->SetScale(dx::XMFLOAT3{ 30.0f,10.0f,30.0f });
 	mCloud->SetScale(10.0f);
+	//mCloud->SetRotation(dx::XMFLOAT3{ 0.0f,1.0f,0.0f });
 
 	Actor* sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));

@@ -42,7 +42,7 @@ float Noise(float3 x)
     float res = lerp(lerp(lerp(Hash(n +   0.0f), Hash(n +   1.0f), f.x),
                           lerp(Hash(n +  57.0f), Hash(n +  58.0f), f.x), f.y),
                      lerp(lerp(Hash(n + 113.0f), Hash(n + 114.0f), f.x),
-                          lerp(Hash(n + 170.0f), Hash(n + 141.0f), f.x), f.y), f.z);
+                          lerp(Hash(n + 170.0f), Hash(n + 171.0f), f.x), f.y), f.z);
     
     return res;
 }
@@ -56,9 +56,9 @@ float FBM(float3 p)
     );
     
     float f = 0.0f;
-    f += 0.5f * Noise(p); p = mul(m, p) * 2.02f;
-    f += 0.3f * Noise(p); p = mul(m, p) * 2.03f;
-    f += 0.2f * Noise(p);
+    f += 0.500f * Noise(p); p = mul(m, p) * 2.02f;
+    f += 0.250f * Noise(p); p = mul(m, p) * 2.03f;
+    f += 0.125f * Noise(p);
     
     return f;
 }
@@ -83,8 +83,7 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    return FBM(p * mNoiseScale) * 0.2f - Sphere(p, mRadius);
-    //return FBM(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(0.4f, 0.1f, 0.2f));
+    return FBM(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
     //return FBM(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.1f));
 }
 
@@ -93,7 +92,7 @@ float DensityFunctionAnime(float3 p)
     float f = FBM(p * mNoiseScale);
 
     float d1 = f * 0.3f - Sphere(p, mRadius);
-    float d2 = f * 0.2f - Torus(p, float2(mRadius * 1.2f, 0.1f));
+    float d2 = f * 0.2f - Torus(p, float2(mRadius * 1.1f, 0.1f));
     float blend = 0.5f + 0.5f * sin(mTime * 1.5f);
     return lerp(d1, d2, blend);
 }
