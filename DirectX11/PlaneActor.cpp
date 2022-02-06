@@ -25,7 +25,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 	Mesh* mesh = renderer->GetMesh("plane");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 21, 25.0f);
+	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 51, 10.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 
 	mCount = planeMesh->GetVerticesCount();
@@ -38,10 +38,8 @@ PlaneActor::PlaneActor(BaseScene* scene)
 		}
 	}
 
-
 	mVertexCBuffer = new VertexConstantBuffer<VertexConstant>(renderer, 1);
 	mPixelCBuffer = new PixelConstantBuffer<PixelConstant>(renderer, 1);
-
 }
 
 PlaneActor::~PlaneActor()

@@ -39,7 +39,6 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
 {
     float3 lightDir = normalize(-mDirection);
     float3 viewDir = normalize(mCameraPos - worldPos);
-    float3 halfDir = normalize(lightDir + viewDir);
 	
     float facing = saturate(1.0f - dot(normal, viewDir));
     float fresnel = r + (1.0f - r) * pow(facing, 5.0f);
