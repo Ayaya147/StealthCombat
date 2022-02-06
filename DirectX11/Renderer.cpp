@@ -384,7 +384,7 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 	return tex;
 }
 
-void Renderer::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& ambient, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec)
+void Renderer::SetDirectionalLight(const DirectionalLight& light)
 {
-	mLight->SetDirectionalLight(dir, ambient, diff, spec);
+	mLight->SetDirectionalLight(light);
 }

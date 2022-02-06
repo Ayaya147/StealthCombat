@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "InputSystem.h"
 #include "Keyboard.h"
+#include "GamePad.h"
 
 namespace dx = DirectX;
 
@@ -57,14 +58,35 @@ void CameraComponent::Update(float deltaTime)
 
 void CameraComponent::ProcessInput()
 {
+	GamePad* pad = GetOwner()->GetScene()->GetInputSystem()->GetPad();
 	Keyboard* keyboard = GetOwner()->GetScene()->GetInputSystem()->GetKeyboard();
 
-	if (keyboard->GetKeyState('1') == ButtonState::EPressed)
+	if (pad->GetIsGamePad())
 	{
-		mType = 1;
+		if (pad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed)
+		{
+			if (mType == 1)
+			{
+				mType = 2;
+			}
+			else
+			{
+				mType = 1;
+			}
+		}
 	}
-	else if (keyboard->GetKeyState('2') == ButtonState::EPressed)
+	else
 	{
-		mType = 2;
+		if (keyboard->GetKeyState('1') == ButtonState::EPressed)
+		{
+			if (mType == 1)
+			{
+				mType = 2;
+			}
+			else
+			{
+				mType = 1;
+			}
+		}
 	}
 }

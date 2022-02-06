@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <bitset>
 
 class Keyboard
 {
@@ -21,6 +20,6 @@ private:
 	void ClearState();
 
 	static constexpr unsigned int mKeys = 256;
-	std::bitset<mKeys> mKeyStates;
+	std::vector<int> mKeyStates;
 	std::vector<int> mCounts;
 };

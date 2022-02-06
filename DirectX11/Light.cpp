@@ -51,10 +51,10 @@ void Light::ImGuiWindow()
 	ImGui::End();
 }
 
-void Light::SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& ambient, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec)
+void Light::SetDirectionalLight(const DirectionalLight& light)
 {
-	mData.mDirection = dir;
-	mData.mAmbientColor = ambient;
-	mData.mDiffuseColor = diff;
-	mData.mSpecColor = spec;
+	mData.mDirection = light.mDirection;
+	mData.mAmbientColor = light.mAmbientColor;
+	mData.mDiffuseColor = light.mDiffuseColor;
+	mData.mSpecColor = light.mSpecColor;
 }

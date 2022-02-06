@@ -17,4 +17,5 @@ public:
 private:
 	class CloudActor* mCloud;
 	class PlaneActor* mPlane;
+	class SpriteComponent* mSprite;
 };

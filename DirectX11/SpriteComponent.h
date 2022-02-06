@@ -8,6 +8,7 @@ public:
 	~SpriteComponent();
 
 	virtual void Draw(class Renderer* renderer);
+	void SetTexture(class Texture* tex);
 
 	int GetDrawOrder() const { return mDrawOrder; }
 

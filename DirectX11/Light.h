@@ -1,6 +1,14 @@
 #pragma once
 #include "Renderer.h"
 
+struct DirectionalLight
+{
+	DirectX::XMFLOAT3 mDirection;
+	DirectX::XMFLOAT3 mAmbientColor;
+	DirectX::XMFLOAT3 mDiffuseColor;
+	DirectX::XMFLOAT3 mSpecColor;
+};
+
 template<class C>
 class PixelConstantBuffer;
 
@@ -14,7 +22,7 @@ public:
 	void Reset();
 	void ImGuiWindow();
 
-	void SetDirectionalLight(const DirectX::XMFLOAT3& dir, const DirectX::XMFLOAT3& ambient, const DirectX::XMFLOAT3& diff, const DirectX::XMFLOAT3& spec);
+	void SetDirectionalLight(const DirectionalLight& light);
 
 private:
 	struct PixelConstant

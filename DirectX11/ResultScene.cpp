@@ -9,6 +9,7 @@
 #include "Actor.h"
 #include "InputSystem.h"
 #include "Keyboard.h"
+#include "GamePad.h"
 
 namespace dx = DirectX;
 
@@ -20,7 +21,7 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 
 	Actor* sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
-	Texture* tex = renderer->GetTexture("Assets\\Texture\\guide.png");
+	Texture* tex = renderer->GetTexture("Assets\\Texture\\guide_keyboard.png");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 
 	sprite = new Actor(this);
@@ -48,7 +49,15 @@ void ResultScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetInputSystem()->GetKeyboard()->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+	GamePad* pad = GetInputSystem()->GetPad();
+	Keyboard* keyboard = GetInputSystem()->GetKeyboard();
+
+	if (!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+	{
+		Parameter parameter;
+		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+	}
+	else if (pad->GetIsGamePad() && pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);

@@ -9,6 +9,7 @@
 #include "Actor.h"
 #include "InputSystem.h"
 #include "Keyboard.h"
+#include "GamePad.h"
 
 namespace dx = DirectX;
 
@@ -48,7 +49,15 @@ void TitleScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetInputSystem()->GetKeyboard()->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+	GamePad* pad = GetInputSystem()->GetPad();
+	Keyboard* keyboard = GetInputSystem()->GetKeyboard();
+
+	if (!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+	{
+		Parameter parameter;
+		mSceneManager->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+	}
+	else if (pad->GetIsGamePad() && pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EGame, parameter, true);

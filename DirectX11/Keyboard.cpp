@@ -3,6 +3,7 @@
 
 Keyboard::Keyboard()
 	:
+	mKeyStates(std::vector<int>(mKeys, 0)),
 	mCounts(std::vector<int>(mKeys, 0))
 {
 }
@@ -61,15 +62,15 @@ ButtonState Keyboard::GetKeyState(unsigned char keycode) const
 
 void Keyboard::KeyDown(unsigned char keycode)
 {
-	mKeyStates[keycode] = true;
+	mKeyStates[keycode] = 1;
 }
 
 void Keyboard::KeyUp(unsigned char keycode)
 {
-	mKeyStates[keycode] = false;
+	mKeyStates[keycode] = 0;
 }
 
 void Keyboard::ClearState()
 {
-	mKeyStates.reset();
+	mKeyStates = std::vector<int>(mKeys, 0);
 }

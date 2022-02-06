@@ -24,3 +24,8 @@ void SpriteComponent::Draw(Renderer* renderer)
 	mTexture->Bind(renderer);
 	renderer->GetContext()->Draw(4, 0);
 }
+
+void SpriteComponent::SetTexture(Texture* tex)
+{
+	mTexture = tex;
+}
