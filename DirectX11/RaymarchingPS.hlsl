@@ -10,9 +10,10 @@ cbuffer CBuf : register(b0)
 cbuffer CBuf1 : register(b1)
 {
     matrix mWorldInverse;
+    float mTime;
 };
 
-cbuffer CloudCBuf : register(b2)
+cbuffer CBuf2 : register(b2)
 {
     float3 mCloudColor;
     int mLoop;
@@ -24,7 +25,6 @@ cbuffer CloudCBuf : register(b2)
     int mOpacityLight;
     float mLightStepScale;
     int mLoopLight;
-    float mTime;
 };
 
 float Hash(float n)

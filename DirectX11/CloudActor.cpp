@@ -11,6 +11,7 @@
 namespace dx = DirectX;
 
 int CloudActor::mCount = 0;
+CloudActor::CloudConstant CloudActor::mData;
 PixelConstantBuffer<CloudActor::ObjectConstant>* CloudActor::mObjectCBuffer = nullptr;
 PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = nullptr;
 
@@ -55,7 +56,6 @@ CloudActor::~CloudActor()
 
 void CloudActor::UpdateActor(float deltaTime)
 {
-	mData.mTime = GetScene()->GetGameTime() + mTimeOffset;
 	mDistFromCamera = CalcDistFromCamera();
 }
 
@@ -65,6 +65,7 @@ void CloudActor::Bind(Renderer* renderer)
 
 	ObjectConstant c = {};
 	c.mWorldTransformInverse = dx::XMMatrixInverse(nullptr, GetWorldTransform());
+	c.mTime = GetScene()->GetGameTime() + mTimeOffset;
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);
 
@@ -124,6 +125,5 @@ void CloudActor::Reset()
 		80,
 		0.4f,
 		4,
-		GetScene()->GetGameTime()
 	};
 }

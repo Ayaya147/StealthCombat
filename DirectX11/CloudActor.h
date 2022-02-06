@@ -22,6 +22,8 @@ private:
 	struct ObjectConstant
 	{
 		DirectX::XMMATRIX mWorldTransformInverse;
+		float mTime;
+		float padding[3];
 	};
 
 	struct CloudConstant
@@ -36,14 +38,13 @@ private:
 		int mOpacityLight;
 		float mLightStepScale;
 		int mLoopLight;
-		float mTime;
-		float padding[2];
+		float padding[3];
 	};
 
-	CloudConstant mData;
+	float mTimeOffset;
 	float mDistFromCamera;
 	static int mCount;
+	static CloudConstant mData;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;
-	float mTimeOffset;
 };
