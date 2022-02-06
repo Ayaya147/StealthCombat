@@ -64,14 +64,6 @@ Window::Window(int width, int height, InputSystem* input)
 	ShowWindow(mhWnd, SW_SHOWDEFAULT);
 	UpdateWindow(mhWnd);
 
-	//RAWINPUTDEVICE rid;
-	//rid.usUsagePage = 0x01; // mouse page
-	//rid.usUsage = 0x02; // mouse usage
-	//rid.dwFlags = 0;
-	//rid.hwndTarget = nullptr;
-	//if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE)
-	//{
-	//}
 	ImGui_ImplWin32_Init(mhWnd);
 	mInput = input;
 }
@@ -114,10 +106,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		{
 			//break;
 		}
-		if (!(lParam & 0x40000000) || mInput->GetKeyboard()->AutorepeatIsEnabled())
-		{
-			keyboard->OnKeyPressed(static_cast<unsigned char>(wParam));
-		}
+		keyboard->KeyDown(static_cast<unsigned char>(wParam));
 		break;
 
 	case WM_KEYUP:
@@ -126,7 +115,7 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		{
 			//break;
 		}
-		keyboard->OnKeyReleased(static_cast<unsigned char>(wParam));
+		keyboard->KeyUp(static_cast<unsigned char>(wParam));
 		break;
 
 	case WM_CHAR:
@@ -134,7 +123,6 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		{
 			//break;
 		}
-		keyboard->OnChar(static_cast<unsigned char>(wParam));
 		break;
 	}
 

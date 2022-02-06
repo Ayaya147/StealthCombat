@@ -1,5 +1,13 @@
 #pragma once
 
+enum class ButtonState
+{
+	ENone,
+	EPressed,
+	EReleased,
+	EHeld
+};
+
 class InputSystem
 {
 public:

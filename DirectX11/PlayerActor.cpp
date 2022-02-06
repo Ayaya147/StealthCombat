@@ -48,57 +48,64 @@ void PlayerActor::ActorInput()
 
 	DirectX::XMFLOAT3 rotation = GetRotation();
 
-	//if (pad->GetThumbLeftX() > 0)
-	//{
-	//	pad->SetRightVibration(100);
-	//	mMoveComponent->SetAngularSpeed(1.2f);
-	//}
-	//else if (pad->GetThumbLeftX() < 0)
-	//{
-	//	pad->SetLeftVibration(100);
-	//	mMoveComponent->SetAngularSpeed(-1.2f);
-	//}
-	//else
-	//{
-	//	pad->StopVibration();
-	//	mMoveComponent->SetAngularSpeed(0.0f);
-	//	rotation.z = GetRotation().z * 0.95f;
-	//	SetRotation(rotation);
-	//}
-
-	//if (pad->GetRightTrigger())
-	//{
-	//	mMoveComponent->SetForwardSpeed(10.0f);
-	//}
-	//else
-	//{
-	//	float spd = mMoveComponent->GetForwardSpeed();
-	//	mMoveComponent->SetForwardSpeed(spd * 0.95f);
-	//}
-
-	if (keyboard->KeyIsHeld('D') || keyboard->KeyIsPressed('D'))
+	if (pad->GetIsGamePad())
 	{
-		mMoveComponent->SetAngularSpeed(1.2f);
-	}
-	else if (keyboard->KeyIsHeld('A') || keyboard->KeyIsPressed('A'))
-	{
-		mMoveComponent->SetAngularSpeed(-1.2f);
+		if (pad->GetThumbLeftX() > 0)
+		{
+			pad->SetRightVibration(100);
+			mMoveComponent->SetAngularSpeed(1.2f);
+		}
+		else if (pad->GetThumbLeftX() < 0)
+		{
+			pad->SetLeftVibration(100);
+			mMoveComponent->SetAngularSpeed(-1.2f);
+		}
+		else
+		{
+			pad->StopVibration();
+			float spd = mMoveComponent->GetAngularSpeed();
+			mMoveComponent->SetAngularSpeed(spd * 0.9f);
+			rotation.z = GetRotation().z * 0.95f;
+			SetRotation(rotation);
+		}
+
+		//if (pad->GetButtonValue(XINPUT_GAMEPAD_X))
+		if (pad->GetRightTrigger())
+		{
+			mMoveComponent->SetForwardSpeed(10.0f);
+		}
+		else
+		{
+			float spd = mMoveComponent->GetForwardSpeed();
+			mMoveComponent->SetForwardSpeed(spd * 0.95f);
+		}
 	}
 	else
 	{
-		float spd = mMoveComponent->GetAngularSpeed();
-		mMoveComponent->SetAngularSpeed(spd * 0.9f);
-		rotation.z = GetRotation().z * 0.95f;
-		SetRotation(rotation);
-	}
+		if (keyboard->GetKeyValue('D'))
+		{
+			mMoveComponent->SetAngularSpeed(1.2f);
+		}
+		else if (keyboard->GetKeyValue('A'))
+		{
+			mMoveComponent->SetAngularSpeed(-1.2f);
+		}
+		else
+		{
+			float spd = mMoveComponent->GetAngularSpeed();
+			mMoveComponent->SetAngularSpeed(spd * 0.9f);
+			rotation.z = GetRotation().z * 0.95f;
+			SetRotation(rotation);
+		}
 
-	if (keyboard->KeyIsHeld('W') || keyboard->KeyIsPressed('W'))
-	{
-		mMoveComponent->SetForwardSpeed(10.0f);
-	}
-	else
-	{
-		float spd = mMoveComponent->GetForwardSpeed();
-		mMoveComponent->SetForwardSpeed(spd * 0.95f);
+		if (keyboard->GetKeyValue('W'))
+		{
+			mMoveComponent->SetForwardSpeed(10.0f);
+		}
+		else
+		{
+			float spd = mMoveComponent->GetForwardSpeed();
+			mMoveComponent->SetForwardSpeed(spd * 0.95f);
+		}
 	}
 }

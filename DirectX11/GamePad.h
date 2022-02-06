@@ -17,22 +17,21 @@ public:
 	int GetLeftTrigger();
 	int GetRightTrigger();
 
+	bool GetButtonValue(DWORD button) const;
+	enum class ButtonState GetButtonState(DWORD button) const;
+	bool GetIsGamePad() const { return mIsGamePad; }
+
 	void SetLeftVibration(int speed);
 	void SetRightVibration(int speed);
 	void SetVibration(int speed);
 	void StopVibration();
 
-	bool IsButtonPressed(DWORD button);
-	bool IsButtonTriggered(DWORD button);
-
 private:
-	struct ControllerState
-	{
-		XINPUT_STATE		mLastState;
-		XINPUT_STATE		mState;
-		XINPUT_STATE		mTrigger;
-		XINPUT_VIBRATION	mVibration;
-	};
+	static constexpr int mThumbDeadZone = 15000;
+	static constexpr int mTriggerDeadZone = 30;
 
-	ControllerState mController;
+	XINPUT_STATE		mLastState;
+	XINPUT_STATE		mState;
+	XINPUT_VIBRATION	mVibration;
+	bool mIsGamePad;
 };

@@ -59,11 +59,11 @@ void CameraComponent::ProcessInput()
 {
 	Keyboard* keyboard = GetOwner()->GetScene()->GetInputSystem()->GetKeyboard();
 
-	if (keyboard->KeyIsPressed('1'))
+	if (keyboard->GetKeyState('1') == ButtonState::EPressed)
 	{
 		mType = 1;
 	}
-	else if (keyboard->KeyIsPressed('2'))
+	else if (keyboard->GetKeyState('2') == ButtonState::EPressed)
 	{
 		mType = 2;
 	}
