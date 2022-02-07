@@ -60,6 +60,20 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
+	tex = renderer->GetTexture("Assets\\Texture\\speed.png");
+	sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 20.0f, 0.0f });
+	sprite->SetScale(0.6f);
+
+	sprite = new Actor(this);
+	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
+	tex = renderer->GetTexture("Assets\\Texture\\time.png");
+	sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
+	sprite->SetScale(0.6f);
+
+	sprite = new Actor(this);
+	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\guide_keyboard.png");
 	mSprite = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });

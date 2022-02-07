@@ -24,6 +24,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
+	mMoveComponent->SetForwardSpeedMax(20.0f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
@@ -72,12 +73,11 @@ void PlayerActor::ActorInput()
 		//if (pad->GetButtonValue(XINPUT_GAMEPAD_X))
 		if (pad->GetRightTrigger())
 		{
-			mMoveComponent->SetForwardSpeed(10.0f);
+			mMoveComponent->SetAcceleration(5.0f);
 		}
 		else
 		{
-			float spd = mMoveComponent->GetForwardSpeed();
-			mMoveComponent->SetForwardSpeed(spd * 0.95f);
+			mMoveComponent->SetAcceleration(-5.0f);
 		}
 	}
 	else
@@ -100,12 +100,15 @@ void PlayerActor::ActorInput()
 
 		if (keyboard->GetKeyValue('W'))
 		{
-			mMoveComponent->SetForwardSpeed(10.0f);
+			mMoveComponent->SetAcceleration(5.0f);
+		}
+		else if (keyboard->GetKeyValue('S'))
+		{
+			mMoveComponent->SetAcceleration(-5.0f);
 		}
 		else
 		{
-			float spd = mMoveComponent->GetForwardSpeed();
-			mMoveComponent->SetForwardSpeed(spd * 0.95f);
+			mMoveComponent->SetAcceleration(-2.0f);
 		}
 	}
 }

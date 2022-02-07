@@ -6,13 +6,25 @@ namespace dx = DirectX;
 MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 	:
 	Component(owner, updateOrder),
+	mForwardSpeedMax(0.0f),
 	mAngularSpeed(0.0f),
-	mForwardSpeed(0.0f)
+	mForwardSpeed(0.0f),
+	mAcceleration(0.0f)
 {
 }
 
 void MoveComponent::Update(float deltaTime)
 {
+	mForwardSpeed += mAcceleration * deltaTime;
+	if (mForwardSpeed > 20.0f)
+	{
+		mForwardSpeed = 20.0f;
+	}
+	else if (mForwardSpeed < 0.0f)
+	{
+		mForwardSpeed = 0.0f;
+	}
+
 	dx::XMFLOAT3 rotation = GetOwner()->GetRotation();
 	rotation.y += mAngularSpeed * deltaTime;
 	rotation.z -= mAngularSpeed * deltaTime;
