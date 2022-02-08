@@ -20,13 +20,11 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetRenderer();
 
 	Actor* sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\0.png");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 
 	sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\1.png");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);

@@ -20,13 +20,11 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetRenderer();
 
 	Actor* sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\guide_keyboard.png");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 
 	sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
