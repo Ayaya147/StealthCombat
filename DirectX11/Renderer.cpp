@@ -196,8 +196,8 @@ void Renderer::Draw()
 
 void Renderer::Draw3DScene()
 {
-	mDepthStencilOn->Bind(this);
 	mSampler->Bind(this);
+	mDepthStencilOn->Bind(this);
 	mBlenderOff->Bind(this);
 	mLight->Bind(this);
 
@@ -216,6 +216,7 @@ void Renderer::Draw3DScene()
 		}
 	}
 
+	mDepthStencilOff->Bind(this);
 	mBlenderOn->Bind(this);
 	auto distTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
 	{
@@ -237,7 +238,6 @@ void Renderer::Draw3DScene()
 
 void Renderer::Draw2DScene()
 {
-	mDepthStencilOff->Bind(this);
 	mVertexBuffer->Bind(this);
 	mTopology->Bind(this);
 	mInputLayout->Bind(this);

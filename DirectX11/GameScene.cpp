@@ -51,8 +51,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	mCloud = new CloudActor(this);
 	mCloud->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
-	//mCloud->SetScale(dx::XMFLOAT3{ 100.0f,10.0f,100.0f });
-	mCloud->SetScale(10.0f);
+	mCloud->SetScale(dx::XMFLOAT3{ 100.0f,15.0f,100.0f });
+	//mCloud->SetScale(10.0f);
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
