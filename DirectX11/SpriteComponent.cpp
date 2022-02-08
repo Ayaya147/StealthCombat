@@ -4,11 +4,11 @@
 #include "BaseScene.h"
 #include "Texture.h"
 
-SpriteComponent::SpriteComponent(Actor* owner,Texture* tex, int drawOrder)
+SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	:
 	Component(owner),
 	mDrawOrder(drawOrder),
-	mTexture(tex)
+	mTexture(nullptr)
 {
 	GetOwner()->GetScene()->GetRenderer()->AddSprite(this);
 }

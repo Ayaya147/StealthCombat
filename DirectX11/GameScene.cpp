@@ -7,6 +7,7 @@
 #include "MissileActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
+#include "NumberActor.h"
 #include "MeshComponent.h"
 #include "CameraComponent.h"
 #include "Mesh.h"
@@ -29,9 +30,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	float height = 150.0f;
 
-	PlayerActor* player = new PlayerActor(this);
-	player->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
-	CameraComponent* cc = new CameraComponent(player);
+	mPlayer = new PlayerActor(this);
+	mPlayer->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
+	CameraComponent* cc = new CameraComponent(mPlayer);
 
 	EnemyActor* enemy = new EnemyActor(this);
 	enemy->SetPosition(dx::XMFLOAT3{ 0.0f,height,5.0f });
@@ -54,30 +55,37 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Actor* sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
-	SpriteComponent* sc = new SpriteComponent(sprite, tex);
+	SpriteComponent* sc = new SpriteComponent(sprite);
+	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\speed.png");
-	sc = new SpriteComponent(sprite, tex);
+	sc = new SpriteComponent(sprite);
+	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\time.png");
-	sc = new SpriteComponent(sprite, tex);
+	sc = new SpriteComponent(sprite);
+	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\guide_keyboard.png");
-	mSprite = new SpriteComponent(sprite, tex);
+	mSprite = new SpriteComponent(sprite);
+	mSprite->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
+
+	NumberActor* number = new NumberActor(this, 0, 4);
+	number->SetOriPosition(dx::XMFLOAT3{ -180.0f, -6.0f, 0.0f });
 }
 
 GameScene::~GameScene()

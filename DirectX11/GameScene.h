@@ -13,8 +13,10 @@ public:
 
 	class CloudActor* GetCloud() const { return mCloud; }
 	class PlaneActor* GetPlane() const { return mPlane; }
+	class PlayerActor* GetPlayer() const { return mPlayer; }
 
 private:
+	class PlayerActor* mPlayer;
 	class CloudActor* mCloud;
 	class PlaneActor* mPlane;
 	class SpriteComponent* mSprite;

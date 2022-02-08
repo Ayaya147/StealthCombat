@@ -9,6 +9,8 @@ public:
 	void UpdateActor(float deltaTime) override;
 	void ActorInput() override;
 
+	float GetForwardSpeed() const;
+
 private:
 	class MoveComponent* mMoveComponent;
 };

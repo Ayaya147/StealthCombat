@@ -104,11 +104,16 @@ void PlayerActor::ActorInput()
 		}
 		else if (keyboard->GetKeyValue('S'))
 		{
-			mMoveComponent->SetAcceleration(-5.0f);
+			mMoveComponent->SetAcceleration(-7.0f);
 		}
 		else
 		{
 			mMoveComponent->SetAcceleration(-2.0f);
 		}
 	}
+}
+
+float PlayerActor::GetForwardSpeed() const
+{
+	return mMoveComponent->GetForwardSpeed();
 }
