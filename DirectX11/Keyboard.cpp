@@ -1,11 +1,11 @@
 #include "Keyboard.h"
+#include <Windows.h>
 #include "InputSystem.h"
 
 Keyboard::Keyboard()
-	:
-	mKeyStates(std::vector<int>(mKeys, 0)),
-	mCounts(std::vector<int>(mKeys, 0))
 {
+	ZeroMemory(&mKeyStates, sizeof(mKeyStates));
+	ZeroMemory(&mCounts, sizeof(mCounts));
 }
 
 Keyboard::~Keyboard()
@@ -72,5 +72,5 @@ void Keyboard::KeyUp(unsigned char keycode)
 
 void Keyboard::ClearState()
 {
-	mKeyStates = std::vector<int>(mKeys, 0);
+	ZeroMemory(&mKeyStates, sizeof(mKeyStates));
 }

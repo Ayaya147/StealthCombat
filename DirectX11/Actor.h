@@ -55,5 +55,5 @@ private:
 	class BaseScene* mScene;
 	class TransformCBuffer* mTransformCBuffer;
 
-	std::vector<class Component*> mComponents;	
+	std::vector<class Component*> mComponents;
 };

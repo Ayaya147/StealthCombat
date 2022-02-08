@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <array>
 
 class Keyboard
 {
@@ -20,6 +20,6 @@ private:
 	void ClearState();
 
 	static constexpr unsigned int mKeys = 256;
-	std::vector<int> mKeyStates;
-	std::vector<int> mCounts;
+	std::array<int, mKeys> mKeyStates;
+	std::array<int, mKeys> mCounts;
 };
