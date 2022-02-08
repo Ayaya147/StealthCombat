@@ -53,7 +53,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mCloud->SetScale(10.0f);
 
 	Actor* sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
@@ -61,7 +60,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\speed.png");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
@@ -69,7 +67,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\time.png");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
@@ -77,7 +74,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
-	sprite->SetTransformCBuffer(new TransformCBuffer(renderer, sprite));
 	tex = renderer->GetTexture("Assets\\Texture\\guide_keyboard.png");
 	mSprite = new SpriteComponent(sprite);
 	mSprite->SetTexture(tex);

@@ -15,10 +15,10 @@ Actor::Actor(BaseScene* scene)
 	mScale(dx::XMFLOAT3{ 1.0f,1.0f,1.0f }),
 	mState(ActorState::EActive),
 	mScene(scene),
-	mRecomputeWorldTransform(true),
-	mTransformCBuffer(nullptr)
+	mRecomputeWorldTransform(true)
 {
 	mScene->AddActor(this);
+	mTransformCBuffer = new TransformCBuffer(GetScene()->GetRenderer(), this);
 }
 
 Actor::~Actor()
@@ -29,11 +29,8 @@ Actor::~Actor()
 		delete mComponents.back();
 	}
 
-	if (mTransformCBuffer)
-	{
-		delete mTransformCBuffer;
-		mTransformCBuffer = nullptr;
-	}
+	delete mTransformCBuffer;
+	mTransformCBuffer = nullptr;
 }
 
 void Actor::Update(float deltaTime)

@@ -25,8 +25,6 @@ CloudActor::CloudActor(BaseScene* scene)
 	Reset();
 
 	Renderer* renderer = GetScene()->GetRenderer();
-	SetTransformCBuffer(new TransformCBuffer(renderer, this));
-
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);

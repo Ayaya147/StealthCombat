@@ -10,11 +10,9 @@ MissileActor::MissileActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	Renderer* renderer = GetScene()->GetRenderer();
 	SetScale(0.08f);
 
-	SetTransformCBuffer(new TransformCBuffer(renderer, this));
-
+	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("missile");
 	mesh->ParseMesh(renderer, "missile", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);

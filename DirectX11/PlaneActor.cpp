@@ -21,8 +21,6 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	Reset();
 
 	Renderer* renderer = GetScene()->GetRenderer();
-	SetTransformCBuffer(new TransformCBuffer(renderer, this));
-
 	Mesh* mesh = renderer->GetMesh("plane");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
 	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 51, 20.0f);

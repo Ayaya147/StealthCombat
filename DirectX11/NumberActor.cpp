@@ -12,8 +12,6 @@ NumberActor::NumberActor(BaseScene* scene, float value, int digit)
 	mDigit(digit),
 	mOriPos(DirectX::XMFLOAT3{0.0f,0.0f,0.0f})
 {
-	SetTransformCBuffer(new TransformCBuffer(GetScene()->GetRenderer(), this));
-
 	NumberSpriteComponent* nsc = new NumberSpriteComponent(this);
 	SetScale(0.6f);
 }

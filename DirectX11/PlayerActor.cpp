@@ -14,11 +14,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	Renderer* renderer = GetScene()->GetRenderer();
 	SetScale(0.1f);
-
-	SetTransformCBuffer(new TransformCBuffer(renderer, this));
-
+	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("player");
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
