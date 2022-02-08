@@ -83,8 +83,11 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    return FBM(p * mNoiseScale) * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
-    //return FBM(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.1f));
+    float f = FBM(p * mNoiseScale);
+    
+    return f * 0.3f - Sphere(p, mRadius);
+    //return f * 0.8f - Sphere(p / mRadius,0.0f );
+    //return f * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
 }
 
 float DensityFunctionAnime(float3 p)
@@ -126,7 +129,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     
     for (int i = 0; i < loop; i++)
     {
-        float density = DensityFunctionAnime(localPos);
+        float density = DensityFunction(localPos);
         
         if (density > 0.0f)
         {
@@ -143,7 +146,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             
             for (int j = 0; j < mLoopLight; j++)
             {
-                float densityLight = DensityFunctionAnime(lightPos);
+                float densityLight = DensityFunction(lightPos);
                 
                 if ( densityLight > 0.0f)
                 {

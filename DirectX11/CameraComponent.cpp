@@ -12,7 +12,7 @@ namespace dx = DirectX;
 CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 	:
 	Component(owner, updateOrder),
-	mTargetDist(15.0f),
+	mTargetDist(16.0f),
 	mType(1)
 {
 }

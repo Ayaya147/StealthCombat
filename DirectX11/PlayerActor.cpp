@@ -90,8 +90,8 @@ void PlayerActor::ActorInput()
 		else
 		{
 			float spd = mMoveComponent->GetAngularSpeed();
-			mMoveComponent->SetAngularSpeed(spd * 0.9f);
-			rotation.z = GetRotation().z * 0.95f;
+			mMoveComponent->SetAngularSpeed(spd * 0.92f);
+			rotation.z = GetRotation().z * 0.92f;
 			SetRotation(rotation);
 		}
 

@@ -17,6 +17,7 @@
 #include "InputSystem.h"
 #include "GamePad.h"
 #include "Keyboard.h"
+#include "Random.h"
 
 namespace dx = DirectX;
 
@@ -40,16 +41,17 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	MissileActor* missile = new MissileActor(this);
 	missile->SetPosition(dx::XMFLOAT3{ 0.0f,height,-5.0f });
 
-	for (int i = 0; i < 25; i++)
-	{
-		CloudActor* cloud = new CloudActor(this);
-		cloud->SetPosition(dx::XMFLOAT3{ 5.0f+i*4.0f,height,i*4.0f });
-		cloud->SetScale(5.0f);
-	}
+	//for (int i = 0; i < 250; i++)
+	//{
+	//	CloudActor* cloud = new CloudActor(this);
+	//	cloud->SetPosition(dx::XMFLOAT3{ 5.0f + i * 5.0f,height,i*5.0f });
+	//	//cloud->SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-250.0f,250.0f),height,Random::GetFloatRange(-250.0f,250.0f) });
+	//	cloud->SetScale(Random::GetFloatRange(5.0f, 5.1f));
+	//}
 
 	mCloud = new CloudActor(this);
-	mCloud->SetPosition(dx::XMFLOAT3{ -5.0f,height,0.0f });
-	//mCloud->SetScale(dx::XMFLOAT3{ 20.0f,5.0f,20.0f });
+	mCloud->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
+	//mCloud->SetScale(dx::XMFLOAT3{ 100.0f,10.0f,100.0f });
 	mCloud->SetScale(10.0f);
 
 	Actor* sprite = new Actor(this);
