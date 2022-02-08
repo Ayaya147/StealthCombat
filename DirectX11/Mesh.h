@@ -28,6 +28,9 @@ public:
 	void SetIndexBuffer(class IndexBuffer* indexBuffer) { mIndexBuffer = indexBuffer; }
 	void SetVerticesCount(int count) { mVerticesCount = count; }
 
+protected:
+	bool mIsMeshParsed;
+
 private:
 	std::vector<class Bindable*> mBinds;
 	class IndexBuffer* mIndexBuffer;
