@@ -16,7 +16,6 @@ public:
 private:
 	float mTargetDist;
 	int mType;
-	float mSpringConstant;
 	DirectX::XMFLOAT3 mVelocity;
 	DirectX::XMFLOAT3 mActualPos;
 };

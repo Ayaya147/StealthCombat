@@ -16,9 +16,9 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 void MoveComponent::Update(float deltaTime)
 {
 	mForwardSpeed += mAcceleration * deltaTime;
-	if (mForwardSpeed > 20.0f)
+	if (mForwardSpeed > mForwardSpeedMax)
 	{
-		mForwardSpeed = 20.0f;
+		mForwardSpeed = mForwardSpeedMax;
 	}
 	else if (mForwardSpeed < 0.0f)
 	{

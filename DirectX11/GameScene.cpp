@@ -45,7 +45,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	//for (int i = 0; i < 50; i++)
 	//{
 	//	CloudActor* cloud = new CloudActor(this);
-	//	cloud->SetPosition(dx::XMFLOAT3{ 5.0f + i * 5.0f,height,i*5.0f });
+	//	cloud->SetPosition(dx::XMFLOAT3{ 5.0f + i * 2.0f,height,i*2.0f });
 	//	//cloud->SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-250.0f,250.0f),height,Random::GetFloatRange(-250.0f,250.0f) });
 	//	cloud->SetScale(5.0f);
 	//}

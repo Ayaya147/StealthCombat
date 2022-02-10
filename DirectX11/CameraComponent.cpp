@@ -15,7 +15,6 @@ CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 	Component(owner, updateOrder),
 	mTargetDist(16.0f),
 	mType(1),
-	mSpringConstant(64.0f),
 	mVelocity(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
 	mActualPos(dx::XMFLOAT3{ 0.0f,0.0f,0.0f })
 {
@@ -38,12 +37,12 @@ void CameraComponent::Update(float deltaTime)
 		//	dx::XMLoadFloat3(&GetOwner()->GetPosition()),
 		//	dx::XMLoadFloat3(&forward)
 		//);
-
-		float dampening = 3.0f * sqrtf(mSpringConstant);
+		float sprintConstant = 64.0f;
+		float dampening = 3.0f * sqrtf(sprintConstant);
 		dx::XMFLOAT3 idealPos = ComputeCameraPos();
 		dx::XMFLOAT3 diff = mActualPos - idealPos;
-		dx::XMFLOAT3 acel = -mSpringConstant * diff - dampening * mVelocity;
-		mVelocity += acel * deltaTime;
+		dx::XMFLOAT3 accel = -sprintConstant * diff - dampening * mVelocity;
+		mVelocity += accel * deltaTime;
 		mActualPos += mVelocity * deltaTime;
 
 		dx::XMFLOAT3 forward = GetOwner()->GetForward();
