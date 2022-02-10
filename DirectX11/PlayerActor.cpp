@@ -15,6 +15,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	Actor(scene)
 {
 	SetScale(0.1f);
+
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("player");
 	mesh->ParseMesh(renderer, "player", L"Phong");
@@ -22,6 +23,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(20.0f);
+
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
@@ -62,19 +64,22 @@ void PlayerActor::ActorInput()
 		{
 			pad->StopVibration();
 			float spd = mMoveComponent->GetAngularSpeed();
-			mMoveComponent->SetAngularSpeed(spd * 0.9f);
-			rotation.z = GetRotation().z * 0.95f;
+			mMoveComponent->SetAngularSpeed(spd * 0.92f);
+			rotation.z = GetRotation().z * 0.92f;
 			SetRotation(rotation);
 		}
 
-		//if (pad->GetButtonValue(XINPUT_GAMEPAD_X))
 		if (pad->GetRightTrigger())
 		{
 			mMoveComponent->SetAcceleration(5.0f);
 		}
+		else if(pad->GetLeftTrigger())
+		{
+			mMoveComponent->SetAcceleration(-7.0f);
+		}
 		else
 		{
-			mMoveComponent->SetAcceleration(-5.0f);
+			mMoveComponent->SetAcceleration(-2.0f);
 		}
 	}
 	else

@@ -377,6 +377,9 @@
     <ClInclude Include="NumberSpriteComponent.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
+    <ClInclude Include="XMFloatHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PhongPS.hlsl">

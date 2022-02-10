@@ -270,6 +270,7 @@
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="XMFloatHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GerstnerWave.hlsli" />

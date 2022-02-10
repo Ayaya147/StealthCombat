@@ -6,6 +6,7 @@
 #include "InputSystem.h"
 #include "Keyboard.h"
 #include "GamePad.h"
+#include "XMFloatHelper.h"
 
 namespace dx = DirectX;
 
@@ -13,7 +14,10 @@ CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 	:
 	Component(owner, updateOrder),
 	mTargetDist(16.0f),
-	mType(1)
+	mType(1),
+	mSpringConstant(64.0f),
+	mVelocity(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
+	mActualPos(dx::XMFLOAT3{ 0.0f,0.0f,0.0f })
 {
 }
 
@@ -22,15 +26,29 @@ void CameraComponent::Update(float deltaTime)
 	dx::XMMATRIX view;
 	if (mType == 1)
 	{
-		dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
-			GetOwner()->GetPosition().x,
-			GetOwner()->GetPosition().y + mTargetDist,
-			GetOwner()->GetPosition().z
-		};
+		//dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
+		//	GetOwner()->GetPosition().x,
+		//	GetOwner()->GetPosition().y + mTargetDist,
+		//	GetOwner()->GetPosition().z
+		//};
+
+		//dx::XMFLOAT3 forward = GetOwner()->GetForward();
+		//view = dx::XMMatrixLookAtLH(
+		//	dx::XMLoadFloat3(&cameraPos),
+		//	dx::XMLoadFloat3(&GetOwner()->GetPosition()),
+		//	dx::XMLoadFloat3(&forward)
+		//);
+
+		float dampening = 3.0f * sqrtf(mSpringConstant);
+		dx::XMFLOAT3 idealPos = ComputeCameraPos();
+		dx::XMFLOAT3 diff = mActualPos - idealPos;
+		dx::XMFLOAT3 acel = -mSpringConstant * diff - dampening * mVelocity;
+		mVelocity += acel * deltaTime;
+		mActualPos += mVelocity * deltaTime;
 
 		dx::XMFLOAT3 forward = GetOwner()->GetForward();
 		view = dx::XMMatrixLookAtLH(
-			dx::XMLoadFloat3(&cameraPos),
+			dx::XMLoadFloat3(&mActualPos),
 			dx::XMLoadFloat3(&GetOwner()->GetPosition()),
 			dx::XMLoadFloat3(&forward)
 		);
@@ -89,4 +107,29 @@ void CameraComponent::ProcessInput()
 			}
 		}
 	}
+}
+
+DirectX::XMFLOAT3 CameraComponent::ComputeCameraPos()
+{
+	dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
+		GetOwner()->GetPosition().x,
+		GetOwner()->GetPosition().y + mTargetDist,
+		GetOwner()->GetPosition().z
+	};
+
+	return cameraPos;
+}
+
+void CameraComponent::SnapToIdeal()
+{
+	mActualPos = ComputeCameraPos();
+
+	dx::XMFLOAT3 forward = GetOwner()->GetForward();
+	dx::XMMATRIX view = dx::XMMatrixLookAtLH(
+		dx::XMLoadFloat3(&mActualPos),
+		dx::XMLoadFloat3(&GetOwner()->GetPosition()),
+		dx::XMLoadFloat3(&forward)
+	);
+
+	GetOwner()->GetScene()->GetRenderer()->SetViewMatrix(view);
 }

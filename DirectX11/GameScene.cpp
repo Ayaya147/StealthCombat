@@ -34,6 +34,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer = new PlayerActor(this);
 	mPlayer->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
 	CameraComponent* cc = new CameraComponent(mPlayer);
+	cc->SnapToIdeal();
 
 	EnemyActor* enemy = new EnemyActor(this);
 	enemy->SetPosition(dx::XMFLOAT3{ 0.0f,height,5.0f });
@@ -41,17 +42,17 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	MissileActor* missile = new MissileActor(this);
 	missile->SetPosition(dx::XMFLOAT3{ 0.0f,height,-5.0f });
 
-	//for (int i = 0; i < 250; i++)
+	//for (int i = 0; i < 50; i++)
 	//{
 	//	CloudActor* cloud = new CloudActor(this);
 	//	cloud->SetPosition(dx::XMFLOAT3{ 5.0f + i * 5.0f,height,i*5.0f });
 	//	//cloud->SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-250.0f,250.0f),height,Random::GetFloatRange(-250.0f,250.0f) });
-	//	cloud->SetScale(Random::GetFloatRange(5.0f, 5.1f));
+	//	cloud->SetScale(5.0f);
 	//}
 
 	mCloud = new CloudActor(this);
 	mCloud->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
-	mCloud->SetScale(dx::XMFLOAT3{ 100.0f,15.0f,100.0f });
+	mCloud->SetScale(dx::XMFLOAT3{ 100.0f,25.0f,100.0f });
 	//mCloud->SetScale(10.0f);
 
 	Actor* sprite = new Actor(this);
