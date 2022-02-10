@@ -13,4 +13,5 @@ public:
 
 private:
 	class MoveComponent* mMoveComponent;
+	class SphereComponent* mSphereComponent;
 };

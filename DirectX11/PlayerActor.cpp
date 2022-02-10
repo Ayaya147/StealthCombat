@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
+#include "SphereComponent.h"
 #include "Mesh.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -9,6 +10,7 @@
 #include "InputSystem.h"
 #include "Keyboard.h"
 #include "GamePad.h"
+#include "Collision.h"
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -17,6 +19,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	SetScale(0.1f);
 
 	Renderer* renderer = GetScene()->GetRenderer();
+	
 	Mesh* mesh = renderer->GetMesh("player");
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
@@ -24,6 +27,10 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(20.0f);
 
+	float radius = 10.0f;
+	mSphereComponent = new SphereComponent(this);
+	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
+	mSphereComponent->SetSphere(sphere);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)

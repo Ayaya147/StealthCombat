@@ -18,12 +18,14 @@
 #include "GamePad.h"
 #include "Keyboard.h"
 #include "Random.h"
+#include "PhysWorld.h"
 
 namespace dx = DirectX;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
-	BaseScene(sm, parameter)
+	BaseScene(sm, parameter),
+	mPhysWorld(new PhysWorld(this))
 {
 	Renderer* renderer = GetRenderer();
 
@@ -89,6 +91,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 GameScene::~GameScene()
 {
+	delete mPhysWorld;
 }
 
 void GameScene::ProcessInput()

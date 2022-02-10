@@ -313,3 +313,50 @@ _NODISCARD static inline constexpr auto operator- (const DirectX::XMFLOAT2& v1)
 {
 	return DirectX::XMFLOAT2{ -v1.x, -v1.y };
 }
+
+namespace DXMath
+{
+	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT3& vf3)
+	{
+		float len{};
+
+		auto&& vec{ DirectX::XMLoadFloat3(&vf3) };
+
+		DirectX::XMStoreFloat(&len, DirectX::XMVector3LengthSq(vec));
+
+		return len;
+	}
+
+	_NODISCARD static inline float Length(const DirectX::XMFLOAT3& vf3)
+	{
+		float len{};
+
+		auto&& vec{ DirectX::XMLoadFloat3(&vf3) };
+
+		DirectX::XMStoreFloat(&len, DirectX::XMVector3Length(vec));
+
+		return len;
+	}
+
+	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT2& vf2)
+	{
+		float len{};
+
+		auto&& vec{ DirectX::XMLoadFloat2(&vf2) };
+
+		DirectX::XMStoreFloat(&len, DirectX::XMVector2LengthSq(vec));
+
+		return len;
+	}
+
+	_NODISCARD static inline float Length(const DirectX::XMFLOAT2& vf2)
+	{
+		float len{};
+
+		auto&& vec{ DirectX::XMLoadFloat2(&vf2) };
+
+		DirectX::XMStoreFloat(&len, DirectX::XMVector2Length(vec));
+
+		return len;
+	}
+}

@@ -5,6 +5,7 @@ class MoveComponent : public Component
 {
 public:
 	MoveComponent(class Actor* owner, int updateOrder = 10);
+
 	void Update(float deltaTime) override;
 
 	float GetAngularSpeed() const { return mAngularSpeed; }

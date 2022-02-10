@@ -127,6 +127,7 @@
     <ClCompile Include="NumberActor.cpp" />
     <ClCompile Include="NumberSpriteComponent.cpp" />
     <ClCompile Include="Parameter.cpp" />
+    <ClCompile Include="PhysWorld.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PlaneActor.cpp" />
     <ClCompile Include="PlaneMesh.cpp" />
@@ -153,6 +154,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBins\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <ClCompile Include="SphereComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Stencil.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -251,6 +253,7 @@
     <ClInclude Include="NumberActor.h" />
     <ClInclude Include="NumberSpriteComponent.h" />
     <ClInclude Include="Parameter.h" />
+    <ClInclude Include="PhysWorld.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PlaneActor.h" />
     <ClInclude Include="PlaneMesh.h" />
@@ -260,6 +263,7 @@
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SphereComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stencil.h" />
     <ClInclude Include="Texture.h" />
