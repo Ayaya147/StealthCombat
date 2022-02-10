@@ -210,6 +210,9 @@
     <ClCompile Include="NumberSpriteComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -378,6 +381,9 @@
       <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="XMFloatHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,10 +5,11 @@
 #include "BaseScene.h"
 #include "CloudActor.h"
 
-TransparentComponent::TransparentComponent(Actor* owner, Mesh* mesh)
+TransparentComponent::TransparentComponent(Actor* owner, Mesh* mesh, int drawOrder)
 	:
 	Component(owner),
-	mMesh(mesh)
+	mMesh(mesh),
+	mDrawOrder(drawOrder)
 {
 	GetOwner()->GetScene()->GetRenderer()->AddTranspComp(this);
 }

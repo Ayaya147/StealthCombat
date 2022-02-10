@@ -102,6 +102,7 @@
     <ClCompile Include="Blender.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="CloudActor.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="EnemyActor.cpp" />
     <ClCompile Include="GameApp.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Blender.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CloudActor.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DxException.h" />

@@ -6,11 +6,12 @@ public:
 	Component(class Actor* owner, int updateOrder = 100);
 	virtual ~Component();
 
-	virtual void Update(float deltaTime) {};
+	virtual void Update(float deltaTime) {}
 	virtual void ProcessInput() {}
+	virtual void OnUpdateWorldTransform() {}
 
-	int GetUpdateOrder() const { return mUpdateOrder; }
 	class Actor* GetOwner() const { return mOwner; }
+	int GetUpdateOrder() const { return mUpdateOrder; }
 
 private:
 	class Actor* mOwner;

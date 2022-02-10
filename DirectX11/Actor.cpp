@@ -97,6 +97,11 @@ void Actor::ComputeWorldTransform()
 		mWorldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
 		mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
 		mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+
+		for (auto comp : mComponents)
+		{
+			comp->OnUpdateWorldTransform();
+		}
 	}
 }
 

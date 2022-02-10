@@ -216,13 +216,13 @@ void Renderer::Draw3DScene()
 		}
 	}
 
+	//auto distTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
+	//{
+	//	return tc1->GetDistFromCamera() > tc2->GetDistFromCamera();
+	//};
+	//std::sort(mTranspComps.begin(), mTranspComps.end(), distTest);
 	mDepthStencilOff->Bind(this);
 	mBlenderOn->Bind(this);
-	auto distTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
-	{
-		return tc1->GetDistFromCamera() > tc2->GetDistFromCamera();
-	};
-	std::sort(mTranspComps.begin(), mTranspComps.end(), distTest);
 	bool isBind = false;
 	for (auto tc : mTranspComps)
 	{
@@ -306,14 +306,24 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-void Renderer::AddTranspComp(TransparentComponent* mesh)
+void Renderer::AddTranspComp(TransparentComponent* transparent)
 {
-	mTranspComps.emplace_back(mesh);
+	int myDrawOrder = transparent->GetDrawOrder();
+	auto iter = mTranspComps.begin();
+	for (; iter != mTranspComps.end(); ++iter)
+	{
+		if (myDrawOrder < (*iter)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+
+	mTranspComps.insert(iter, transparent);
 }
 
-void Renderer::RemoveTranspComp(TransparentComponent* mesh)
+void Renderer::RemoveTranspComp(TransparentComponent* transparent)
 {
-	auto iter = std::find(mTranspComps.begin(), mTranspComps.end(), mesh);
+	auto iter = std::find(mTranspComps.begin(), mTranspComps.end(), transparent);
 	mTranspComps.erase(iter);
 }
 
