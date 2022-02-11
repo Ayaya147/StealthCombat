@@ -41,7 +41,6 @@ private:
 		float padding[3];
 	};
 
-	float mTimeOffset;
 	float mDistFromCamera;
 	static int mCount;
 	static CloudConstant mData;

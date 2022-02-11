@@ -43,19 +43,14 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	MissileActor* missile = new MissileActor(this);
 	missile->SetPosition(dx::XMFLOAT3{ 0.0f,height,-5.0f });
 
-	//for (int i = 0; i < 50; i++)
-	//{
-	//	CloudActor* cloud = new CloudActor(this);
-	//	cloud->SetPosition(dx::XMFLOAT3{ 5.0f + i * 2.0f,height,i*2.0f });
-	//	//cloud->SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-250.0f,250.0f),height,Random::GetFloatRange(-250.0f,250.0f) });
-	//	cloud->SetScale(5.0f);
-	//}
+	for (int i = 0; i < 50; i++)
+	{
+		CloudActor* cloud = new CloudActor(this);
+		cloud->SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-500.0f,500.0f),height,Random::GetFloatRange(-500.0f,500.0f) });
+	}
 
 	mCloud = new CloudActor(this);
 	mCloud->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
-
-	CloudActor* cloud = new CloudActor(this);
-	cloud->SetPosition(dx::XMFLOAT3{ 100.0f,height,100.0f });
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");

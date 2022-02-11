@@ -22,15 +22,15 @@ CloudActor::CloudActor(BaseScene* scene)
 	mDistFromCamera(0.0f)
 {
 	mCount++;
-	mTimeOffset = Random::GetFloatRange(0.0f, 10.0f);
 	Reset();
-
-	SetScale(dx::XMFLOAT3{ 100.0f,25.0f,100.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
+
+	float size = Random::GetFloatRange(50.0f, 100.0f);
+	SetScale(dx::XMFLOAT3{ size,size / 4.0f,size });
 
 	float radius = 0.4f;
 	SphereComponent* sc = new SphereComponent(this);
@@ -71,7 +71,7 @@ void CloudActor::Bind(Renderer* renderer)
 
 	ObjectConstant c = {};
 	c.mWorldTransformInverse = dx::XMMatrixInverse(nullptr, GetWorldTransform());
-	c.mTime = GetScene()->GetGameTime() + mTimeOffset;
+	c.mTime = GetScene()->GetGameTime();
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);
 
