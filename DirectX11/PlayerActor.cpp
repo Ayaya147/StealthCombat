@@ -29,7 +29,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
-	mMoveComponent->SetForwardSpeedMax(20.0f);
+	mMoveComponent->SetForwardSpeedMax(15.0f);
 
 	float radius = 10.0f;
 	mSphereComponent = new SphereComponent(this);
@@ -58,7 +58,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 		mOutCloudTime += deltaTime;
 	}
 	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
-	mSpdNum->SetValue(GetForwardSpeed() * 120.0f);
+	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
 		
 	dx::XMFLOAT3 rotation = GetRotation();
 	if (rotation.z > 0.8f)
@@ -102,15 +102,15 @@ void PlayerActor::ActorInput()
 
 		if (pad->GetRightTrigger())
 		{
-			mMoveComponent->SetAcceleration(5.0f);
+			mMoveComponent->SetAcceleration(3.0f);
 		}
 		else if(pad->GetLeftTrigger())
 		{
-			mMoveComponent->SetAcceleration(-7.0f);
+			mMoveComponent->SetAcceleration(-5.0f);
 		}
 		else
 		{
-			mMoveComponent->SetAcceleration(-2.0f);
+			mMoveComponent->SetAcceleration(-1.5f);
 		}
 	}
 	else
@@ -133,15 +133,15 @@ void PlayerActor::ActorInput()
 
 		if (keyboard->GetKeyValue('W'))
 		{
-			mMoveComponent->SetAcceleration(5.0f);
+			mMoveComponent->SetAcceleration(3.0f);
 		}
 		else if (keyboard->GetKeyValue('S'))
 		{
-			mMoveComponent->SetAcceleration(-7.0f);
+			mMoveComponent->SetAcceleration(-5.0f);
 		}
 		else
 		{
-			mMoveComponent->SetAcceleration(-2.0f);
+			mMoveComponent->SetAcceleration(-1.5f);
 		}
 	}
 }
