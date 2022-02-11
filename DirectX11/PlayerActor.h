@@ -14,4 +14,7 @@ public:
 private:
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mSphereComponent;
+	class NumberActor* mCloudTimeNum;
+	class NumberActor* mSpdNum;
+	float mOutCloudTime;
 };

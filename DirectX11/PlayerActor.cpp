@@ -1,20 +1,24 @@
 #include "PlayerActor.h"
-#include "BaseScene.h"
+#include "NumberActor.h"
+#include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "SphereComponent.h"
 #include "Mesh.h"
 #include "SceneManager.h"
 #include "Renderer.h"
-#include "TransformCBuffer.h"
 #include "InputSystem.h"
 #include "Keyboard.h"
 #include "GamePad.h"
 #include "Collision.h"
+#include "PhysWorld.h"
+
+namespace dx = DirectX;
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
-	Actor(scene)
+	Actor(scene),
+	mOutCloudTime(0.0f)
 {
 	SetScale(0.1f);
 
@@ -31,12 +35,32 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mSphereComponent = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
 	mSphereComponent->SetSphere(sphere);
+
+	mCloudTimeNum = new NumberActor(GetScene(), 0, 4);
+	mCloudTimeNum->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
+	mCloudTimeNum->SetScale(0.6f);
+
+	mSpdNum = new NumberActor(GetScene(), 0, 4);
+	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, -6.0f, 0.0f });
+	mSpdNum->SetScale(0.6f);
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
-	DirectX::XMFLOAT3 rotation = GetRotation();
-
+	auto game = dynamic_cast<GameScene*>(GetScene());
+	PhysWorld* phys = game->GetPhysWorld();
+	if (phys->IsCollided(mSphereComponent))
+	{
+		mOutCloudTime = 0.0f;
+	}
+	else
+	{
+		mOutCloudTime += deltaTime;
+	}
+	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
+	mSpdNum->SetValue(GetForwardSpeed() * 120.0f);
+		
+	dx::XMFLOAT3 rotation = GetRotation();
 	if (rotation.z > 0.8f)
 	{
 		rotation.z = 0.8f;

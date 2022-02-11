@@ -4,7 +4,6 @@
 #include "MoveComponent.h"
 #include "Mesh.h"
 #include "Renderer.h"
-#include "TransformCBuffer.h"
 
 EnemyActor::EnemyActor(BaseScene* scene)
 	:

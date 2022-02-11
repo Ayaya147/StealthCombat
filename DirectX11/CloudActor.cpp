@@ -2,11 +2,12 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include "TransparentComponent.h"
-#include "TransformCBuffer.h"
+#include "SphereComponent.h"
 #include "GameScene.h"
 #include "ConstantBuffer.h"
 #include "Random.h"
 #include "ImGui/imgui.h"
+#include "Collision.h"
 
 namespace dx = DirectX;
 
@@ -24,10 +25,17 @@ CloudActor::CloudActor(BaseScene* scene)
 	mTimeOffset = Random::GetFloatRange(0.0f, 10.0f);
 	Reset();
 
+	SetScale(dx::XMFLOAT3{ 100.0f,25.0f,100.0f });
+
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
+
+	float radius = 0.4f;
+	SphereComponent* sc = new SphereComponent(this);
+	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
+	sc->SetSphere(sphere);
 
 	if (!mObjectCBuffer)
 	{

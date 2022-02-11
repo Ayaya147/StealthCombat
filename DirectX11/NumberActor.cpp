@@ -13,7 +13,6 @@ NumberActor::NumberActor(BaseScene* scene, float value, int digit)
 	mOriPos(DirectX::XMFLOAT3{0.0f,0.0f,0.0f})
 {
 	NumberSpriteComponent* nsc = new NumberSpriteComponent(this);
-	SetScale(0.6f);
 }
 
 NumberActor::~NumberActor()
@@ -22,8 +21,6 @@ NumberActor::~NumberActor()
 
 void NumberActor::UpdateActor(float deltaTime)
 {
-	GameScene* scene = dynamic_cast<GameScene*>(GetScene());
-	mValue = scene->GetPlayer()->GetForwardSpeed() * 150.0f;
 }
 
 void NumberActor::ResetPos()

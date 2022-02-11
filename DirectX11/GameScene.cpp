@@ -7,7 +7,6 @@
 #include "MissileActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
-#include "NumberActor.h"
 #include "MeshComponent.h"
 #include "CameraComponent.h"
 #include "Mesh.h"
@@ -54,8 +53,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	mCloud = new CloudActor(this);
 	mCloud->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
-	mCloud->SetScale(dx::XMFLOAT3{ 100.0f,25.0f,100.0f });
-	//mCloud->SetScale(10.0f);
+
+	CloudActor* cloud = new CloudActor(this);
+	cloud->SetPosition(dx::XMFLOAT3{ 100.0f,height,100.0f });
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
@@ -84,9 +84,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mSprite->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
-
-	NumberActor* number = new NumberActor(this, 0, 4);
-	number->SetOriPosition(dx::XMFLOAT3{ -180.0f, -6.0f, 0.0f });
 }
 
 GameScene::~GameScene()

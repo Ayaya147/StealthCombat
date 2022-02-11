@@ -1,4 +1,7 @@
 #include "PhysWorld.h"
+#include "Collision.h"
+#include "SphereComponent.h"
+#include "CloudActor.h"
 
 PhysWorld::PhysWorld(BaseScene* scene)
 	:
@@ -8,6 +11,22 @@ PhysWorld::PhysWorld(BaseScene* scene)
 
 PhysWorld::~PhysWorld()
 {
+}
+
+bool PhysWorld::IsCollided(SphereComponent* sphere)
+{
+	for (auto s : mSpheres)
+	{
+		if (Intersect(*(sphere->GetSphere()), *(s->GetSphere())))
+		{
+			if (auto a = dynamic_cast<CloudActor*>(s->GetOwner()))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void PhysWorld::AddSphere(SphereComponent* sphere)

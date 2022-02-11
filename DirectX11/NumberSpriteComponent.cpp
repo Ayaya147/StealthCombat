@@ -26,7 +26,7 @@ void NumberSpriteComponent::Draw(Renderer* renderer)
 	auto owner = dynamic_cast<NumberActor*>(GetOwner());
 	int value = static_cast<int>(owner->GetValue());
 	int digit = owner->GetDigit();
-	float dist = 20.0f;
+	float dist = 22.0f;
 	owner->ResetPos();
 	owner->ComputeWorldTransform();
 
