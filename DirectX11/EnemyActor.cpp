@@ -26,6 +26,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	SphereComponent* sc = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
 	sc->SetSphere(sphere);
+	sphere = new Sphere(GetPosition(), radius * GetScale().x);
+	sc->SetSphereLast(sphere);
 }
 
 void EnemyActor::UpdateActor(float deltaTime)

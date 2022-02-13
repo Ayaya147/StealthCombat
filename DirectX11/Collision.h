@@ -10,8 +10,5 @@ struct Sphere
 	float mRadius;
 };
 
-namespace Collision
-{
-	bool Intersect(const Sphere* a, const Sphere* b);
-	bool SweptSphere(const Sphere* a0, const Sphere* a1, const Sphere* b0, const Sphere* b1);
-}
+bool Intersect(Sphere* a, Sphere* b);
+bool SweptSphere(class SphereComponent* sc1, class ::SphereComponent* sc2);

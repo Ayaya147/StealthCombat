@@ -43,11 +43,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	for (int i = 0; i < 50; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
-		cloud->SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-500.0f,500.0f),height,Random::GetFloatRange(-500.0f,500.0f) });
 	}
 
 	mCloud = new CloudActor(this);
-	mCloud->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");

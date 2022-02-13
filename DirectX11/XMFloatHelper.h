@@ -338,6 +338,17 @@ namespace DXMath
 		return len;
 	}
 
+	_NODISCARD static inline auto Dot(const DirectX::XMFLOAT3& vec1, const DirectX::XMFLOAT3& vec2)
+	{
+		float rv{};
+
+		const auto&& v1{ DirectX::XMLoadFloat3(&vec1) }, &&v2{ DirectX::XMLoadFloat3(&vec2) };
+
+		DirectX::XMStoreFloat(&rv, DirectX::XMVector3Dot(v1, v2));
+
+		return rv;
+	}
+
 	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT2& vf2)
 	{
 		float len{};
@@ -358,5 +369,16 @@ namespace DXMath
 		DirectX::XMStoreFloat(&len, DirectX::XMVector2Length(vec));
 
 		return len;
+	}
+
+	_NODISCARD static inline auto Dot(const DirectX::XMFLOAT2& vec1, const DirectX::XMFLOAT2& vec2)
+	{
+		float rv{};
+
+		const auto&& v1{ DirectX::XMLoadFloat2(&vec1) }, &&v2{ DirectX::XMLoadFloat2(&vec2) };
+
+		DirectX::XMStoreFloat(&rv, DirectX::XMVector2Dot(v1, v2));
+
+		return rv;
 	}
 }

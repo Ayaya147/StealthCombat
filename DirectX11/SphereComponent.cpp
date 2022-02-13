@@ -8,7 +8,8 @@
 SphereComponent::SphereComponent(Actor* owner, int updateOrder)
 	:
 	Component(owner, updateOrder),
-	mSphere(nullptr)
+	mSphere0(nullptr),
+	mSphere1(nullptr)
 {
 	auto game = dynamic_cast<GameScene*>(GetOwner()->GetScene());
 	game->GetPhysWorld()->AddSphere(this);
@@ -16,7 +17,8 @@ SphereComponent::SphereComponent(Actor* owner, int updateOrder)
 
 SphereComponent::~SphereComponent()
 {
-	delete mSphere;
+	delete mSphere0;
+	delete mSphere1;
 
 	if (auto game = dynamic_cast<GameScene*>(GetOwner()->GetScene()))
 	{
@@ -26,5 +28,9 @@ SphereComponent::~SphereComponent()
 
 void SphereComponent::OnUpdateWorldTransform()
 {
-	mSphere->mCenter = GetOwner()->GetPosition();
+	if (mSphere0)
+	{
+		mSphere0->mCenter = mSphere1->mCenter;
+	}
+	mSphere1->mCenter = GetOwner()->GetPosition();
 }

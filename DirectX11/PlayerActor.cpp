@@ -36,6 +36,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mSphereComponent = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
 	mSphereComponent->SetSphere(sphere);
+	sphere = new Sphere(GetPosition(), radius * GetScale().x);
+	mSphereComponent->SetSphereLast(sphere);
 
 	mCloudTimeNum = new NumberActor(GetScene(), 0, 4);
 	mCloudTimeNum->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
