@@ -49,7 +49,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	PhysWorld* phys = game->GetPhysWorld();
-	if (phys->IsCollided(mSphereComponent))
+	if (phys->IsCollidedWithCloud(mSphereComponent))
 	{
 		mOutCloudTime = 0.0f;
 	}

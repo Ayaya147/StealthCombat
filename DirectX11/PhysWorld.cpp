@@ -13,13 +13,13 @@ PhysWorld::~PhysWorld()
 {
 }
 
-bool PhysWorld::IsCollided(SphereComponent* sphere)
+bool PhysWorld::IsCollidedWithCloud(SphereComponent* sc)
 {
 	for (auto s : mSpheres)
 	{
-		if (Intersect(*(sphere->GetSphere()), *(s->GetSphere())))
+		if (auto a = dynamic_cast<CloudActor*>(s->GetOwner()))
 		{
-			if (auto a = dynamic_cast<CloudActor*>(s->GetOwner()))
+			if (Intersect(sc->GetSphere(), s->GetSphere()))
 			{
 				return true;
 			}

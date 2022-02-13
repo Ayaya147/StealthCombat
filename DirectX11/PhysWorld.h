@@ -4,16 +4,10 @@
 class PhysWorld
 {
 public:
-	struct CollisionInfo
-	{
-		class SphereComponent* mSphere;
-		class Actor* mActor;
-	};
-
 	PhysWorld(class BaseScene* scene);
 	~PhysWorld();
 
-	bool IsCollided(class SphereComponent* sphere);
+	bool IsCollidedWithCloud(class SphereComponent* sphere);
 
 	void AddSphere(class SphereComponent* sphere);
 	void RemoveSphere(class SphereComponent* sphere);

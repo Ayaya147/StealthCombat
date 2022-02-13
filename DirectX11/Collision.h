@@ -10,5 +10,5 @@ struct Sphere
 	float mRadius;
 };
 
-bool Intersect(const Sphere& a, const Sphere& b);
-bool SweptSphere(const Sphere& P0, const Sphere& P1, const Sphere& Q0, const Sphere& Q1);
+bool Intersect(const Sphere* a, const Sphere* b);
+bool SweptSphere(const Sphere* a0, const Sphere* a1, const Sphere* b0, const Sphere* b1);
