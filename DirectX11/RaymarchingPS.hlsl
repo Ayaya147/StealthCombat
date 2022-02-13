@@ -85,7 +85,8 @@ float DensityFunction(float3 p)
 {
     float f = FBM(p * mNoiseScale);
     
-    return f * 0.3f - Sphere(p, mRadius);
+    //return f * 0.3f - Sphere(p, mRadius);
+    return f * 1.0f - Sphere(p / mRadius, 0.0f);
     //return f * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
 }
 
