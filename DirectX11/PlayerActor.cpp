@@ -21,6 +21,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mOutCloudTime(0.0f)
 {
 	SetScale(0.1f);
+	SetPosition(dx::XMFLOAT3{ 0.0f,150.0f,0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	
@@ -49,6 +50,8 @@ void PlayerActor::UpdateActor(float deltaTime)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	PhysWorld* phys = game->GetPhysWorld();
+	PhysWorld::CollisionInfo info;
+
 	if (phys->IsCollidedWithCloud(mSphereComponent))
 	{
 		mOutCloudTime = 0.0f;
@@ -57,6 +60,19 @@ void PlayerActor::UpdateActor(float deltaTime)
 	{
 		mOutCloudTime += deltaTime;
 	}
+	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
+	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
+
+	if (phys->IsCollidedWithEnemy(mSphereComponent, info))
+	{
+		info.mActor->SetActorState(Actor::ActorState::EDead);
+	}
+
+	if (phys->IsCollidedWithMissile(mSphereComponent, info))
+	{
+		info.mActor->SetActorState(Actor::ActorState::EDead);
+	}
+
 	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
 	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
 		

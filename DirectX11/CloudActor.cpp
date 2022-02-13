@@ -29,11 +29,11 @@ CloudActor::CloudActor(BaseScene* scene)
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
 
-	//float size = 60.0f;
+	//float size = 1.0f;
 	float size = Random::GetFloatRange(60.0f, 120.0f);
-	SetScale(dx::XMFLOAT3{ size,size / 4.0f,size });
+	SetScale(dx::XMFLOAT3{ size,size / 5.0f,size });
 
-	float radius = 0.3f;
+	float radius = 0.33f;
 	SphereComponent* sc = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
 	sc->SetSphere(sphere);

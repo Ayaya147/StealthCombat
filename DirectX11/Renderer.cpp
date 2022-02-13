@@ -295,7 +295,7 @@ void Renderer::AddMeshComp(const std::string& name, MeshComponent* mesh)
 
 void Renderer::RemoveMeshComp(MeshComponent* mesh)
 {
-	for (auto mc : mMeshComps)
+	for (auto& mc : mMeshComps)
 	{
 		auto iter = std::find(mc.second.begin(), mc.second.end(), mesh);
 		if (iter != mc.second.end())

@@ -33,15 +33,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	float height = 150.0f;
 
 	mPlayer = new PlayerActor(this);
-	mPlayer->SetPosition(dx::XMFLOAT3{ 0.0f,height,0.0f });
 	CameraComponent* cc = new CameraComponent(mPlayer);
 	cc->SnapToIdeal();
 
 	EnemyActor* enemy = new EnemyActor(this);
-	enemy->SetPosition(dx::XMFLOAT3{ 0.0f,height,5.0f });
 	
 	MissileActor* missile = new MissileActor(this);
-	missile->SetPosition(dx::XMFLOAT3{ 0.0f,height,-5.0f });
 
 	for (int i = 0; i < 50; i++)
 	{

@@ -10,5 +10,8 @@ struct Sphere
 	float mRadius;
 };
 
-bool Intersect(const Sphere* a, const Sphere* b);
-bool SweptSphere(const Sphere* a0, const Sphere* a1, const Sphere* b0, const Sphere* b1);
+namespace Collision
+{
+	bool Intersect(const Sphere* a, const Sphere* b);
+	bool SweptSphere(const Sphere* a0, const Sphere* a1, const Sphere* b0, const Sphere* b1);
+}
