@@ -22,7 +22,7 @@ MissileActor::MissileActor(BaseScene* scene)
 	mMoveComponent = new MoveComponent(this);
 	//mMoveComponent->SetAngularSpeed(1.0f);
 
-	float radius = 9.0f;
+	float radius = 8.0f;
 	SphereComponent* sc = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
 	sc->SetSphere(sphere);
