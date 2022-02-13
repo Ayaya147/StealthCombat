@@ -17,14 +17,14 @@ bool Sphere::Contains(const DirectX::XMFLOAT3& point) const
 	return distSq <= (mRadius * mRadius);
 }
 
-bool Intersect(Sphere* a, Sphere* b)
+bool Collision::Intersect(Sphere* a, Sphere* b)
 {
 	float distSq = DXMath::LengthSq(a->mCenter - b->mCenter);
 	float sumRadii = a->mRadius + b->mRadius;
 	return distSq <= (sumRadii * sumRadii);
 }
 
-bool SweptSphere(SphereComponent* sc1, SphereComponent* sc2)
+bool Collision::SweptSphere(SphereComponent* sc1, SphereComponent* sc2)
 {
 	Sphere* a0 = sc1->GetSphereLast();
 	Sphere* a1 = sc1->GetSphere();

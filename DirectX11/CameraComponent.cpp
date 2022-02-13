@@ -38,7 +38,7 @@ void CameraComponent::Update(float deltaTime)
 		//	dx::XMLoadFloat3(&forward)
 		//);
 		float sprintConstant = 64.0f;
-		float dampening = 4.0f * sqrtf(sprintConstant);
+		float dampening = 3.0f * sqrtf(sprintConstant);
 		dx::XMFLOAT3 idealPos = ComputeCameraPos();
 		dx::XMFLOAT3 diff = mActualPos - idealPos;
 		dx::XMFLOAT3 accel = -sprintConstant * diff - dampening * mVelocity;

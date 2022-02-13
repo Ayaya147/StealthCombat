@@ -10,5 +10,9 @@ struct Sphere
 	float mRadius;
 };
 
-bool Intersect(Sphere* a, Sphere* b);
-bool SweptSphere(class SphereComponent* sc1, class ::SphereComponent* sc2);
+class Collision
+{
+public:
+	static bool Intersect(Sphere* a, Sphere* b);
+	static bool SweptSphere(class SphereComponent* sc1, class ::SphereComponent* sc2);
+};

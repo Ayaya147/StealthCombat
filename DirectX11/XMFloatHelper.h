@@ -316,6 +316,7 @@ _NODISCARD static inline constexpr auto operator- (const DirectX::XMFLOAT2& v1)
 
 namespace DXMath
 {
+	//XMFLOAT3
 	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT3& vf3)
 	{
 		float len{};
@@ -349,6 +350,7 @@ namespace DXMath
 		return rv;
 	}
 
+	//XMFLOAT2
 	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT2& vf2)
 	{
 		float len{};

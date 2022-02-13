@@ -227,6 +227,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="DefineConstant.h" />
     <ClInclude Include="DxException.h" />
     <ClInclude Include="EnemyActor.h" />
     <ClInclude Include="GameApp.h" />

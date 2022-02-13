@@ -21,7 +21,7 @@ bool PhysWorld::IsCollidedWithCloud(SphereComponent* sc)
 	{
 		if (auto cloud = dynamic_cast<CloudActor*>(s->GetOwner()))
 		{
-			if (Intersect(sc->GetSphere(), s->GetSphere()))
+			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
 			{
 				return true;
 			}
@@ -37,12 +37,12 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
 	{
 		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
 		{
-			if (Intersect(sc->GetSphere(), s->GetSphere()))
+			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
 			{
 				info.mActor = enemy;
 				return true;
 			}
-			else if (SweptSphere(sc, s))
+			else if (Collision::SweptSphere(sc, s))
 			{
 				return true;
 			}
@@ -58,12 +58,12 @@ bool PhysWorld::IsCollidedWithMissile(SphereComponent* sc, CollisionInfo& info)
 	{
 		if (auto missile = dynamic_cast<MissileActor*>(s->GetOwner()))
 		{
-			if (Intersect(sc->GetSphere(), s->GetSphere()))
+			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
 			{
 				info.mActor = missile;
 				return true;
 			}
-			else if (SweptSphere(sc, s))
+			else if (Collision::SweptSphere(sc, s))
 			{
 				return true;
 			}

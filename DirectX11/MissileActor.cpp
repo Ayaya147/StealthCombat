@@ -6,13 +6,14 @@
 #include "Renderer.h"
 #include "SphereComponent.h"
 #include "Collision.h"
+#include "DefineConstant.h"
 
 MissileActor::MissileActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
 	SetScale(0.08f);
-	SetPosition(DirectX::XMFLOAT3{ 0.0f,150.0f,-5.0f });
+	SetPosition(DirectX::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("missile");

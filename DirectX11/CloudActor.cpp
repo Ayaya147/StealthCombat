@@ -8,6 +8,7 @@
 #include "Random.h"
 #include "ImGui/imgui.h"
 #include "Collision.h"
+#include "DefineConstant.h"
 
 namespace dx = DirectX;
 
@@ -29,11 +30,11 @@ CloudActor::CloudActor(BaseScene* scene)
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
 
-	//float size = 1.0f;
-	float size = Random::GetFloatRange(60.0f, 120.0f);
+	//float size = 140.0f;
+	float size = Random::GetFloatRange(70.0f, 130.0f);
 	SetScale(dx::XMFLOAT3{ size,size / 5.0f,size });
 	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-3.0f,3.0f),0.0f });
-	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-500.0f,500.0f),150.0f,Random::GetFloatRange(-500.0f,500.0f) });
+	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-500.0f,500.0f),Constant::height,Random::GetFloatRange(-500.0f,500.0f) });
 
 	float radius = 0.33f;
 	SphereComponent* sc = new SphereComponent(this);

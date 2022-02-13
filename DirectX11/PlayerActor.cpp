@@ -12,6 +12,7 @@
 #include "GamePad.h"
 #include "Collision.h"
 #include "PhysWorld.h"
+#include "DefineConstant.h"
 
 namespace dx = DirectX;
 
@@ -21,7 +22,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mOutCloudTime(0.0f)
 {
 	SetScale(0.1f);
-	SetPosition(dx::XMFLOAT3{ 0.0f,150.0f,0.0f });
+	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	
@@ -30,7 +31,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
-	mMoveComponent->SetForwardSpeedMax(15.0f);
+	mMoveComponent->SetForwardSpeedMax(20.0f);
+	mMoveComponent->SetForwardSpeed(1.0f);
 
 	float radius = 10.0f;
 	mSphereComponent = new SphereComponent(this);
@@ -63,7 +65,8 @@ void PlayerActor::UpdateActor(float deltaTime)
 		mOutCloudTime += deltaTime;
 	}
 	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
-	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
+	mSpdNum->SetValue(GetForwardSpeed() * 120.0f);
+
 
 	if (phys->IsCollidedWithEnemy(mSphereComponent, info))
 	{
@@ -75,9 +78,6 @@ void PlayerActor::UpdateActor(float deltaTime)
 		info.mActor->SetActorState(Actor::ActorState::EDead);
 	}
 
-	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
-	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
-		
 	dx::XMFLOAT3 rotation = GetRotation();
 	if (rotation.z > 0.8f)
 	{
@@ -96,6 +96,9 @@ void PlayerActor::ActorInput()
 	GamePad* pad = GetScene()->GetInputSystem()->GetPad();
 
 	DirectX::XMFLOAT3 rotation = GetRotation();
+	float accelW = 3.5f;
+	float accelS = -6.0f;
+	float accelNatural = -2.0f;
 
 	if (pad->GetIsGamePad())
 	{
@@ -120,15 +123,15 @@ void PlayerActor::ActorInput()
 
 		if (pad->GetRightTrigger())
 		{
-			mMoveComponent->SetAcceleration(3.0f);
+			mMoveComponent->SetAcceleration(accelW);
 		}
 		else if(pad->GetLeftTrigger())
 		{
-			mMoveComponent->SetAcceleration(-5.0f);
+			mMoveComponent->SetAcceleration(accelS);
 		}
 		else
 		{
-			mMoveComponent->SetAcceleration(-1.5f);
+			mMoveComponent->SetAcceleration(accelNatural);
 		}
 	}
 	else
@@ -151,15 +154,15 @@ void PlayerActor::ActorInput()
 
 		if (keyboard->GetKeyValue('W'))
 		{
-			mMoveComponent->SetAcceleration(3.0f);
+			mMoveComponent->SetAcceleration(accelW);
 		}
 		else if (keyboard->GetKeyValue('S'))
 		{
-			mMoveComponent->SetAcceleration(-5.0f);
+			mMoveComponent->SetAcceleration(accelS);
 		}
 		else
 		{
-			mMoveComponent->SetAcceleration(-1.5f);
+			mMoveComponent->SetAcceleration(accelNatural);
 		}
 	}
 }
