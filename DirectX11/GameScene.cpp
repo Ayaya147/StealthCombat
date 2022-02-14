@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include <algorithm>
 #include "SceneManager.h"
 #include "Parameter.h"
 #include "Renderer.h"
@@ -36,16 +37,18 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	CameraComponent* cc = new CameraComponent(mPlayer);
 	cc->SnapToIdeal();
 
-	EnemyActor* enemy = new EnemyActor(this);
-	
-	MissileActor* missile = new MissileActor(this);
-
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 10; i++)
 	{
-		CloudActor* cloud = new CloudActor(this);
-	}
+		EnemyActor* enemy = new EnemyActor(this);
+	}	
+
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	CloudActor* cloud = new CloudActor(this);
+	//}
 
 	mCloud = new CloudActor(this);
+	MissileActor* missile = new MissileActor(this);
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
@@ -88,6 +91,13 @@ void GameScene::ProcessInput()
 
 void GameScene::Update()
 {
+	auto func = [](EnemyActor* enemy1, EnemyActor* enemy2)
+	{
+		return enemy1->GetDistFromPlayer() < enemy2->GetDistFromPlayer();
+	};
+	std::sort(mEnemies.begin(), mEnemies.end(), func);
+
+
 	GamePad* pad = GetInputSystem()->GetPad();
 	if (pad->GetIsGamePad())
 	{
@@ -119,5 +129,20 @@ void GameScene::GenerateOutput()
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+	}
+}
+
+void GameScene::AddEnemy(EnemyActor* enemy)
+{
+	mEnemies.emplace_back(enemy);
+}
+
+void GameScene::RemoveEnemy(EnemyActor* enemy)
+{
+	auto iter = std::find(mEnemies.begin(), mEnemies.end(), enemy);
+	if (iter != mEnemies.end())
+	{
+		std::iter_swap(iter, mEnemies.end() - 1);
+		mEnemies.pop_back();
 	}
 }

@@ -1,5 +1,6 @@
 #include "EnemyActor.h"
-#include "BaseScene.h"
+#include "PlayerActor.h"
+#include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "Mesh.h"
@@ -7,13 +8,22 @@
 #include "SphereComponent.h"
 #include "Collision.h"
 #include "DefineConstant.h"
+#include "Random.h"
+#include "XMFloatHelper.h"
+
+namespace dx = DirectX;
 
 EnemyActor::EnemyActor(BaseScene* scene)
 	:
-	Actor(scene)
+	Actor(scene),
+	mDist(0.0f)
 {
+	auto game = dynamic_cast<GameScene*>(GetScene());
+	game->AddEnemy(this);
+
 	SetScale(0.1f);
-	SetPosition(DirectX::XMFLOAT3{ 0.0f,Constant::height,5.0f });
+	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-100.0f,100.0f),Constant::height,Random::GetFloatRange(-100.0f,100.0f) });
+	SetRotation(dx::XMFLOAT3{0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("enemy");
@@ -21,7 +31,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
-	//mMoveComponent->SetAngularSpeed(1.0f);
+	mMoveComponent->SetForwardSpeedMax(12.0f);
+	mMoveComponent->SetAcceleration(4.0f);
 
 	float radius = 10.0f;
 	SphereComponent* sc = new SphereComponent(this);
@@ -31,6 +42,30 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	sc->SetSphereLast(sphere);
 }
 
+EnemyActor::~EnemyActor()
+{
+	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	{
+		game->RemoveEnemy(this);
+	}
+}
+
 void EnemyActor::UpdateActor(float deltaTime)
 {
+	CalcDistFromPlayer();
+
+	float range = 100.0f;
+	if (GetPosition().x < -range ||
+		GetPosition().x > range ||
+		GetPosition().z < -range ||
+		GetPosition().z > range)
+	{
+		SetRotation(dx::XMFLOAT3{ 0.0f, GetRotation().y + Constant::PI, 0.0f });
+	}
+}
+
+void EnemyActor::CalcDistFromPlayer()
+{
+	auto game = dynamic_cast<GameScene*>(GetScene());
+	mDist = DXMath::LengthSq(game->GetPlayer()->GetPosition() - GetPosition());
 }

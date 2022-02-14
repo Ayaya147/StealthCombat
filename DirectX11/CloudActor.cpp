@@ -34,7 +34,7 @@ CloudActor::CloudActor(BaseScene* scene)
 	float size = Random::GetFloatRange(70.0f, 130.0f);
 	float range = 500.0f;
 	SetScale(dx::XMFLOAT3{ size,size / 5.0f,size });
-	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-3.0f,3.0f),0.0f });
+	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) });
 
 	float radius = 0.33f;
@@ -67,7 +67,7 @@ CloudActor::~CloudActor()
 
 void CloudActor::UpdateActor(float deltaTime)
 {
-	mDistFromCamera = CalcDistFromCamera();
+	//mDistFromCamera = CalcDistFromCamera();
 }
 
 void CloudActor::Bind(Renderer* renderer)

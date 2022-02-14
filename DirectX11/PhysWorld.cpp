@@ -37,13 +37,10 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
 	{
 		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
 		{
-			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
+			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
+				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere()))
 			{
 				info.mActor = enemy;
-				return true;
-			}
-			else if (Collision::SweptSphere(sc, s))
-			{
 				return true;
 			}
 		}
@@ -58,13 +55,10 @@ bool PhysWorld::IsCollidedWithMissile(SphereComponent* sc, CollisionInfo& info)
 	{
 		if (auto missile = dynamic_cast<MissileActor*>(s->GetOwner()))
 		{
-			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
+			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
+				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere()))
 			{
 				info.mActor = missile;
-				return true;
-			}
-			else if (Collision::SweptSphere(sc, s))
-			{
 				return true;
 			}
 		}

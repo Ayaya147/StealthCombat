@@ -24,13 +24,8 @@ bool Collision::Intersect(Sphere* a, Sphere* b)
 	return distSq <= (sumRadii * sumRadii);
 }
 
-bool Collision::SweptSphere(SphereComponent* sc1, SphereComponent* sc2)
+bool Collision::SweptSphere(Sphere* a0, Sphere* a1, Sphere* b0, Sphere* b1)
 {
-	Sphere* a0 = sc1->GetSphereLast();
-	Sphere* a1 = sc1->GetSphere();
-	Sphere* b0 = sc2->GetSphereLast();
-	Sphere* b1 = sc2->GetSphere();
-
 	dx::XMFLOAT3 X = a0->mCenter - b0->mCenter;
 	dx::XMFLOAT3 Y = (a1->mCenter - a0->mCenter) - (b1->mCenter - b0->mCenter);
 	float a = DXMath::Dot(Y, Y);
@@ -45,8 +40,8 @@ bool Collision::SweptSphere(SphereComponent* sc1, SphereComponent* sc2)
 	else
 	{
 		disc = sqrtf(disc);
-		float outT = (-b - disc) / (2.0f * a);
-		if (outT >= 0.0f && outT <= 1.0f)
+		float t = (-b - disc) / (2.0f * a);
+		if (t >= 0.0f && t <= 1.0f)
 		{
 			return true;
 		}

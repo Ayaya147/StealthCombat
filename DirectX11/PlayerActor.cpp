@@ -1,5 +1,6 @@
 #include "PlayerActor.h"
 #include "NumberActor.h"
+#include "EnemyActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -67,7 +68,6 @@ void PlayerActor::UpdateActor(float deltaTime)
 	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
 	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
 
-
 	if (phys->IsCollidedWithEnemy(mSphereComponent, info))
 	{
 		info.mActor->SetActorState(Actor::ActorState::EDead);
@@ -94,12 +94,13 @@ void PlayerActor::ActorInput()
 {
 	Keyboard* keyboard = GetScene()->GetInputSystem()->GetKeyboard();
 	GamePad* pad = GetScene()->GetInputSystem()->GetPad();
+	auto game = dynamic_cast<GameScene*>(GetScene());
 
 	DirectX::XMFLOAT3 rotation = GetRotation();
 	float accelW = 3.0f;
 	float accelS = -5.5f;
 	float accelNatural = -1.5f;
-	float angularSpd = 1.4f;
+	float angularSpd = 1.3f;
 
 	if (pad->GetIsGamePad())
 	{
@@ -164,6 +165,14 @@ void PlayerActor::ActorInput()
 		else
 		{
 			mMoveComponent->SetAcceleration(accelNatural);
+		}
+
+		if (keyboard->GetKeyState(VK_SPACE) == ButtonState::EPressed)
+		{
+			if (!game->GetEnemies().empty())
+			{
+				game->GetEnemies()[0]->SetActorState(Actor::ActorState::EDead);
+			}
 		}
 	}
 }

@@ -13,7 +13,7 @@ MissileActor::MissileActor(BaseScene* scene)
 	Actor(scene)
 {
 	SetScale(0.08f);
-	SetPosition(DirectX::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
+	SetPosition(DirectX::XMFLOAT3{ 0.0f,Constant::height,-8.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("missile");
