@@ -31,7 +31,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
-	mMoveComponent->SetForwardSpeedMax(20.0f);
+	mMoveComponent->SetForwardSpeedMax(15.0f);
 	mMoveComponent->SetForwardSpeed(1.0f);
 
 	float radius = 10.0f;
@@ -65,7 +65,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 		mOutCloudTime += deltaTime;
 	}
 	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
-	mSpdNum->SetValue(GetForwardSpeed() * 120.0f);
+	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
 
 
 	if (phys->IsCollidedWithEnemy(mSphereComponent, info))
@@ -96,21 +96,22 @@ void PlayerActor::ActorInput()
 	GamePad* pad = GetScene()->GetInputSystem()->GetPad();
 
 	DirectX::XMFLOAT3 rotation = GetRotation();
-	float accelW = 3.5f;
-	float accelS = -6.0f;
-	float accelNatural = -2.0f;
+	float accelW = 3.0f;
+	float accelS = -5.5f;
+	float accelNatural = -1.5f;
+	float angularSpd = 1.4f;
 
 	if (pad->GetIsGamePad())
 	{
 		if (pad->GetThumbLeftX() > 0)
 		{
 			pad->SetRightVibration(100);
-			mMoveComponent->SetAngularSpeed(1.2f);
+			mMoveComponent->SetAngularSpeed(angularSpd);
 		}
 		else if (pad->GetThumbLeftX() < 0)
 		{
 			pad->SetLeftVibration(100);
-			mMoveComponent->SetAngularSpeed(-1.2f);
+			mMoveComponent->SetAngularSpeed(-angularSpd);
 		}
 		else
 		{
@@ -138,11 +139,11 @@ void PlayerActor::ActorInput()
 	{
 		if (keyboard->GetKeyValue('D'))
 		{
-			mMoveComponent->SetAngularSpeed(1.2f);
+			mMoveComponent->SetAngularSpeed(angularSpd);
 		}
 		else if (keyboard->GetKeyValue('A'))
 		{
-			mMoveComponent->SetAngularSpeed(-1.2f);
+			mMoveComponent->SetAngularSpeed(-angularSpd);
 		}
 		else
 		{
