@@ -4,7 +4,6 @@
 struct Sphere
 {
 	Sphere(const DirectX::XMFLOAT3& center, float radius);
-	bool Contains(const DirectX::XMFLOAT3& point) const;
 
 	DirectX::XMFLOAT3 mCenter;
 	float mRadius;
@@ -13,6 +12,7 @@ struct Sphere
 class Collision
 {
 public:
+	static bool Contains(Sphere* sphere, const DirectX::XMFLOAT3& point);
 	static bool Intersect(Sphere* a, Sphere* b);
 	static bool SweptSphere(class SphereComponent* sc1, class ::SphereComponent* sc2);
 };

@@ -11,10 +11,10 @@ Sphere::Sphere(const DirectX::XMFLOAT3& center, float radius)
 {
 }
 
-bool Sphere::Contains(const DirectX::XMFLOAT3& point) const
+bool Collision::Contains(Sphere* sphere, const DirectX::XMFLOAT3& point)
 {
-	float distSq = DXMath::LengthSq(mCenter - point);
-	return distSq <= (mRadius * mRadius);
+	float distSq = DXMath::LengthSq(sphere->mCenter - point);
+	return distSq <= (sphere->mRadius * sphere->mRadius);
 }
 
 bool Collision::Intersect(Sphere* a, Sphere* b)

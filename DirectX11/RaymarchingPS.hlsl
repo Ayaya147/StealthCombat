@@ -83,7 +83,7 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    float f = FBM(p * (mNoiseScale + 2 * sin(mTime)));
+    float f = FBM(p * (mNoiseScale + 1.5f * sin(mTime)));
     
     return f * 1.0f - Sphere(p / mRadius, 0.0f);
     //return f * 0.3f - Sphere(p, mRadius);
