@@ -16,7 +16,8 @@ namespace dx = DirectX;
 EnemyActor::EnemyActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mDist(0.0f)
+	mDist(0.0f),
+	mIsLockedOn(false)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -35,11 +36,11 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	mMoveComponent->SetAcceleration(4.0f);
 
 	float radius = 10.0f;
-	SphereComponent* sc = new SphereComponent(this);
+	mSphereComponent = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
-	sc->SetSphere(sphere);
+	mSphereComponent->SetSphere(sphere);
 	sphere = new Sphere(GetPosition(), radius * GetScale().x);
-	sc->SetSphereLast(sphere);
+	mSphereComponent->SetSphereLast(sphere);
 }
 
 EnemyActor::~EnemyActor()

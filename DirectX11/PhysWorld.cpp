@@ -49,6 +49,17 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
 	return false;
 }
 
+bool PhysWorld::IsCollidedWithEnemy(SphereComponent * sc, SphereComponent * sc1)
+{
+	if (Collision::Intersect(sc->GetSphere(), sc1->GetSphere()) ||
+		Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), sc1->GetSphereLast(), sc1->GetSphere()))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 bool PhysWorld::IsCollidedWithMissile(SphereComponent* sc, CollisionInfo& info)
 {
 	for (auto s : mSpheres)

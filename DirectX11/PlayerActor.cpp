@@ -172,8 +172,13 @@ void PlayerActor::ActorInput()
 		{
 			if (!game->GetEnemies().empty())
 			{
-				MissileActor* missile = new MissileActor(GetScene(), game->GetEnemies()[0], GetPosition(), mMoveComponent->GetForwardSpeed());
-				//game->GetEnemies()[0]->SetActorState(Actor::ActorState::EDead);
+				EnemyActor* enemy = game->GetEnemies()[0];
+				float dist = enemy->GetDistFromPlayer();
+				if (dist <= 100.0f && !enemy->GetIsLockedOn())
+				{
+					enemy->SetLockedOn(true);
+					MissileActor* missile = new MissileActor(GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed());
+				}
 			}
 		}
 	}

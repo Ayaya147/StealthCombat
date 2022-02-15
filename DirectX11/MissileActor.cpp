@@ -54,12 +54,6 @@ MissileActor::MissileActor(BaseScene* scene, Actor* actor, const DirectX::XMFLOA
 
 void MissileActor::UpdateActor(float deltaTime)
 {
-	//if (!mTarget)
-	//{
-	//	SetActorState(Actor::ActorState::EDead);
-	//	return;
-	//}
-
 	dx::XMFLOAT3 forward = mTarget->GetPosition() - GetPosition();
 	SetRotation(dx::XMFLOAT3{ 0.0f,atan2f(forward.x, forward.z),0.0f });
 
@@ -70,11 +64,14 @@ void MissileActor::UpdateActor(float deltaTime)
 	switch (mType)
 	{
 	case MissileActor::MissileType::ETargetEnemy:
-		if (phys->IsCollidedWithEnemy(mSphereComponent, info))
+	{
+		auto enemy = dynamic_cast<EnemyActor*>(mTarget);
+		if (phys->IsCollidedWithEnemy(mSphereComponent, enemy->GetSphereComp()))
 		{
-			info.mActor->SetActorState(Actor::ActorState::EDead);
+			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
 		}
+	}
 		break;
 
 	case MissileActor::MissileType::ETargetPlayer:

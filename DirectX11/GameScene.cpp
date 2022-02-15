@@ -42,13 +42,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 		EnemyActor* enemy = new EnemyActor(this);
 	}	
 
-	//for (int i = 0; i < 50; i++)
-	//{
-	//	CloudActor* cloud = new CloudActor(this);
-	//}
+	for (int i = 0; i < 50; i++)
+	{
+		CloudActor* cloud = new CloudActor(this);
+	}
 
 	mCloud = new CloudActor(this);
-	//MissileActor* missile = new MissileActor(this);
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
