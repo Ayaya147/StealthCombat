@@ -35,7 +35,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(15.0f);
-	mMoveComponent->SetForwardSpeed(1.0f);
+	mMoveComponent->SetForwardSpeed(6.0f);
 
 	float radius = 10.0f;
 	mSphereComponent = new SphereComponent(this);

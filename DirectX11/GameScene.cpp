@@ -57,18 +57,18 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.6f);
 
 	mDirectionMinimap = new Actor(this);
-	tex = renderer->GetTexture("Assets\\Texture\\direction_minimap.png");
+	tex = renderer->GetTexture("Assets\\Texture\\minimap_direction.png");
 	sc = new SpriteComponent(mDirectionMinimap);
 	sc->SetTexture(tex);
 	mDirectionMinimap->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
 	mDirectionMinimap->SetScale(0.55f);
 
 	sprite = new Actor(this);
-	tex = renderer->GetTexture("Assets\\Texture\\player_minimap.png");
+	tex = renderer->GetTexture("Assets\\Texture\\minimap_player.png");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
-	sprite->SetScale(0.15f);
+	sprite->SetScale(0.1f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("Assets\\Texture\\speed.png");
