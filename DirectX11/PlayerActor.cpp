@@ -1,6 +1,7 @@
 #include "PlayerActor.h"
 #include "NumberActor.h"
 #include "EnemyActor.h"
+#include "MissileActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -70,13 +71,13 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 	if (phys->IsCollidedWithEnemy(mSphereComponent, info))
 	{
-		info.mActor->SetActorState(Actor::ActorState::EDead);
+		//info.mActor->SetActorState(Actor::ActorState::EDead);
 	}
 
-	if (phys->IsCollidedWithMissile(mSphereComponent, info))
-	{
-		info.mActor->SetActorState(Actor::ActorState::EDead);
-	}
+	//if (phys->IsCollidedWithMissile(mSphereComponent, info))
+	//{
+	//	info.mActor->SetActorState(Actor::ActorState::EDead);
+	//}
 
 	dx::XMFLOAT3 rotation = GetRotation();
 	if (rotation.z > 0.8f)
@@ -171,7 +172,8 @@ void PlayerActor::ActorInput()
 		{
 			if (!game->GetEnemies().empty())
 			{
-				game->GetEnemies()[0]->SetActorState(Actor::ActorState::EDead);
+				MissileActor* missile = new MissileActor(GetScene(), game->GetEnemies()[0], GetPosition(), mMoveComponent->GetForwardSpeed());
+				//game->GetEnemies()[0]->SetActorState(Actor::ActorState::EDead);
 			}
 		}
 	}

@@ -37,7 +37,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	CameraComponent* cc = new CameraComponent(mPlayer);
 	cc->SnapToIdeal();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}	
@@ -48,7 +48,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	//}
 
 	mCloud = new CloudActor(this);
-	MissileActor* missile = new MissileActor(this);
+	//MissileActor* missile = new MissileActor(this);
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
