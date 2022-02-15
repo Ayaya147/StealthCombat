@@ -219,6 +219,9 @@
     <ClCompile Include="SphereComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
+    <ClCompile Include="MinimapActor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="DefineConstant.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MinimapActor.h">
+      <Filter>Header Files\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -56,6 +56,20 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
+	mDirectionMinimap = new Actor(this);
+	tex = renderer->GetTexture("Assets\\Texture\\direction_minimap.png");
+	sc = new SpriteComponent(mDirectionMinimap);
+	sc->SetTexture(tex);
+	mDirectionMinimap->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
+	mDirectionMinimap->SetScale(0.55f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("Assets\\Texture\\player_minimap.png");
+	sc = new SpriteComponent(sprite);
+	sc->SetTexture(tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
+	sprite->SetScale(0.15f);
+
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("Assets\\Texture\\speed.png");
 	sc = new SpriteComponent(sprite);
@@ -90,6 +104,8 @@ void GameScene::ProcessInput()
 
 void GameScene::Update()
 {
+	mDirectionMinimap->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,mPlayer->GetRotation().y });
+
 	auto func = [](EnemyActor* enemy1, EnemyActor* enemy2)
 	{
 		return enemy1->GetDistFromPlayer() < enemy2->GetDistFromPlayer();

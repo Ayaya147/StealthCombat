@@ -15,6 +15,7 @@
 #include "Collision.h"
 #include "PhysWorld.h"
 #include "DefineConstant.h"
+#include "XMFloatHelper.h"
 
 namespace dx = DirectX;
 
@@ -176,8 +177,11 @@ void PlayerActor::ActorInput()
 				float dist = enemy->GetDistFromPlayer();
 				if (dist <= 100.0f && !enemy->GetIsLockedOn())
 				{
-					enemy->SetLockedOn(true);
-					MissileActor* missile = new MissileActor(GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed());
+					if (DXMath::Dot(enemy->GetPosition() - GetPosition(), GetForward()) > 0.0f)
+					{
+						enemy->SetLockedOn(true);
+						MissileActor* missile = new MissileActor(GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed());
+					}
 				}
 			}
 		}

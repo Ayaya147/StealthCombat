@@ -52,7 +52,7 @@ Window::Window(int width, int height, InputSystem* input)
 	HWND hDesk = GetDesktopWindow();
 	GetWindowRect(hDesk, &rDesk);
 	mWidth = rDesk.right - rDesk.left;
-	mHeight = rDesk.bottom - rDesk.top;
+	mHeight = static_cast<int>(mWidth / 16.0f * 9.0f);
 
 	mhWnd = CreateWindow(
 		wc.lpszClassName, "GameApp",
