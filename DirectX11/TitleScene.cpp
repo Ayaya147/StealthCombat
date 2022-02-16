@@ -20,12 +20,12 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetRenderer();
 
 	Actor* sprite = new Actor(this);
-	Texture* tex = renderer->GetTexture("Assets\\Texture\\0.png");
+	Texture* tex = renderer->GetTexture("0");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 
 	sprite = new Actor(this);
-	tex = renderer->GetTexture("Assets\\Texture\\1.png");
+	tex = renderer->GetTexture("1");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });

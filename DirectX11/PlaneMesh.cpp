@@ -54,8 +54,8 @@ void PlaneMesh::ParseMesh(Renderer* renderer, const std::string& fileName, const
 			{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 }
 		};
 
-		std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
-		std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
+		std::wstring VSName = L"ShaderBin\\" + shaderName + L"VS.cso";
+		std::wstring PSName = L"ShaderBin\\" + shaderName + L"PS.cso";
 
 		VertexShader* vs = new VertexShader(renderer, VSName);
 		SetIndexBuffer(new IndexBuffer(renderer, indices));

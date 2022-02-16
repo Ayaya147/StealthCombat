@@ -41,21 +41,21 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	}
 
 	Actor* sprite = new Actor(this);
-	Texture* tex = GetRenderer()->GetTexture("Assets\\Texture\\guide_keyboard.png");
+	Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
 	mGuideSprite = new SpriteComponent(sprite);
 	mGuideSprite->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("Assets\\Texture\\speed.png");
+	tex = GetRenderer()->GetTexture("speed");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("Assets\\Texture\\time.png");
+	tex = GetRenderer()->GetTexture("time");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
@@ -79,12 +79,12 @@ void GameScene::Update()
 	GamePad* pad = GetInputSystem()->GetPad();
 	if (pad->GetIsGamePad())
 	{
-		Texture* tex = GetRenderer()->GetTexture("Assets\\Texture\\guide_pad.png");
+		Texture* tex = GetRenderer()->GetTexture("guide_pad");
 		mGuideSprite->SetTexture(tex);
 	}
 	else
 	{
-		Texture* tex = GetRenderer()->GetTexture("Assets\\Texture\\guide_keyboard.png");
+		Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
 		mGuideSprite->SetTexture(tex);
 	}
 

@@ -12,21 +12,21 @@ Minimap::Minimap(GameScene* game)
 	Renderer* renderer = game->GetRenderer();
 
 	Actor* sprite = new Actor(game);
-	Texture* tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
+	Texture* tex = renderer->GetTexture("minimap");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(game);
-	tex = renderer->GetTexture("Assets\\Texture\\minimap_direction.png");
+	tex = renderer->GetTexture("minimap_direction");
 	mDirectionSprite = new SpriteComponent(sprite);
 	mDirectionSprite->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });
 	sprite->SetScale(0.55f);
 
 	sprite = new Actor(game);
-	tex = renderer->GetTexture("Assets\\Texture\\minimap_player.png");
+	tex = renderer->GetTexture("minimap_player");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, -270.0f, 0.0f });

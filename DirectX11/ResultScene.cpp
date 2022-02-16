@@ -20,12 +20,12 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetRenderer();
 
 	Actor* sprite = new Actor(this);
-	Texture* tex = renderer->GetTexture("Assets\\Texture\\guide_keyboard.png");
+	Texture* tex = renderer->GetTexture("guide_keyboard");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 
 	sprite = new Actor(this);
-	tex = renderer->GetTexture("Assets\\Texture\\minimap.png");
+	tex = renderer->GetTexture("minimap");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });

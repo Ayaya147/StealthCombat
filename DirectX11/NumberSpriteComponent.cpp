@@ -16,7 +16,7 @@ NumberSpriteComponent::NumberSpriteComponent(NumberActor* owner, int drawOrder)
 	Renderer* renderer = GetOwner()->GetScene()->GetRenderer();
 	for (int i = 0; i < 10; i++)
 	{
-		std::string fileName = "Assets/Texture/" + std::to_string(i) + ".png";
+		std::string fileName = std::to_string(i);
 		mTextures.emplace_back(renderer->GetTexture(fileName));
 	}
 }
@@ -33,7 +33,6 @@ void NumberSpriteComponent::Draw(Renderer* renderer)
 	for (int i = 0; i < digit; i++)
 	{
 		int n = value % 10;
-		//float dist = owner->GetSize().x * owner->GetScale() + 5.0f;
 
 		owner->Bind(renderer, static_cast<float>(mTextures[n]->GetTexWidth()), static_cast<float>(mTextures[n]->GetTexHeight()));
 		mTextures[n]->Bind(renderer);

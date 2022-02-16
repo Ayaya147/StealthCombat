@@ -19,7 +19,7 @@ namespace dx = DirectX;
 
 Mesh::Mesh(const std::string& fileName)
 	:
-	mFileName("Assets\\Models\\" + fileName + ".obj"),
+	mFileName("Asset\\Model\\" + fileName + ".obj"),
 	mIsMeshParsed(false)
 {
 }
@@ -77,9 +77,9 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 			{ "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,24,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		};
 
-		std::wstring VSName = L"ShaderBins\\" + shaderName + L"VS.cso";
-		std::wstring PSName = L"ShaderBins\\" + shaderName + L"PS.cso";
-		std::string texName = "Assets\\Models\\" + fileName + ".png";
+		std::wstring VSName = L"ShaderBin\\" + shaderName + L"VS.cso";
+		std::wstring PSName = L"ShaderBin\\" + shaderName + L"PS.cso";
+		std::string texName = "Asset\\Model\\" + fileName + ".png";
 
 		VertexShader* vs = new VertexShader(renderer, VSName);
 		mIndexBuffer = new IndexBuffer(renderer, indices);

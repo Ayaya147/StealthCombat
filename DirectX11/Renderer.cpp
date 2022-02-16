@@ -349,8 +349,8 @@ void Renderer::Create2DBuffer()
 	};
 
 	mVertexBuffer = new VertexBuffer(this, vertices);
-	mVertexShader = new VertexShader(this, L"ShaderBins\\SpriteVS.cso");
-	mPixelShader = new PixelShader(this, L"ShaderBins\\SpritePS.cso");
+	mVertexShader = new VertexShader(this, L"ShaderBin\\SpriteVS.cso");
+	mPixelShader = new PixelShader(this, L"ShaderBin\\SpritePS.cso");
 	mTopology = new Topology(this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	mInputLayout = new InputLayout(this, ied, mVertexShader);
 }
@@ -375,22 +375,26 @@ Mesh* Renderer::GetMesh(const std::string& fileName)
 		}
 		mMeshes.emplace(fileName, mesh);
 	}
+
 	return mesh;
 }
 
 Texture* Renderer::GetTexture(const std::string& fileName)
 {
+	std::string name = "Asset\\Texture\\" + fileName + ".png";
 	Texture* tex = nullptr;
-	auto iter = mTextures.find(fileName);
+
+	auto iter = mTextures.find(name);
 	if (iter != mTextures.end())
 	{
 		tex = iter->second;
 	}
 	else
 	{
-		tex = new Texture(this, fileName);
-		mTextures.emplace(fileName, tex);
+		tex = new Texture(this, name);
+		mTextures.emplace(name, tex);
 	}
+
 	return tex;
 }
 

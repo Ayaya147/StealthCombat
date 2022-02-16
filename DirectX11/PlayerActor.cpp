@@ -179,7 +179,7 @@ void PlayerActor::ActorInput()
 			{
 				EnemyActor* enemy = game->GetEnemies()[0];
 				float dist = enemy->GetDistFromPlayer();
-				if (dist <= 100.0f && !enemy->GetIsLockedOn())
+				if (dist <= 110.0f && !enemy->GetIsLockedOn())
 				{
 					if (DXMath::Dot(enemy->GetPosition() - GetPosition(), GetForward()) > 0.0f)
 					{
