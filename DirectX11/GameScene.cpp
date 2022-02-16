@@ -28,8 +28,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPhysWorld(new PhysWorld(this)),
 	mPlane(new PlaneActor(this)),
 	mPlayer(new PlayerActor(this)),
-	mCloud(new CloudActor(this)),
-	mMap(new Minimap(this))
+	mCloud(new CloudActor(this))
 {
 	for (int i = 0; i < 50; i++)
 	{
@@ -39,6 +38,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
+
+	mMap = new Minimap(this);
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
@@ -127,5 +128,20 @@ void GameScene::RemoveEnemy(EnemyActor* enemy)
 	{
 		std::iter_swap(iter, mEnemies.end() - 1);
 		mEnemies.pop_back();
+	}
+}
+
+void GameScene::AddCloud(CloudActor* cloud)
+{
+	mClouds.emplace_back(cloud);
+}
+
+void GameScene::RemoveCloud(CloudActor* cloud)
+{
+	auto iter = std::find(mClouds.begin(), mClouds.end(), cloud);
+	if (iter != mClouds.end())
+	{
+		std::iter_swap(iter, mClouds.end() - 1);
+		mClouds.pop_back();
 	}
 }

@@ -14,8 +14,11 @@ public:
 
 	void AddEnemy(class EnemyActor* enemy);
 	void RemoveEnemy(class EnemyActor* enemy);
+	void AddCloud(class CloudActor* cloud);
+	void RemoveCloud(class CloudActor* cloud);
 
 	const std::vector<class EnemyActor*>& GetEnemies() const { return mEnemies; }
+	const std::vector<class CloudActor*>& GetClouds() const { return mClouds; }
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
 	class CloudActor* GetCloud() const { return mCloud; }
 	class PlaneActor* GetPlane() const { return mPlane; }
@@ -23,6 +26,7 @@ public:
 
 private:
 	std::vector<class EnemyActor*> mEnemies;
+	std::vector<class CloudActor*> mClouds;
 
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;

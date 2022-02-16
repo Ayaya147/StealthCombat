@@ -22,6 +22,9 @@ CloudActor::CloudActor(BaseScene* scene)
 	Actor(scene),
 	mDistFromCamera(0.0f)
 {
+	auto game = dynamic_cast<GameScene*>(GetScene());
+	game->AddCloud(this);
+
 	mCount++;
 	Reset();
 
@@ -54,6 +57,11 @@ CloudActor::CloudActor(BaseScene* scene)
 
 CloudActor::~CloudActor()
 {
+	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	{
+		game->RemoveCloud(this);
+	}
+
 	mCount--;
 
 	if (mCount == 0)
