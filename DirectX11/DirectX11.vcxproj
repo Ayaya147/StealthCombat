@@ -122,7 +122,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
-    <ClCompile Include="MinimapActor.cpp" />
+    <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="MissileActor.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="NumberActor.cpp" />
@@ -250,7 +250,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
-    <ClInclude Include="MinimapActor.h" />
+    <ClInclude Include="Minimap.h" />
     <ClInclude Include="MissileActor.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="NumberActor.h" />

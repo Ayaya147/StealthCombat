@@ -219,8 +219,8 @@
     <ClCompile Include="SphereComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="MinimapActor.cpp">
-      <Filter>Source Files\Actor</Filter>
+    <ClCompile Include="Minimap.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,8 +404,8 @@
     <ClInclude Include="DefineConstant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MinimapActor.h">
-      <Filter>Header Files\Actor</Filter>
+    <ClInclude Include="Minimap.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

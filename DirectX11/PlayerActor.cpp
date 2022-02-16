@@ -6,6 +6,7 @@
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "SphereComponent.h"
+#include "CameraComponent.h"
 #include "Mesh.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -51,6 +52,9 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mSpdNum = new NumberActor(GetScene(), 0, 4);
 	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, -6.0f, 0.0f });
 	mSpdNum->SetScale(0.6f);
+
+	CameraComponent* cc = new CameraComponent(this);
+	cc->SnapToIdeal();
 }
 
 void PlayerActor::UpdateActor(float deltaTime)

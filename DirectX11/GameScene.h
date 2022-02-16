@@ -28,6 +28,6 @@ private:
 	class PlayerActor* mPlayer;
 	class CloudActor* mCloud;
 	class PlaneActor* mPlane;
-	class Actor* mDirectionMinimap;
-	class SpriteComponent* mSprite;
+	class SpriteComponent* mGuideSprite;
+	class Minimap* mMap;
 };
