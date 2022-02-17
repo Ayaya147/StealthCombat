@@ -1,5 +1,4 @@
 #include "PlayerActor.h"
-#include "NumberActor.h"
 #include "EnemyActor.h"
 #include "MissileActor.h"
 #include "GameScene.h"
@@ -49,14 +48,6 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	sphere = new Sphere(GetPosition(), 10.5f);
 	mAttackRange->SetSphere(sphere);
 
-	mCloudTimeNum = new NumberActor(GetScene(), 0, 4);
-	mCloudTimeNum->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
-	mCloudTimeNum->SetScale(0.6f);
-
-	mSpdNum = new NumberActor(GetScene(), 0, 4);
-	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, -6.0f, 0.0f });
-	mSpdNum->SetScale(0.6f);
-
 	CameraComponent* cc = new CameraComponent(this);
 	cc->SnapToIdeal();
 }
@@ -75,8 +66,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 	{
 		mOutCloudTime += deltaTime;
 	}
-	mCloudTimeNum->SetValue(mOutCloudTime * 100.0f);
-	mSpdNum->SetValue(GetForwardSpeed() * 160.0f);
+
 
 	if (phys->IsCollidedWithEnemy(mBody, info))
 	{

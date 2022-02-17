@@ -8,11 +8,14 @@ public:
 	virtual ~SpriteComponent();
 
 	virtual void Draw(class Renderer* renderer);
-	void SetTexture(class Texture* tex);
 
+	void SetTexture(class Texture* tex);
+	void SetVisible(bool visible) { mIsVisible = visible; }
+	bool GetIsVisible() const { return mIsVisible; }
 	int GetDrawOrder() const { return mDrawOrder; }
 
 private:
 	class Texture* mTexture;
 	int mDrawOrder;
+	bool mIsVisible;
 };

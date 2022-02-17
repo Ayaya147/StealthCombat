@@ -246,7 +246,10 @@ void Renderer::Draw2DScene()
 
 	for (auto sprite : mSpriteComps)
 	{
-		sprite->Draw(this);
+		if (sprite->GetIsVisible())
+		{
+			sprite->Draw(this);
+		}
 	}
 }
 

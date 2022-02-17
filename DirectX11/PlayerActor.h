@@ -10,12 +10,11 @@ public:
 	void ActorInput() override;
 
 	float GetForwardSpeed() const;
+	float GetOutCloudTime() const { return mOutCloudTime; }
 
 private:
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;
-	class NumberActor* mCloudTimeNum;
-	class NumberActor* mSpdNum;
 	float mOutCloudTime;
 };

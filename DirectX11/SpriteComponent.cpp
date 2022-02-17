@@ -8,7 +8,8 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	:
 	Component(owner),
 	mDrawOrder(drawOrder),
-	mTexture(nullptr)
+	mTexture(nullptr),
+	mIsVisible(true)
 {
 	GetOwner()->GetScene()->GetRenderer()->AddSprite(this);
 }

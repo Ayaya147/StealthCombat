@@ -12,6 +12,7 @@ public:
 
 private:
 	static constexpr DirectX::XMFLOAT2 mOrigin = { -670.0f, -270.0f };
+	static constexpr float minimapRadius = 180.0f;
 
 	std::vector<class SpriteComponent*> mCloudSprites;
 	class SpriteComponent* mDirectionSprite;

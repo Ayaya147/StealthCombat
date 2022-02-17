@@ -8,6 +8,7 @@
 #include "MissileActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
+#include "NumberActor.h"
 #include "MeshComponent.h"
 #include "Mesh.h"
 #include "TransformCBuffer.h"
@@ -61,6 +62,15 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
+
+
+	mCloudTimeNum = new NumberActor(this, 0, 4);
+	mCloudTimeNum->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
+	mCloudTimeNum->SetScale(0.6f);
+
+	mSpdNum = new NumberActor(this, 0, 4);
+	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, -6.0f, 0.0f });
+	mSpdNum->SetScale(0.6f);
 }
 
 GameScene::~GameScene()
@@ -76,6 +86,8 @@ void GameScene::ProcessInput()
 void GameScene::Update()
 {
 	mMap->Update(this);
+	mCloudTimeNum->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
+	mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 
 	GamePad* pad = GetInputSystem()->GetPad();
 	if (pad->GetIsGamePad())
@@ -103,7 +115,8 @@ void GameScene::GenerateOutput()
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 	}
-	else if (pad->GetIsGamePad() && pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
+	else if (pad->GetIsGamePad() &&
+		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);

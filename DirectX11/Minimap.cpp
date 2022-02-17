@@ -15,7 +15,6 @@ Minimap::Minimap(GameScene* game)
 {
 	Renderer* renderer = game->GetRenderer();
 
-	//size 0.6*300 = 180
 	Actor* sprite = new Actor(game);
 	Texture* tex = renderer->GetTexture("minimap");
 	SpriteComponent* sc = new SpriteComponent(sprite);
@@ -32,7 +31,7 @@ Minimap::Minimap(GameScene* game)
 
 	sprite = new Actor(game);
 	tex = renderer->GetTexture("minimap_player");
-	sc = new SpriteComponent(sprite, 101);
+	sc = new SpriteComponent(sprite,101);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
 	sprite->SetScale(0.1f);
@@ -42,19 +41,11 @@ Minimap::Minimap(GameScene* game)
 	for (int i = 0; i < clouds.size(); i++)
 	{
 		Actor* sprite = new Actor(game);
-		//sprite->SetScale(0.1f);
 		sprite->SetScale(clouds[i]->GetScale().x / 500.0f);
 		sc = new SpriteComponent(sprite);
 		mCloudSprites.emplace_back(sc);
 		sc->SetTexture(tex);
 	}
-
-	//sprite = new Actor(game);
-	//tex = renderer->GetTexture("minimap_cloud");
-	//sc = new SpriteComponent(sprite);
-	//sc->SetTexture(tex);
-	//sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x-100.0f, mOrigin.y, 0.0f });
-	//sprite->SetScale(0.1f);
 }
 
 Minimap::~Minimap()
@@ -70,9 +61,21 @@ void Minimap::Update(GameScene* game)
 	for (auto cs : mCloudSprites)
 	{
 		dx::XMFLOAT3 vec = clouds[i]->GetPosition() - game->GetPlayer()->GetPosition();
-		dx::XMFLOAT3 relativePos = vec / (mRadius / 180.0f);
-		dx::XMFLOAT2 pos = { cos(angle)*relativePos.x - sin(angle)* -relativePos.z, sin(angle)*relativePos.x + cos(angle)* -relativePos.z };
-		cs->GetOwner()->SetPosition(dx::XMFLOAT3{ pos.x + mOrigin.x, pos.y + mOrigin.y, 0.0f });
+		dx::XMFLOAT3 relativePos = vec / (mRadius / minimapRadius);
+		dx::XMFLOAT2 pos = { cos(angle)*relativePos.x - sin(angle)* -relativePos.z,
+			sin(angle)*relativePos.x + cos(angle)* -relativePos.z
+		};
+
+		if ((pos.x >= -minimapRadius && pos.x <= minimapRadius) &&
+			(pos.y >= -minimapRadius && pos.y <= minimapRadius))
+		{
+			cs->SetVisible(true);
+			cs->GetOwner()->SetPosition(dx::XMFLOAT3{ pos.x + mOrigin.x, pos.y + mOrigin.y, 0.0f });
+		}
+		else
+		{
+			cs->SetVisible(false);
+		}
 		
 		i++;
 	}
