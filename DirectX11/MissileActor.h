@@ -19,6 +19,5 @@ private:
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mSphereComponent;
 	class Actor* mTarget;
-
 	MissileType mType;
 };

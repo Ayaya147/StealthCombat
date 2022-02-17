@@ -15,6 +15,6 @@ private:
 	static constexpr float minimapRadius = 180.0f;
 
 	std::vector<class SpriteComponent*> mCloudSprites;
-	class SpriteComponent* mDirectionSprite;
+	std::vector<class SpriteComponent*> mDirectionSprites;
 	float mRadius;
 };

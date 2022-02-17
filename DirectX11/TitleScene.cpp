@@ -57,7 +57,8 @@ void TitleScene::GenerateOutput()
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
 	}
-	else if (pad->GetIsGamePad() &&
+	else if (
+		pad->GetIsGamePad() &&
 		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;

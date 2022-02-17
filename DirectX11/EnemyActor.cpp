@@ -22,8 +22,9 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
 
+	float range = 500.0f;
 	SetScale(0.1f);
-	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-100.0f,100.0f),Constant::height,Random::GetFloatRange(-100.0f,100.0f) });
+	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) });
 	SetRotation(dx::XMFLOAT3{0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();
@@ -56,7 +57,7 @@ void EnemyActor::UpdateActor(float deltaTime)
 {
 	CalcDistFromPlayer();
 
-	float range = 100.0f;
+	float range = 500.0f;
 	if (GetPosition().x < -range ||
 		GetPosition().x > range ||
 		GetPosition().z < -range ||

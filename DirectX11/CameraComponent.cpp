@@ -70,7 +70,6 @@ void CameraComponent::Update(float deltaTime)
 	}
 
 	GetOwner()->GetScene()->GetRenderer()->SetViewMatrix(view);
-
 }
 
 void CameraComponent::ProcessInput()

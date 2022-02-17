@@ -27,8 +27,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	SetScale(0.1f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 
-	Renderer* renderer = GetScene()->GetRenderer();
-	
+	Renderer* renderer = GetScene()->GetRenderer();	
 	Mesh* mesh = renderer->GetMesh("player");
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);

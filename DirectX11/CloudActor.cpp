@@ -24,7 +24,6 @@ CloudActor::CloudActor(BaseScene* scene)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddCloud(this);
-
 	mCount++;
 	Reset();
 

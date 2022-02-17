@@ -63,7 +63,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
-
 	mCloudTimeNum = new NumberActor(this, 0, 4);
 	mCloudTimeNum->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
 	mCloudTimeNum->SetScale(0.6f);
@@ -115,7 +114,8 @@ void GameScene::GenerateOutput()
 		Parameter parameter;
 		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 	}
-	else if (pad->GetIsGamePad() &&
+	else if (
+		pad->GetIsGamePad() &&
 		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;

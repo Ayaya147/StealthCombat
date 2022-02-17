@@ -23,18 +23,22 @@ Minimap::Minimap(GameScene* game)
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(game);
-	tex = renderer->GetTexture("minimap_direction");
-	mDirectionSprite = new SpriteComponent(sprite);
-	mDirectionSprite->SetTexture(tex);
-	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
-	sprite->SetScale(0.55f);
-
-	sprite = new Actor(game);
 	tex = renderer->GetTexture("minimap_player");
 	sc = new SpriteComponent(sprite,101);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
 	sprite->SetScale(0.1f);
+
+	for (int i = 0; i < 4; i++)
+	{
+		sprite = new Actor(game);
+		std::string name = "minimap_direction_" + std::to_string(i);
+		tex = renderer->GetTexture(name);
+		sc = new SpriteComponent(sprite, 110);
+		mDirectionSprites.emplace_back(sc);
+		sc->SetTexture(tex);
+		sprite->SetScale(0.4f);
+	}
 
 	tex = game->GetRenderer()->GetTexture("minimap_cloud");
 	std::vector<CloudActor*> clouds = game->GetClouds();
@@ -54,15 +58,16 @@ Minimap::~Minimap()
 
 void Minimap::Update(GameScene* game)
 {
-	int i = 0;
+	int idx = 0;
 	std::vector<CloudActor*> clouds = game->GetClouds();
 	float angle = -game->GetPlayer()->GetRotation().y;
 
 	for (auto cs : mCloudSprites)
 	{
-		dx::XMFLOAT3 vec = clouds[i]->GetPosition() - game->GetPlayer()->GetPosition();
+		dx::XMFLOAT3 vec = clouds[idx]->GetPosition() - game->GetPlayer()->GetPosition();
 		dx::XMFLOAT3 relativePos = vec / (mRadius / minimapRadius);
-		dx::XMFLOAT2 pos = { cos(angle)*relativePos.x - sin(angle)* -relativePos.z,
+		dx::XMFLOAT2 pos = {
+			cos(angle)*relativePos.x - sin(angle)* -relativePos.z,
 			sin(angle)*relativePos.x + cos(angle)* -relativePos.z
 		};
 
@@ -77,8 +82,30 @@ void Minimap::Update(GameScene* game)
 			cs->SetVisible(false);
 		}
 		
-		i++;
+		idx++;
 	}
 
-	mDirectionSprite->GetOwner()->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,game->GetPlayer()->GetRotation().y });
+	float dist = 200.0f;
+	for (int i = 0; i < 4; i++)
+	{
+		Actor* sprite = mDirectionSprites[i]->GetOwner();
+		if (i / 2 == 0)
+		{
+			float sign = i % 2 == 0 ? 1.0f : -1.0f;
+			sprite->SetPosition({
+				-sin(angle)* sign*dist + mOrigin.x,
+				+cos(angle)* sign*dist + mOrigin.y,
+				0.0f
+			});
+		}
+		else
+		{
+			float sign = i % 2 == 0 ? 1.0f : -1.0f;
+			sprite->SetPosition({
+				+cos(-angle)* sign*dist + mOrigin.x,
+				-sin(-angle)* sign*dist + mOrigin.y,
+				0.0f
+			});
+		}
+	}
 }
