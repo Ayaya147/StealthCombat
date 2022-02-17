@@ -3,7 +3,9 @@
 #include "SphereComponent.h"
 #include "CloudActor.h"
 #include "EnemyActor.h"
+#include "PlayerActor.h"
 #include "MissileActor.h"
+#include "XMFloatHelper.h"
 
 PhysWorld::PhysWorld(BaseScene* scene)
 	:
@@ -55,6 +57,25 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent * sc, SphereComponent * sc1)
 		Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), sc1->GetSphereLast(), sc1->GetSphere()))
 	{
 		return true;
+	}
+
+	return false;
+}
+
+bool PhysWorld::IsAttackRangeCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
+{
+	for (auto s : mSpheres)
+	{
+		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
+		{
+			auto player = dynamic_cast<PlayerActor*>(sc->GetOwner());
+			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()) &&
+				DXMath::Dot(enemy->GetPosition() - player->GetPosition(), player->GetForward()) > 0.0f)
+			{
+				info.mActor = enemy;
+				return true;
+			}
+		}
 	}
 
 	return false;

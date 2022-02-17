@@ -15,6 +15,7 @@ public:
 	bool IsCollidedWithCloud(class SphereComponent* sc);
 	bool IsCollidedWithEnemy(class SphereComponent* sc, CollisionInfo& info);
 	bool IsCollidedWithEnemy(class SphereComponent* sc, class SphereComponent* sc1);
+	bool IsAttackRangeCollidedWithEnemy(class SphereComponent* sc, CollisionInfo& info);
 	bool IsCollidedWithMissile(class SphereComponent* sc, CollisionInfo& info);
 
 	void AddSphere(class SphereComponent* sc);

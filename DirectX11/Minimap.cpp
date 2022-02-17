@@ -38,13 +38,15 @@ Minimap::Minimap(GameScene* game)
 	sprite->SetScale(0.1f);
 
 	tex = game->GetRenderer()->GetTexture("minimap_cloud");
-	for (int i = 0; i < game->GetClouds().size(); i++)
+	std::vector<CloudActor*> clouds = game->GetClouds();
+	for (int i = 0; i < clouds.size(); i++)
 	{
 		Actor* sprite = new Actor(game);
+		//sprite->SetScale(0.1f);
+		sprite->SetScale(clouds[i]->GetScale().x / 500.0f);
 		sc = new SpriteComponent(sprite);
 		mCloudSprites.emplace_back(sc);
 		sc->SetTexture(tex);
-		sprite->SetScale(0.1f);
 	}
 
 	//sprite = new Actor(game);

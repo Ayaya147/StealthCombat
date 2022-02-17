@@ -89,12 +89,6 @@ void GameScene::Update()
 		mGuideSprite->SetTexture(tex);
 	}
 
-	auto func = [](EnemyActor* enemy1, EnemyActor* enemy2)
-	{
-		return enemy1->GetDistFromPlayer() < enemy2->GetDistFromPlayer();
-	};
-	std::sort(mEnemies.begin(), mEnemies.end(), func);
-	
 	BaseScene::Update();
 }
 

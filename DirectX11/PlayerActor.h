@@ -13,7 +13,8 @@ public:
 
 private:
 	class MoveComponent* mMoveComponent;
-	class SphereComponent* mSphereComponent;
+	class SphereComponent* mBody;
+	class SphereComponent* mAttackRange;
 	class NumberActor* mCloudTimeNum;
 	class NumberActor* mSpdNum;
 	float mOutCloudTime;
