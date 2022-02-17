@@ -211,7 +211,6 @@ void Renderer::Draw3DScene()
 				m->GetMesh()->Bind(this);
 				name = mc.first;
 			}
-			m->GetOwner()->Bind(this);
 			m->Draw(this);
 		}
 	}
@@ -231,7 +230,6 @@ void Renderer::Draw3DScene()
 			tc->GetMesh()->Bind(this);
 			isBind = true;
 		}
-		tc->GetOwner()->Bind(this);
 		tc->Draw(this);
 	}
 }

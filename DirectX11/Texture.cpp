@@ -7,7 +7,8 @@ namespace wrl = Microsoft::WRL;
 
 Texture::Texture(Renderer* renderer, const std::string& fileName, UINT slot)
 	:
-	mSlot(slot)
+	mSlot(slot),
+	mFileName(fileName)
 {
 	LoadTexture(fileName);
 

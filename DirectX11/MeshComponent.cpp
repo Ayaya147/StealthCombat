@@ -21,5 +21,6 @@ MeshComponent::~MeshComponent()
 
 void MeshComponent::Draw(Renderer* renderer)
 {
+	GetOwner()->Bind(renderer);
 	renderer->GetContext()->DrawIndexed(mMesh->GetIndicesNum(), 0, 0);
 }

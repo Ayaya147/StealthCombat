@@ -21,6 +21,7 @@ TransparentComponent::~TransparentComponent()
 
 void TransparentComponent::Draw(Renderer* renderer)
 {
+	GetOwner()->Bind(renderer);
 	renderer->GetContext()->DrawIndexed(mMesh->GetIndicesNum(), 0, 0);
 }
 

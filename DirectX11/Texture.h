@@ -13,6 +13,7 @@ public:
 
 	UINT GetTexWidth() const { return mWidth; }
 	UINT GetTexHeight() const { return mHeight; }
+	const std::string& GetFileName() const { return mFileName; }
 
 private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mTextureView;
@@ -20,4 +21,5 @@ private:
 	UINT mSlot;
 	UINT mWidth;
 	UINT mHeight;
+	std::string mFileName;
 };
