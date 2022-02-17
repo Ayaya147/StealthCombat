@@ -143,7 +143,7 @@ void PlayerActor::ActorInput()
 		{
 			if (keyboard->GetKeyValue('S'))
 			{
-				mMoveComponent->SetAngularSpeed(angularSpd * 1.2f);
+				mMoveComponent->SetAngularSpeed(angularSpd * 1.3f);
 			}
 			else
 			{
@@ -154,7 +154,7 @@ void PlayerActor::ActorInput()
 		{
 			if (keyboard->GetKeyValue('S'))
 			{
-				mMoveComponent->SetAngularSpeed(-angularSpd * 1.2f);
+				mMoveComponent->SetAngularSpeed(-angularSpd * 1.3f);
 			}
 			else
 			{

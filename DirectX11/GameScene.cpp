@@ -31,7 +31,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer(new PlayerActor(this)),
 	mCloud(new CloudActor(this))
 {
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
@@ -70,6 +70,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mSpdNum = new NumberActor(this, 0, 4);
 	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, -6.0f, 0.0f });
 	mSpdNum->SetScale(0.6f);
+
+	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 2);
+	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 0.0f, -346.0f, 0.0f });
+	mEnemyNum->SetScale(0.6f);
 }
 
 GameScene::~GameScene()
@@ -87,6 +91,7 @@ void GameScene::Update()
 	mMap->Update(this);
 	mCloudTimeNum->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 	mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
+	mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
 
 	GamePad* pad = GetInputSystem()->GetPad();
 	if (pad->GetIsGamePad())

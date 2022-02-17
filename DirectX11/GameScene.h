@@ -35,6 +35,7 @@ private:
 	class PlaneActor* mPlane;
 	class NumberActor* mCloudTimeNum;
 	class NumberActor* mSpdNum;
+	class NumberActor* mEnemyNum;
 	class SpriteComponent* mGuideSprite;
 	class Minimap* mMap;
 };
