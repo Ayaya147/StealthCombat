@@ -2,7 +2,7 @@
 #include "Renderer.h"
 #include "DxException.h"
 
-Blender::Blender(Renderer* renderer, bool blending, std::optional<float> factors)
+Blender::Blender(Renderer* renderer, Mode mode, std::optional<float> factors)
 {
 	if (factors)
 	{
@@ -12,10 +12,14 @@ Blender::Blender(Renderer* renderer, bool blending, std::optional<float> factors
 
 	D3D11_BLEND_DESC blendDesc = CD3D11_BLEND_DESC{ CD3D11_DEFAULT{} };
 	auto& brt = blendDesc.RenderTarget[0];
-	if (blending)
-	{
-		brt.BlendEnable = TRUE;
 
+	switch (mode)
+	{
+	case Blender::Mode::EOff:
+		break;
+
+	case Blender::Mode::EOn:
+		brt.BlendEnable = TRUE;
 		if (factors)
 		{
 			brt.SrcBlend = D3D11_BLEND_BLEND_FACTOR;
@@ -26,9 +30,10 @@ Blender::Blender(Renderer* renderer, bool blending, std::optional<float> factors
 			brt.SrcBlend = D3D11_BLEND_SRC_ALPHA;
 			brt.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 		}
+		break;
 	}
-	ThrowIfFailed(renderer->GetDevice()->CreateBlendState(&blendDesc, &mBlender));
 
+	ThrowIfFailed(renderer->GetDevice()->CreateBlendState(&blendDesc, &mBlender));
 }
 
 void Blender::Bind(Renderer* renderer)

@@ -6,7 +6,13 @@
 class Blender : public Bindable
 {
 public:
-	Blender(class Renderer* renderer, bool blending, std::optional<float> factors = {});
+	enum class Mode
+	{
+		EOff,
+		EOn
+	};
+
+	Blender(class Renderer* renderer, Mode mode, std::optional<float> factors = {});
 
 	void Bind(class Renderer* renderer) override;
 

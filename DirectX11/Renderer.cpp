@@ -139,8 +139,8 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
 	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
 	mSampler = new Sampler(this);
-	mBlenderOn = new Blender(this, true);
-	mBlenderOff = new Blender(this, false);
+	mBlenderOff = new Blender(this, Blender::Mode::EOff);
+	mBlenderOn = new Blender(this, Blender::Mode::EOn);
 	mLight = new Light(this);
 
 	Create2DBuffer();

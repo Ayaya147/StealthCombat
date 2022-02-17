@@ -57,8 +57,8 @@ private:
 
 	class Stencil* mDepthStencilOn;
 	class Stencil* mDepthStencilOff;
-	class Blender* mBlenderOn;
 	class Blender* mBlenderOff;
+	class Blender* mBlenderOn;
 	class Sampler* mSampler;
 
 	class Light* mLight;
