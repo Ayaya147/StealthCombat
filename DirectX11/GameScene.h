@@ -20,6 +20,7 @@ public:
 	const std::vector<class EnemyActor*>& GetEnemies() const { return mEnemies; }
 	const std::vector<class CloudActor*>& GetClouds() const { return mClouds; }
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
+	class Minimap* GetMinimap() const { return mMap; }
 	class CloudActor* GetCloud() const { return mCloud; }
 	class PlaneActor* GetPlane() const { return mPlane; }
 	class PlayerActor* GetPlayer() const { return mPlayer; }

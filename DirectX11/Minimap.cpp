@@ -3,6 +3,7 @@
 #include "SpriteComponent.h"
 #include "PlayerActor.h"
 #include "CloudActor.h"
+#include "EnemyActor.h"
 #include "Texture.h"
 #include "Renderer.h"
 #include "XMFloatHelper.h"
@@ -27,7 +28,7 @@ Minimap::Minimap(GameScene* game)
 	sc = new SpriteComponent(sprite,101);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
-	sprite->SetScale(0.1f);
+	sprite->SetScale(50.0f / mRadius);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -45,9 +46,20 @@ Minimap::Minimap(GameScene* game)
 	for (int i = 0; i < clouds.size(); i++)
 	{
 		Actor* sprite = new Actor(game);
-		sprite->SetScale(clouds[i]->GetScale().x / 500.0f);
+		sprite->SetScale(clouds[i]->GetScale().x / mRadius);
 		sc = new SpriteComponent(sprite);
 		mCloudSprites.emplace_back(sc);
+		sc->SetTexture(tex);
+	}
+
+	tex = game->GetRenderer()->GetTexture("minimap_enemy");
+	std::vector<EnemyActor*> enemies = game->GetEnemies();
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		Actor* sprite = new Actor(game);
+		sprite->SetScale(50.0f / mRadius);
+		sc = new SpriteComponent(sprite, 101);
+		mEnemySprites.emplace_back(sc);
 		sc->SetTexture(tex);
 	}
 }
@@ -59,9 +71,8 @@ Minimap::~Minimap()
 void Minimap::Update(GameScene* game)
 {
 	int idx = 0;
-	std::vector<CloudActor*> clouds = game->GetClouds();
 	float angle = -game->GetPlayer()->GetRotation().y;
-
+	std::vector<CloudActor*> clouds = game->GetClouds();
 	for (auto cs : mCloudSprites)
 	{
 		dx::XMFLOAT3 vec = clouds[idx]->GetPosition() - game->GetPlayer()->GetPosition();
@@ -82,6 +93,32 @@ void Minimap::Update(GameScene* game)
 			cs->SetVisible(false);
 		}
 		
+		idx++;
+	}
+
+	idx = 0;
+	std::vector<EnemyActor*> enemies = game->GetEnemies();
+	for (auto es : mEnemySprites)
+	{
+		dx::XMFLOAT3 vec = enemies[idx]->GetPosition() - game->GetPlayer()->GetPosition();
+		dx::XMFLOAT3 relativePos = vec / (mRadius / minimapRadius);
+		dx::XMFLOAT2 pos = {
+			cos(angle)*relativePos.x - sin(angle)* -relativePos.z,
+			sin(angle)*relativePos.x + cos(angle)* -relativePos.z
+		};
+
+		if ((pos.x >= -minimapRadius && pos.x <= minimapRadius) &&
+			(pos.y >= -minimapRadius && pos.y <= minimapRadius))
+		{
+			es->SetVisible(true);
+			es->GetOwner()->SetPosition(dx::XMFLOAT3{ pos.x + mOrigin.x, pos.y + mOrigin.y, 0.0f });
+			es->GetOwner()->SetRotation(dx::XMFLOAT3{ 0.0f, 0.0f, enemies[idx]->GetRotation().y + angle });
+		}
+		else
+		{
+			es->SetVisible(false);
+		}
+
 		idx++;
 	}
 
@@ -108,4 +145,13 @@ void Minimap::Update(GameScene* game)
 			});
 		}
 	}
+}
+
+void Minimap::RemoveEnemySprites(GameScene* game, EnemyActor* enemy)
+{
+	std::vector<EnemyActor*> enemies = game->GetEnemies();
+	auto iter = std::find(enemies.begin(), enemies.end(), enemy);
+	auto idx = iter - enemies.begin();
+	auto iter1 = std::find(mEnemySprites.begin(), mEnemySprites.end(), mEnemySprites[idx]);
+	mEnemySprites.erase(iter1);
 }

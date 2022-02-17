@@ -10,6 +10,7 @@
 #include "DefineConstant.h"
 #include "Random.h"
 #include "XMFloatHelper.h"
+#include "Minimap.h"
 
 namespace dx = DirectX;
 
@@ -50,6 +51,7 @@ EnemyActor::~EnemyActor()
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
 		game->RemoveEnemy(this);
+		game->GetMinimap()->RemoveEnemySprites(game, this);
 	}
 }
 
