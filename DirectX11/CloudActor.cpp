@@ -32,8 +32,8 @@ CloudActor::CloudActor(BaseScene* scene)
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
 
-	//float size = 10.0f;
-	float size = Random::GetFloatRange(60.0f, 120.0f);
+	//float size = 140.0f;
+	float size = Random::GetFloatRange(70.0f, 130.0f);
 	float range = Constant::createRange;
 	SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
 	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });

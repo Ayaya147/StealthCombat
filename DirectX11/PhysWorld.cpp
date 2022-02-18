@@ -68,7 +68,6 @@ bool PhysWorld::IsAttackRangeCollidedWithEnemy(SphereComponent* sc, CollisionInf
 	{
 		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
 		{
-			auto player = dynamic_cast<PlayerActor*>(sc->GetOwner());
 			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
 			{
 				info.mActor = enemy;

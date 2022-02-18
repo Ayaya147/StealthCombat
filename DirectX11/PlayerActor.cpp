@@ -100,11 +100,11 @@ void PlayerActor::ActorInput()
 
 	DirectX::XMFLOAT3 rotation = GetRotation();
 	float accelW = 3.0f;
-	float accelS = -5.0f;
+	float accelS = -4.0f;
 	float accelNatural = -1.5f;
-	float angularSpd = 1.2f;
+	float angularSpd = 1.0f;
 	float angularRate1 = 0.9f;
-	float angularRate2 = 1.4f;
+	float angularRate2 = 1.5f;
 	if (pad->GetIsGamePad())
 	{
 		if (pad->GetThumbLeftX() > 0)
@@ -143,7 +143,7 @@ void PlayerActor::ActorInput()
 	{
 		if (keyboard->GetKeyValue('D'))
 		{
-			if (keyboard->GetKeyValue('S'))
+			if (keyboard->GetKeyValue('S') && !keyboard->GetKeyValue('W'))
 			{
 				mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
 			}
@@ -154,7 +154,7 @@ void PlayerActor::ActorInput()
 		}
 		else if (keyboard->GetKeyValue('A'))
 		{
-			if (keyboard->GetKeyValue('S'))
+			if (keyboard->GetKeyValue('S') && !keyboard->GetKeyValue('W'))
 			{
 				mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
 			}
