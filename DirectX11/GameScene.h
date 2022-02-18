@@ -24,6 +24,7 @@ public:
 	class CloudActor* GetCloud() const { return mCloud; }
 	class PlaneActor* GetPlane() const { return mPlane; }
 	class PlayerActor* GetPlayer() const { return mPlayer; }
+	class SpriteComponent* GetMarkingSprite() const { return mMarkingSprite; }
 
 private:
 	std::vector<class EnemyActor*> mEnemies;
@@ -37,5 +38,6 @@ private:
 	class NumberActor* mSpdNum;
 	class NumberActor* mEnemyNum;
 	class SpriteComponent* mGuideSprite;
+	class SpriteComponent* mMarkingSprite;
 	class Minimap* mMap;
 };

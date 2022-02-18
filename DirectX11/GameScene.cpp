@@ -35,7 +35,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < 35; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
@@ -49,6 +49,14 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
 
+	sprite = new Actor(this);
+	tex = GetRenderer()->GetTexture("marking");
+	mMarkingSprite = new SpriteComponent(sprite, 110);
+	mMarkingSprite->SetTexture(tex);
+	mMarkingSprite->SetVisible(false);
+	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 220.0f, 0.0f });
+	sprite->SetScale(0.3f);
+	
 	sprite = new Actor(this);
 	tex = GetRenderer()->GetTexture("speed");
 	SpriteComponent* sc = new SpriteComponent(sprite);
@@ -79,6 +87,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 GameScene::~GameScene()
 {
 	delete mPhysWorld;
+	delete mMap;
 }
 
 void GameScene::ProcessInput()

@@ -13,12 +13,11 @@ SceneManager::SceneManager(GameApp* gameApp)
 	:
 	mApp(gameApp)
 {
+	Random::Initialize();
 	Parameter parameter;
 	mSceneStack.emplace(new GameScene(this, parameter));
 
 	GetRenderer()->SetScene(mSceneStack.top());
-
-	Random::Initialize();
 }
 
 SceneManager::~SceneManager()
