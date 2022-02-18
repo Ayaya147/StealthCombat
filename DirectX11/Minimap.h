@@ -18,5 +18,4 @@ private:
 	std::vector<class SpriteComponent*> mCloudSprites;
 	std::vector<class SpriteComponent*> mEnemySprites;
 	std::vector<class SpriteComponent*> mDirectionSprites;
-	float mRadius;
 };

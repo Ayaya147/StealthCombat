@@ -7,13 +7,13 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "XMFloatHelper.h"
+#include "DefineConstant.h"
 
 namespace dx = DirectX;
 
 Minimap::Minimap(GameScene* game)
-	:
-	mRadius(500.0f)
 {
+	float range = Constant::createRange;
 	Renderer* renderer = game->GetRenderer();
 
 	Actor* sprite = new Actor(game);
@@ -28,7 +28,7 @@ Minimap::Minimap(GameScene* game)
 	sc = new SpriteComponent(sprite,101);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
-	sprite->SetScale(50.0f / mRadius);
+	sprite->SetScale(50.0f / range);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -46,7 +46,7 @@ Minimap::Minimap(GameScene* game)
 	for (int i = 0; i < clouds.size(); i++)
 	{
 		Actor* sprite = new Actor(game);
-		sprite->SetScale(clouds[i]->GetScale().x / mRadius);
+		sprite->SetScale(clouds[i]->GetScale().x / range);
 		sc = new SpriteComponent(sprite);
 		mCloudSprites.emplace_back(sc);
 		sc->SetTexture(tex);
@@ -57,7 +57,7 @@ Minimap::Minimap(GameScene* game)
 	for (int i = 0; i < enemies.size(); i++)
 	{
 		Actor* sprite = new Actor(game);
-		sprite->SetScale(50.0f / mRadius);
+		sprite->SetScale(50.0f / range);
 		sc = new SpriteComponent(sprite, 101);
 		mEnemySprites.emplace_back(sc);
 		sc->SetTexture(tex);
@@ -71,12 +71,13 @@ Minimap::~Minimap()
 void Minimap::Update(GameScene* game)
 {
 	int idx = 0;
+	float range = Constant::createRange;
 	float angle = -game->GetPlayer()->GetRotation().y;
 	std::vector<CloudActor*> clouds = game->GetClouds();
 	for (auto cs : mCloudSprites)
 	{
 		dx::XMFLOAT3 vec = clouds[idx]->GetPosition() - game->GetPlayer()->GetPosition();
-		dx::XMFLOAT3 relativePos = vec / (mRadius / minimapRadius);
+		dx::XMFLOAT3 relativePos = vec / (range / minimapRadius);
 		dx::XMFLOAT2 pos = {
 			cos(angle)*relativePos.x - sin(angle)* -relativePos.z,
 			sin(angle)*relativePos.x + cos(angle)* -relativePos.z
@@ -101,7 +102,7 @@ void Minimap::Update(GameScene* game)
 	for (auto es : mEnemySprites)
 	{
 		dx::XMFLOAT3 vec = enemies[idx]->GetPosition() - game->GetPlayer()->GetPosition();
-		dx::XMFLOAT3 relativePos = vec / (mRadius / minimapRadius);
+		dx::XMFLOAT3 relativePos = vec / (range / minimapRadius);
 		dx::XMFLOAT2 pos = {
 			cos(angle)*relativePos.x - sin(angle)* -relativePos.z,
 			sin(angle)*relativePos.x + cos(angle)* -relativePos.z

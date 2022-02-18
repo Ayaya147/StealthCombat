@@ -23,7 +23,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
 
-	float range = 500.0f;
+	float range = Constant::createRange;
 	SetScale(0.1f);
 	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) });
 	SetRotation(dx::XMFLOAT3{0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });

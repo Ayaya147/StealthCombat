@@ -33,9 +33,9 @@ CloudActor::CloudActor(BaseScene* scene)
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
 
 	//float size = 10.0f;
-	float size = Random::GetFloatRange(70.0f, 130.0f);
-	float range = 500.0f;
-	SetScale(dx::XMFLOAT3{ size,size / 5.0f,size });
+	float size = Random::GetFloatRange(70.0f, 140.0f);
+	float range = Constant::createRange;
+	SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
 	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) });
 
