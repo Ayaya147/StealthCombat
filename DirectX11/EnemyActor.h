@@ -12,6 +12,7 @@ public:
 
 	void SetLockedOn(bool is) { mIsLockedOn = is; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
+	bool GetIsInCloud() const { return mIsInCloud; }
 	float GetDistFromPlayer() const { return mDist; }
 	class SphereComponent* GetSphereComp() const { return mSphereComponent; }
 
@@ -20,4 +21,5 @@ private:
 	class SphereComponent* mSphereComponent;
 	float mDist;
 	bool mIsLockedOn;
+	bool mIsInCloud;
 };

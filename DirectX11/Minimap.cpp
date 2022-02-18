@@ -101,6 +101,13 @@ void Minimap::Update(GameScene* game)
 	std::vector<EnemyActor*> enemies = game->GetEnemies();
 	for (auto es : mEnemySprites)
 	{
+		if (enemies[idx]->GetIsInCloud())
+		{
+			es->SetVisible(false);
+			idx++;
+			continue;
+		}
+
 		dx::XMFLOAT3 vec = enemies[idx]->GetPosition() - game->GetPlayer()->GetPosition();
 		dx::XMFLOAT3 relativePos = vec / (range / minimapRadius);
 		dx::XMFLOAT2 pos = {

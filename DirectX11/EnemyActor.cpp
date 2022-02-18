@@ -11,6 +11,7 @@
 #include "Random.h"
 #include "XMFloatHelper.h"
 #include "Minimap.h"
+#include "PhysWorld.h"
 
 namespace dx = DirectX;
 
@@ -18,7 +19,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	:
 	Actor(scene),
 	mDist(0.0f),
-	mIsLockedOn(false)
+	mIsLockedOn(false),
+	mIsInCloud(false)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -57,7 +59,16 @@ EnemyActor::~EnemyActor()
 
 void EnemyActor::UpdateActor(float deltaTime)
 {
-	CalcDistFromPlayer();
+	auto game = dynamic_cast<GameScene*>(GetScene());
+	PhysWorld* phys = game->GetPhysWorld();
+	if (phys->IsCollidedWithCloud(mSphereComponent))
+	{
+		mIsInCloud = true;
+	}
+	else
+	{
+		mIsInCloud = false;
+	}
 
 	float range = 500.0f;
 	if (GetPosition().x < -range ||
