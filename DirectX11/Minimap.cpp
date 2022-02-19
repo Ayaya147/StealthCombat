@@ -13,7 +13,7 @@ namespace dx = DirectX;
 
 Minimap::Minimap(GameScene* game)
 {
-	float range = Constant::createRange;
+	float range = Constant::createRange * 1.2f;
 	Renderer* renderer = game->GetRenderer();
 
 	Actor* sprite = new Actor(game);
@@ -71,7 +71,7 @@ Minimap::~Minimap()
 void Minimap::Update(GameScene* game)
 {
 	int idx = 0;
-	float range = Constant::createRange;
+	float range = Constant::createRange * 1.2f;
 	float angle = -game->GetPlayer()->GetRotation().y;
 	std::vector<CloudActor*> clouds = game->GetClouds();
 	for (auto cs : mCloudSprites)

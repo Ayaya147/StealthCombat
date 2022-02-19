@@ -70,7 +70,7 @@ void EnemyActor::UpdateActor(float deltaTime)
 		mIsInCloud = false;
 	}
 
-	float range = 500.0f;
+	float range = Constant::createRange;
 	if (GetPosition().x < -range ||
 		GetPosition().x > range ||
 		GetPosition().z < -range ||

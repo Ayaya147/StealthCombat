@@ -35,7 +35,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 35; i++)
+	for (int i = 0; i < 30; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
