@@ -101,22 +101,25 @@ void GameScene::ProcessInput()
 
 void GameScene::Update()
 {
-	mMap->Update(this);
-	mCloudTimeNum->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
-	mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
-	mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
-	mFPS->SetValue(1.0f / GetDeltaTime());
+	if (GetSceneState() == SceneState::EPlay)
+	{
+		mMap->Update(this);
+		mCloudTimeNum->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
+		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
+		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
+		mFPS->SetValue(1.0f / GetDeltaTime());
 
-	GamePad* pad = GetInputSystem()->GetPad();
-	if (pad->GetIsGamePad())
-	{
-		Texture* tex = GetRenderer()->GetTexture("guide_pad");
-		mGuideSprite->SetTexture(tex);
-	}
-	else
-	{
-		Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
-		mGuideSprite->SetTexture(tex);
+		GamePad* pad = GetInputSystem()->GetPad();
+		if (pad->GetIsGamePad())
+		{
+			Texture* tex = GetRenderer()->GetTexture("guide_pad");
+			mGuideSprite->SetTexture(tex);
+		}
+		else
+		{
+			Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
+			mGuideSprite->SetTexture(tex);
+		}
 	}
 
 	BaseScene::Update();
@@ -128,14 +131,14 @@ void GameScene::GenerateOutput()
 
 	GamePad* pad = GetInputSystem()->GetPad();
 	Keyboard* keyboard = GetInputSystem()->GetKeyboard();
-	if (!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+	if (GetSceneState() == SceneState::EQuit ||
+		(!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed))
 	{
 		Parameter parameter;
 		GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 	}
-	else if (
-		pad->GetIsGamePad() &&
-		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
+	else if (GetSceneState() == SceneState::EQuit ||
+		(pad->GetIsGamePad() &&	pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed))
 	{
 		Parameter parameter;
 		GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);

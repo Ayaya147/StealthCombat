@@ -76,7 +76,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 	
 	if (phys->IsCollidedWithEnemy(mBody, info))
 	{
-		//info.mActor->SetActorState(Actor::ActorState::EDead);
+		game->SetSceneState(BaseScene::SceneState::EQuit);
 	}
 
 	if (phys->IsCollidedWithMissile(mBody, info))

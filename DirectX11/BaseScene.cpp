@@ -12,7 +12,8 @@ BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	mTimer(new Timer()),
 	mUpdatingActors(false),
 	mGameTime(0.0f),
-	mDeltaTime(0.016f)
+	mDeltaTime(0.016f),
+	mSceneState(SceneState::EPlay)
 {
 }
 
@@ -58,32 +59,34 @@ void BaseScene::Update()
 	}
 	mGameTime += mDeltaTime;
 
-	mUpdatingActors = true;
-	for (auto actor : mActors)
+	if (mSceneState == SceneState::EPlay)
 	{
-		actor->Update(mDeltaTime);
-	}
-	mUpdatingActors = false;
-	
-	for (auto pending : mPendingActors)
-	{
-		pending->ComputeWorldTransform();
-		mActors.emplace_back(pending);
-	}
-	mPendingActors.clear();
-
-	std::vector<Actor*> deadActors;
-	for (auto actor : mActors)
-	{
-		if (actor->GetActorState() == Actor::ActorState::EDead)
+		mUpdatingActors = true;
+		for (auto actor : mActors)
 		{
-			deadActors.emplace_back(actor);
+			actor->Update(mDeltaTime);
 		}
-	}
+		mUpdatingActors = false;
 
-	for (auto actor : deadActors)
-	{
-		delete actor;
+		for (auto pending : mPendingActors)
+		{
+			pending->ComputeWorldTransform();
+			mActors.emplace_back(pending);
+		}
+		mPendingActors.clear();
+
+		std::vector<Actor*> deadActors;
+		for (auto actor : mActors)
+		{
+			if (actor->GetActorState() == Actor::ActorState::EDead)
+			{
+				deadActors.emplace_back(actor);
+			}
+		}
+		for (auto actor : deadActors)
+		{
+			delete actor;
+		}
 	}
 }
 
