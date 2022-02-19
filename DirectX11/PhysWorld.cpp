@@ -19,7 +19,7 @@ PhysWorld::~PhysWorld()
 
 bool PhysWorld::IsCollidedWithCloud(SphereComponent* sc)
 {
-	for (auto s : mSpheres)
+	for (auto s : mSphereComponents)
 	{
 		if (auto cloud = dynamic_cast<CloudActor*>(s->GetOwner()))
 		{
@@ -35,12 +35,13 @@ bool PhysWorld::IsCollidedWithCloud(SphereComponent* sc)
 
 bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
 {
-	for (auto s : mSpheres)
+	for (auto s : mSphereComponents)
 	{
 		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
 		{
-			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
-				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere()))
+			if (s == enemy->GetSphereComp() &&
+				(Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
+				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere())))
 			{
 				info.mActor = enemy;
 				return true;
@@ -51,7 +52,7 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
 	return false;
 }
 
-bool PhysWorld::IsCollidedWithEnemy(SphereComponent * sc, SphereComponent * sc1)
+bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, SphereComponent* sc1)
 {
 	if (Collision::Intersect(sc->GetSphere(), sc1->GetSphere()) ||
 		Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), sc1->GetSphereLast(), sc1->GetSphere()))
@@ -62,33 +63,16 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent * sc, SphereComponent * sc1)
 	return false;
 }
 
-bool PhysWorld::IsAttackRangeCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
+bool PhysWorld::IsCollidedWithPlayer(SphereComponent* sc)
 {
-	for (auto s : mSpheres)
+	for (auto s : mSphereComponents)
 	{
-		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
+		if (auto player = dynamic_cast<PlayerActor*>(s->GetOwner()))
 		{
-			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
+			if (s == player->GetSphereComp() &&
+				(Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
+				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere())))
 			{
-				info.mActor = enemy;
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-bool PhysWorld::IsCollidedWithMissile(SphereComponent* sc, CollisionInfo& info)
-{
-	for (auto s : mSpheres)
-	{
-		if (auto missile = dynamic_cast<MissileActor*>(s->GetOwner()))
-		{
-			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
-				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere()))
-			{
-				info.mActor = missile;
 				return true;
 			}
 		}
@@ -99,15 +83,15 @@ bool PhysWorld::IsCollidedWithMissile(SphereComponent* sc, CollisionInfo& info)
 
 void PhysWorld::AddSphere(SphereComponent* sc)
 {
-	mSpheres.emplace_back(sc);
+	mSphereComponents.emplace_back(sc);
 }
 
 void PhysWorld::RemoveSphere(SphereComponent* sc)
 {
-	auto iter = std::find(mSpheres.begin(), mSpheres.end(), sc);
-	if (iter != mSpheres.end())
+	auto iter = std::find(mSphereComponents.begin(), mSphereComponents.end(), sc);
+	if (iter != mSphereComponents.end())
 	{
-		std::iter_swap(iter, mSpheres.end() - 1);
-		mSpheres.pop_back();
+		std::iter_swap(iter, mSphereComponents.end() - 1);
+		mSphereComponents.pop_back();
 	}
 }

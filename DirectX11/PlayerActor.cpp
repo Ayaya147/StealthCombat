@@ -54,6 +54,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mAttackRange = new SphereComponent(this);
 	sphere = new Sphere(GetPosition(), 12.0f);
 	mAttackRange->SetSphere(sphere);
+	sphere = new Sphere(GetPosition(), 12.0f);
+	mAttackRange->SetSphereLast(sphere);
 
 	CameraComponent* cc = new CameraComponent(this);
 	cc->SnapToIdeal();
@@ -77,11 +79,6 @@ void PlayerActor::UpdateActor(float deltaTime)
 	if (phys->IsCollidedWithEnemy(mBody, info))
 	{
 		game->SetSceneState(BaseScene::SceneState::EQuit);
-	}
-
-	if (phys->IsCollidedWithMissile(mBody, info))
-	{
-		//info.mActor->SetActorState(Actor::ActorState::EDead);
 	}
 
 	dx::XMFLOAT3 rotation = GetRotation();
@@ -156,7 +153,7 @@ void PlayerActor::ActorInput()
 		PhysWorld* phys = game->GetPhysWorld();
 		PhysWorld::CollisionInfo info;
 		if (!game->GetEnemies().empty() &&
-			phys->IsAttackRangeCollidedWithEnemy(mAttackRange, info))
+			phys->IsCollidedWithEnemy(mAttackRange, info))
 		{
 			EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!enemy->GetIsLockedOn())
@@ -255,7 +252,7 @@ void PlayerActor::ActorInput()
 		PhysWorld* phys = game->GetPhysWorld();
 		PhysWorld::CollisionInfo info;
 		if (!game->GetEnemies().empty() &&
-			phys->IsAttackRangeCollidedWithEnemy(mAttackRange, info))
+			phys->IsCollidedWithEnemy(mAttackRange, info))
 		{
 			EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!enemy->GetIsLockedOn())

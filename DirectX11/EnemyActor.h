@@ -10,15 +10,16 @@ public:
 	void UpdateActor(float deltaTime) override;
 	void CalcDistFromPlayer();
 
-	void SetLockedOn(bool is) { mIsLockedOn = is; }
+	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
 	bool GetIsInCloud() const { return mIsInCloud; }
 	float GetDistFromPlayer() const { return mDist; }
-	class SphereComponent* GetSphereComp() const { return mSphereComponent; }
+	class SphereComponent* GetSphereComp() const { return mBody; }
 
 private:
 	class MoveComponent* mMoveComponent;
-	class SphereComponent* mSphereComponent;
+	class SphereComponent* mBody;
+	class SphereComponent* mAttackRange;
 	float mDist;
 	bool mIsLockedOn;
 	bool mIsInCloud;

@@ -1,5 +1,6 @@
 #include "EnemyActor.h"
 #include "PlayerActor.h"
+#include "MissileActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -41,11 +42,17 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	mMoveComponent->SetAcceleration(3.0f);
 
 	float radius = 10.0f;
-	mSphereComponent = new SphereComponent(this);
+	mBody = new SphereComponent(this);
 	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
-	mSphereComponent->SetSphere(sphere);
+	mBody->SetSphere(sphere);
 	sphere = new Sphere(GetPosition(), radius * GetScale().x);
-	mSphereComponent->SetSphereLast(sphere);
+	mBody->SetSphereLast(sphere);
+
+	mAttackRange = new SphereComponent(this);
+	sphere = new Sphere(GetPosition(), 12.0f);
+	mAttackRange->SetSphere(sphere);
+	sphere = new Sphere(GetPosition(), 12.0f);
+	mAttackRange->SetSphereLast(sphere);
 }
 
 EnemyActor::~EnemyActor()
@@ -61,13 +68,25 @@ void EnemyActor::UpdateActor(float deltaTime)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	PhysWorld* phys = game->GetPhysWorld();
-	if (phys->IsCollidedWithCloud(mSphereComponent))
+	if (phys->IsCollidedWithCloud(mBody))
 	{
 		mIsInCloud = true;
 	}
 	else
 	{
 		mIsInCloud = false;
+	}
+
+	PlayerActor* player = game->GetPlayer();
+	if (!player->GetIsLockedOn() &&
+		player->GetOutCloudTime() != 0 &&
+		DXMath::Dot(player->GetPosition() - GetPosition(), GetForward()) > 0 &&
+		phys->IsCollidedWithPlayer(mAttackRange))
+	{
+		player->SetLockedOn(true);
+		MissileActor* missile = new MissileActor(
+			GetScene(), player, GetPosition(), mMoveComponent->GetForwardSpeed()
+		);
 	}
 
 	float range = Constant::createRange;

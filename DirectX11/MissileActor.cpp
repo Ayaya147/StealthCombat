@@ -28,16 +28,30 @@ MissileActor::MissileActor(BaseScene* scene, Actor* actor, const DirectX::XMFLOA
 		mType = MissileType::ETargetPlayer;
 	}
 
+	Renderer* renderer = GetScene()->GetRenderer();
+	switch (mType)
+	{
+	case MissileActor::MissileType::ETargetEnemy:
+	{
+		Mesh* mesh = renderer->GetMesh("missile");
+		mesh->ParseMesh(renderer, "missile", L"Phong");
+		MeshComponent* mc = new MeshComponent(this, mesh);
+	}
+		break;
+
+	case MissileActor::MissileType::ETargetPlayer:
+	{
+		Mesh* mesh = renderer->GetMesh("missile1");
+		mesh->ParseMesh(renderer, "missile1", L"Phong");
+		MeshComponent* mc = new MeshComponent(this, mesh);
+	}
+		break;
+	}
+
 	SetScale(0.08f);
 	SetPosition(pos);
-
 	dx::XMFLOAT3 forward = mTarget->GetPosition() - GetPosition();
 	SetRotation(dx::XMFLOAT3{ 0.0f,atan2f(forward.x, forward.z),0.0f });
-
-	Renderer* renderer = GetScene()->GetRenderer();
-	Mesh* mesh = renderer->GetMesh("missile");
-	mesh->ParseMesh(renderer, "missile", L"Phong");
-	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(25.0f);
@@ -75,6 +89,10 @@ void MissileActor::UpdateActor(float deltaTime)
 		break;
 
 	case MissileActor::MissileType::ETargetPlayer:
+		if (phys->IsCollidedWithPlayer(mSphereComponent))
+		{
+			game->SetSceneState(BaseScene::SceneState::EQuit);
+		}
 		break;
 	}
 }

@@ -15,13 +15,12 @@ public:
 	bool IsCollidedWithCloud(class SphereComponent* sc);
 	bool IsCollidedWithEnemy(class SphereComponent* sc, CollisionInfo& info);
 	bool IsCollidedWithEnemy(class SphereComponent* sc, class SphereComponent* sc1);
-	bool IsAttackRangeCollidedWithEnemy(class SphereComponent* sc, CollisionInfo& info);
-	bool IsCollidedWithMissile(class SphereComponent* sc, CollisionInfo& info);
+	bool IsCollidedWithPlayer(class SphereComponent* sc);
 
 	void AddSphere(class SphereComponent* sc);
 	void RemoveSphere(class SphereComponent* sc);
 
 private:
 	class BaseScene* mScene;
-	std::vector<class SphereComponent*> mSpheres;
+	std::vector<class SphereComponent*> mSphereComponents;
 };
