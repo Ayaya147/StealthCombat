@@ -23,9 +23,9 @@ namespace dx = DirectX;
 static constexpr float accelW = 3.0f;
 static constexpr float accelS = -4.0f;
 static constexpr float accelNatural = -1.0f;
-static constexpr float angularSpd = 1.0f;
+static constexpr float angularSpd = 0.8f;
 static constexpr float angularRate1 = 0.92f;
-static constexpr float angularRate2 = 1.5f;
+static constexpr float angularRate2 = 1.7f;
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -42,7 +42,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(15.0f);
-	mMoveComponent->SetForwardSpeed(6.0f);
+	mMoveComponent->SetForwardSpeed(10.0f);
 
 	float radius = 10.0f;
 	mBody = new SphereComponent(this);

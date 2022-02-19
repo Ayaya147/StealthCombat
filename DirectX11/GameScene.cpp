@@ -31,7 +31,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer(new PlayerActor(this)),
 	mCloud(new CloudActor(this))
 {
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
@@ -109,7 +109,9 @@ void GameScene::Update()
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
 		mFPS->SetValue(1.0f / GetDeltaTime());
 
-		if (mPlayer->GetOutCloudTime() >= 15.0f)
+		if (mPlayer->GetOutCloudTime() >= 15.0f ||
+			mPlayer->GetForwardSpeed() < 800.0f / 160.f ||
+			mEnemies.size() == 0)
 		{
 			SetSceneState(SceneState::EQuit);
 		}
