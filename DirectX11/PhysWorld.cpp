@@ -23,7 +23,7 @@ bool PhysWorld::IsCollidedWithCloud(SphereComponent* sc)
 	{
 		if (auto cloud = dynamic_cast<CloudActor*>(s->GetOwner()))
 		{
-			if (Collision::Intersect(sc->GetSphere(), s->GetSphere()))
+			if (cloud != sc->GetOwner() && Collision::Intersect(sc->GetSphere(), s->GetSphere()))
 			{
 				return true;
 			}

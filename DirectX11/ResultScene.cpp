@@ -55,13 +55,13 @@ void ResultScene::GenerateOutput()
 	if (!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
 	{
 		Parameter parameter;
-		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+		GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
 	}
 	else if (
 		pad->GetIsGamePad() &&
 		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;
-		mSceneManager->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+		GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
 	}
 }

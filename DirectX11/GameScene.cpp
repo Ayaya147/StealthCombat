@@ -82,6 +82,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 1);
 	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 0.0f, -450.0f, 0.0f });
 	mEnemyNum->SetScale(1.0f);
+
+	mFPS = new NumberActor(this, 0, 2);
+	mFPS->SetOriPosition(dx::XMFLOAT3{ -900.0f, -500.0f, 0.0f });
+	mFPS->SetScale(0.6f);
 }
 
 GameScene::~GameScene()
@@ -101,6 +105,7 @@ void GameScene::Update()
 	mCloudTimeNum->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 	mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 	mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
+	mFPS->SetValue(1.0f / GetDeltaTime());
 
 	GamePad* pad = GetInputSystem()->GetPad();
 	if (pad->GetIsGamePad())
@@ -126,14 +131,14 @@ void GameScene::GenerateOutput()
 	if (!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
 	{
 		Parameter parameter;
-		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+		GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 	}
 	else if (
 		pad->GetIsGamePad() &&
 		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
 	{
 		Parameter parameter;
-		mSceneManager->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+		GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 	}
 }
 

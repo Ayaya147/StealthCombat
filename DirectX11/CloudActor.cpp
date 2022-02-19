@@ -9,6 +9,7 @@
 #include "ImGui/imgui.h"
 #include "Collision.h"
 #include "DefineConstant.h"
+#include "PhysWorld.h"
 
 namespace dx = DirectX;
 
@@ -37,12 +38,20 @@ CloudActor::CloudActor(BaseScene* scene)
 	float range = Constant::createRange;
 	SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
 	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
-	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) });
 
 	float radius = 0.33f;
 	SphereComponent* sc = new SphereComponent(this);
-	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
+	dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+	Sphere* sphere = new Sphere(pos, radius * GetScale().x);
 	sc->SetSphere(sphere);
+
+	PhysWorld* phys = game->GetPhysWorld();
+	while (phys->IsCollidedWithCloud(sc))
+	{
+		pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+		sphere->mCenter = pos;
+	}
+	SetPosition(pos);
 
 	if (!mObjectCBuffer)
 	{

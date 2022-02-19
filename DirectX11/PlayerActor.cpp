@@ -20,6 +20,13 @@
 
 namespace dx = DirectX;
 
+static constexpr float accelW = 3.0f;
+static constexpr float accelS = -4.0f;
+static constexpr float accelNatural = -1.0f;
+static constexpr float angularSpd = 1.0f;
+static constexpr float angularRate1 = 0.92f;
+static constexpr float angularRate2 = 1.5f;
+
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene),
@@ -72,10 +79,10 @@ void PlayerActor::UpdateActor(float deltaTime)
 		//info.mActor->SetActorState(Actor::ActorState::EDead);
 	}
 
-	//if (phys->IsCollidedWithMissile(mBody, info))
-	//{
-	//	info.mActor->SetActorState(Actor::ActorState::EDead);
-	//}
+	if (phys->IsCollidedWithMissile(mBody, info))
+	{
+		//info.mActor->SetActorState(Actor::ActorState::EDead);
+	}
 
 	dx::XMFLOAT3 rotation = GetRotation();
 	if (rotation.z > 0.8f)
@@ -94,34 +101,40 @@ void PlayerActor::ActorInput()
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	Keyboard* keyboard = game->GetInputSystem()->GetKeyboard();
 	GamePad* pad = game->GetInputSystem()->GetPad();
-	PhysWorld* phys = game->GetPhysWorld();
-	Renderer* renderer = game->GetRenderer();
-	PhysWorld::CollisionInfo info;
 
-	DirectX::XMFLOAT3 rotation = GetRotation();
-	float accelW = 3.0f;
-	float accelS = -4.0f;
-	float accelNatural = -1.5f;
-	float angularSpd = 1.0f;
-	float angularRate1 = 0.9f;
-	float angularRate2 = 1.5f;
+	//GamePad
 	if (pad->GetIsGamePad())
 	{
 		if (pad->GetThumbLeftX() > 0)
 		{
 			pad->SetRightVibration(100);
-			mMoveComponent->SetAngularSpeed(angularSpd);
+			if (pad->GetLeftTrigger() && !pad->GetRightTrigger())
+			{
+				mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
+			}
+			else
+			{
+				mMoveComponent->SetAngularSpeed(angularSpd);
+			}
 		}
 		else if (pad->GetThumbLeftX() < 0)
 		{
-			pad->SetLeftVibration(100);
-			mMoveComponent->SetAngularSpeed(-angularSpd);
+			pad->SetRightVibration(100);
+			if (pad->GetLeftTrigger() && !pad->GetRightTrigger())
+			{
+				mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
+			}
+			else
+			{
+				mMoveComponent->SetAngularSpeed(-angularSpd);
+			}
 		}
 		else
 		{
 			pad->StopVibration();
 			float spd = mMoveComponent->GetAngularSpeed();
 			mMoveComponent->SetAngularSpeed(spd * angularRate1);
+			DirectX::XMFLOAT3 rotation = GetRotation();
 			rotation.z = GetRotation().z * angularRate1;
 			SetRotation(rotation);
 		}
@@ -130,7 +143,7 @@ void PlayerActor::ActorInput()
 		{
 			mMoveComponent->SetAcceleration(accelW);
 		}
-		else if(pad->GetLeftTrigger())
+		else if (pad->GetLeftTrigger())
 		{
 			mMoveComponent->SetAcceleration(accelS);
 		}
@@ -138,7 +151,60 @@ void PlayerActor::ActorInput()
 		{
 			mMoveComponent->SetAcceleration(accelNatural);
 		}
+
+		SpriteComponent* sprite = game->GetMarkingSprite();
+		PhysWorld* phys = game->GetPhysWorld();
+		PhysWorld::CollisionInfo info;
+		if (!game->GetEnemies().empty() &&
+			phys->IsAttackRangeCollidedWithEnemy(mAttackRange, info))
+		{
+			EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
+			if (!enemy->GetIsLockedOn())
+			{
+				Renderer* renderer = game->GetRenderer();
+
+				dx::XMVECTOR localPos = dx::XMVectorZero();
+				dx::XMMATRIX worldtransform = enemy->GetWorldTransform();
+				dx::XMMATRIX view = renderer->GetViewMatrix();
+				dx::XMMATRIX projection = renderer->GetProjectionMatrix();
+				dx::XMMATRIX matrix = worldtransform * view * projection;
+
+				dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
+				float ndcX = dx::XMVectorGetX(ndc);
+				float ndcY = dx::XMVectorGetY(ndc);
+				dx::XMFLOAT3 lastPos = { ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
+				sprite->GetOwner()->SetPosition(lastPos);
+
+				if (lastPos.y > -540.0f &&
+					lastPos.y < 0.0f &&
+					lastPos.x > -960.0f &&
+					lastPos.x < 960.0f)
+				{
+					sprite->SetVisible(true);
+					if (pad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed)
+					{
+						enemy->SetLockedOn(true);
+						MissileActor* missile = new MissileActor(
+							GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed()
+						);
+					}
+				}
+				else
+				{
+					sprite->SetVisible(false);
+				}
+			}
+			else
+			{
+				sprite->SetVisible(false);
+			}
+		}
+		else
+		{
+			sprite->SetVisible(false);
+		}
 	}
+	//Keyboard
 	else
 	{
 		if (keyboard->GetKeyValue('D'))
@@ -167,6 +233,7 @@ void PlayerActor::ActorInput()
 		{
 			float spd = mMoveComponent->GetAngularSpeed();
 			mMoveComponent->SetAngularSpeed(spd * angularRate1);
+			DirectX::XMFLOAT3 rotation = GetRotation();
 			rotation.z = GetRotation().z * angularRate1;
 			SetRotation(rotation);
 		}
@@ -185,12 +252,16 @@ void PlayerActor::ActorInput()
 		}
 
 		SpriteComponent* sprite = game->GetMarkingSprite();
+		PhysWorld* phys = game->GetPhysWorld();
+		PhysWorld::CollisionInfo info;
 		if (!game->GetEnemies().empty() &&
 			phys->IsAttackRangeCollidedWithEnemy(mAttackRange, info))
 		{
 			EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!enemy->GetIsLockedOn())
 			{
+				Renderer* renderer = game->GetRenderer();
+
 				dx::XMVECTOR localPos = dx::XMVectorZero();
 				dx::XMMATRIX worldtransform = enemy->GetWorldTransform();
 				dx::XMMATRIX view = renderer->GetViewMatrix();

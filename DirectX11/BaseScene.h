@@ -17,13 +17,16 @@ public:
 	class Renderer* GetRenderer();
 	class InputSystem* GetInputSystem();
 	class Window* GetWindow();
+	class SceneManager* GetSceneManager() const { return mSceneManager; }
 	float GetGameTime() const { return mGameTime; }
+	float GetDeltaTime() const { return mDeltaTime; }
 
-protected:
+private:
 	std::vector<class Actor*> mActors;
 	std::vector<class Actor*> mPendingActors;
 	class Timer* mTimer;
 	class SceneManager* mSceneManager;
 	bool mUpdatingActors;
 	float mGameTime;
+	float mDeltaTime;
 };

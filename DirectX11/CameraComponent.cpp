@@ -79,7 +79,7 @@ void CameraComponent::ProcessInput()
 
 	if (pad->GetIsGamePad())
 	{
-		if (pad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed)
+		if (pad->GetButtonState(XINPUT_GAMEPAD_A) == ButtonState::EPressed)
 		{
 			if (mType == 1)
 			{

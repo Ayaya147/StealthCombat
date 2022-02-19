@@ -11,7 +11,8 @@ BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	mSceneManager(sm),
 	mTimer(new Timer()),
 	mUpdatingActors(false),
-	mGameTime(0.0f)
+	mGameTime(0.0f),
+	mDeltaTime(0.016f)
 {
 }
 
@@ -50,17 +51,17 @@ void BaseScene::ProcessInput()
 void BaseScene::Update()
 {
 	while (mTimer->Peek() <= 1.0f / 60.0f);
-	float deltaTime = mTimer->Mark();
-	if (deltaTime > 0.05f)
+	mDeltaTime = mTimer->Mark();
+	if (mDeltaTime > 0.05f)
 	{
-		deltaTime = 0.05f;
+		mDeltaTime = 0.05f;
 	}
-	mGameTime += deltaTime;
+	mGameTime += mDeltaTime;
 
 	mUpdatingActors = true;
 	for (auto actor : mActors)
 	{
-		actor->Update(deltaTime);
+		actor->Update(mDeltaTime);
 	}
 	mUpdatingActors = false;
 	

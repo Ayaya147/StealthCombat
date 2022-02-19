@@ -37,6 +37,7 @@ private:
 	class NumberActor* mCloudTimeNum;
 	class NumberActor* mSpdNum;
 	class NumberActor* mEnemyNum;
+	class NumberActor* mFPS;
 	class SpriteComponent* mGuideSprite;
 	class SpriteComponent* mMarkingSprite;
 	class Minimap* mMap;
