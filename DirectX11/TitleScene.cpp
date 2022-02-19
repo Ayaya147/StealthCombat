@@ -51,16 +51,23 @@ void TitleScene::GenerateOutput()
 
 	GamePad* pad = GetInputSystem()->GetPad();
 	Keyboard* keyboard = GetInputSystem()->GetKeyboard();
-
-	if (!pad->GetIsGamePad() && keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+	if (pad->GetIsGamePad())
 	{
-		Parameter parameter;
-		GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+		if (GetSceneState() == SceneState::EQuit ||
+			pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
+		{
+			pad->StopVibration();
+			Parameter parameter;
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+		}
 	}
-	else if (pad->GetIsGamePad() &&
-		pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
+	else
 	{
-		Parameter parameter;
-		GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+		if (GetSceneState() == SceneState::EQuit ||
+			keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
+		{
+			Parameter parameter;
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+		}
 	}
 }
