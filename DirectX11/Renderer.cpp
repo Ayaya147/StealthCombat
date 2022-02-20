@@ -19,6 +19,7 @@
 #include "Actor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
+#include "ExplosionActor.h"
 #include "DemoScene.h"
 #include "Light.h"
 #include "ImGui/imgui_impl_dx11.h"
@@ -183,6 +184,7 @@ void Renderer::Draw()
 	{
 		demo->GetCloud()->ImGuiWindow();
 		demo->GetPlane()->ImGuiWindow();
+		demo->GetExplosion()->ImGuiWindow();
 		mLight->ImGuiWindow();
 
 		ImGui::Render();

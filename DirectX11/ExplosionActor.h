@@ -4,21 +4,24 @@
 template<class C>
 class PixelConstantBuffer;
 
-class CloudActor : public Actor
+class ExplosionActor : public Actor
 {
 public:
-	CloudActor(class BaseScene* scene);
-	~CloudActor();
+	ExplosionActor(class BaseScene* scene);
+	~ExplosionActor();
 
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
-	float CalcDistFromCamera();
 	void ImGuiWindow();
 	void Reset();
 
-	float GetDistFromCamera() const { return mDistFromCamera; }
-
 private:
+	enum class ExplosionPhase
+	{
+		EOne,
+		ETwo
+	};
+
 	struct ObjectConstant
 	{
 		DirectX::XMMATRIX mWorldTransformInverse;
@@ -27,7 +30,7 @@ private:
 		float padding[2];
 	};
 
-	struct CloudConstant
+	struct ExplosionConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 mColor;
 		float mLoop;
@@ -42,9 +45,9 @@ private:
 		float padding[3];
 	};
 
-	float mDistFromCamera;
 	static int mCount;
-	static CloudConstant mData;
+	ExplosionConstant mData;
+	ExplosionPhase mPhase;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
-	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;
+	static PixelConstantBuffer<ExplosionConstant>* mExplosionCBuffer;
 };

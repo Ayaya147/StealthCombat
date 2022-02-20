@@ -225,6 +225,9 @@
     <ClCompile Include="DemoScene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="ExplosionActor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -413,18 +416,15 @@
     <ClInclude Include="DemoScene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="ExplosionActor.h">
+      <Filter>Header Files\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PhongPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="PhongVS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="RaymarchingVS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="RaymarchingPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="SpriteVS.hlsl">
@@ -437,6 +437,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="GerstnerWaveVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="RayMarchingPS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="RayMarchingVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

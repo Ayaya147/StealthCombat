@@ -11,18 +11,19 @@ cbuffer CBuf1 : register(b1)
 {
     matrix mWorldInverse;
     float mTime;
+    int mType;
 };
 
 cbuffer CBuf2 : register(b2)
 {
     float3 mCloudColor;
-    int mLoop;
+    float mLoop;
     float mNoiseScale;
     float mRadius;
-    int mAbsorption;
-    int mOpacity;
-    int mAbsorptionLight;
-    int mOpacityLight;
+    float mAbsorption;
+    float mOpacity;
+    float mAbsorptionLight;
+    float mOpacityLight;
     float mLightStepScale;
     int mLoopLight;
 };
@@ -83,10 +84,17 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
-    float f = FBM(p * (mNoiseScale + 1.5f * sin(mTime)));
+    switch (mType)
+    {
+        case 0:
+            return FBM(p * (mNoiseScale + 1.5f * sin(mTime))) * 1.0f - Sphere(p / mRadius, 0.0f);
+        case 1:
+            //return FBM(p * mNoiseScale) * 1.0f - Sphere(p / mRadius, 0.0f);
+            return FBM(p * mNoiseScale) * 0.3f - Sphere(p, mRadius);
+        default:
+            return 0.0f;
+    }
     
-    return f * 1.0f - Sphere(p / mRadius, 0.0f);
-    //return f * 0.3f - Sphere(p, mRadius);
     //return f * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
 }
 

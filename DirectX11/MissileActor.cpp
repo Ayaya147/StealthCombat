@@ -1,5 +1,6 @@
 #include "MissileActor.h"
 #include "EnemyActor.h"
+#include "ExplosionActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -73,7 +74,6 @@ void MissileActor::UpdateActor(float deltaTime)
 
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	PhysWorld* phys = game->GetPhysWorld();
-	PhysWorld::CollisionInfo info;
 
 	switch (mType)
 	{
@@ -82,6 +82,8 @@ void MissileActor::UpdateActor(float deltaTime)
 		auto enemy = dynamic_cast<EnemyActor*>(mTarget);
 		if (phys->IsCollidedWithEnemy(mSphereComponent, enemy->GetSphereComp()))
 		{
+			ExplosionActor* explosion = new ExplosionActor(game);
+			explosion->SetPosition(enemy->GetPosition());
 			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
 		}

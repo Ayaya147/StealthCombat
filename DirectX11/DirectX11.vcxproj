@@ -106,6 +106,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EnemyActor.cpp" />
+    <ClCompile Include="ExplosionActor.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -170,7 +171,7 @@
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
-    <FxCompile Include="RaymarchingPS.hlsl">
+    <FxCompile Include="RayMarchingPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -178,7 +179,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="RaymarchingVS.hlsl">
+    <FxCompile Include="RayMarchingVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -233,6 +234,7 @@
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="DxException.h" />
     <ClInclude Include="EnemyActor.h" />
+    <ClInclude Include="ExplosionActor.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GameScene.h" />

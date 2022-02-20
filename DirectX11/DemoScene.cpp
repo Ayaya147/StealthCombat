@@ -4,14 +4,11 @@
 #include "Parameter.h"
 #include "Renderer.h"
 #include "PlayerActor.h"
-#include "EnemyActor.h"
-#include "MissileActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
-#include "NumberActor.h"
+#include "ExplosionActor.h"
 #include "MeshComponent.h"
 #include "Mesh.h"
-#include "TransformCBuffer.h"
 #include "SpriteComponent.h"
 #include "Texture.h"
 #include "InputSystem.h"
@@ -29,6 +26,7 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	ShowCursor(TRUE);
 	mPlane = new PlaneActor(this);
 	mCloud = new CloudActor(this);
+	mExplosion = new ExplosionActor(this);
 	PlayerActor* player = new PlayerActor(this);
 }
 

@@ -50,7 +50,6 @@ CloudActor::CloudActor(BaseScene* scene)
 	else
 	{
 		float size = 100.0f;
-		float range = Constant::createRange;
 		SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
 		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 		SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,45.0f });
@@ -61,8 +60,8 @@ CloudActor::CloudActor(BaseScene* scene)
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
-	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
-	TransparentComponent* tc = new TransparentComponent(this, mesh);
+	mesh->ParseMesh(renderer, "cube", L"RayMarching", false);
+	TransparentComponent* tc = new TransparentComponent(this, mesh, 200);
 
 	if (!mObjectCBuffer)
 	{
@@ -104,6 +103,7 @@ void CloudActor::Bind(Renderer* renderer)
 	ObjectConstant c = {};
 	c.mWorldTransformInverse = dx::XMMatrixInverse(nullptr, GetWorldTransform());
 	c.mTime = GetScene()->GetGameTime();
+	c.mType = 0;
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);
 
@@ -127,18 +127,18 @@ void CloudActor::ImGuiWindow()
 	if (ImGui::Begin("Ray Marching (Cloud)"))
 	{
 		ImGui::Text("Base");
-		ImGui::ColorEdit3("Base Color", &mData.mCloudColor.x);
-		ImGui::SliderInt("Absorption", &mData.mAbsorption, 0, 100, "%d");
-		ImGui::SliderInt("Opacity", &mData.mOpacity, 0, 100, "%d");
-		ImGui::SliderInt("Loop", &mData.mLoop, 0, 64, "%d");
+		ImGui::ColorEdit3("Base Color", &mData.mColor.x);
+		ImGui::SliderFloat("Absorption", &mData.mAbsorption, 0.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("Opacity", &mData.mOpacity, 0.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("Loop", &mData.mLoop, 0.0f, 64.0f, "%.f");
 
 		ImGui::Text("Noise");
-		ImGui::SliderFloat("Noise Scale", &mData.mNoiseScale, 0, 64, "%.2f");
+		ImGui::SliderFloat("Noise Scale", &mData.mNoiseScale, 0.0f, 64.0f, "%.2f");
 		ImGui::SliderFloat("Radius", &mData.mRadius, 0.0f, 1.0f, "%.2f");
 
 		ImGui::Text("Light");
-		ImGui::SliderInt("Absorption Light", &mData.mAbsorptionLight, 0, 100, "%d");
-		ImGui::SliderInt("Opacity Light", &mData.mOpacityLight, 0, 100, "%d");
+		ImGui::SliderFloat("Absorption Light", &mData.mAbsorptionLight, 0.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("Opacity Light", &mData.mOpacityLight, 0.0f, 100.0f, "%.1f");
 		ImGui::SliderFloat("Light Step Scale", &mData.mLightStepScale, 0.0f, 1.0f, "%.2f");
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
@@ -154,13 +154,13 @@ void CloudActor::Reset()
 {
 	mData = {
 		{0.85f, 0.85f, 0.85f},
-		32,
+		32.0f,
 		10.0f,
 		0.7f,
-		60,
-		100,
-		60,
-		80,
+		60.0f,
+		100.0f,
+		60.0f,
+		80.0f,
 		0.4f,
 		4,
 	};
