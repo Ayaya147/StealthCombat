@@ -27,10 +27,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
 	mPhysWorld(new PhysWorld(this)),
-	mPlane(new PlaneActor(this)),
 	mPlayer(new PlayerActor(this)),
-	mCloud(new CloudActor(this))
+	mFPS(nullptr)
 {
+	PlaneActor* plane = new PlaneActor(this);
+
 	for (int i = 0; i < 5; i++)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
@@ -83,9 +84,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 0.0f, -450.0f, 0.0f });
 	mEnemyNum->SetScale(1.0f);
 
+#ifdef DEBUG
 	mFPS = new NumberActor(this, 0, 2);
 	mFPS->SetOriPosition(dx::XMFLOAT3{ -900.0f, -500.0f, 0.0f });
 	mFPS->SetScale(0.6f);
+#endif
 }
 
 GameScene::~GameScene()
@@ -107,8 +110,9 @@ void GameScene::Update()
 		mCloudTimeNum->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
+#ifdef DEBUG
 		mFPS->SetValue(1.0f / GetDeltaTime());
-
+#endif
 		if (mPlayer->GetOutCloudTime() >= 15.0f ||
 			mPlayer->GetForwardSpeed() < 800.0f / 160.f ||
 			mEnemies.size() == 0)

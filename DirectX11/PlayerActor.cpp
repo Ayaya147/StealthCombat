@@ -40,45 +40,50 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	mMoveComponent = new MoveComponent(this);
-	mMoveComponent->SetForwardSpeedMax(15.0f);
-	mMoveComponent->SetForwardSpeed(10.0f);
-
-	float radius = 10.0f;
-	mBody = new SphereComponent(this);
-	Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
-	mBody->SetSphere(sphere);
-	sphere = new Sphere(GetPosition(), radius * GetScale().x);
-	mBody->SetSphereLast(sphere);
-
-	mAttackRange = new SphereComponent(this);
-	sphere = new Sphere(GetPosition(), 12.0f);
-	mAttackRange->SetSphere(sphere);
-	sphere = new Sphere(GetPosition(), 12.0f);
-	mAttackRange->SetSphereLast(sphere);
-
 	CameraComponent* cc = new CameraComponent(this);
 	cc->SnapToIdeal();
+
+	mMoveComponent = new MoveComponent(this);
+	mMoveComponent->SetForwardSpeedMax(15.0f);
+	if (auto game = dynamic_cast<GameScene*>(scene))
+	{
+		mMoveComponent->SetForwardSpeed(10.0f);
+
+		float radius = 10.0f;
+		mBody = new SphereComponent(this);
+		Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
+		mBody->SetSphere(sphere);
+		sphere = new Sphere(GetPosition(), radius * GetScale().x);
+		mBody->SetSphereLast(sphere);
+
+		mAttackRange = new SphereComponent(this);
+		sphere = new Sphere(GetPosition(), 12.0f);
+		mAttackRange->SetSphere(sphere);
+		sphere = new Sphere(GetPosition(), 12.0f);
+		mAttackRange->SetSphereLast(sphere);
+	}
 }
 
 void PlayerActor::UpdateActor(float deltaTime)
 {
-	auto game = dynamic_cast<GameScene*>(GetScene());
-	PhysWorld* phys = game->GetPhysWorld();
-	PhysWorld::CollisionInfo info;
+	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	{
+		PhysWorld* phys = game->GetPhysWorld();
+		PhysWorld::CollisionInfo info;
 
-	if (phys->IsCollidedWithCloud(mBody))
-	{
-		mOutCloudTime = 0.0f;
-	}
-	else
-	{
-		mOutCloudTime += deltaTime;
-	}
-	
-	if (phys->IsCollidedWithEnemy(mBody, info))
-	{
-		game->SetSceneState(BaseScene::SceneState::EQuit);
+		if (phys->IsCollidedWithCloud(mBody))
+		{
+			mOutCloudTime = 0.0f;
+		}
+		else
+		{
+			mOutCloudTime += deltaTime;
+		}
+
+		if (phys->IsCollidedWithEnemy(mBody, info))
+		{
+			game->SetSceneState(BaseScene::SceneState::EQuit);
+		}
 	}
 
 	dx::XMFLOAT3 rotation = GetRotation();
@@ -96,8 +101,8 @@ void PlayerActor::UpdateActor(float deltaTime)
 void PlayerActor::ActorInput()
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
-	Keyboard* keyboard = game->GetInputSystem()->GetKeyboard();
-	GamePad* pad = game->GetInputSystem()->GetPad();
+	Keyboard* keyboard = GetScene()->GetInputSystem()->GetKeyboard();
+	GamePad* pad = GetScene()->GetInputSystem()->GetPad();
 
 	//GamePad
 	if (pad->GetIsGamePad())
@@ -149,41 +154,48 @@ void PlayerActor::ActorInput()
 			mMoveComponent->SetAcceleration(accelNatural);
 		}
 
-		SpriteComponent* sprite = game->GetMarkingSprite();
-		PhysWorld* phys = game->GetPhysWorld();
-		PhysWorld::CollisionInfo info;
-		if (!game->GetEnemies().empty() &&
-			phys->IsCollidedWithEnemy(mAttackRange, info))
+		if (game)
 		{
-			EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
-			if (!enemy->GetIsLockedOn())
+			SpriteComponent* sprite = game->GetMarkingSprite();
+			PhysWorld* phys = game->GetPhysWorld();
+			PhysWorld::CollisionInfo info;
+			if (!game->GetEnemies().empty() &&
+				phys->IsCollidedWithEnemy(mAttackRange, info))
 			{
-				Renderer* renderer = game->GetRenderer();
-
-				dx::XMVECTOR localPos = dx::XMVectorZero();
-				dx::XMMATRIX worldtransform = enemy->GetWorldTransform();
-				dx::XMMATRIX view = renderer->GetViewMatrix();
-				dx::XMMATRIX projection = renderer->GetProjectionMatrix();
-				dx::XMMATRIX matrix = worldtransform * view * projection;
-
-				dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
-				float ndcX = dx::XMVectorGetX(ndc);
-				float ndcY = dx::XMVectorGetY(ndc);
-				dx::XMFLOAT3 lastPos = { ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
-				sprite->GetOwner()->SetPosition(lastPos);
-
-				if (lastPos.y > -540.0f &&
-					lastPos.y < 0.0f &&
-					lastPos.x > -960.0f &&
-					lastPos.x < 960.0f)
+				EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
+				if (!enemy->GetIsLockedOn())
 				{
-					sprite->SetVisible(true);
-					if (pad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed)
+					Renderer* renderer = game->GetRenderer();
+
+					dx::XMVECTOR localPos = dx::XMVectorZero();
+					dx::XMMATRIX worldtransform = enemy->GetWorldTransform();
+					dx::XMMATRIX view = renderer->GetViewMatrix();
+					dx::XMMATRIX projection = renderer->GetProjectionMatrix();
+					dx::XMMATRIX matrix = worldtransform * view * projection;
+
+					dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
+					float ndcX = dx::XMVectorGetX(ndc);
+					float ndcY = dx::XMVectorGetY(ndc);
+					dx::XMFLOAT3 lastPos = { ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
+					sprite->GetOwner()->SetPosition(lastPos);
+
+					if (lastPos.y > -540.0f &&
+						lastPos.y < 0.0f &&
+						lastPos.x > -960.0f &&
+						lastPos.x < 960.0f)
 					{
-						enemy->SetLockedOn(true);
-						MissileActor* missile = new MissileActor(
-							GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed()
-						);
+						sprite->SetVisible(true);
+						if (pad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed)
+						{
+							enemy->SetLockedOn(true);
+							MissileActor* missile = new MissileActor(
+								GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed()
+							);
+						}
+					}
+					else
+					{
+						sprite->SetVisible(false);
 					}
 				}
 				else
@@ -195,10 +207,6 @@ void PlayerActor::ActorInput()
 			{
 				sprite->SetVisible(false);
 			}
-		}
-		else
-		{
-			sprite->SetVisible(false);
 		}
 	}
 	//Keyboard
@@ -248,41 +256,48 @@ void PlayerActor::ActorInput()
 			mMoveComponent->SetAcceleration(accelNatural);
 		}
 
-		SpriteComponent* sprite = game->GetMarkingSprite();
-		PhysWorld* phys = game->GetPhysWorld();
-		PhysWorld::CollisionInfo info;
-		if (!game->GetEnemies().empty() &&
-			phys->IsCollidedWithEnemy(mAttackRange, info))
+		if (game)
 		{
-			EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
-			if (!enemy->GetIsLockedOn())
+			SpriteComponent* sprite = game->GetMarkingSprite();
+			PhysWorld* phys = game->GetPhysWorld();
+			PhysWorld::CollisionInfo info;
+			if (!game->GetEnemies().empty() &&
+				phys->IsCollidedWithEnemy(mAttackRange, info))
 			{
-				Renderer* renderer = game->GetRenderer();
-
-				dx::XMVECTOR localPos = dx::XMVectorZero();
-				dx::XMMATRIX worldtransform = enemy->GetWorldTransform();
-				dx::XMMATRIX view = renderer->GetViewMatrix();
-				dx::XMMATRIX projection = renderer->GetProjectionMatrix();
-				dx::XMMATRIX matrix = worldtransform * view * projection;
-
-				dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
-				float ndcX = dx::XMVectorGetX(ndc);
-				float ndcY = dx::XMVectorGetY(ndc);
-				dx::XMFLOAT3 lastPos = { ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
-				sprite->GetOwner()->SetPosition(lastPos);
-
-				if (lastPos.y > -540.0f &&
-					lastPos.y < 0.0f &&
-					lastPos.x > -960.0f &&
-					lastPos.x < 960.0f)
+				EnemyActor* enemy = dynamic_cast<EnemyActor*>(info.mActor);
+				if (!enemy->GetIsLockedOn())
 				{
-					sprite->SetVisible(true);
-					if (keyboard->GetKeyState(VK_SPACE) == ButtonState::EPressed)
+					Renderer* renderer = game->GetRenderer();
+
+					dx::XMVECTOR localPos = dx::XMVectorZero();
+					dx::XMMATRIX worldtransform = enemy->GetWorldTransform();
+					dx::XMMATRIX view = renderer->GetViewMatrix();
+					dx::XMMATRIX projection = renderer->GetProjectionMatrix();
+					dx::XMMATRIX matrix = worldtransform * view * projection;
+
+					dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
+					float ndcX = dx::XMVectorGetX(ndc);
+					float ndcY = dx::XMVectorGetY(ndc);
+					dx::XMFLOAT3 lastPos = { ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
+					sprite->GetOwner()->SetPosition(lastPos);
+
+					if (lastPos.y > -540.0f &&
+						lastPos.y < 0.0f &&
+						lastPos.x > -960.0f &&
+						lastPos.x < 960.0f)
 					{
-						enemy->SetLockedOn(true);
-						MissileActor* missile = new MissileActor(
-							GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed()
-						);
+						sprite->SetVisible(true);
+						if (keyboard->GetKeyState(VK_SPACE) == ButtonState::EPressed)
+						{
+							enemy->SetLockedOn(true);
+							MissileActor* missile = new MissileActor(
+								GetScene(), enemy, GetPosition(), mMoveComponent->GetForwardSpeed()
+							);
+						}
+					}
+					else
+					{
+						sprite->SetVisible(false);
 					}
 				}
 				else
@@ -294,10 +309,6 @@ void PlayerActor::ActorInput()
 			{
 				sprite->SetVisible(false);
 			}
-		}
-		else
-		{
-			sprite->SetVisible(false);
 		}
 	}
 }

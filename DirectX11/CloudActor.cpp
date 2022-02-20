@@ -24,7 +24,38 @@ CloudActor::CloudActor(BaseScene* scene)
 	mDistFromCamera(0.0f)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
-	game->AddCloud(this);
+	if (game)
+	{
+		game->AddCloud(this);
+
+		float size = Random::GetFloatRange(90.0f, 140.0f);
+		float range = Constant::createRange;
+		SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
+		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
+
+		float radius = 0.33f;
+		SphereComponent* sc = new SphereComponent(this);
+		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+		Sphere* sphere = new Sphere(pos, radius * GetScale().x);
+		sc->SetSphere(sphere);
+
+		PhysWorld* phys = game->GetPhysWorld();
+		while (phys->IsCollidedWithCloud(sc))
+		{
+			pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+			sphere->mCenter = pos;
+		}
+		SetPosition(pos);
+	}
+	else
+	{
+		float size = 100.0f;
+		float range = Constant::createRange;
+		SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
+		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
+		SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,45.0f });
+	}
+
 	mCount++;
 	Reset();
 
@@ -32,26 +63,6 @@ CloudActor::CloudActor(BaseScene* scene)
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"Raymarching", false);
 	TransparentComponent* tc = new TransparentComponent(this, mesh);
-
-	//float size = 140.0f;
-	float size = Random::GetFloatRange(90.0f, 140.0f);
-	float range = Constant::createRange;
-	SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
-	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
-
-	float radius = 0.33f;
-	SphereComponent* sc = new SphereComponent(this);
-	dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-	Sphere* sphere = new Sphere(pos, radius * GetScale().x);
-	sc->SetSphere(sphere);
-
-	PhysWorld* phys = game->GetPhysWorld();
-	while (phys->IsCollidedWithCloud(sc))
-	{
-		pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		sphere->mCenter = pos;
-	}
-	SetPosition(pos);
 
 	if (!mObjectCBuffer)
 	{
@@ -113,10 +124,10 @@ float CloudActor::CalcDistFromCamera()
 
 void CloudActor::ImGuiWindow()
 {
-	if (ImGui::Begin("Ray Marching"))
+	if (ImGui::Begin("Ray Marching (Cloud)"))
 	{
-		ImGui::Text("Cloud");
-		ImGui::ColorEdit3("Cloud Color", &mData.mCloudColor.x);
+		ImGui::Text("Base");
+		ImGui::ColorEdit3("Base Color", &mData.mCloudColor.x);
 		ImGui::SliderInt("Absorption", &mData.mAbsorption, 0, 100, "%d");
 		ImGui::SliderInt("Opacity", &mData.mOpacity, 0, 100, "%d");
 		ImGui::SliderInt("Loop", &mData.mLoop, 0, 64, "%d");

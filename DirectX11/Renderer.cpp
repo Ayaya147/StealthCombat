@@ -19,8 +19,7 @@
 #include "Actor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
-#include "BaseScene.h"
-#include "GameScene.h"
+#include "DemoScene.h"
 #include "Light.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
@@ -166,11 +165,12 @@ Renderer::~Renderer()
 
 void Renderer::Draw()
 {
-#ifdef DEBUG
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-#endif
+	if (auto demo = dynamic_cast<DemoScene*>(mScene))
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
 
 	const float color[] = { 0.2f,0.2f,0.2f,1.0f };
 	mContext->ClearRenderTargetView(mRenderTargetView.Get(), color);
@@ -179,17 +179,15 @@ void Renderer::Draw()
 	Draw3DScene();
 	Draw2DScene();
 
-#ifdef DEBUG
-	if (auto game = dynamic_cast<GameScene*>(mScene))
+	if (auto demo = dynamic_cast<DemoScene*>(mScene))
 	{
-		game->GetCloud()->ImGuiWindow();
-		game->GetPlane()->ImGuiWindow();
+		demo->GetCloud()->ImGuiWindow();
+		demo->GetPlane()->ImGuiWindow();
 		mLight->ImGuiWindow();
-	}
 
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-#endif
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
 
 	mSwapChain->Present(1, 0);
 }

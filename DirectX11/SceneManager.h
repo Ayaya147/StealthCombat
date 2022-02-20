@@ -7,6 +7,7 @@ public:
 	enum class SceneType
 	{
 		ETitle,
+		EDemo,
 		EGame,
 		EResult,
 	};

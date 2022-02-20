@@ -66,7 +66,7 @@ void PlaneActor::Bind(Renderer* renderer)
 
 void PlaneActor::ImGuiWindow()
 {
-	if (ImGui::Begin("Gerstner Wave"))
+	if (ImGui::Begin("Gerstner Wave (Sea)"))
 	{
 		ImGui::Text("Color");
 		ImGui::ColorEdit3("Sea Base Color", &mPixelData.mSeaBaseColor.x);
