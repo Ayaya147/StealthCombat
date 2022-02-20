@@ -121,16 +121,16 @@ void GameScene::Update()
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
 
-		float time = mRestTime->GetValue() - GetDeltaTime();
-		mRestTime->SetValue(time);
+		float restTime = mRestTime->GetValue() - GetDeltaTime();
+		mRestTime->SetValue(restTime);
 #ifdef DEBUG
 		mFPS->SetValue(1.0f / GetDeltaTime());
 #endif
 
-		if (mPlayer->GetOutCloudTime() >= 15.0f ||
+		if (mPlayer->GetOutCloudTime() >= 12.0f ||
 			mPlayer->GetForwardSpeed() < 800.0f / 160.f ||
 			mEnemies.size() == 0 ||
-			time <= 1.0f)
+			restTime <= 1.0f)
 		{
 			SetSceneState(SceneState::EQuit);
 		}

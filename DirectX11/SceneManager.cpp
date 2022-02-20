@@ -17,6 +17,7 @@ SceneManager::SceneManager(GameApp* gameApp)
 	Random::Initialize();
 	Parameter parameter;
 	mSceneStack.emplace(new GameScene(this, parameter));
+	//mSceneStack.emplace(new DemoScene(this, parameter));
 
 	GetRenderer()->SetScene(mSceneStack.top());
 }
