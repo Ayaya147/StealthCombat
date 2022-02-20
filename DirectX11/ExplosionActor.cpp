@@ -65,7 +65,7 @@ ExplosionActor::~ExplosionActor()
 
 void ExplosionActor::UpdateActor(float deltaTime)
 {
-	float rate = 2.0f;
+	float rate = 2.5f;
 	switch (mPhase)
 	{
 	case ExplosionActor::ExplosionPhase::EOne:

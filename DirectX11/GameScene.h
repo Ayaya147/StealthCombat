@@ -30,10 +30,11 @@ private:
 
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;
-	class NumberActor* mCloudTimeNum;
+	class NumberActor* mOutCloudTime;
 	class NumberActor* mSpdNum;
 	class NumberActor* mEnemyNum;
 	class NumberActor* mFPS;
+	class NumberActor* mRestTime;
 	class SpriteComponent* mGuideSprite;
 	class SpriteComponent* mMarkingSprite;
 	class Minimap* mMap;

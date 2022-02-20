@@ -86,13 +86,13 @@ float DensityFunction(float3 p)
 {
     switch (mType)
     {
-        case 0:
-            return FBM(p * (mNoiseScale + 1.5f * sin(mTime))) * 1.0f - Sphere(p / mRadius, 0.0f);
-        case 1:
-            //return FBM(p * mNoiseScale) * 1.0f - Sphere(p / mRadius, 0.0f);
-            return FBM(p * mNoiseScale) * 0.3f - Sphere(p, mRadius);
-        default:
-            return 0.0f;
+    case 0:
+        return FBM(p * (mNoiseScale + 1.5f * sin(mTime))) * 1.0f - Sphere(p / mRadius, 0.0f);
+    case 1:
+        //return FBM(p * mNoiseScale) * 1.0f - Sphere(p / mRadius, 0.0f);
+        return FBM(p * mNoiseScale) * 0.3f - Sphere(p, mRadius);
+    default:
+        return 0.0f;
     }
     
     //return f * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
@@ -111,9 +111,7 @@ float DensityFunctionAnime(float3 p)
 float4 main(float3 worldPos : POSITION) : SV_TARGET
 {
     float step = 1.0f / mLoop;
-
-    float3 worldDir = normalize(worldPos - mCameraPos);
-    
+    float3 worldDir = normalize(worldPos - mCameraPos);    
     float3 localPos = (float3) mul(mWorldInverse, float4(worldPos, 1.0f));
     float3 localDir = normalize(mul((float3x3) mWorldInverse, worldDir));
     float3 localStep = localDir * step;
@@ -134,6 +132,11 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     
     float4 color = float4(mCloudColor + mAmbientLight, 0.0f);
     float transmittance = 1.0f;
+    float3 diffuseColor = mDiffuseColor;
+    if (mType == 1)
+    {
+        diffuseColor = float3(1.0f, 1.0f, 0.0f) * mDiffuseColor;
+    }
     
     for (int i = 0; i < loop; i++)
     {
@@ -172,7 +175,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             }
             
             color.a += 1.0f * (mOpacity * d * transmittance);
-            color.rgb += mDiffuseColor * (mOpacityLight * d * transmittance * transmittanceLight);
+            color.rgb += diffuseColor * (mOpacityLight * d * transmittance * transmittanceLight);
         }
         
         color = clamp(color, 0.0f, 1.0f);
