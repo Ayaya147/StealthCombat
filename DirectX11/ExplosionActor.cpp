@@ -10,6 +10,7 @@
 #include "Collision.h"
 #include "DefineConstant.h"
 #include "PhysWorld.h"
+#include "XMFloatHelper.h"
 
 namespace dx = DirectX;
 
@@ -64,7 +65,7 @@ ExplosionActor::~ExplosionActor()
 
 void ExplosionActor::UpdateActor(float deltaTime)
 {
-	float rate = 1.5f;
+	float rate = 2.0f;
 	switch (mPhase)
 	{
 	case ExplosionActor::ExplosionPhase::EOne:
@@ -77,16 +78,14 @@ void ExplosionActor::UpdateActor(float deltaTime)
 		break;
 
 	case ExplosionActor::ExplosionPhase::ETwo:
+		mData.mColor -= dx::XMFLOAT3{ 0.8f, 0.08f, 0.08f } * rate * deltaTime;
 		mData.mLoop -= 16.0f * rate * deltaTime;
 		mData.mAbsorptionLight -= 15.0f * rate * deltaTime;
 		mData.mAbsorption += 50.0f * rate * deltaTime;
-		mData.mRadius -= 0.015f * rate * deltaTime;
+		mData.mRadius += 0.03f * rate * deltaTime;
 
 		if (mData.mLoop <= 0.0f || mData.mAbsorptionLight <= 0.0f || mData.mAbsorption >= 100.0f)
 		{
-			mData.mLoop = 0.0f;
-			mData.mAbsorptionLight = 0.0f;
-			mData.mAbsorption = 100.0f;
 			if (auto game = dynamic_cast<GameScene*>(GetScene()))
 			{
 				SetActorState(ActorState::EDead);
