@@ -20,7 +20,7 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	Actor(scene),
 	mPhase(ExplosionPhase::EOne)
 {	
-	SetScale(10.0f);
+	SetScale(12.0f);
 	mCount++;
 	Reset();
 

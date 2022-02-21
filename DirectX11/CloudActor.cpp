@@ -49,10 +49,10 @@ CloudActor::CloudActor(BaseScene* scene)
 	}
 	else
 	{
-		float size = 100.0f;
-		SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
+		float size = 10.0f;
+		SetScale(dx::XMFLOAT3{ size,size / 2.0f,size });
 		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
-		SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,45.0f });
+		SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
 	}
 
 	mCount++;

@@ -25,7 +25,7 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mExplosion->SetPosition(dx::XMFLOAT3{ 5.0f,Constant::height,0.0f });
 	mSmoke = new SmokeActor(this);
 	mSmoke->SetScale(10.0f);
-	mSmoke->SetPosition(dx::XMFLOAT3{ -5.0f,Constant::height,0.0f });
+	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,5.0f });
 	PlayerActor* player = new PlayerActor(this);
 }
 

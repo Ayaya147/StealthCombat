@@ -85,7 +85,7 @@ void MissileActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithEnemy(mSphereComponent, enemy->GetSphereComp()))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
-			explosion->SetPosition(enemy->GetPosition());
+			explosion->SetPosition(GetPosition() + GetForward()* 0.7f);
 			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
 		}
@@ -104,7 +104,7 @@ void MissileActor::UpdateActor(float deltaTime)
 	if (mSmokeCD <= 0.0f)
 	{
 		SmokeActor* smoke = new SmokeActor(game);
-		smoke->SetPosition(GetPosition() - GetForward() * 0.8f);
+		smoke->SetPosition(GetPosition() - GetForward() * 0.7f);
 		smoke->SetScale(4.0f);
 		mSmokeCD = 0.06f;
 	}
