@@ -2,20 +2,14 @@
 #include <algorithm>
 #include "SceneManager.h"
 #include "Parameter.h"
-#include "Renderer.h"
 #include "PlayerActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
 #include "ExplosionActor.h"
-#include "MeshComponent.h"
-#include "Mesh.h"
-#include "SpriteComponent.h"
-#include "Texture.h"
+#include "SmokeActor.h"
 #include "InputSystem.h"
 #include "GamePad.h"
 #include "Keyboard.h"
-#include "Random.h"
-#include "PhysWorld.h"
 
 namespace dx = DirectX;
 
@@ -27,6 +21,7 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mPlane = new PlaneActor(this);
 	mCloud = new CloudActor(this);
 	mExplosion = new ExplosionActor(this);
+	mSmoke = new SmokeActor(this);
 	PlayerActor* player = new PlayerActor(this);
 }
 

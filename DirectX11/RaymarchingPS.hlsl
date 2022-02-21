@@ -89,8 +89,9 @@ float DensityFunction(float3 p)
     case 0:
         return FBM(p * (mNoiseScale + 1.5f * sin(mTime))) * 1.0f - Sphere(p / mRadius, 0.0f);
     case 1:
-        //return FBM(p * mNoiseScale) * 1.0f - Sphere(p / mRadius, 0.0f);
         return FBM(p * mNoiseScale) * 0.3f - Sphere(p, mRadius);
+    case 2:
+        return FBM(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.04f));
     default:
         return 0.0f;
     }

@@ -157,6 +157,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <ClCompile Include="SmokeActor.cpp" />
     <ClCompile Include="SphereComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Stencil.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SmokeActor.h" />
     <ClInclude Include="SphereComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stencil.h" />

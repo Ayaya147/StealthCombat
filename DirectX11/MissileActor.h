@@ -20,4 +20,5 @@ private:
 	class SphereComponent* mSphereComponent;
 	class Actor* mTarget;
 	MissileType mType;
+	float mSmokeCD;
 };

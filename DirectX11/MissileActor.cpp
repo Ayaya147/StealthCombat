@@ -1,5 +1,6 @@
 #include "MissileActor.h"
 #include "EnemyActor.h"
+#include "SmokeActor.h"
 #include "ExplosionActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
@@ -18,7 +19,8 @@ namespace dx = DirectX;
 MissileActor::MissileActor(BaseScene* scene, Actor* actor, const DirectX::XMFLOAT3& pos, float forwardSpeed)
 	:
 	Actor(scene),
-	mTarget(actor)
+	mTarget(actor),
+	mSmokeCD(0.0f)
 {
 	if (auto enemy = dynamic_cast<EnemyActor*>(actor))
 	{
@@ -96,5 +98,13 @@ void MissileActor::UpdateActor(float deltaTime)
 			game->SetSceneState(BaseScene::SceneState::EQuit);
 		}
 		break;
+	}
+
+	mSmokeCD -= deltaTime;
+	if (mSmokeCD <= 0.0f)
+	{
+		SmokeActor* smoke = new SmokeActor(game);
+		smoke->SetPosition(GetPosition() - GetForward() * 0.8f);
+		mSmokeCD = 0.06f;
 	}
 }

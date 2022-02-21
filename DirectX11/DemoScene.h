@@ -15,9 +15,11 @@ public:
 	class PlaneActor* GetPlane() const { return mPlane; }
 	class CloudActor* GetCloud() const { return mCloud; }
 	class ExplosionActor* GetExplosion() const { return mExplosion; }
+	class SmokeActor* GetSmoke() const { return mSmoke; }
 
 private:
 	class PlaneActor* mPlane;
 	class CloudActor* mCloud;
 	class ExplosionActor* mExplosion;
+	class SmokeActor* mSmoke;
 };

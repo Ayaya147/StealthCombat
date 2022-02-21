@@ -1,4 +1,4 @@
-#include "ExplosionActor.h"
+#include "SmokeActor.h"
 #include "Renderer.h"
 #include "Mesh.h"
 #include "TransparentComponent.h"
@@ -11,22 +11,22 @@
 
 namespace dx = DirectX;
 
-int ExplosionActor::mCount = 0;
-PixelConstantBuffer<ExplosionActor::ObjectConstant>* ExplosionActor::mObjectCBuffer = nullptr;
-PixelConstantBuffer<ExplosionActor::ExplosionConstant>* ExplosionActor::mExplosionCBuffer = nullptr;
+int SmokeActor::mCount = 0;
+PixelConstantBuffer<SmokeActor::ObjectConstant>* SmokeActor::mObjectCBuffer = nullptr;
+PixelConstantBuffer<SmokeActor::SmokeConstant>* SmokeActor::mSmokeCBuffer = nullptr;
 
-ExplosionActor::ExplosionActor(BaseScene* scene)
+SmokeActor::SmokeActor(BaseScene* scene)
 	:
-	Actor(scene),
-	mPhase(ExplosionPhase::EOne)
-{	
-	SetScale(10.0f);
+	Actor(scene)
+{
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
+		SetScale(4.0f);
 	}
 	else
 	{
-		SetPosition(dx::XMFLOAT3{ 5.0f,Constant::height,0.0f });
+		SetScale(10.0f);
+		SetPosition(dx::XMFLOAT3{ -5.0f,Constant::height,0.0f });
 	}
 
 	mCount++;
@@ -41,13 +41,13 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	{
 		mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 1);
 	}
-	if (!mExplosionCBuffer)
+	if (!mSmokeCBuffer)
 	{
-		mExplosionCBuffer = new PixelConstantBuffer<ExplosionConstant>(renderer, 2);
+		mSmokeCBuffer = new PixelConstantBuffer<SmokeConstant>(renderer, 2);
 	}
 }
 
-ExplosionActor::~ExplosionActor()
+SmokeActor::~SmokeActor()
 {
 	mCount--;
 
@@ -55,67 +55,49 @@ ExplosionActor::~ExplosionActor()
 	{
 		delete mObjectCBuffer;
 		mObjectCBuffer = nullptr;
-		delete mExplosionCBuffer;
-		mExplosionCBuffer = nullptr;
+		delete mSmokeCBuffer;
+		mSmokeCBuffer = nullptr;
 	}
 }
 
-void ExplosionActor::UpdateActor(float deltaTime)
+void SmokeActor::UpdateActor(float deltaTime)
 {
-	float rate = 2.5f;
-	switch (mPhase)
+	float rate = 1.0f;
+	mData.mLoop -= 32.0f * rate * deltaTime;
+	mData.mAbsorption += 100.0f * rate * deltaTime;
+	mData.mRadius += 0.2f * rate * deltaTime;
+
+	if (mData.mLoop <= 0.0f || mData.mAbsorption >= 100.0f || mData.mRadius >= 0.2f)
 	{
-	case ExplosionActor::ExplosionPhase::EOne:
-		mData.mRadius += 0.4f * rate * deltaTime;
-		if (mData.mRadius >= 0.06f)
+		if (auto game = dynamic_cast<GameScene*>(GetScene()))
 		{
-			mData.mRadius = 0.06f;
-			mPhase = ExplosionPhase::ETwo;
+			SetActorState(ActorState::EDead);
 		}
-		break;
-
-	case ExplosionActor::ExplosionPhase::ETwo:
-		mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } * rate * deltaTime;
-		mData.mLoop -= 16.0f * rate * deltaTime;
-		mData.mAbsorptionLight += 35.0f * rate * deltaTime;
-		mData.mAbsorption += 50.0f * rate * deltaTime;
-		mData.mRadius += 0.04f * rate * deltaTime;
-
-		if (mData.mLoop <= 0.0f || mData.mAbsorptionLight >= 100.0f || mData.mAbsorption >= 100.0f)
+		else
 		{
-			if (auto game = dynamic_cast<GameScene*>(GetScene()))
-			{
-				SetActorState(ActorState::EDead);
-			}
-			else
-			{
-				mPhase = ExplosionPhase::EOne;
-				Reset();
-			}
+			Reset();
 		}
-
-		break;
 	}
 }
 
-void ExplosionActor::Bind(Renderer* renderer)
+void SmokeActor::Bind(Renderer* renderer)
 {
 	Actor::Bind(renderer);
 
 	ObjectConstant c = {};
 	c.mWorldTransformInverse = dx::XMMatrixInverse(nullptr, GetWorldTransform());
 	c.mTime = GetScene()->GetGameTime();
-	c.mType = 1;
+	c.mType = 2;
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);
 
-	mExplosionCBuffer->Update(renderer, mData);
-	mExplosionCBuffer->Bind(renderer);
+	mSmokeCBuffer->Update(renderer, mData);
+	mSmokeCBuffer->Bind(renderer);
 }
 
-void ExplosionActor::ImGuiWindow()
+void SmokeActor::ImGuiWindow()
 {
-	if (ImGui::Begin("Ray Marching (Explosion)"))
+	if (ImGui::Begin("Ray Marching (Smoke)"))
 	{
 		ImGui::Text("Base");
 		ImGui::ColorEdit3("Base Color", &mData.mColor.x);
@@ -141,18 +123,18 @@ void ExplosionActor::ImGuiWindow()
 	ImGui::End();
 }
 
-void ExplosionActor::Reset()
+void SmokeActor::Reset()
 {
 	mData = {
-		{1.0f, 0.1f, 0.1f},
+		{0.3f, 0.3f, 0.3f},
 		32.0f,
 		20.0f,
 		0.0f,
 		0.0f,
 		100.0f,
-		30.0f,
+		60.0f,
 		80.0f,
-		1.0f,
+		0.4f,
 		4,
 	};
 }
