@@ -105,6 +105,7 @@ void MissileActor::UpdateActor(float deltaTime)
 	{
 		SmokeActor* smoke = new SmokeActor(game);
 		smoke->SetPosition(GetPosition() - GetForward() * 0.8f);
+		smoke->SetScale(4.0f);
 		mSmokeCD = 0.06f;
 	}
 }

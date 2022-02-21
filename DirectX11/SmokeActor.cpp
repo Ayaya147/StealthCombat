@@ -19,16 +19,6 @@ SmokeActor::SmokeActor(BaseScene* scene)
 	:
 	Actor(scene)
 {
-	if (auto game = dynamic_cast<GameScene*>(GetScene()))
-	{
-		SetScale(4.0f);
-	}
-	else
-	{
-		SetScale(10.0f);
-		SetPosition(dx::XMFLOAT3{ -5.0f,Constant::height,0.0f });
-	}
-
 	mCount++;
 	Reset();
 

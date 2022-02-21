@@ -10,6 +10,7 @@
 #include "InputSystem.h"
 #include "GamePad.h"
 #include "Keyboard.h"
+#include "DefineConstant.h"
 
 namespace dx = DirectX;
 
@@ -21,7 +22,10 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mPlane = new PlaneActor(this);
 	mCloud = new CloudActor(this);
 	mExplosion = new ExplosionActor(this);
+	mExplosion->SetPosition(dx::XMFLOAT3{ 5.0f,Constant::height,0.0f });
 	mSmoke = new SmokeActor(this);
+	mSmoke->SetScale(10.0f);
+	mSmoke->SetPosition(dx::XMFLOAT3{ -5.0f,Constant::height,0.0f });
 	PlayerActor* player = new PlayerActor(this);
 }
 

@@ -21,21 +21,13 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	mPhase(ExplosionPhase::EOne)
 {	
 	SetScale(10.0f);
-	if (auto game = dynamic_cast<GameScene*>(GetScene()))
-	{
-	}
-	else
-	{
-		SetPosition(dx::XMFLOAT3{ 5.0f,Constant::height,0.0f });
-	}
-
 	mCount++;
 	Reset();
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"RayMarching", false);
-	TransparentComponent* tc = new TransparentComponent(this, mesh);
+	TransparentComponent* tc = new TransparentComponent(this, mesh, 150);
 
 	if (!mObjectCBuffer)
 	{
