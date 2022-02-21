@@ -75,7 +75,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	tex = GetRenderer()->GetTexture("ui_count");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
-	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -420.0f, 0.0f });
+	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
 	sprite->SetScale(0.9f);
 
 	mSpdNum = new NumberActor(this, 0, 4);
@@ -87,11 +87,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mOutCloudTime->SetScale(0.6f);
 
 	mRestTime = new NumberActor(this, 600, 3);
-	mRestTime->SetOriPosition(dx::XMFLOAT3{ 136.0f, -447.0f, 0.0f });
+	mRestTime->SetOriPosition(dx::XMFLOAT3{ 136.0f, -477.0f, 0.0f });
 	mRestTime->SetScale(0.8f);
 
 	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 1);
-	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 115.0f, -393.0f, 0.0f });
+	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 115.0f, -423.0f, 0.0f });
 	mEnemyNum->SetScale(0.8f);
 
 #ifdef DEBUG

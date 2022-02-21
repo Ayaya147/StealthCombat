@@ -5,9 +5,9 @@ class PlayerActor : public Actor
 {
 public:
 	PlayerActor(class BaseScene* scene);
-
-	void UpdateActor(float deltaTime) override;
+	
 	void ActorInput() override;
+	void UpdateActor(float deltaTime) override;
 
 	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
@@ -19,6 +19,7 @@ private:
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;
+	class EnemyActor* mTargetEnemy;
 	bool mIsLockedOn;
 	float mOutCloudTime;
 };

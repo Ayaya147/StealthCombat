@@ -78,7 +78,7 @@ void ExplosionActor::UpdateActor(float deltaTime)
 		break;
 
 	case ExplosionActor::ExplosionPhase::ETwo:
-		mData.mColor -= dx::XMFLOAT3{ 0.8f, 0.08f, 0.08f } * rate * deltaTime;
+		mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } * rate * deltaTime;
 		mData.mLoop -= 16.0f * rate * deltaTime;
 		mData.mAbsorptionLight += 35.0f * rate * deltaTime;
 		mData.mAbsorption += 50.0f * rate * deltaTime;

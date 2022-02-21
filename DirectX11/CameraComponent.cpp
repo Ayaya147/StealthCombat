@@ -20,6 +20,41 @@ CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 {
 }
 
+void CameraComponent::ProcessInput()
+{
+	GamePad* pad = GetOwner()->GetScene()->GetInputSystem()->GetPad();
+	Keyboard* keyboard = GetOwner()->GetScene()->GetInputSystem()->GetKeyboard();
+
+	if (pad->GetIsGamePad())
+	{
+		if (pad->GetButtonState(XINPUT_GAMEPAD_A) == ButtonState::EPressed)
+		{
+			if (mType == 1)
+			{
+				mType = 2;
+			}
+			else
+			{
+				mType = 1;
+			}
+		}
+	}
+	else
+	{
+		if (keyboard->GetKeyState('1') == ButtonState::EPressed)
+		{
+			if (mType == 1)
+			{
+				mType = 2;
+			}
+			else
+			{
+				mType = 1;
+			}
+		}
+	}
+}
+
 void CameraComponent::Update(float deltaTime)
 {
 	dx::XMMATRIX view;
@@ -70,41 +105,6 @@ void CameraComponent::Update(float deltaTime)
 	}
 
 	GetOwner()->GetScene()->GetRenderer()->SetViewMatrix(view);
-}
-
-void CameraComponent::ProcessInput()
-{
-	GamePad* pad = GetOwner()->GetScene()->GetInputSystem()->GetPad();
-	Keyboard* keyboard = GetOwner()->GetScene()->GetInputSystem()->GetKeyboard();
-
-	if (pad->GetIsGamePad())
-	{
-		if (pad->GetButtonState(XINPUT_GAMEPAD_A) == ButtonState::EPressed)
-		{
-			if (mType == 1)
-			{
-				mType = 2;
-			}
-			else
-			{
-				mType = 1;
-			}
-		}
-	}
-	else
-	{
-		if (keyboard->GetKeyState('1') == ButtonState::EPressed)
-		{
-			if (mType == 1)
-			{
-				mType = 2;
-			}
-			else
-			{
-				mType = 1;
-			}
-		}
-	}
 }
 
 DirectX::XMFLOAT3 CameraComponent::ComputeCameraPos()
