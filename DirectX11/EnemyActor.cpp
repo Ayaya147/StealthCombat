@@ -26,10 +26,17 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
 
-	float range = Constant::createRange * 0.8f;
 	SetScale(0.1f);
-	SetPosition(dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) });
-	SetRotation(dx::XMFLOAT3{0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
+	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
+
+	float range = Constant::createRange * 0.8f;
+	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+	dx::XMFLOAT3 player = { 0.0f,Constant::height,0.0f};
+	while (DXMath::LengthSq(pos - player) < 300.0f)
+	{
+		pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+	}
+	SetPosition(pos);
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("enemy");

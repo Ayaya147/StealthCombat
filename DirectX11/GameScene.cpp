@@ -86,7 +86,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
 	mOutCloudTime->SetScale(0.6f);
 
-	mRestTime = new NumberActor(this, 600, 3);
+	mRestTime = new NumberActor(this, 300, 3);
 	mRestTime->SetOriPosition(dx::XMFLOAT3{ 136.0f, -477.0f, 0.0f });
 	mRestTime->SetScale(0.8f);
 
