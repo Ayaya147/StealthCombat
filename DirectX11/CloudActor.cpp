@@ -94,10 +94,14 @@ CloudActor::~CloudActor()
 
 void CloudActor::UpdateActor(float deltaTime)
 {
+	if (auto demo = dynamic_cast<DemoScene*>(GetScene()))
+	{
+		SetScale(GetScale());
+	}
+
 	if (mIsAnimation)
 	{
 		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime());
-		SetScale(GetScale());
 	}
 }
 

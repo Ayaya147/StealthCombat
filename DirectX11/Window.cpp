@@ -51,14 +51,29 @@ Window::Window(int width, int height, InputSystem* input)
 	RECT rDesk = {};
 	HWND hDesk = GetDesktopWindow();
 	GetWindowRect(hDesk, &rDesk);
-	mWidth = rDesk.right - rDesk.left;
-	mHeight = static_cast<int>(mWidth / 16.0f * 9.0f);
+	int deskHeight = rDesk.bottom - rDesk.top;
+	int deskWidth = rDesk.right - rDesk.left;
 
-	mhWnd = CreateWindow(
-		wc.lpszClassName, "GameApp",
-		WS_POPUP, 0, 0, mWidth, mHeight,
-		nullptr, nullptr, mhInst, nullptr
-	);
+	if (deskWidth / deskHeight < 16.0f / 9.0f)
+	{
+		mWidth = deskWidth;
+		mHeight = static_cast<int>(mWidth / 16.0f * 9.0f);
+		mhWnd = CreateWindow(
+			wc.lpszClassName, "GameApp",
+			WS_POPUP, 0, (deskHeight - mHeight) / 2, mWidth, mHeight,
+			nullptr, nullptr, mhInst, nullptr
+		);
+	}
+	else
+	{
+		mHeight = deskHeight;
+		mWidth = static_cast<int>(deskHeight / 9.0f * 16.0f);
+		mhWnd = CreateWindow(
+			wc.lpszClassName, "GameApp",
+			WS_POPUP, (deskWidth - mWidth) / 2, 0, mWidth, mHeight,
+			nullptr, nullptr, mhInst, nullptr
+		);
+	}
 #endif
 
 	ShowWindow(mhWnd, SW_SHOWDEFAULT);
