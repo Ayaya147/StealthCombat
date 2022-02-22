@@ -48,7 +48,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mMoveComponent->SetForwardSpeedMax(15.0f);
 	if (auto game = dynamic_cast<GameScene*>(scene))
 	{
-		mMoveComponent->SetForwardSpeed(10.0f);
+		mMoveComponent->SetForwardSpeed(6.0f);
 
 		float radius = 10.0f;
 		mBody = new SphereComponent(this);
@@ -67,131 +67,65 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 void PlayerActor::ActorInput()
 {
-	auto game = dynamic_cast<GameScene*>(GetScene());
-	Keyboard* keyboard = GetScene()->GetInputSystem()->GetKeyboard();
-	GamePad* pad = GetScene()->GetInputSystem()->GetPad();
+	InputSystem* input = GetScene()->GetInputSystem();
+	GamePad* pad = input->GetPad();
 
-	//GamePad
-	if (pad->GetIsGamePad())
+	if (input->GetPlayerRightTurn())
 	{
-		if (pad->GetThumbLeftX() > 0)
+		pad->SetRightVibration(100);
+		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			pad->SetRightVibration(100);
-			if (pad->GetLeftTrigger() && !pad->GetRightTrigger())
-			{
-				mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
-			}
-			else
-			{
-				mMoveComponent->SetAngularSpeed(angularSpd);
-			}
-		}
-		else if (pad->GetThumbLeftX() < 0)
-		{
-			pad->SetRightVibration(100);
-			if (pad->GetLeftTrigger() && !pad->GetRightTrigger())
-			{
-				mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
-			}
-			else
-			{
-				mMoveComponent->SetAngularSpeed(-angularSpd);
-			}
+			mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
 		}
 		else
 		{
-			pad->StopVibration();
-			float spd = mMoveComponent->GetAngularSpeed();
-			mMoveComponent->SetAngularSpeed(spd * angularRate1);
-			DirectX::XMFLOAT3 rotation = GetRotation();
-			rotation.z = GetRotation().z * angularRate1;
-			SetRotation(rotation);
-		}
-
-		if (pad->GetRightTrigger())
-		{
-			mMoveComponent->SetAcceleration(accelW);
-		}
-		else if (pad->GetLeftTrigger())
-		{
-			mMoveComponent->SetAcceleration(accelS);
-		}
-		else
-		{
-			mMoveComponent->SetAcceleration(accelNatural);
-		}
-
-		if (game)
-		{
-			SpriteComponent* sprite = game->GetMarkingSprite();
-			if (pad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed &&
-				sprite->GetIsVisible())
-			{
-				mTargetEnemy->SetLockedOn(true);
-				MissileActor* missile = new MissileActor(
-					GetScene(), mTargetEnemy, GetPosition(), mMoveComponent->GetForwardSpeed()
-				);
-			}
+			mMoveComponent->SetAngularSpeed(angularSpd);
 		}
 	}
-	//Keyboard
+	else if (input->GetPlayerLeftTurn())
+	{
+		pad->SetRightVibration(100);
+		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
+		{
+			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
+		}
+		else
+		{
+			mMoveComponent->SetAngularSpeed(-angularSpd);
+		}
+	}
 	else
 	{
-		if (keyboard->GetKeyValue('D'))
-		{
-			if (keyboard->GetKeyValue('S') && !keyboard->GetKeyValue('W'))
-			{
-				mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
-			}
-			else
-			{
-				mMoveComponent->SetAngularSpeed(angularSpd);
-			}
-		}
-		else if (keyboard->GetKeyValue('A'))
-		{
-			if (keyboard->GetKeyValue('S') && !keyboard->GetKeyValue('W'))
-			{
-				mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
-			}
-			else
-			{
-				mMoveComponent->SetAngularSpeed(-angularSpd);
-			}
-		}
-		else
-		{
-			float spd = mMoveComponent->GetAngularSpeed();
-			mMoveComponent->SetAngularSpeed(spd * angularRate1);
-			DirectX::XMFLOAT3 rotation = GetRotation();
-			rotation.z = GetRotation().z * angularRate1;
-			SetRotation(rotation);
-		}
+		pad->StopVibration();
+		float spd = mMoveComponent->GetAngularSpeed();
+		mMoveComponent->SetAngularSpeed(spd * angularRate1);
+		DirectX::XMFLOAT3 rotation = GetRotation();
+		rotation.z = GetRotation().z * angularRate1;
+		SetRotation(rotation);
+	}
 
-		if (keyboard->GetKeyValue('W'))
-		{
-			mMoveComponent->SetAcceleration(accelW);
-		}
-		else if (keyboard->GetKeyValue('S'))
-		{
-			mMoveComponent->SetAcceleration(accelS);
-		}
-		else
-		{
-			mMoveComponent->SetAcceleration(accelNatural);
-		}
+	if (input->GetPlayerAccel())
+	{
+		mMoveComponent->SetAcceleration(accelW);
+	}
+	else if (input->GetPlayerDecel())
+	{
+		mMoveComponent->SetAcceleration(accelS);
+	}
+	else
+	{
+		mMoveComponent->SetAcceleration(accelNatural);
+	}
 
-		if (game)
+	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	{
+		SpriteComponent* sprite = game->GetMarkingSprite();
+		if (input->GetPlayerEmitMissile() && sprite->GetIsVisible())
 		{
-			SpriteComponent* sprite = game->GetMarkingSprite();
-			if (keyboard->GetKeyState(VK_SPACE) == ButtonState::EPressed &&
-				sprite->GetIsVisible())
-			{
-				mTargetEnemy->SetLockedOn(true);
-				MissileActor* missile = new MissileActor(
-					GetScene(), mTargetEnemy, GetPosition(), mMoveComponent->GetForwardSpeed()
-				);
-			}
+			mTargetEnemy->SetLockedOn(true);
+			MissileActor* missile = new MissileActor(
+				GetScene(), mTargetEnemy, GetPosition(), mMoveComponent->GetForwardSpeed()
+			);
 		}
 	}
 }

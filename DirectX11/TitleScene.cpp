@@ -48,36 +48,16 @@ void TitleScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	GamePad* pad = GetInputSystem()->GetPad();
-	Keyboard* keyboard = GetInputSystem()->GetKeyboard();
-	if (pad->GetIsGamePad())
+	if (GetInputSystem()->GetSceneChangeEnter())
 	{
-		if (pad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed)
-		{
-			pad->StopVibration();
-			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
-		}
-		else if (pad->GetButtonState(XINPUT_GAMEPAD_LEFT_THUMB) == ButtonState::EPressed)
-		{
-			pad->StopVibration();
-			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
-		}
+		GetInputSystem()->GetPad()->StopVibration();
+		Parameter parameter;
+		GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
 	}
-	else
+	else if (GetInputSystem()->GetSceneChangeSpace())
 	{
-		if (keyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed)
-		{
-			pad->StopVibration();
-			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
-		}
-		else if (keyboard->GetKeyState(VK_SPACE) == ButtonState::EPressed)
-		{
-			pad->StopVibration();
-			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
-		}
+		GetInputSystem()->GetPad()->StopVibration();
+		Parameter parameter;
+		GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
 	}
 }

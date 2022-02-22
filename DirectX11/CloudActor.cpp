@@ -152,9 +152,9 @@ void CloudActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Scale");
-		ImGui::SliderFloat("x", &GetScaleChange().x, 0.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("x", &GetScaleChange().x, 0.0f, 120.0f, "%.1f");
 		ImGui::SliderFloat("y", &GetScaleChange().y, 0.0f, 20.0f, "%.1f");
-		ImGui::SliderFloat("z", &GetScaleChange().z, 0.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("z", &GetScaleChange().z, 0.0f, 120.0f, "%.1f");
 
 		ImGui::Text("Animation");
 		ImGui::Checkbox("Enable", &mIsAnimation);
@@ -174,12 +174,12 @@ void CloudActor::Reset()
 		32.0f,
 		10.0f,
 		0.7f,
-		60.0f,
+		58.0f,
 		100.0f,
-		60.0f,
-		80.0f,
-		0.4f,
-		4,
+		50.0f,
+		100.0f,
+		0.8f,
+		3,
 	};
 
 	if (auto demo = dynamic_cast<DemoScene*>(GetScene()))

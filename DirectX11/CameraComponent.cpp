@@ -22,35 +22,17 @@ CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 
 void CameraComponent::ProcessInput()
 {
-	GamePad* pad = GetOwner()->GetScene()->GetInputSystem()->GetPad();
-	Keyboard* keyboard = GetOwner()->GetScene()->GetInputSystem()->GetKeyboard();
+	InputSystem* input = GetOwner()->GetScene()->GetInputSystem();
 
-	if (pad->GetIsGamePad())
+	if (input->GetCameraChange())
 	{
-		if (pad->GetButtonState(XINPUT_GAMEPAD_A) == ButtonState::EPressed)
+		if (mType == 1)
 		{
-			if (mType == 1)
-			{
-				mType = 2;
-			}
-			else
-			{
-				mType = 1;
-			}
+			mType = 2;
 		}
-	}
-	else
-	{
-		if (keyboard->GetKeyState('1') == ButtonState::EPressed)
+		else
 		{
-			if (mType == 1)
-			{
-				mType = 2;
-			}
-			else
-			{
-				mType = 1;
-			}
+			mType = 1;
 		}
 	}
 }
