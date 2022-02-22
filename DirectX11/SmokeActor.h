@@ -41,6 +41,7 @@ private:
 
 	static int mCount;
 	SmokeConstant mData;
+	bool mIsAnimation;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<SmokeConstant>* mSmokeCBuffer;
 };

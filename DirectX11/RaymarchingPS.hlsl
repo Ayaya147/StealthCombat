@@ -84,19 +84,18 @@ float Torus(float3 pos, float2 radius)
 
 float DensityFunction(float3 p)
 {
+    float f = FBM(p * mNoiseScale);
     switch (mType)
     {
     case 0:
-        return FBM(p * (mNoiseScale + 1.5f * sin(mTime))) * 1.0f - Sphere(p / mRadius, 0.0f);
+        return f * 1.0f - Sphere(p / mRadius, 0.0f);
     case 1:
-        return FBM(p * mNoiseScale) * 0.3f - Sphere(p, mRadius);
+        return f * 0.3f - Sphere(p, mRadius);
     case 2:
-        return FBM(p * mNoiseScale) * 0.2f - Torus(p, float2(mRadius, 0.04f));
+        return f * 0.2f - Torus(p, float2(mRadius, 0.04f));
     default:
         return 0.0f;
     }
-    
-    //return f * 0.2f - Ellipsoid(p, float3(mRadius, mRadius / 3.0f, mRadius / 2.0f));
 }
 
 float DensityFunctionAnime(float3 p)

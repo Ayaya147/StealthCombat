@@ -17,7 +17,8 @@ PixelConstantBuffer<SmokeActor::SmokeConstant>* SmokeActor::mSmokeCBuffer = null
 
 SmokeActor::SmokeActor(BaseScene* scene)
 	:
-	Actor(scene)
+	Actor(scene),
+	mIsAnimation(true)
 {
 	mCount++;
 	Reset();
@@ -52,20 +53,23 @@ SmokeActor::~SmokeActor()
 
 void SmokeActor::UpdateActor(float deltaTime)
 {
-	float rate = 1.0f;
-	mData.mLoop -= 32.0f * rate * deltaTime;
-	mData.mAbsorption += 100.0f * rate * deltaTime;
-	mData.mRadius += 0.2f * rate * deltaTime;
-
-	if (mData.mLoop <= 0.0f || mData.mAbsorption >= 100.0f || mData.mRadius >= 0.2f)
+	if (mIsAnimation)
 	{
-		if (auto game = dynamic_cast<GameScene*>(GetScene()))
+		float rate = 1.0f;
+		mData.mLoop -= 32.0f * rate * deltaTime;
+		mData.mAbsorption += 100.0f * rate * deltaTime;
+		mData.mRadius += 0.2f * rate * deltaTime;
+
+		if (mData.mLoop <= 0.0f || mData.mAbsorption >= 100.0f || mData.mRadius >= 0.2f)
 		{
-			SetActorState(ActorState::EDead);
-		}
-		else
-		{
-			Reset();
+			if (auto game = dynamic_cast<GameScene*>(GetScene()))
+			{
+				SetActorState(ActorState::EDead);
+			}
+			else
+			{
+				Reset();
+			}
 		}
 	}
 }
@@ -104,6 +108,9 @@ void SmokeActor::ImGuiWindow()
 		ImGui::SliderFloat("Opacity Light", &mData.mOpacityLight, 0.0f, 100.0f, "%.1f");
 		ImGui::SliderFloat("Light Step Scale", &mData.mLightStepScale, 0.0f, 1.0f, "%.2f");
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
+
+		ImGui::Text("Animation");
+		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{

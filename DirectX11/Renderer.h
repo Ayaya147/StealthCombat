@@ -5,9 +5,6 @@
 #include <unordered_map>
 #include <DirectXMath.h>
 
-template<class C>
-class PixelConstantBuffer;
-
 class Renderer
 {
 public:
@@ -61,12 +58,12 @@ private:
 	class Blender* mBlenderOn;
 	class Sampler* mSampler;
 
-	class Light* mLight;
-	class BaseScene* mScene;
-
 	class VertexBuffer* mVertexBuffer;
 	class Topology* mTopology;
 	class InputLayout* mInputLayout;
 	class PixelShader* mPixelShader;
 	class VertexShader* mVertexShader;
+
+	class Light* mLight;
+	class BaseScene* mScene;
 };

@@ -4,12 +4,14 @@
 #include "TransparentComponent.h"
 #include "SphereComponent.h"
 #include "GameScene.h"
+#include "DemoScene.h"
 #include "ConstantBuffer.h"
 #include "Random.h"
 #include "ImGui/imgui.h"
 #include "Collision.h"
 #include "DefineConstant.h"
 #include "PhysWorld.h"
+#include "XMFloatHelper.h"
 
 namespace dx = DirectX;
 
@@ -21,7 +23,8 @@ PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = null
 CloudActor::CloudActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mDistFromCamera(0.0f)
+	mDistFromCamera(0.0f),
+	mIsAnimation(true)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	if (game)
@@ -49,9 +52,7 @@ CloudActor::CloudActor(BaseScene* scene)
 	}
 	else
 	{
-		float size = 10.0f;
-		SetScale(dx::XMFLOAT3{ size,size / 2.0f,size });
-		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
+		SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
 		SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
 	}
 
@@ -93,7 +94,11 @@ CloudActor::~CloudActor()
 
 void CloudActor::UpdateActor(float deltaTime)
 {
-	//mDistFromCamera = CalcDistFromCamera();
+	if (mIsAnimation)
+	{
+		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime());
+		SetScale(GetScale());
+	}
 }
 
 void CloudActor::Bind(Renderer* renderer)
@@ -142,6 +147,14 @@ void CloudActor::ImGuiWindow()
 		ImGui::SliderFloat("Light Step Scale", &mData.mLightStepScale, 0.0f, 1.0f, "%.2f");
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
+		ImGui::Text("Scale");
+		ImGui::SliderFloat("x", &GetScaleChange().x, 0.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("y", &GetScaleChange().y, 0.0f, 20.0f, "%.1f");
+		ImGui::SliderFloat("z", &GetScaleChange().z, 0.0f, 100.0f, "%.1f");
+
+		ImGui::Text("Animation");
+		ImGui::Checkbox("Enable", &mIsAnimation);
+
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
@@ -164,4 +177,9 @@ void CloudActor::Reset()
 		0.4f,
 		4,
 	};
+
+	if (auto demo = dynamic_cast<DemoScene*>(GetScene()))
+	{
+		SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
+	}
 }

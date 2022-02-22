@@ -85,10 +85,10 @@ void EnemyActor::UpdateActor(float deltaTime)
 	}
 
 	PlayerActor* player = game->GetPlayer();
-	if (!player->GetIsLockedOn() &&
-		player->GetOutCloudTime() != 0 &&
-		DXMath::Dot(player->GetPosition() - GetPosition(), GetForward()) > 0 &&
-		phys->IsCollidedWithPlayer(mAttackRange))
+	if (phys->IsCollidedWithPlayer(mAttackRange) &&
+		DXMath::Dot(player->GetPosition() - GetPosition(), GetForward()) > 0.0f &&
+		!player->GetIsLockedOn() &&
+		player->GetOutCloudTime() != 0.0f)
 	{
 		player->SetLockedOn(true);
 		MissileActor* missile = new MissileActor(

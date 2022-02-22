@@ -44,6 +44,7 @@ private:
 
 	float mDistFromCamera;
 	static int mCount;
+	bool mIsAnimation;
 	static CloudConstant mData;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;

@@ -18,7 +18,8 @@ PixelConstantBuffer<ExplosionActor::ExplosionConstant>* ExplosionActor::mExplosi
 ExplosionActor::ExplosionActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mPhase(ExplosionPhase::EOne)
+	mPhase(ExplosionPhase::EOne),
+	mIsAnimation(true)
 {	
 	SetScale(12.0f);
 	mCount++;
@@ -54,39 +55,42 @@ ExplosionActor::~ExplosionActor()
 
 void ExplosionActor::UpdateActor(float deltaTime)
 {
-	float rate = 2.5f;
-	switch (mPhase)
+	if (mIsAnimation)
 	{
-	case ExplosionActor::ExplosionPhase::EOne:
-		mData.mRadius += 0.4f * rate * deltaTime;
-		if (mData.mRadius >= 0.06f)
+		float rate = 2.5f;
+		switch (mPhase)
 		{
-			mData.mRadius = 0.06f;
-			mPhase = ExplosionPhase::ETwo;
-		}
-		break;
-
-	case ExplosionActor::ExplosionPhase::ETwo:
-		mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } * rate * deltaTime;
-		mData.mLoop -= 16.0f * rate * deltaTime;
-		mData.mAbsorptionLight += 35.0f * rate * deltaTime;
-		mData.mAbsorption += 50.0f * rate * deltaTime;
-		mData.mRadius += 0.04f * rate * deltaTime;
-
-		if (mData.mLoop <= 0.0f || mData.mAbsorptionLight >= 100.0f || mData.mAbsorption >= 100.0f)
-		{
-			if (auto game = dynamic_cast<GameScene*>(GetScene()))
+		case ExplosionActor::ExplosionPhase::EOne:
+			mData.mRadius += 0.4f * rate * deltaTime;
+			if (mData.mRadius >= 0.06f)
 			{
-				SetActorState(ActorState::EDead);
+				mData.mRadius = 0.06f;
+				mPhase = ExplosionPhase::ETwo;
 			}
-			else
-			{
-				mPhase = ExplosionPhase::EOne;
-				Reset();
-			}
-		}
+			break;
 
-		break;
+		case ExplosionActor::ExplosionPhase::ETwo:
+			mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } *rate * deltaTime;
+			mData.mLoop -= 16.0f * rate * deltaTime;
+			mData.mAbsorptionLight += 35.0f * rate * deltaTime;
+			mData.mAbsorption += 50.0f * rate * deltaTime;
+			mData.mRadius += 0.04f * rate * deltaTime;
+
+			if (mData.mLoop <= 0.0f || mData.mAbsorptionLight >= 100.0f || mData.mAbsorption >= 100.0f)
+			{
+				if (auto game = dynamic_cast<GameScene*>(GetScene()))
+				{
+					SetActorState(ActorState::EDead);
+				}
+				else
+				{
+					mPhase = ExplosionPhase::EOne;
+					Reset();
+				}
+			}
+
+			break;
+		}
 	}
 }
 
@@ -124,6 +128,9 @@ void ExplosionActor::ImGuiWindow()
 		ImGui::SliderFloat("Opacity Light", &mData.mOpacityLight, 0.0f, 100.0f, "%.1f");
 		ImGui::SliderFloat("Light Step Scale", &mData.mLightStepScale, 0.0f, 1.0f, "%.2f");
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
+
+		ImGui::Text("Animation");
+		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{

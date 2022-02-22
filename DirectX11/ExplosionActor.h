@@ -48,6 +48,7 @@ private:
 	static int mCount;
 	ExplosionConstant mData;
 	ExplosionPhase mPhase;
+	bool mIsAnimation;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<ExplosionConstant>* mExplosionCBuffer;
 };
