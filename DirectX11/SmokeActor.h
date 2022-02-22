@@ -13,7 +13,6 @@ public:
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
 	void ImGuiWindow();
-	void Reset();
 
 private:
 	struct ObjectConstant
@@ -38,6 +37,8 @@ private:
 		int mLoopLight;
 		float padding[3];
 	};
+
+	void Reset();
 
 	static int mCount;
 	SmokeConstant mData;

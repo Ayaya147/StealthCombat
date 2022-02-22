@@ -42,15 +42,16 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	mMap = new Minimap(this);
 
+	Renderer* renderer = GetRenderer();
 	Actor* sprite = new Actor(this);
-	Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
+	Texture* tex = renderer->GetTexture("guide_keyboard");
 	mGuideSprite = new SpriteComponent(sprite);
 	mGuideSprite->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("marking");
+	tex = renderer->GetTexture("marking");
 	mMarkingSprite = new SpriteComponent(sprite, 110);
 	mMarkingSprite->SetTexture(tex);
 	mMarkingSprite->SetVisible(false);
@@ -58,21 +59,21 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.3f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("speed");
+	tex = renderer->GetTexture("speed");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("time");
+	tex = renderer->GetTexture("time");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("ui_count");
+	tex = renderer->GetTexture("ui_count");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
@@ -99,6 +100,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mFPS->SetOriPosition(dx::XMFLOAT3{ -900.0f, -500.0f, 0.0f });
 	mFPS->SetScale(0.6f);
 #endif
+
+	renderer->ResetLight();
 }
 
 GameScene::~GameScene()

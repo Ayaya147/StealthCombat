@@ -358,6 +358,11 @@ void Renderer::Create2DBuffer()
 	mInputLayout = new InputLayout(this, ied, mVertexShader);
 }
 
+void Renderer::ResetLight()
+{
+	mLight->Reset();
+}
+
 Mesh* Renderer::GetMesh(const std::string& fileName)
 {
 	Mesh* mesh = nullptr;

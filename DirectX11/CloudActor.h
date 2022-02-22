@@ -14,7 +14,6 @@ public:
 	void Bind(class Renderer* renderer) override;
 	float CalcDistFromCamera();
 	void ImGuiWindow();
-	void Reset();
 
 	float GetDistFromCamera() const { return mDistFromCamera; }
 
@@ -41,6 +40,8 @@ private:
 		int mLoopLight;
 		float padding[3];
 	};
+
+	void Reset();
 
 	float mDistFromCamera;
 	static int mCount;

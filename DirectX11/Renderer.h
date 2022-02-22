@@ -22,6 +22,7 @@ public:
 	void AddTranspComp(class TransparentComponent* mesh);
 	void RemoveTranspComp(class TransparentComponent* mesh);
 	void Create2DBuffer();
+	void ResetLight();
 
 	class Mesh* GetMesh(const std::string& fileName);
 	class Texture* GetTexture(const std::string& fileName);

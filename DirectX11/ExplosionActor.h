@@ -13,7 +13,6 @@ public:
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
 	void ImGuiWindow();
-	void Reset();
 
 private:
 	enum class ExplosionPhase
@@ -29,6 +28,8 @@ private:
 		int mType;
 		float padding[2];
 	};
+
+	void Reset();
 
 	struct ExplosionConstant
 	{
