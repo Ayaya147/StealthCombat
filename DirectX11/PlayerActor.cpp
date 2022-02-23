@@ -25,7 +25,8 @@ static constexpr float accelS = -4.0f;
 static constexpr float accelNatural = -1.0f;
 static constexpr float angularSpd = 0.8f;
 static constexpr float angularRate1 = 0.92f;
-static constexpr float angularRate2 = 1.7f;
+static constexpr float angularRate2 = 1.6f;
+static constexpr float angularRate3 = 1.1f;
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -71,28 +72,36 @@ void PlayerActor::ActorInput()
 	InputSystem* input = GetScene()->GetInputSystem();
 	GamePad* pad = input->GetPad();
 
-	if (input->GetPlayerRightTurn())
+	if (input->GetPlayerRightTurn() && !input->GetPlayerLeftTurn())
 	{
 		pad->SetRightVibration(100);
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
 			mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
 		}
-		else
+		else if(input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
 			mMoveComponent->SetAngularSpeed(angularSpd);
 		}
+		else
+		{
+			mMoveComponent->SetAngularSpeed(angularRate3);
+		}
 	}
-	else if (input->GetPlayerLeftTurn())
+	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
 	{
-		pad->SetRightVibration(100);
+		pad->SetLeftVibration(100);
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
 			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
 		}
-		else
+		else if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
 			mMoveComponent->SetAngularSpeed(-angularSpd);
+		}
+		else
+		{
+			mMoveComponent->SetAngularSpeed(-angularRate3);
 		}
 	}
 	else
@@ -105,11 +114,11 @@ void PlayerActor::ActorInput()
 		SetRotation(rotation);
 	}
 
-	if (input->GetPlayerAccel())
+	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 	{
 		mMoveComponent->SetAcceleration(accelW);
 	}
-	else if (input->GetPlayerDecel())
+	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 	{
 		mMoveComponent->SetAcceleration(accelS);
 	}
