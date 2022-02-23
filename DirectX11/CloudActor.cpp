@@ -96,7 +96,7 @@ void CloudActor::UpdateActor(float deltaTime)
 {
 	if (auto demo = dynamic_cast<DemoScene*>(GetScene()))
 	{
-		SetScale(GetScale());
+		SetRecomputeWorldTransform(true);
 	}
 
 	if (mIsAnimation)
@@ -170,7 +170,7 @@ void CloudActor::ImGuiWindow()
 void CloudActor::Reset()
 {
 	mData = {
-		{0.85f, 0.85f, 0.85f},
+		{0.82f, 0.82f, 0.82f},
 		32.0f,
 		10.0f,
 		0.7f,

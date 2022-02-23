@@ -33,6 +33,7 @@ public:
 	void SetScale(const DirectX::XMFLOAT3& scale) { mScale = scale;  mRecomputeWorldTransform = true; }
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { mRotation = rotation; mRecomputeWorldTransform = true; }
 	void SetTransformCBuffer(class TransformCBuffer* buffer) { mTransformCBuffer = buffer; }
+	void SetRecomputeWorldTransform(bool recompute) { mRecomputeWorldTransform = recompute; }
 	class BaseScene* GetScene() const { return mScene; }
 	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
