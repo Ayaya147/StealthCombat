@@ -85,7 +85,7 @@ void PlayerActor::ActorInput()
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(angularRate3);
+			mMoveComponent->SetAngularSpeed(angularSpd * angularRate3);
 		}
 	}
 	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
@@ -101,7 +101,7 @@ void PlayerActor::ActorInput()
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(-angularRate3);
+			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate3);
 		}
 	}
 	else
