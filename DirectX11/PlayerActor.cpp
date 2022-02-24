@@ -1,6 +1,7 @@
 #include "PlayerActor.h"
 #include "EnemyActor.h"
 #include "MissileActor.h"
+#include "ExplosionActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -158,6 +159,8 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (phys->IsCollidedWithEnemy(mBody, info))
 		{
+			ExplosionActor* explosion = new ExplosionActor(game);
+			explosion->SetPosition(GetPosition() + GetForward());
 			game->SetSceneState(BaseScene::SceneState::EQuit);
 		}
 

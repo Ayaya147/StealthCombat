@@ -95,6 +95,8 @@ void MissileActor::UpdateActor(float deltaTime)
 	case MissileActor::MissileType::ETargetPlayer:
 		if (phys->IsCollidedWithPlayer(mSphereComponent))
 		{
+			ExplosionActor* explosion = new ExplosionActor(game);
+			explosion->SetPosition(GetPosition() + GetForward()* 0.7f);
 			game->SetSceneState(BaseScene::SceneState::EQuit);
 		}
 		break;
