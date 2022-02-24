@@ -21,8 +21,8 @@
 
 namespace dx = DirectX;
 
-static constexpr float accelW = 3.0f;
-static constexpr float accelS = -4.0f;
+static constexpr float accelW = 2.5f;
+static constexpr float accelS = -3.5f;
 static constexpr float accelNatural = -1.0f;
 static constexpr float angularSpd = 0.8f;
 static constexpr float angularRate1 = 0.92f;

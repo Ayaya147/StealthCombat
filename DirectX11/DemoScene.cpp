@@ -22,7 +22,7 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mPlane = new PlaneActor(this);
 	mCloud = new CloudActor(this);
 	mExplosion = new ExplosionActor(this);
-	mExplosion->SetPosition(dx::XMFLOAT3{ 5.0f,Constant::height,0.0f });
+	mExplosion->SetPosition(dx::XMFLOAT3{ 6.0f,Constant::height,0.0f });
 	mSmoke = new SmokeActor(this);
 	mSmoke->SetScale(10.0f);
 	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
