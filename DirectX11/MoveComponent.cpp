@@ -15,14 +15,15 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 
 void MoveComponent::Update(float deltaTime)
 {
+	float forwardSpeedMin = 800.0f / 160.0f;
 	mForwardSpeed += mAcceleration * deltaTime;
 	if (mForwardSpeed > mForwardSpeedMax)
 	{
 		mForwardSpeed = mForwardSpeedMax;
 	}
-	else if (mForwardSpeed < 0.0f)
+	else if (mForwardSpeed < forwardSpeedMin)
 	{
-		mForwardSpeed = 0.0f;
+		mForwardSpeed = forwardSpeedMin;
 	}
 
 	dx::XMFLOAT3 rotation = GetOwner()->GetRotation();

@@ -127,7 +127,6 @@ void GameScene::Update()
 		mRestTime->SetValue(restTime);
 
 		if (mPlayer->GetOutCloudTime() >= 12.0f ||
-			mPlayer->GetForwardSpeed() < 600.0f / 160.f ||
 			mEnemies.size() == 0 ||
 			restTime <= 1.0f)
 		{

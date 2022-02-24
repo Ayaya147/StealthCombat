@@ -45,7 +45,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(10.0f);
-	mMoveComponent->SetForwardSpeed(5.0f);
+	mMoveComponent->SetForwardSpeed(7.0f);
 	mMoveComponent->SetAcceleration(3.0f);
 
 	float radius = 10.0f;
