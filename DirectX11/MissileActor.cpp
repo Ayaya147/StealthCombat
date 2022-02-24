@@ -51,7 +51,7 @@ MissileActor::MissileActor(BaseScene* scene, Actor* actor, const DirectX::XMFLOA
 		break;
 	}
 
-	SetScale(0.08f);
+	SetScale(0.1f);
 	SetPosition(pos);
 	dx::XMFLOAT3 forward = mTarget->GetPosition() - GetPosition();
 	SetRotation(dx::XMFLOAT3{ 0.0f,atan2f(forward.x, forward.z),0.0f });
@@ -85,7 +85,7 @@ void MissileActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithEnemy(mSphereComponent, enemy->GetSphereComp()))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
-			explosion->SetPosition(GetPosition() + GetForward()* 0.7f);
+			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
 			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
 		}
@@ -96,7 +96,7 @@ void MissileActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithPlayer(mSphereComponent))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
-			explosion->SetPosition(GetPosition() + GetForward()* 0.7f);
+			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
 			game->SetSceneState(BaseScene::SceneState::EQuit);
 		}
 		break;
@@ -107,7 +107,7 @@ void MissileActor::UpdateActor(float deltaTime)
 	{
 		SmokeActor* smoke = new SmokeActor(game);
 		smoke->SetPosition(GetPosition() - GetForward() * 0.7f);
-		smoke->SetScale(4.0f);
+		smoke->SetScale(4.5f);
 		mSmokeCD = 0.06f;
 	}
 }

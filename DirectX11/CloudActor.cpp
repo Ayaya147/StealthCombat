@@ -33,7 +33,7 @@ CloudActor::CloudActor(BaseScene* scene)
 
 		float size = Random::GetFloatRange(90.0f, 140.0f);
 		float range = Constant::createRange;
-		SetScale(dx::XMFLOAT3{ size,size / 6.0f,size });
+		SetScale(dx::XMFLOAT3{ size,size / 5.0f,size });
 		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 
 		float radius = 0.33f;

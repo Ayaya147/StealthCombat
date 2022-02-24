@@ -35,7 +35,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mOutCloudTime(0.0f),
 	mTargetEnemy(nullptr)
 {
-	SetScale(0.1f);
+	SetScale(0.12f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();	

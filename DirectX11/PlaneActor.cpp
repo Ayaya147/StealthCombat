@@ -22,7 +22,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("plane");
 	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 71, 30.0f);
+	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 101, 30.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 	mCount = planeMesh->GetVerticesCount();
 
@@ -110,7 +110,7 @@ void PlaneActor::Reset()
 		0.75f,
 		0.8f,
 		1.0f,
-		0.35f,
+		0.30f,
 		0.75f,
 		0.12f
 	};

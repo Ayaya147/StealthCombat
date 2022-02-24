@@ -21,7 +21,7 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	mPhase(ExplosionPhase::EOne),
 	mIsAnimation(true)
 {	
-	SetScale(12.0f);
+	SetScale(14.0f);
 	mCount++;
 	Reset();
 
