@@ -52,6 +52,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	if (auto game = dynamic_cast<GameScene*>(scene))
 	{
 		mMoveComponent->SetForwardSpeed(8.0f);
+		mMoveComponent->SetForwardSpeedMin(600.0f / 160.0f);
 
 		float radius = 10.0f;
 		mBody = new SphereComponent(this);
