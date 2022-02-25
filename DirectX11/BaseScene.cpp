@@ -57,10 +57,11 @@ void BaseScene::Update()
 	{
 		mDeltaTime = 0.05f;
 	}
-	mGameTime += mDeltaTime;
 
 	if (mSceneState == SceneState::EPlay)
 	{
+		mGameTime += mDeltaTime;
+
 		mUpdatingActors = true;
 		for (auto actor : mActors)
 		{

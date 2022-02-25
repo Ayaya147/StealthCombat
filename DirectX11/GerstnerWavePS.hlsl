@@ -49,7 +49,7 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
     float dotSpec = saturate(dot(reflectDir, lightDir) * 0.5f + 0.5f);
     float3 spec = (1.0f - fresnel) * saturate(lightDir.y) * pow(dotSpec, 512.0f) * (mShininess * 1.8f + 0.2f);
     spec += spec * 25.0f * saturate(mShininess - 0.05f) * mSpecColor;
-	
+
     float3 seaReflectColor = GetSkyColor(reflectDir, mSkyColor);
     float3 seaBaseColor = mSeaBaseColor * diff * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diff);
     float3 waterColor = lerp(seaBaseColor, seaReflectColor, fresnel);
