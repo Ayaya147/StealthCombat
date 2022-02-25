@@ -146,18 +146,6 @@ void PlayerActor::UpdateActor(float deltaTime)
 {
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
-		SpriteComponent* sprite = game->GetMarkingPlayerSprite();
-		if (mIsLockedOn)
-		{
-			sprite->SetVisible(true);
-			dx::XMFLOAT3 lastPos = LocalToClip(this);
-			sprite->GetOwner()->SetPosition(lastPos);
-		}
-		else
-		{
-			sprite->SetVisible(false);
-		}
-
 		PhysWorld* phys = game->GetPhysWorld();
 		PhysWorld::CollisionInfo info;
 
@@ -175,6 +163,18 @@ void PlayerActor::UpdateActor(float deltaTime)
 			ExplosionActor* explosion = new ExplosionActor(game);
 			explosion->SetPosition(GetPosition() + GetForward() * 1.25f);
 			game->SetSceneState(BaseScene::SceneState::EQuit);
+		}
+
+		SpriteComponent* sprite = game->GetMarkingPlayerSprite();
+		if (mIsLockedOn)
+		{
+			sprite->SetVisible(true);
+			dx::XMFLOAT3 lastPos = LocalToClip(this);
+			sprite->GetOwner()->SetPosition(lastPos);
+		}
+		else
+		{
+			sprite->SetVisible(false);
 		}
 
 		sprite = game->GetMarkingEnemySprite();
@@ -198,17 +198,6 @@ void PlayerActor::UpdateActor(float deltaTime)
 			}
 		}
 	}
-
-	dx::XMFLOAT3 rotation = GetRotation();
-	if (rotation.z > 0.8f)
-	{
-		rotation.z = 0.8f;
-	}
-	else if (rotation.z < -0.8f)
-	{
-		rotation.z = -0.8f;
-	}
-	SetRotation(rotation);
 }
 
 DirectX::XMFLOAT3 PlayerActor::LocalToClip(Actor* actor)

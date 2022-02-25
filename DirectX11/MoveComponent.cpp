@@ -16,6 +16,8 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 
 void MoveComponent::Update(float deltaTime)
 {
+	Actor* owner = GetOwner();
+
 	mForwardSpeed += mAcceleration * deltaTime;
 	if (mForwardSpeed > mForwardSpeedMax)
 	{
@@ -26,14 +28,23 @@ void MoveComponent::Update(float deltaTime)
 		mForwardSpeed = mForwardSpeedMin;
 	}
 
-	dx::XMFLOAT3 rotation = GetOwner()->GetRotation();
-	rotation.y += mAngularSpeed * deltaTime;
-	rotation.z -= mAngularSpeed * deltaTime;
-	GetOwner()->SetRotation(rotation);
-
-	dx::XMFLOAT3 forward = GetOwner()->GetForward();
-	dx::XMFLOAT3 pos = GetOwner()->GetPosition();
+	dx::XMFLOAT3 forward = owner->GetForward();
+	dx::XMFLOAT3 pos = owner->GetPosition();
 	pos.x += forward.x * mForwardSpeed * deltaTime;
 	pos.z += forward.z * mForwardSpeed * deltaTime;
-	GetOwner()->SetPosition(pos);
+	owner->SetPosition(pos);
+
+	dx::XMFLOAT3 rotation = owner->GetRotation();
+	rotation.y += mAngularSpeed * deltaTime;
+	rotation.z -= mAngularSpeed * deltaTime;
+
+	if (rotation.z > 0.8f)
+	{
+		rotation.z = 0.8f;
+	}
+	else if (rotation.z < -0.8f)
+	{
+		rotation.z = -0.8f;
+	}
+	owner->SetRotation(rotation);
 }
