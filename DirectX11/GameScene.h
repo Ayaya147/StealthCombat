@@ -22,7 +22,8 @@ public:
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
 	class Minimap* GetMinimap() const { return mMap; }
 	class PlayerActor* GetPlayer() const { return mPlayer; }
-	class SpriteComponent* GetMarkingSprite() const { return mMarkingSprite; }
+	class SpriteComponent* GetMarkingEnemySprite() const { return mMarkingEnemySprite; }
+	class SpriteComponent* GetMarkingPlayerSprite() const { return mMarkingPlayerSprite; }
 
 private:
 	std::vector<class EnemyActor*> mEnemies;
@@ -36,6 +37,7 @@ private:
 	class NumberActor* mFPS;
 	class NumberActor* mRestTime;
 	class SpriteComponent* mGuideSprite;
-	class SpriteComponent* mMarkingSprite;
+	class SpriteComponent* mMarkingEnemySprite;
+	class SpriteComponent* mMarkingPlayerSprite;
 	class Minimap* mMap;
 };

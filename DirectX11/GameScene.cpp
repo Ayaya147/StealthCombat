@@ -52,10 +52,16 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("marking");
-	mMarkingSprite = new SpriteComponent(sprite, 110);
-	mMarkingSprite->SetTexture(tex);
-	mMarkingSprite->SetVisible(false);
-	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 220.0f, 0.0f });
+	mMarkingEnemySprite = new SpriteComponent(sprite, 110);
+	mMarkingEnemySprite->SetTexture(tex);
+	mMarkingEnemySprite->SetVisible(false);
+	sprite->SetScale(0.3f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("marking");
+	mMarkingPlayerSprite = new SpriteComponent(sprite, 110);
+	mMarkingPlayerSprite->SetTexture(tex);
+	mMarkingPlayerSprite->SetVisible(false);
 	sprite->SetScale(0.3f);
 
 	sprite = new Actor(this);
@@ -126,7 +132,7 @@ void GameScene::Update()
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
 
-		if (mPlayer->GetOutCloudTime() >= 10.0f ||
+		if (mPlayer->GetOutCloudTime() >= 12.0f ||
 			mEnemies.size() == 0 ||
 			restTime <= 1.0f)
 		{

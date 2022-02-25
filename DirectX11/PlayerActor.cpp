@@ -131,7 +131,7 @@ void PlayerActor::ActorInput()
 
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
-		SpriteComponent* sprite = game->GetMarkingSprite();
+		SpriteComponent* sprite = game->GetMarkingEnemySprite();
 		if (input->GetPlayerEmitMissile() && sprite->GetIsVisible())
 		{
 			mTargetEnemy->SetLockedOn(true);
@@ -146,6 +146,18 @@ void PlayerActor::UpdateActor(float deltaTime)
 {
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
+		SpriteComponent* sprite = game->GetMarkingPlayerSprite();
+		if (mIsLockedOn)
+		{
+			sprite->SetVisible(true);
+			dx::XMFLOAT3 lastPos = LocalToClip(this);
+			sprite->GetOwner()->SetPosition(lastPos);
+		}
+		else
+		{
+			sprite->SetVisible(false);
+		}
+
 		PhysWorld* phys = game->GetPhysWorld();
 		PhysWorld::CollisionInfo info;
 
@@ -165,7 +177,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			game->SetSceneState(BaseScene::SceneState::EQuit);
 		}
 
-		SpriteComponent* sprite = game->GetMarkingSprite();
+		sprite = game->GetMarkingEnemySprite();
 		sprite->SetVisible(false);
 		if (!game->GetEnemies().empty() &&
 			phys->IsCollidedWithEnemy(mAttackRange, info))
@@ -173,18 +185,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			mTargetEnemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!mTargetEnemy->GetIsLockedOn())
 			{
-				Renderer* renderer = game->GetRenderer();
-
-				dx::XMVECTOR localPos = dx::XMVectorZero();
-				dx::XMMATRIX worldtransform = mTargetEnemy->GetWorldTransform();
-				dx::XMMATRIX view = renderer->GetViewMatrix();
-				dx::XMMATRIX projection = renderer->GetProjectionMatrix();
-				dx::XMMATRIX matrix = worldtransform * view * projection;
-
-				dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
-				float ndcX = dx::XMVectorGetX(ndc);
-				float ndcY = dx::XMVectorGetY(ndc);
-				dx::XMFLOAT3 lastPos = { ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
+				dx::XMFLOAT3 lastPos = LocalToClip(mTargetEnemy);
 
 				if (lastPos.y > -540.0f &&
 					lastPos.y < 0.0f &&
@@ -208,6 +209,23 @@ void PlayerActor::UpdateActor(float deltaTime)
 		rotation.z = -0.8f;
 	}
 	SetRotation(rotation);
+}
+
+DirectX::XMFLOAT3 PlayerActor::LocalToClip(Actor* actor)
+{
+	Renderer* renderer = GetScene()->GetRenderer();
+
+	dx::XMVECTOR localPos = dx::XMVectorZero();
+	dx::XMMATRIX worldtransform = actor->GetWorldTransform();
+	dx::XMMATRIX view = renderer->GetViewMatrix();
+	dx::XMMATRIX projection = renderer->GetProjectionMatrix();
+	dx::XMMATRIX matrix = worldtransform * view * projection;
+
+	dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
+	float ndcX = dx::XMVectorGetX(ndc);
+	float ndcY = dx::XMVectorGetY(ndc);
+
+	return dx::XMFLOAT3{ ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
 }
 
 float PlayerActor::GetForwardSpeed() const

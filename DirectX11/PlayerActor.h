@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include <DirectXMath.h>
 
 class PlayerActor : public Actor
 {
@@ -16,6 +17,8 @@ public:
 	class SphereComponent* GetSphereComp() const { return mBody; }
 
 private:
+	DirectX::XMFLOAT3 LocalToClip(class Actor* actor);
+
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;
