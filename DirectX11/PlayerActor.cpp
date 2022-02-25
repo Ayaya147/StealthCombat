@@ -35,7 +35,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mOutCloudTime(0.0f),
 	mTargetEnemy(nullptr)
 {
-	SetScale(0.12f);
+	SetScale(0.125f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();	
@@ -161,7 +161,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithEnemy(mBody, info))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
-			explosion->SetPosition(GetPosition() + GetForward());
+			explosion->SetPosition(GetPosition() + GetForward() * 1.25f);
 			game->SetSceneState(BaseScene::SceneState::EQuit);
 		}
 

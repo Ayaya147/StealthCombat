@@ -32,7 +32,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	float range = Constant::createRange * 0.8f;
 	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	dx::XMFLOAT3 player = { 0.0f,Constant::height,0.0f};
-	while (DXMath::LengthSq(pos - player) < 300.0f)
+	while (DXMath::LengthSq(pos - player) < 400.0f)
 	{
 		pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	}

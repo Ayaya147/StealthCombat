@@ -35,9 +35,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 26; i++)
 	{
-	CloudActor* cloud = new CloudActor(this);
+		CloudActor* cloud = new CloudActor(this);
 	}
 
 	mMap = new Minimap(this);
@@ -62,14 +62,14 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	tex = renderer->GetTexture("speed");
 	SpriteComponent* sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
-	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 20.0f, 0.0f });
+	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 70.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("time");
 	sc = new SpriteComponent(sprite);
 	sc->SetTexture(tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 20.0f, 0.0f });
+	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 70.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
@@ -80,11 +80,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.9f);
 
 	mSpdNum = new NumberActor(this, 0, 4);
-	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, -6.0f, 0.0f });
+	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, 44.0f, 0.0f });
 	mSpdNum->SetScale(0.6f);
 
 	mOutCloudTime = new NumberActor(this, 0, 4);
-	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, -6.0f, 0.0f });
+	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, 44.0f, 0.0f });
 	mOutCloudTime->SetScale(0.6f);
 
 	mRestTime = new NumberActor(this, 300, 3);
@@ -126,7 +126,7 @@ void GameScene::Update()
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
 
-		if (mPlayer->GetOutCloudTime() >= 12.0f ||
+		if (mPlayer->GetOutCloudTime() >= 10.0f ||
 			mEnemies.size() == 0 ||
 			restTime <= 1.0f)
 		{

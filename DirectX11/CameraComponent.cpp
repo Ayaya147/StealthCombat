@@ -63,9 +63,11 @@ void CameraComponent::Update(float deltaTime)
 		mActualPos += mVelocity * deltaTime;
 
 		dx::XMFLOAT3 forward = GetOwner()->GetForward();
+		dx::XMFLOAT3 at = GetOwner()->GetPosition() + GetOwner()->GetForward() * 1.5f;
+
 		view = dx::XMMatrixLookAtLH(
 			dx::XMLoadFloat3(&mActualPos),
-			dx::XMLoadFloat3(&GetOwner()->GetPosition()),
+			dx::XMLoadFloat3(&at),
 			dx::XMLoadFloat3(&forward)
 		);
 	}
