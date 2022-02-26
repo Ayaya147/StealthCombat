@@ -34,6 +34,11 @@ ResultScene::~ResultScene()
 
 void ResultScene::ProcessInput()
 {
+	if (GetInputSystem()->GetSceneChangeEnter())
+	{
+		SetSceneState(SceneState::EQuit);
+	}
+
 	BaseScene::ProcessInput();
 }
 
@@ -46,7 +51,7 @@ void ResultScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetSceneState() == SceneState::EQuit || GetInputSystem()->GetSceneChangeEnter())
+	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
 		Parameter parameter;

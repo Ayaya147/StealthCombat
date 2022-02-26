@@ -103,7 +103,7 @@ void EnemyActor::UpdateActor(float deltaTime)
 
 	if (CalcAngle() > 0.2f)
 	{
-		mMoveComponent->SetAngularSpeed(static_cast<float>(mSign) * 0.8f);
+		mMoveComponent->SetAngularSpeed(mSign * 0.6f);
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 	}
 	else

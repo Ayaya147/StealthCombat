@@ -14,7 +14,8 @@ namespace dx = DirectX;
 
 TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	:
-	BaseScene(sm, parameter)
+	BaseScene(sm, parameter),
+	mNextScene(0)
 {
 	Renderer* renderer = GetRenderer();
 
@@ -34,6 +35,17 @@ TitleScene::~TitleScene()
 
 void TitleScene::ProcessInput()
 {
+	if (GetInputSystem()->GetSceneChangeEnter())
+	{
+		SetSceneState(SceneState::EQuit);
+		mNextScene = 0;
+	}
+	else if (GetInputSystem()->GetSceneChangeSpace())
+	{
+		SetSceneState(SceneState::EQuit);
+		mNextScene = 1;
+	}
+
 	BaseScene::ProcessInput();
 }
 
@@ -46,16 +58,17 @@ void TitleScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetInputSystem()->GetSceneChangeEnter())
+	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
 		Parameter parameter;
-		GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
-	}
-	else if (GetInputSystem()->GetSceneChangeSpace())
-	{
-		GetInputSystem()->GetPad()->StopVibration();
-		Parameter parameter;
-		GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
+		if (mNextScene == 0)
+		{
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+		}
+		else
+		{
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
+		}
 	}
 }

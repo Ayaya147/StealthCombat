@@ -110,6 +110,11 @@ GameScene::~GameScene()
 
 void GameScene::ProcessInput()
 {
+	if (GetInputSystem()->GetSceneChangeEnter())
+	{
+		SetSceneState(SceneState::EQuit);
+	}
+
 	BaseScene::ProcessInput();
 }
 
@@ -153,7 +158,7 @@ void GameScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetSceneState() == SceneState::EQuit ||	GetInputSystem()->GetSceneChangeEnter())
+	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
 		Parameter parameter;

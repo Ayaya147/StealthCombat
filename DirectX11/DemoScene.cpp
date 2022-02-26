@@ -38,6 +38,11 @@ DemoScene::~DemoScene()
 
 void DemoScene::ProcessInput()
 {
+	if (GetInputSystem()->GetSceneChangeEnter())
+	{
+		SetSceneState(SceneState::EQuit);
+	}
+
 	BaseScene::ProcessInput();
 }
 
@@ -54,7 +59,7 @@ void DemoScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetSceneState() == SceneState::EQuit || GetInputSystem()->GetSceneChangeEnter())
+	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
 		Parameter parameter;

@@ -7,7 +7,7 @@
 #include "MoveComponent.h"
 #include "SphereComponent.h"
 #include "CameraComponent.h"
-#include  "SpriteComponent.h"
+#include "SpriteComponent.h"
 #include "Mesh.h"
 #include "SceneManager.h"
 #include "Renderer.h"
