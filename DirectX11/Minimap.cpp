@@ -18,15 +18,13 @@ Minimap::Minimap(GameScene* game)
 
 	Actor* sprite = new Actor(game);
 	Texture* tex = renderer->GetTexture("minimap");
-	SpriteComponent* sc = new SpriteComponent(sprite);
-	sc->SetTexture(tex);
+	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(game);
 	tex = renderer->GetTexture("minimap_player");
-	sc = new SpriteComponent(sprite,101);
-	sc->SetTexture(tex);
+	sc = new SpriteComponent(sprite, tex, 101);
 	sprite->SetPosition(dx::XMFLOAT3{ mOrigin.x, mOrigin.y, 0.0f });
 	sprite->SetScale(50.0f / range);
 
@@ -35,9 +33,8 @@ Minimap::Minimap(GameScene* game)
 		sprite = new Actor(game);
 		std::string name = "minimap_direction_" + std::to_string(i);
 		tex = renderer->GetTexture(name);
-		sc = new SpriteComponent(sprite, 110);
+		sc = new SpriteComponent(sprite, tex, 110);
 		mDirectionSprites.emplace_back(sc);
-		sc->SetTexture(tex);
 		sprite->SetScale(0.4f);
 	}
 
@@ -47,9 +44,8 @@ Minimap::Minimap(GameScene* game)
 	{
 		Actor* sprite = new Actor(game);
 		sprite->SetScale(clouds[i]->GetScale().x / range);
-		sc = new SpriteComponent(sprite);
+		sc = new SpriteComponent(sprite, tex);
 		mCloudSprites.emplace_back(sc);
-		sc->SetTexture(tex);
 	}
 
 	tex = game->GetRenderer()->GetTexture("minimap_enemy");
@@ -58,9 +54,8 @@ Minimap::Minimap(GameScene* game)
 	{
 		Actor* sprite = new Actor(game);
 		sprite->SetScale(50.0f / range);
-		sc = new SpriteComponent(sprite, 101);
+		sc = new SpriteComponent(sprite, tex, 101);
 		mEnemySprites.emplace_back(sc);
-		sc->SetTexture(tex);
 	}
 }
 

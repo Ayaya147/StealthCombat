@@ -35,7 +35,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 28; i++)
+	for (int i = 0; i < 26; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
@@ -45,43 +45,37 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	Renderer* renderer = GetRenderer();
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("guide_keyboard");
-	mGuideSprite = new SpriteComponent(sprite);
-	mGuideSprite->SetTexture(tex);
+	mGuideSprite = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
 	sprite->SetScale(0.7f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("marking");
-	mMarkingEnemySprite = new SpriteComponent(sprite, 110);
-	mMarkingEnemySprite->SetTexture(tex);
+	mMarkingEnemySprite = new SpriteComponent(sprite, tex, 110);
 	mMarkingEnemySprite->SetVisible(false);
 	sprite->SetScale(0.3f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("marking");
-	mMarkingPlayerSprite = new SpriteComponent(sprite, 110);
-	mMarkingPlayerSprite->SetTexture(tex);
+	mMarkingPlayerSprite = new SpriteComponent(sprite, tex, 110);
 	mMarkingPlayerSprite->SetVisible(false);
 	sprite->SetScale(0.3f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("speed");
-	SpriteComponent* sc = new SpriteComponent(sprite);
-	sc->SetTexture(tex);
+	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 70.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("time");
-	sc = new SpriteComponent(sprite);
-	sc->SetTexture(tex);
+	sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 70.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("ui_count");
-	sc = new SpriteComponent(sprite);
-	sc->SetTexture(tex);
+	sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
 	sprite->SetScale(0.9f);
 

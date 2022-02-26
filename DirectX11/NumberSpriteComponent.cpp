@@ -11,7 +11,7 @@ namespace dx = DirectX;
 
 NumberSpriteComponent::NumberSpriteComponent(NumberActor* owner, int drawOrder)
 	:
-	SpriteComponent(owner, drawOrder)
+	SpriteComponent(owner, nullptr, drawOrder)
 {
 	Renderer* renderer = GetOwner()->GetScene()->GetRenderer();
 	for (int i = 0; i < 10; i++)

@@ -4,11 +4,11 @@
 #include "BaseScene.h"
 #include "Texture.h"
 
-SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
+SpriteComponent::SpriteComponent(Actor* owner, Texture* tex, int drawOrder)
 	:
 	Component(owner),
 	mDrawOrder(drawOrder),
-	mTexture(nullptr),
+	mTexture(tex),
 	mIsVisible(true)
 {
 	GetOwner()->GetScene()->GetRenderer()->AddSprite(this);
@@ -22,7 +22,6 @@ SpriteComponent::~SpriteComponent()
 void SpriteComponent::Draw(Renderer* renderer)
 {
 	GetOwner()->Bind(renderer, static_cast<float>(mTexture->GetTexWidth()), static_cast<float>(mTexture->GetTexHeight()));
-	mTexture->Bind(renderer);
 	renderer->GetContext()->Draw(4, 0);
 }
 

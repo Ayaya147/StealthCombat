@@ -203,25 +203,21 @@ void Renderer::Draw3DScene()
 	mBlenderOff->Bind(this);
 	mLight->Bind(this);
 
-	std::string name;
+	Mesh* lastMesh = nullptr;
 	for (auto mc : mMeshComps)
 	{
 		for (auto m : mc.second)
 		{
-			if (name != mc.first)
+			Mesh* mesh = m->GetMesh();
+			if (mesh && mesh != lastMesh)
 			{
-				m->GetMesh()->Bind(this);
-				name = mc.first;
+				mesh->Bind(this);
+				lastMesh = mesh;
 			}
 			m->Draw(this);
 		}
 	}
 
-	//auto distTest = [](TransparentComponent* tc1, TransparentComponent* tc2)
-	//{
-	//	return tc1->GetDistFromCamera() > tc2->GetDistFromCamera();
-	//};
-	//std::sort(mTranspComps.begin(), mTranspComps.end(), distTest);
 	mDepthStencilOff->Bind(this);
 	mBlenderOn->Bind(this);
 	bool isBind = false;
@@ -244,10 +240,17 @@ void Renderer::Draw2DScene()
 	mVertexShader->Bind(this);
 	mPixelShader->Bind(this);
 
+	Texture* lastTex = nullptr;
 	for (auto sprite : mSpriteComps)
 	{
 		if (sprite->GetIsVisible())
 		{
+			Texture* tex = sprite->GetTexture();
+			if (tex && tex != lastTex)
+			{
+				tex->Bind(this);
+				lastTex = tex;
+			}
 			sprite->Draw(this);
 		}
 	}
