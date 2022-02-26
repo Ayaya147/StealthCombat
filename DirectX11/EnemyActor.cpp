@@ -22,7 +22,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	mDist(0.0f),
 	mIsLockedOn(false),
 	mIsInCloud(false),
-	mTime(Random::GetFloatRange(8.0f, 12.0f))
+	mTime(Random::GetFloatRange(6.0f, 12.0f))
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -116,7 +116,7 @@ void EnemyActor::UpdateActor(float deltaTime)
 	if (mTime <= 0.0f)
 	{
 		CalcNextPos();
-		mTime = Random::GetFloatRange(8.0f, 12.0f);
+		mTime = Random::GetFloatRange(6.0f, 12.0f);
 	}
 }
 
@@ -124,7 +124,7 @@ void EnemyActor::CalcNextPos()
 {
 	float range = Constant::createRange * 0.8f;
 	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-	while (DXMath::LengthSq(pos - GetPosition()) < std::powf(200.0f, 2.0f))
+	while (DXMath::LengthSq(pos - GetPosition()) < std::powf(150.0f, 2.0f))
 	{
 		pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	}

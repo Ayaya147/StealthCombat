@@ -350,6 +350,17 @@ namespace DXMath
 		return rv;
 	}
 
+	_NODISCARD static inline auto Cross(const DirectX::XMFLOAT3& vec1, const DirectX::XMFLOAT3& vec2)
+	{
+		DirectX::XMFLOAT3 rv{};
+
+		const auto&& v1{ DirectX::XMLoadFloat3(&vec1) }, &&v2{ DirectX::XMLoadFloat3(&vec2) };
+
+		DirectX::XMStoreFloat3(&rv, DirectX::XMVector3Cross(v1, v2));
+
+		return rv;
+	}
+
 	//XMFLOAT2
 	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT2& vf2)
 	{
@@ -380,6 +391,17 @@ namespace DXMath
 		const auto&& v1{ DirectX::XMLoadFloat2(&vec1) }, &&v2{ DirectX::XMLoadFloat2(&vec2) };
 
 		DirectX::XMStoreFloat(&rv, DirectX::XMVector2Dot(v1, v2));
+
+		return rv;
+	}
+
+	_NODISCARD static inline auto Cross(const DirectX::XMFLOAT2& vec1, const DirectX::XMFLOAT2& vec2)
+	{
+		float rv{};
+
+		const auto&& v1{ DirectX::XMLoadFloat2(&vec1) }, &&v2{ DirectX::XMLoadFloat2(&vec2) };
+
+		DirectX::XMStoreFloat(&rv, DirectX::XMVector2Cross(v1, v2));
 
 		return rv;
 	}
