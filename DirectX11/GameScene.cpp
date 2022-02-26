@@ -35,7 +35,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < 28; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
@@ -132,7 +132,7 @@ void GameScene::Update()
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
 
-		if (mPlayer->GetOutCloudTime() >= 12.0f ||
+		if (mPlayer->GetOutCloudTime() >= 14.0f ||
 			mEnemies.size() == 0 ||
 			restTime <= 1.0f)
 		{

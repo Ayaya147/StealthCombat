@@ -6,6 +6,7 @@ namespace dx = DirectX;
 MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 	:
 	Component(owner, updateOrder),
+	mType(MoveType::ECornering),
 	mForwardSpeedMax(0.0f),
 	mForwardSpeedMin(0.0f),
 	mAngularSpeed(0.0f),
@@ -17,6 +18,30 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 void MoveComponent::Update(float deltaTime)
 {
 	Actor* owner = GetOwner();
+
+	dx::XMFLOAT3 rotation = owner->GetRotation();
+	if (mType == MoveType::ECornering)
+	{
+		rotation.y += mAngularSpeed * deltaTime;
+		rotation.z -= mAngularSpeed * deltaTime;
+	}
+	else
+	{
+		float rate = 0.93f;
+		mAngularSpeed *= rate;
+		rotation.y += mAngularSpeed * deltaTime;
+		rotation.z *= rate;
+	}
+
+	if (rotation.z > 0.8f)
+	{
+		rotation.z = 0.8f;
+	}
+	else if (rotation.z < -0.8f)
+	{
+		rotation.z = -0.8f;
+	}
+	owner->SetRotation(rotation);
 
 	mForwardSpeed += mAcceleration * deltaTime;
 	if (mForwardSpeed > mForwardSpeedMax)
@@ -33,18 +58,4 @@ void MoveComponent::Update(float deltaTime)
 	pos.x += forward.x * mForwardSpeed * deltaTime;
 	pos.z += forward.z * mForwardSpeed * deltaTime;
 	owner->SetPosition(pos);
-
-	dx::XMFLOAT3 rotation = owner->GetRotation();
-	rotation.y += mAngularSpeed * deltaTime;
-	rotation.z -= mAngularSpeed * deltaTime;
-
-	if (rotation.z > 0.8f)
-	{
-		rotation.z = 0.8f;
-	}
-	else if (rotation.z < -0.8f)
-	{
-		rotation.z = -0.8f;
-	}
-	owner->SetRotation(rotation);
 }

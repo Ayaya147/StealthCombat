@@ -9,8 +9,6 @@ public:
 	~EnemyActor();
 
 	void UpdateActor(float deltaTime) override;
-	void CalcNextPos();
-	float CalcAngle();
 
 	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
@@ -19,6 +17,9 @@ public:
 	class SphereComponent* GetSphereComp() const { return mBody; }
 
 private:
+	void CalcNextPos();
+	float CalcAngle();
+
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;

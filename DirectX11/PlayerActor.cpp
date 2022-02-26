@@ -25,9 +25,8 @@ static constexpr float accelW = 2.5f;
 static constexpr float accelS = -3.5f;
 static constexpr float accelNatural = -1.0f;
 static constexpr float angularSpd = 0.8f;
-static constexpr float angularRate1 = 0.92f;
-static constexpr float angularRate2 = 1.6f;
-static constexpr float angularRate3 = 1.1f;
+static constexpr float angularRate1 = 1.6f;
+static constexpr float angularRate2 = 1.2f;
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -76,10 +75,12 @@ void PlayerActor::ActorInput()
 
 	if (input->GetPlayerRightTurn() && !input->GetPlayerLeftTurn())
 	{
+		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		pad->SetRightVibration(100);
+
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
+			mMoveComponent->SetAngularSpeed(angularSpd * angularRate1);
 		}
 		else if(input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
@@ -87,15 +88,17 @@ void PlayerActor::ActorInput()
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd * angularRate3);
+			mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
 		}
 	}
 	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
 	{
+		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		pad->SetLeftVibration(100);
+
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
+			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate1);
 		}
 		else if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
@@ -103,17 +106,13 @@ void PlayerActor::ActorInput()
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate3);
+			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
 		}
 	}
 	else
 	{
+		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
 		pad->StopVibration();
-		float spd = mMoveComponent->GetAngularSpeed();
-		mMoveComponent->SetAngularSpeed(spd * angularRate1);
-		DirectX::XMFLOAT3 rotation = GetRotation();
-		rotation.z = GetRotation().z * angularRate1;
-		SetRotation(rotation);
 	}
 
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())

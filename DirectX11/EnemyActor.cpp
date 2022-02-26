@@ -22,7 +22,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	mDist(0.0f),
 	mIsLockedOn(false),
 	mIsInCloud(false),
-	mTime(Random::GetFloatRange(6.0f, 12.0f))
+	mTime(Random::GetFloatRange(8.0f, 12.0f))
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -104,16 +104,11 @@ void EnemyActor::UpdateActor(float deltaTime)
 	if (CalcAngle() > 0.2f)
 	{
 		mMoveComponent->SetAngularSpeed(static_cast<float>(mSign) * 0.8f);
+		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 	}
 	else
 	{
-		float angularRate1 = 0.92f;
-		float spd = mMoveComponent->GetAngularSpeed();
-		mMoveComponent->SetAngularSpeed(spd * angularRate1);
-		DirectX::XMFLOAT3 rotation = GetRotation();
-		rotation.z = GetRotation().z * angularRate1;
-		SetRotation(rotation);
-
+		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
 		mSign = Random::GetIntRange(0, 1) == 0 ? -1.0f : 1.0f;
 		mTime -= deltaTime;
 	}
@@ -121,7 +116,7 @@ void EnemyActor::UpdateActor(float deltaTime)
 	if (mTime <= 0.0f)
 	{
 		CalcNextPos();
-		mTime = Random::GetFloatRange(6.0f, 12.0f);
+		mTime = Random::GetFloatRange(8.0f, 12.0f);
 	}
 }
 

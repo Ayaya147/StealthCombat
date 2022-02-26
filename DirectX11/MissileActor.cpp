@@ -54,7 +54,7 @@ MissileActor::MissileActor(BaseScene* scene, Actor* actor, const DirectX::XMFLOA
 	SetScale(0.1f);
 	SetPosition(pos);
 	dx::XMFLOAT3 forward = mTarget->GetPosition() - GetPosition();
-	SetRotation(dx::XMFLOAT3{ 0.0f,atan2f(forward.x, forward.z),0.0f });
+	SetRotation(dx::XMFLOAT3{ 0.0f,std::atan2f(forward.x, forward.z),0.0f });
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(25.0f);
@@ -72,7 +72,7 @@ MissileActor::MissileActor(BaseScene* scene, Actor* actor, const DirectX::XMFLOA
 void MissileActor::UpdateActor(float deltaTime)
 {
 	dx::XMFLOAT3 forward = mTarget->GetPosition() - GetPosition();
-	SetRotation(dx::XMFLOAT3{ 0.0f,atan2f(forward.x, forward.z),0.0f });
+	SetRotation(dx::XMFLOAT3{ 0.0f,std::atan2f(forward.x, forward.z),0.0f });
 
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	PhysWorld* phys = game->GetPhysWorld();
