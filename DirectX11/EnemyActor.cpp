@@ -21,7 +21,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	Actor(scene),
 	mDist(0.0f),
 	mIsLockedOn(false),
-	mIsInCloud(false)
+	mIsInCloud(false),
+	mTime(Random::GetFloatRange(6.0f, 12.0f))
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -32,11 +33,13 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	float range = Constant::createRange * 0.8f;
 	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	dx::XMFLOAT3 player = { 0.0f,Constant::height,0.0f};
-	while (DXMath::LengthSq(pos - player) < 400.0f)
+	while (DXMath::LengthSq(pos - player) < std::powf(20.0f, 2.0f))
 	{
 		pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	}
 	SetPosition(pos);
+	
+	CalcNextPos();
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("enemy");
@@ -46,7 +49,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(10.0f);
 	mMoveComponent->SetForwardSpeed(7.0f);
-	mMoveComponent->SetAcceleration(3.0f);
+	mMoveComponent->SetAcceleration(1.0f);
 
 	float radius = 10.0f;
 	mBody = new SphereComponent(this);
@@ -60,6 +63,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	mAttackRange->SetSphere(sphere);
 	sphere = new Sphere(GetPosition(), 12.0f);
 	mAttackRange->SetSphereLast(sphere);
+
+	mSign = Random::GetIntRange(0, 1) == 0 ? -1.0f : 1.0f;
 }
 
 EnemyActor::~EnemyActor()
@@ -96,18 +101,47 @@ void EnemyActor::UpdateActor(float deltaTime)
 		);
 	}
 
-	float range = Constant::createRange * 0.8f;
-	if (GetPosition().x < -range ||
-		GetPosition().x > range ||
-		GetPosition().z < -range ||
-		GetPosition().z > range)
+	if (CalcAngle() > 0.2f)
 	{
-		SetRotation(dx::XMFLOAT3{ 0.0f, GetRotation().y + Constant::PI, 0.0f });
+		mMoveComponent->SetAngularSpeed(static_cast<float>(mSign) * 0.8f);
+	}
+	else
+	{
+		float angularRate1 = 0.92f;
+		float spd = mMoveComponent->GetAngularSpeed();
+		mMoveComponent->SetAngularSpeed(spd * angularRate1);
+		DirectX::XMFLOAT3 rotation = GetRotation();
+		rotation.z = GetRotation().z * angularRate1;
+		SetRotation(rotation);
+
+		mSign = Random::GetIntRange(0, 1) == 0 ? -1.0f : 1.0f;
+		mTime -= deltaTime;
+	}
+
+	if (mTime <= 0.0f)
+	{
+		CalcNextPos();
+		mTime = Random::GetFloatRange(6.0f, 12.0f);
 	}
 }
 
-void EnemyActor::CalcDistFromPlayer()
+void EnemyActor::CalcNextPos()
 {
-	auto game = dynamic_cast<GameScene*>(GetScene());
-	mDist = DXMath::LengthSq(game->GetPlayer()->GetPosition() - GetPosition());
+	float range = Constant::createRange * 0.8f;
+	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+	while (DXMath::LengthSq(pos - GetPosition()) < std::powf(200.0f, 2.0f))
+	{
+		pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
+	}
+
+	mTargetLocationPos = pos;
+}
+
+float EnemyActor::CalcAngle()
+{
+	dx::XMFLOAT3 vec1 = mTargetLocationPos - GetPosition();
+	dx::XMFLOAT3 vec2 = GetForward();
+	float cos = DXMath::Dot(vec1, vec2) / (DXMath::Length(vec1) * DXMath::Length(vec2));
+
+	return std::acosf(cos);
 }

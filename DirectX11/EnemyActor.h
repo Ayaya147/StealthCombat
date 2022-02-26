@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include <DirectXMath.h>
 
 class EnemyActor : public Actor
 {
@@ -8,7 +9,8 @@ public:
 	~EnemyActor();
 
 	void UpdateActor(float deltaTime) override;
-	void CalcDistFromPlayer();
+	void CalcNextPos();
+	float CalcAngle();
 
 	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
@@ -23,4 +25,7 @@ private:
 	float mDist;
 	bool mIsLockedOn;
 	bool mIsInCloud;
+	float mTime;
+	float mSign;
+	DirectX::XMFLOAT3 mTargetLocationPos;
 };
