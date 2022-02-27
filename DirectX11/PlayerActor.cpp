@@ -168,8 +168,8 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (mIsLockedOn)
 		{
 			sprite->SetVisible(true);
-			dx::XMFLOAT3 lastPos = LocalToClip(this);
-			sprite->GetOwner()->SetPosition(lastPos);
+			dx::XMFLOAT3 clipPos = LocalToClip(this);
+			sprite->GetOwner()->SetPosition(clipPos);
 		}
 		else
 		{
@@ -184,15 +184,15 @@ void PlayerActor::UpdateActor(float deltaTime)
 			mTargetEnemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!mTargetEnemy->GetIsLockedOn())
 			{
-				dx::XMFLOAT3 lastPos = LocalToClip(mTargetEnemy);
+				dx::XMFLOAT3 clipPos = LocalToClip(mTargetEnemy);
 
-				if (lastPos.y > -540.0f &&
-					lastPos.y < 0.0f &&
-					lastPos.x > -960.0f &&
-					lastPos.x < 960.0f)
+				if (clipPos.y > -540.0f &&
+					clipPos.y < 0.0f &&
+					clipPos.x > -960.0f &&
+					clipPos.x < 960.0f)
 				{
 					sprite->SetVisible(true);
-					sprite->GetOwner()->SetPosition(lastPos);
+					sprite->GetOwner()->SetPosition(clipPos);
 				}
 			}
 		}

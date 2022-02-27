@@ -48,11 +48,11 @@ void CameraComponent::Update(float deltaTime)
 		//	GetOwner()->GetPosition().z
 		//};
 
-		//dx::XMFLOAT3 forward = GetOwner()->GetForward();
+		//dx::XMFLOAT3 up = GetOwner()->GetForward();
 		//view = dx::XMMatrixLookAtLH(
 		//	dx::XMLoadFloat3(&cameraPos),
 		//	dx::XMLoadFloat3(&GetOwner()->GetPosition()),
-		//	dx::XMLoadFloat3(&forward)
+		//	dx::XMLoadFloat3(&up)
 		//);
 		float sprintConstant = 64.0f;
 		float dampening = 5.0f * sqrtf(sprintConstant);
@@ -62,13 +62,13 @@ void CameraComponent::Update(float deltaTime)
 		mVelocity += accel * deltaTime;
 		mActualPos += mVelocity * deltaTime;
 
-		dx::XMFLOAT3 forward = GetOwner()->GetForward();
+		dx::XMFLOAT3 up = GetOwner()->GetForward();
 		dx::XMFLOAT3 at = GetOwner()->GetPosition() + GetOwner()->GetForward() * 1.5f;
 
 		view = dx::XMMatrixLookAtLH(
 			dx::XMLoadFloat3(&mActualPos),
 			dx::XMLoadFloat3(&at),
-			dx::XMLoadFloat3(&forward)
+			dx::XMLoadFloat3(&up)
 		);
 	}
 	else

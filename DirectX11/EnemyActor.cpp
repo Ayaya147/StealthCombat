@@ -19,7 +19,6 @@ namespace dx = DirectX;
 EnemyActor::EnemyActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mDist(0.0f),
 	mIsLockedOn(false),
 	mIsInCloud(false),
 	mTime(Random::GetFloatRange(6.0f, 12.0f))
