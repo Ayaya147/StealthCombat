@@ -35,7 +35,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < 28; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
@@ -79,6 +79,20 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
 	sprite->SetScale(0.9f);
 
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("caution");
+	mCautionGameTime = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -476.0f, 0.0f });
+	sprite->SetScale(0.5f);
+	mCautionGameTime->SetVisible(false);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("caution");
+	mCautionCloudTime = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 205.0f, -12.0f, 0.0f });
+	sprite->SetScale(0.5f);
+	mCautionCloudTime->SetVisible(false);
+
 	mSpdNum = new NumberActor(this, 0, 4);
 	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, 44.0f, 0.0f });
 	mSpdNum->SetScale(0.6f);
@@ -88,11 +102,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mOutCloudTime->SetScale(0.6f);
 
 	mRestTime = new NumberActor(this, 300, 3);
-	mRestTime->SetOriPosition(dx::XMFLOAT3{ 136.0f, -477.0f, 0.0f });
+	mRestTime->SetOriPosition(dx::XMFLOAT3{ 126.0f, -477.0f, 0.0f });
 	mRestTime->SetScale(0.8f);
 
 	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 1);
-	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 115.0f, -423.0f, 0.0f });
+	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
 	mEnemyNum->SetScale(0.8f);
 
 	mFPS = new NumberActor(this, 0, 2);
@@ -131,11 +145,29 @@ void GameScene::Update()
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
 
-		if (mPlayer->GetOutCloudTime() >= 12.0f ||
+		if (mPlayer->GetOutCloudTime() >= 14.0f ||
 			mEnemies.size() == 0 ||
 			restTime <= 1.0f)
 		{
 			SetSceneState(SceneState::EQuit);
+		}
+
+		if (restTime <= 10.0f)
+		{
+			mCautionGameTime->SetVisible(true);
+		}
+		else
+		{
+			mCautionGameTime->SetVisible(false);
+		}
+
+		if (mPlayer->GetOutCloudTime() >= 10.0f)
+		{
+			mCautionCloudTime->SetVisible(true);
+		}
+		else
+		{
+			mCautionCloudTime->SetVisible(false);
 		}
 
 		GamePad* pad = GetInputSystem()->GetPad();

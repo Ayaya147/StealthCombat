@@ -39,5 +39,7 @@ private:
 	class SpriteComponent* mGuideSprite;
 	class SpriteComponent* mMarkingEnemySprite;
 	class SpriteComponent* mMarkingPlayerSprite;
+	class SpriteComponent* mCautionGameTime;
+	class SpriteComponent* mCautionCloudTime;
 	class Minimap* mMap;
 };
