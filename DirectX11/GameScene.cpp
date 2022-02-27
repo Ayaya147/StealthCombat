@@ -19,6 +19,7 @@
 #include "Random.h"
 #include "PhysWorld.h"
 #include "Minimap.h"
+#include "XMFloatHelper.h"
 
 namespace dx = DirectX;
 
@@ -27,7 +28,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	BaseScene(sm, parameter),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
-	mFPS(nullptr)
+	mFPS(nullptr),
+	mIsMissile(false)
 {
 	PlaneActor* plane = new PlaneActor(this);
 
@@ -145,9 +147,7 @@ void GameScene::Update()
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
 
-		if (mPlayer->GetOutCloudTime() >= 14.0f ||
-			mEnemies.size() == 0 ||
-			restTime <= 1.0f)
+		if (mEnemies.size() == 0 ||	restTime <= 1.0f)
 		{
 			SetSceneState(SceneState::EQuit);
 		}
@@ -168,6 +168,14 @@ void GameScene::Update()
 		else
 		{
 			mCautionCloudTime->SetVisible(false);
+		}
+
+		if (mPlayer->GetOutCloudTime() >= 14.0f && !mIsMissile)
+		{
+			dx::XMFLOAT3 pos = mPlayer->GetPosition() + mPlayer->GetForward() * 60.0f;
+			MissileActor* missile = new MissileActor(this, mPlayer, pos, 25.0f);
+			mPlayer->SetLockedOn(true);
+			mIsMissile = true;
 		}
 
 		GamePad* pad = GetInputSystem()->GetPad();
