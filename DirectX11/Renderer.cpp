@@ -168,7 +168,10 @@ Renderer::~Renderer()
 
 void Renderer::Draw()
 {
-	if (auto demo = dynamic_cast<DemoScene*>(mScene))
+	auto demo = dynamic_cast<DemoScene*>(mScene);
+	bool isDemo = demo && mScene->GetFade()->GetFadeState() == Fade::FadeState::EFadeNone;
+
+	if (isDemo)
 	{
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
@@ -181,10 +184,9 @@ void Renderer::Draw()
 
 	Draw3DScene();
 	Draw2DScene();
-
 	mScene->GetFade()->Draw(this);
 
-	if (auto demo = dynamic_cast<DemoScene*>(mScene))
+	if (isDemo)
 	{
 		demo->GetCloud()->ImGuiWindow();
 		demo->GetPlane()->ImGuiWindow();
