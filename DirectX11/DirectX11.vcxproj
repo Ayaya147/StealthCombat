@@ -107,6 +107,7 @@
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EnemyActor.cpp" />
     <ClCompile Include="ExplosionActor.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -140,6 +141,22 @@
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <FxCompile Include="FadePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="FadeVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)ShaderBin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="PhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -236,6 +253,7 @@
     <ClInclude Include="DxException.h" />
     <ClInclude Include="EnemyActor.h" />
     <ClInclude Include="ExplosionActor.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GameScene.h" />

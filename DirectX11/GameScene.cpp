@@ -20,6 +20,7 @@
 #include "PhysWorld.h"
 #include "Minimap.h"
 #include "XMFloatHelper.h"
+#include "Fade.h"
 
 namespace dx = DirectX;
 
@@ -29,7 +30,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mFPS(nullptr),
-	mIsMissile(false)
+	mIsMissile(false),
+	mQuitTime(2.0f)
 {
 	PlaneActor* plane = new PlaneActor(this);
 
@@ -201,8 +203,16 @@ void GameScene::GenerateOutput()
 	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
-		Parameter parameter;
-		GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+		mQuitTime -= GetDeltaTime();
+		if (mQuitTime <= 0.0f)
+		{
+			GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+			if (GetFade()->GetAlpha() >= 1.0f)
+			{
+				Parameter parameter;
+				GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+			}
+		}
 	}
 }
 

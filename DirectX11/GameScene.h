@@ -43,4 +43,5 @@ private:
 	class SpriteComponent* mCautionCloudTime;
 	class Minimap* mMap;
 	bool mIsMissile;
+	float mQuitTime;
 };

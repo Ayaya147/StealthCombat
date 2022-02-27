@@ -231,6 +231,9 @@
     <ClCompile Include="SmokeActor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -425,6 +428,9 @@
     <ClInclude Include="SmokeActor.h">
       <Filter>Header Files\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Fade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PhongPS.hlsl">
@@ -449,6 +455,12 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="RayMarchingVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="FadeVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="FadePS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

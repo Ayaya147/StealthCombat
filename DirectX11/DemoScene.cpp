@@ -11,6 +11,7 @@
 #include "GamePad.h"
 #include "Keyboard.h"
 #include "DefineConstant.h"
+#include "Fade.h"
 
 namespace dx = DirectX;
 
@@ -62,7 +63,11 @@ void DemoScene::GenerateOutput()
 	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
-		Parameter parameter;
-		GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+		if (GetFade()->GetAlpha() >= 1.0f)
+		{
+			Parameter parameter;
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+		}
 	}
 }

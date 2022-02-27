@@ -22,6 +22,7 @@
 #include "ExplosionActor.h"
 #include "SmokeActor.h"
 #include "DemoScene.h"
+#include "Fade.h"
 #include "Light.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
@@ -180,6 +181,8 @@ void Renderer::Draw()
 
 	Draw3DScene();
 	Draw2DScene();
+
+	mScene->GetFade()->Draw(this);
 
 	if (auto demo = dynamic_cast<DemoScene*>(mScene))
 	{

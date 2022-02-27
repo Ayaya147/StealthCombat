@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "Timer.h"
+#include "Fade.h"
 #include "Actor.h"
 #include "InputSystem.h"
 #include "Parameter.h"
@@ -15,6 +16,7 @@ BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	mDeltaTime(0.016f),
 	mSceneState(SceneState::EPlay)
 {
+	mFade = new Fade(this);
 }
 
 BaseScene::~BaseScene()
@@ -34,6 +36,12 @@ BaseScene::~BaseScene()
 	{
 		delete mTimer;
 		mTimer = nullptr;
+	}
+
+	if (mFade)
+	{
+		delete mFade;
+		mFade = nullptr;
 	}
 }
 
@@ -89,6 +97,8 @@ void BaseScene::Update()
 			delete actor;
 		}
 	}
+
+	mFade->Update(mDeltaTime);
 }
 
 void BaseScene::GenerateOutput()

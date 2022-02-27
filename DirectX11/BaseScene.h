@@ -26,6 +26,7 @@ public:
 	class InputSystem* GetInputSystem();
 	class Window* GetWindow();
 	class SceneManager* GetSceneManager() const { return mSceneManager; }
+	class Fade* GetFade() const { return mFade; }
 	float GetGameTime() const { return mGameTime; }
 	float GetDeltaTime() const { return mDeltaTime; }
 	SceneState GetSceneState() const { return mSceneState; }
@@ -34,6 +35,7 @@ private:
 	std::vector<class Actor*> mActors;
 	std::vector<class Actor*> mPendingActors;
 	class Timer* mTimer;
+	class Fade* mFade;
 	class SceneManager* mSceneManager;
 	SceneState mSceneState;
 	bool mUpdatingActors;
