@@ -70,13 +70,17 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 void PlayerActor::ActorInput()
 {
+	auto game = dynamic_cast<GameScene*>(GetScene());
 	InputSystem* input = GetScene()->GetInputSystem();
 	GamePad* pad = input->GetPad();
 
 	if (input->GetPlayerRightTurn() && !input->GetPlayerLeftTurn())
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
-		pad->SetRightVibration(100);
+		if (game)
+		{
+			pad->SetRightVibration(100);
+		}
 
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
@@ -94,7 +98,10 @@ void PlayerActor::ActorInput()
 	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
-		pad->SetLeftVibration(100);
+		if (game)
+		{
+			pad->SetRightVibration(100);
+		}
 
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
@@ -112,7 +119,18 @@ void PlayerActor::ActorInput()
 	else
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
-		pad->StopVibration();
+
+		if (game)
+		{
+			if (mOutCloudTime != 0.0f)
+			{
+				pad->StopVibration();
+			}
+			else
+			{
+				pad->SetVibration(3);
+			}
+		}
 	}
 
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
@@ -121,6 +139,10 @@ void PlayerActor::ActorInput()
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 	{
+		if (game)
+		{
+			pad->SetVibration(100);
+		}
 		mMoveComponent->SetAcceleration(accelS);
 	}
 	else
