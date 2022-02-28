@@ -13,21 +13,29 @@
 
 namespace dx = DirectX;
 
+static SceneManager::SceneType gNextScene = SceneManager::SceneType::EGame;
+
 TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	:
-	BaseScene(sm, parameter),
-	mNextScene(0)
+	BaseScene(sm, parameter)
 {
 	Renderer* renderer = GetRenderer();
 
 	Actor* sprite = new Actor(this);
-	Texture* tex = renderer->GetTexture("0");
+	Texture* tex = renderer->GetTexture("fade");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
+	sprite->SetScale(5.0f);
 
 	sprite = new Actor(this);
-	tex = renderer->GetTexture("1");
+	tex = renderer->GetTexture("mode");
 	sc = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -400.0f, 0.0f });
+	sprite->SetPosition(dx::XMFLOAT3{ 25.0f, 300.0f, 0.0f });
+	sprite->SetScale(0.5f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("title");
+	sc = new SpriteComponent(sprite, tex);
+	sprite->SetScale(1.0f);
 }
 
 TitleScene::~TitleScene()
@@ -36,15 +44,22 @@ TitleScene::~TitleScene()
 
 void TitleScene::ProcessInput()
 {
-	if (GetInputSystem()->GetSceneChangeEnter())
+	if (GetInputSystem()->GetX())
 	{
 		SetSceneState(SceneState::EQuit);
-		mNextScene = 0;
+		gNextScene = SceneManager::SceneType::EGame;
 	}
-	else if (GetInputSystem()->GetSceneChangeSpace())
+	else if (GetInputSystem()->GetY())
 	{
 		SetSceneState(SceneState::EQuit);
-		mNextScene = 1;
+		gNextScene = SceneManager::SceneType::EDemo;
+	}
+	else if (GetInputSystem()->GetB())
+	{
+	}
+	else if (GetInputSystem()->GetA())
+	{
+		PostQuitMessage(0);
 	}
 
 	BaseScene::ProcessInput();
@@ -62,23 +77,25 @@ void TitleScene::GenerateOutput()
 	if (GetSceneState() == SceneState::EQuit)
 	{
 		GetInputSystem()->GetPad()->StopVibration();
-		if (mNextScene == 0)
+		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+
+		switch (gNextScene)
 		{
-			GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
-			if (GetFade()->GetAlpha() >= 1.0f)
-			{
-				Parameter parameter;
-				GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
-			}
-		}
-		else
-		{
-			GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+		case SceneManager::SceneType::EDemo:
 			if (GetFade()->GetAlpha() >= 1.0f)
 			{
 				Parameter parameter;
 				GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
 			}
+			break;
+
+		case SceneManager::SceneType::EGame:
+			if (GetFade()->GetAlpha() >= 1.0f)
+			{
+				Parameter parameter;
+				GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
+			}
+			break;
 		}
 	}
 }

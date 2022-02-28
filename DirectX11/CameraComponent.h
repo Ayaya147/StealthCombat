@@ -15,7 +15,6 @@ public:
 
 private:
 	float mTargetDist;
-	int mType;
 	DirectX::XMFLOAT3 mVelocity;
 	DirectX::XMFLOAT3 mActualPos;
 };

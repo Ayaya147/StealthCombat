@@ -12,6 +12,9 @@
 #include "Keyboard.h"
 #include "DefineConstant.h"
 #include "Fade.h"
+#include "Texture.h"
+#include "Renderer.h"
+#include "SpriteComponent.h"
 
 namespace dx = DirectX;
 
@@ -20,6 +23,7 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	BaseScene(sm, parameter)
 {
 	ShowCursor(TRUE);
+
 	mPlane = new PlaneActor(this);
 	mCloud = new CloudActor(this);
 	mExplosion = new ExplosionActor(this);
@@ -28,6 +32,12 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mSmoke->SetScale(10.0f);
 	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
 	PlayerActor* player = new PlayerActor(this);
+
+	Actor* sprite = new Actor(this);
+	Texture* tex = GetRenderer()->GetTexture("back");
+	SpriteComponent* sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 700.0f, 420.0f, 0.0f });
+	sprite->SetScale(0.5f);
 }
 
 DemoScene::~DemoScene()
@@ -39,7 +49,7 @@ DemoScene::~DemoScene()
 
 void DemoScene::ProcessInput()
 {
-	if (GetInputSystem()->GetSceneChangeEnter())
+	if (GetInputSystem()->GetY())
 	{
 		SetSceneState(SceneState::EQuit);
 	}

@@ -25,8 +25,6 @@
 
 namespace dx = DirectX;
 
-static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
-
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
@@ -152,8 +150,9 @@ GameScene::~GameScene()
 
 void GameScene::ProcessInput()
 {
-	if (GetSceneState() == SceneState::EPlay)
+	switch (GetSceneState())
 	{
+	case SceneState::EPlay:
 		if (GetInputSystem()->GetScenePause())
 		{
 			GetInputSystem()->GetPad()->StopVibration();
@@ -161,10 +160,10 @@ void GameScene::ProcessInput()
 			mBackgroundUI->SetUIState(UIScreen::UIState::EActive);
 			mMenuUI->SetUIState(UIScreen::UIState::EActive);
 		}
-	}
-	else if (GetSceneState() == SceneState::EPaused)
-	{
-		if (GetInputSystem()->GetSceneBack())
+		break;
+
+	case SceneState::EPaused:
+		if (GetInputSystem()->GetX())
 		{
 			SetSceneState(SceneState::EPlay);
 			for (auto ui : GetUIStack())
@@ -172,7 +171,7 @@ void GameScene::ProcessInput()
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
 		}
-		else if (GetInputSystem()->GetSceneQuit())
+		else if (GetInputSystem()->GetY())
 		{
 			SetSceneState(SceneState::EQuit);
 			for (auto ui : GetUIStack())
@@ -181,10 +180,10 @@ void GameScene::ProcessInput()
 			}
 			mQuitTime = 0.0f;
 		}
-	}
-	else if (GetSceneState() == SceneState::EGameEnd)
-	{
-		if (mQuitTime <= 0.0f && GetInputSystem()->GetSceneQuit())
+		break;
+
+	case SceneState::EGameEnd:
+		if (mQuitTime <= 0.0f && GetInputSystem()->GetY())
 		{
 			SetSceneState(SceneState::EQuit);
 			for (auto ui : GetUIStack())
@@ -192,6 +191,7 @@ void GameScene::ProcessInput()
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
 		}
+		break;
 	}
 
 	BaseScene::ProcessInput();
@@ -199,7 +199,9 @@ void GameScene::ProcessInput()
 
 void GameScene::Update()
 {
-	if (GetSceneState() == SceneState::EPlay)
+	switch (GetSceneState())
+	{
+	case SceneState::EPlay:
 	{
 		mMap->Update(this);
 		mOutCloudTime->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
@@ -258,8 +260,9 @@ void GameScene::Update()
 			mGuideSprite->SetTexture(tex);
 		}
 	}
-	else if (GetSceneState() == SceneState::EGameEnd)
-	{
+		break;
+
+	case SceneState::EGameEnd:
 		GetInputSystem()->GetPad()->StopVibration();
 		mQuitTime -= GetDeltaTime();
 		if (mQuitTime <= 0.0f)
@@ -275,6 +278,7 @@ void GameScene::Update()
 				mDefeatUI->SetUIState(UIScreen::UIState::EActive);
 			}
 		}
+		break;
 	}
 
 	BaseScene::Update();

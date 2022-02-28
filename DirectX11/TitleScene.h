@@ -12,5 +12,4 @@ public:
 	void GenerateOutput() override;
 
 private:
-	int mNextScene;
 };

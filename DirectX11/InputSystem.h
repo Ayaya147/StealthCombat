@@ -21,14 +21,12 @@ public:
 	bool GetPlayerAccel();
 	bool GetPlayerDecel();
 	bool GetPlayerEmitMissile();
-	bool GetCameraChange();
+
 	bool GetScenePause();
-	bool GetSceneBack();
-	bool GetSceneQuit();
-
-
-	bool GetSceneChangeEnter();
-	bool GetSceneChangeSpace();
+	bool GetX();
+	bool GetY();
+	bool GetA();
+	bool GetB();
 
 	class Keyboard* GetKeyboard() const { return mKeyboard; }
 	class GamePad* GetPad() const { return mPad; }
