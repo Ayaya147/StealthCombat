@@ -28,7 +28,7 @@ public:
 private:
 	std::vector<class EnemyActor*> mEnemies;
 	std::vector<class CloudActor*> mClouds;
-
+	class UIScreen* ui;
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;
 	class NumberActor* mOutCloudTime;

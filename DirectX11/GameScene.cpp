@@ -21,6 +21,7 @@
 #include "Minimap.h"
 #include "XMFloatHelper.h"
 #include "Fade.h"
+#include "UIScreen.h"
 
 namespace dx = DirectX;
 
@@ -31,7 +32,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer(new PlayerActor(this)),
 	mFPS(nullptr),
 	mIsMissile(false),
-	mQuitTime(2.0f)
+	mQuitTime(1.5f)
 {
 	PlaneActor* plane = new PlaneActor(this);
 
@@ -118,6 +119,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mFPS->SetScale(0.6f);
 
 	renderer->ResetLight();
+
+	tex = renderer->GetTexture("fade");
+	ui = new UIScreen(this, tex);
+	ui->SetScale(2.0f);
 }
 
 GameScene::~GameScene()
@@ -128,9 +133,10 @@ GameScene::~GameScene()
 
 void GameScene::ProcessInput()
 {
-	if (GetInputSystem()->GetSceneChangeEnter())
+	if (GetInputSystem()->GetScenePause())
 	{
-		SetSceneState(SceneState::EQuit);
+		SetSceneState(SceneState::EPaused);
+		ui->SetUIState(UIScreen::UIState::EActive);
 	}
 
 	BaseScene::ProcessInput();

@@ -6,6 +6,7 @@
 #include "Actor.h"
 #include "InputSystem.h"
 #include "Parameter.h"
+#include "UIScreen.h"
 
 BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:
@@ -29,6 +30,11 @@ BaseScene::~BaseScene()
 	{
 		delete mPendingActors.back();
 	}
+	while (!mUIStack.empty())
+	{
+		delete mUIStack.back();
+		mUIStack.pop_back();
+	}
 
 	GetRenderer()->UnloadData();
 
@@ -49,12 +55,22 @@ void BaseScene::ProcessInput()
 {
 	GetInputSystem()->Update();
 
-	mUpdatingActors = true;
-	for (auto actor : mActors)
+	if (mSceneState == SceneState::EPlay)
 	{
-		actor->ProcessInput();
+		mUpdatingActors = true;
+		for (auto actor : mActors)
+		{
+			actor->ProcessInput();
+		}
+		mUpdatingActors = false;
 	}
-	mUpdatingActors = false;
+	else
+	{
+		for (auto ui : mUIStack)
+		{
+			ui->ProcessInput();
+		}
+	}
 }
 
 void BaseScene::Update()
@@ -97,6 +113,13 @@ void BaseScene::Update()
 			delete actor;
 		}
 	}
+	else
+	{
+		for (auto ui : mUIStack)
+		{
+			ui->Update(mDeltaTime);
+		}
+	}
 
 	mFade->Update(mDeltaTime);
 }
@@ -133,6 +156,11 @@ void BaseScene::RemoveActor(Actor* actor)
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
 	}
+}
+
+void BaseScene::PushUI(UIScreen* screen)
+{
+	mUIStack.emplace_back(screen);
 }
 
 Renderer* BaseScene::GetRenderer()

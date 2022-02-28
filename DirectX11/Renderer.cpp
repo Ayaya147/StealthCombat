@@ -24,6 +24,7 @@
 #include "DemoScene.h"
 #include "Fade.h"
 #include "Light.h"
+#include "UIScreen.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
 
@@ -258,6 +259,11 @@ void Renderer::Draw2DScene()
 			}
 			sprite->Draw(this);
 		}
+	}
+
+	for (auto ui : mScene->GetUIStack())
+	{
+		ui->Draw(this);
 	}
 }
 

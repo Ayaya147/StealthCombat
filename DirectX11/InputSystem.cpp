@@ -106,6 +106,30 @@ bool InputSystem::GetCameraChange()
 	}
 }
 
+bool InputSystem::GetScenePause()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed;
+	}
+	else
+	{
+		return mKeyboard->GetKeyState(VK_ESCAPE) == ButtonState::EPressed;
+	}
+}
+
+bool InputSystem::GetSceneBack()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed;
+	}
+	else
+	{
+		return mKeyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed;
+	}
+}
+
 bool InputSystem::GetSceneChangeEnter()
 {
 	if (mIsGamePad)

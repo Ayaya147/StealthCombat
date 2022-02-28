@@ -22,6 +22,8 @@ public:
 	bool GetPlayerDecel();
 	bool GetPlayerEmitMissile();
 	bool GetCameraChange();
+	bool GetScenePause();
+	bool GetSceneBack();
 	bool GetSceneChangeEnter();
 	bool GetSceneChangeSpace();
 

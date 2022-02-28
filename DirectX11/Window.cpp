@@ -110,12 +110,12 @@ LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexc
 		break;
 
 	case WM_KEYDOWN:
-		switch (wParam)
-		{
-		case VK_ESCAPE:
-			PostQuitMessage(0);
-			return 0;
-		}
+		//switch (wParam)
+		//{
+		//case VK_ESCAPE:
+		//	PostQuitMessage(0);
+		//	return 0;
+		//}
 	case WM_SYSKEYDOWN:
 		if (imio.WantCaptureKeyboard)
 		{

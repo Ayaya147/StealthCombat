@@ -20,6 +20,7 @@ public:
 
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
+	void PushUI(class UIScreen* screen);
 
 	void SetSceneState(SceneState state) { mSceneState = state; }
 	class Renderer* GetRenderer();
@@ -30,10 +31,13 @@ public:
 	float GetGameTime() const { return mGameTime; }
 	float GetDeltaTime() const { return mDeltaTime; }
 	SceneState GetSceneState() const { return mSceneState; }
+	const std::vector<class UIScreen*>& GetUIStack() const { return mUIStack; }
 
 private:
 	std::vector<class Actor*> mActors;
 	std::vector<class Actor*> mPendingActors;
+	std::vector<class UIScreen*> mUIStack;
+
 	class Timer* mTimer;
 	class Fade* mFade;
 	class SceneManager* mSceneManager;
