@@ -25,6 +25,8 @@
 
 namespace dx = DirectX;
 
+static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
+
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
@@ -32,8 +34,11 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer(new PlayerActor(this)),
 	mFPS(nullptr),
 	mIsMissile(false),
+	mWin(false),
 	mQuitTime(1.5f)
 {
+	Renderer* renderer = GetRenderer();
+
 	PlaneActor* plane = new PlaneActor(this);
 
 	for (int i = 0; i < 5; i++)
@@ -45,9 +50,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 		CloudActor* cloud = new CloudActor(this);
 	}
 
-	mMap = new Minimap(this);
-
-	Renderer* renderer = GetRenderer();
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("guide_keyboard");
 	mGuideSprite = new SpriteComponent(sprite, tex);
@@ -114,15 +116,32 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
 	mEnemyNum->SetScale(0.8f);
 
-	mFPS = new NumberActor(this, 0, 2);
-	mFPS->SetOriPosition(dx::XMFLOAT3{ -900.0f, -500.0f, 0.0f });
-	mFPS->SetScale(0.6f);
-
-	renderer->ResetLight();
+	//mFPS = new NumberActor(this, 0, 2);
+	//mFPS->SetOriPosition(dx::XMFLOAT3{ -900.0f, -500.0f, 0.0f });
+	//mFPS->SetScale(0.6f);
 
 	tex = renderer->GetTexture("fade");
-	ui = new UIScreen(this, tex);
-	ui->SetScale(2.0f);
+	mBackgroundUI = new UIScreen(this, tex);
+	mBackgroundUI->SetScale(5.0f);
+	mBackgroundUI->ComputeWorldTransform();
+
+	tex = renderer->GetTexture("menu");
+	mMenuUI = new UIScreen(this, tex);
+	mMenuUI->SetScale(0.8f);
+	mMenuUI->ComputeWorldTransform();
+
+	tex = renderer->GetTexture("victory");
+	mVictoryUI = new UIScreen(this, tex);
+	mVictoryUI->SetScale(1.0f);
+	mVictoryUI->ComputeWorldTransform();
+
+	tex = renderer->GetTexture("defeat");
+	mDefeatUI = new UIScreen(this, tex);
+	mDefeatUI->SetScale(1.0f);
+	mDefeatUI->ComputeWorldTransform();
+
+	mMap = new Minimap(this);
+	renderer->ResetLight();
 }
 
 GameScene::~GameScene()
@@ -133,10 +152,46 @@ GameScene::~GameScene()
 
 void GameScene::ProcessInput()
 {
-	if (GetInputSystem()->GetScenePause())
+	if (GetSceneState() == SceneState::EPlay)
 	{
-		SetSceneState(SceneState::EPaused);
-		ui->SetUIState(UIScreen::UIState::EActive);
+		if (GetInputSystem()->GetScenePause())
+		{
+			GetInputSystem()->GetPad()->StopVibration();
+			SetSceneState(SceneState::EPaused);
+			mBackgroundUI->SetUIState(UIScreen::UIState::EActive);
+			mMenuUI->SetUIState(UIScreen::UIState::EActive);
+		}
+	}
+	else if (GetSceneState() == SceneState::EPaused)
+	{
+		if (GetInputSystem()->GetSceneBack())
+		{
+			SetSceneState(SceneState::EPlay);
+			for (auto ui : GetUIStack())
+			{
+				ui->SetUIState(UIScreen::UIState::EClosing);
+			}
+		}
+		else if (GetInputSystem()->GetSceneQuit())
+		{
+			SetSceneState(SceneState::EQuit);
+			for (auto ui : GetUIStack())
+			{
+				ui->SetUIState(UIScreen::UIState::EClosing);
+			}
+			mQuitTime = 0.0f;
+		}
+	}
+	else if (GetSceneState() == SceneState::EGameEnd)
+	{
+		if (mQuitTime <= 0.0f && GetInputSystem()->GetSceneQuit())
+		{
+			SetSceneState(SceneState::EQuit);
+			for (auto ui : GetUIStack())
+			{
+				ui->SetUIState(UIScreen::UIState::EClosing);
+			}
+		}
 	}
 
 	BaseScene::ProcessInput();
@@ -150,14 +205,19 @@ void GameScene::Update()
 		mOutCloudTime->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
-		mFPS->SetValue(1.0f / GetDeltaTime());
+		//mFPS->SetValue(1.0f / GetDeltaTime());
 
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
 
-		if (mEnemies.size() == 0 ||	restTime <= 1.0f)
+		if (mEnemies.size() == 0)
 		{
-			SetSceneState(SceneState::EQuit);
+			SetSceneState(SceneState::EGameEnd);
+			mWin = true;
+		}
+		else if (restTime <= 1.0f)
+		{
+			SetSceneState(SceneState::EGameEnd);
 		}
 
 		if (restTime <= 10.0f)
@@ -198,6 +258,24 @@ void GameScene::Update()
 			mGuideSprite->SetTexture(tex);
 		}
 	}
+	else if (GetSceneState() == SceneState::EGameEnd)
+	{
+		GetInputSystem()->GetPad()->StopVibration();
+		mQuitTime -= GetDeltaTime();
+		if (mQuitTime <= 0.0f)
+		{
+			mBackgroundUI->SetUIState(UIScreen::UIState::EActive);
+
+			if (mWin)
+			{
+				mVictoryUI->SetUIState(UIScreen::UIState::EActive);
+			}
+			else
+			{
+				mDefeatUI->SetUIState(UIScreen::UIState::EActive);
+			}
+		}
+	}
 
 	BaseScene::Update();
 }
@@ -208,16 +286,11 @@ void GameScene::GenerateOutput()
 
 	if (GetSceneState() == SceneState::EQuit)
 	{
-		GetInputSystem()->GetPad()->StopVibration();
-		mQuitTime -= GetDeltaTime();
-		if (mQuitTime <= 0.0f)
+		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+		if (GetFade()->GetAlpha() >= 1.0f)
 		{
-			GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
-			if (GetFade()->GetAlpha() >= 1.0f)
-			{
-				Parameter parameter;
-				GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
-			}
+			Parameter parameter;
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
 		}
 	}
 }

@@ -8,6 +8,7 @@ public:
 	{
 		EPlay,
 		EPaused,
+		EGameEnd,
 		EQuit
 	};
 

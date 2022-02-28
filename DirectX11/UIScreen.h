@@ -20,6 +20,7 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void ProcessInput();
 	virtual void Draw(class Renderer* renderer);
+	void ComputeWorldTransform();
 
 	void SetUIState(UIState state) { mState = state;}
 	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion;}

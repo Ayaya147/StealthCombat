@@ -28,7 +28,7 @@ public:
 private:
 	std::vector<class EnemyActor*> mEnemies;
 	std::vector<class CloudActor*> mClouds;
-	class UIScreen* ui;
+	class Minimap* mMap;
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;
 	class NumberActor* mOutCloudTime;
@@ -41,7 +41,12 @@ private:
 	class SpriteComponent* mMarkingPlayerSprite;
 	class SpriteComponent* mCautionGameTime;
 	class SpriteComponent* mCautionCloudTime;
-	class Minimap* mMap;
+	class UIScreen* mBackgroundUI;
+	class UIScreen* mMenuUI;
+	class UIScreen* mVictoryUI;
+	class UIScreen* mDefeatUI;
+
 	bool mIsMissile;
+	bool mWin;
 	float mQuitTime;
 };

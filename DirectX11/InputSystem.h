@@ -24,6 +24,9 @@ public:
 	bool GetCameraChange();
 	bool GetScenePause();
 	bool GetSceneBack();
+	bool GetSceneQuit();
+
+
 	bool GetSceneChangeEnter();
 	bool GetSceneChangeSpace();
 

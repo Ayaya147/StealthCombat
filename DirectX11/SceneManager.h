@@ -9,7 +9,6 @@ public:
 		ETitle,
 		EDemo,
 		EGame,
-		EResult,
 	};
 
 	SceneManager(class GameApp* gameApp);

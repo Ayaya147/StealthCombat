@@ -64,7 +64,7 @@ void BaseScene::ProcessInput()
 		}
 		mUpdatingActors = false;
 	}
-	else
+	else if (mSceneState == SceneState::EPaused)
 	{
 		for (auto ui : mUIStack)
 		{
@@ -113,7 +113,7 @@ void BaseScene::Update()
 			delete actor;
 		}
 	}
-	else
+	else if (mSceneState == SceneState::EPaused)
 	{
 		for (auto ui : mUIStack)
 		{

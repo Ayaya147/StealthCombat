@@ -24,21 +24,6 @@ UIScreen::UIScreen(BaseScene* scene, Texture* texture)
 	mCount++;
 	scene->PushUI(this);
 
-	mWorldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
-	mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
-	mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
-	dx::XMMATRIX scaleMat = dx::XMMatrixScaling(
-		static_cast<float>(mTexture->GetTexWidth()),
-		static_cast<float>(mTexture->GetTexHeight()),
-		1.0f
-	);
-	dx::XMMATRIX projection = scene->GetRenderer()->GetProjectionMatrix2D();
-
-	mTransforms = {
-		dx::XMMatrixTranspose(scaleMat * mWorldTransform),
-		dx::XMMatrixTranspose(projection)
-	};
-
 	if (!mBuffer)
 	{
 		mBuffer = new VertexConstantBuffer<Transforms>(scene->GetRenderer(), 0);
@@ -58,23 +43,10 @@ UIScreen::~UIScreen()
 
 void UIScreen::Update(float deltaTime)
 {
-	if (mState == UIState::EActive)
-	{
-	}
 }
 
 void UIScreen::ProcessInput()
 {
-	if (mState == UIState::EActive)
-	{
-		InputSystem* input = mScene->GetInputSystem();
-
-		if (input->GetSceneBack())
-		{
-			mState = UIState::EClosing;
-			mScene->SetSceneState(BaseScene::SceneState::EPlay);
-		}
-	}
 }
 
 void UIScreen::Draw(Renderer* renderer)
@@ -87,4 +59,22 @@ void UIScreen::Draw(Renderer* renderer)
 
 		renderer->GetContext()->Draw(4, 0);
 	}
+}
+
+void UIScreen::ComputeWorldTransform()
+{
+	mWorldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
+	mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
+	mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+	dx::XMMATRIX scaleMat = dx::XMMatrixScaling(
+		static_cast<float>(mTexture->GetTexWidth()),
+		static_cast<float>(mTexture->GetTexHeight()),
+		1.0f
+	);
+	dx::XMMATRIX projection = mScene->GetRenderer()->GetProjectionMatrix2D();
+
+	mTransforms = {
+		dx::XMMatrixTranspose(scaleMat * mWorldTransform),
+		dx::XMMatrixTranspose(projection)
+	};
 }

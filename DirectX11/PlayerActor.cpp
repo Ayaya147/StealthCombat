@@ -161,7 +161,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
 			explosion->SetPosition(GetPosition() + GetForward() * 1.25f);
-			game->SetSceneState(BaseScene::SceneState::EQuit);
+			game->SetSceneState(BaseScene::SceneState::EGameEnd);
 		}
 
 		SpriteComponent* sprite = game->GetMarkingPlayerSprite();

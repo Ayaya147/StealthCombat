@@ -110,7 +110,7 @@ bool InputSystem::GetScenePause()
 {
 	if (mIsGamePad)
 	{
-		return mPad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed;
+		return mPad->GetButtonState(XINPUT_GAMEPAD_START) == ButtonState::EPressed;
 	}
 	else
 	{
@@ -122,11 +122,23 @@ bool InputSystem::GetSceneBack()
 {
 	if (mIsGamePad)
 	{
-		return mPad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed;
+		return mPad->GetButtonState(XINPUT_GAMEPAD_X) == ButtonState::EPressed;
 	}
 	else
 	{
-		return mKeyboard->GetKeyState(VK_RETURN) == ButtonState::EPressed;
+		return mKeyboard->GetKeyState('X') == ButtonState::EPressed;
+	}
+}
+
+bool InputSystem::GetSceneQuit()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetButtonState(XINPUT_GAMEPAD_Y) == ButtonState::EPressed;
+	}
+	else
+	{
+		return mKeyboard->GetKeyState('Y') == ButtonState::EPressed;
 	}
 }
 

@@ -67,7 +67,7 @@ void DemoScene::GenerateOutput()
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
 		}
 	}
 }

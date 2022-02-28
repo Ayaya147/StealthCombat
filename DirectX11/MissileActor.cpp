@@ -97,7 +97,7 @@ void MissileActor::UpdateActor(float deltaTime)
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
 			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
-			game->SetSceneState(BaseScene::SceneState::EQuit);
+			game->SetSceneState(BaseScene::SceneState::EGameEnd);
 		}
 		break;
 	}

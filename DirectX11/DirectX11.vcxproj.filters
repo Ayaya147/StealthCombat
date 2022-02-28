@@ -201,9 +201,6 @@
     <ClCompile Include="MissileActor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="ResultScene.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="NumberActor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
@@ -391,9 +388,6 @@
     </ClInclude>
     <ClInclude Include="MissileActor.h">
       <Filter>Header Files\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="ResultScene.h">
-      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="NumberActor.h">
       <Filter>Header Files\Actor</Filter>
