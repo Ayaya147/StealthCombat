@@ -18,33 +18,22 @@ Fade::Fade(BaseScene* scene)
 	mAlpha(1.0f)
 {
 	Renderer* renderer = scene->GetRenderer();
+	mTexture = renderer->GetTexture("fade");
 
 	std::vector<Vertex> vertices;
 	vertices.reserve(4);
-	vertices.push_back({ {-0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha} });
-	vertices.push_back({ { 0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha} });
-	vertices.push_back({ {-0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha} });
-	vertices.push_back({ { 0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha} });
-
-	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-	{
-		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-	};
+	vertices.push_back({ {-0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{0.0f,0.0f} });
+	vertices.push_back({ { 0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{1.0f,0.0f} });
+	vertices.push_back({ {-0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{0.0f,1.0f} });
+	vertices.push_back({ { 0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{1.0f,1.0f} });
 
 	mVertexBuffer = new VertexBuffer(renderer, vertices);
-	mVertexShader = new VertexShader(renderer, L"ShaderBin\\FadeVS.cso");
-	mPixelShader = new PixelShader(renderer, L"ShaderBin\\FadePS.cso");
-	mInputLayout = new InputLayout(renderer, ied, mVertexShader);
 	mBuffer = new VertexConstantBuffer<Transforms>(renderer, 0);
 }
 
 Fade::~Fade()
 {
 	delete mVertexBuffer;
-	delete mVertexShader;
-	delete mPixelShader;
-	delete mInputLayout;
 	delete mBuffer;
 }
 
@@ -75,7 +64,7 @@ void Fade::Update(float deltaTime)
 
 	for (int i = 0; i < 4; i++)
 	{
-		vertex[i].col = dx::XMFLOAT4{ 0.0f,0.0f,0.0f,mAlpha };
+		vertex[i].col = dx::XMFLOAT4{ 1.0f,1.0f,1.0f,mAlpha };
 	}
 
 	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
@@ -97,9 +86,7 @@ void Fade::Draw(Renderer* renderer)
 		mBuffer->Update(renderer, tf);
 		mBuffer->Bind(renderer);
 		mVertexBuffer->Bind(renderer);
-		mVertexShader->Bind(renderer);
-		mPixelShader->Bind(renderer);
-		mInputLayout->Bind(renderer);
+		mTexture->Bind(renderer);
 
 		renderer->GetContext()->Draw(4, 0);
 	}

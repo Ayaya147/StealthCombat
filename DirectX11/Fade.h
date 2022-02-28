@@ -35,6 +35,7 @@ private:
 	{
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT4 col;
+		DirectX::XMFLOAT2 tc;
 	};
 
 	class BaseScene* mScene;
@@ -42,9 +43,7 @@ private:
 	float mAlpha;
 	FadeState mFadeState;
 
+	class Texture* mTexture;
 	class VertexBuffer* mVertexBuffer;
-	class InputLayout* mInputLayout;
-	class PixelShader* mPixelShader;
-	class VertexShader* mVertexShader;
 	VertexConstantBuffer<Transforms>* mBuffer;
 };
