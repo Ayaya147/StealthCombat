@@ -26,6 +26,9 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 
 	mPlane = new PlaneActor(this);
 	mCloud = new CloudActor(this);
+	mCloud->SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
+	mCloud->SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
+
 	mExplosion = new ExplosionActor(this);
 	mExplosion->SetPosition(dx::XMFLOAT3{ 6.0f,Constant::height,0.0f });
 	mSmoke = new SmokeActor(this);
@@ -59,10 +62,6 @@ void DemoScene::ProcessInput()
 
 void DemoScene::Update()
 {
-	if (GetSceneState() == SceneState::EPlay)
-	{
-	}
-
 	BaseScene::Update();
 }
 

@@ -10,6 +10,10 @@
 #include "Keyboard.h"
 #include "GamePad.h"
 #include "Fade.h"
+#include "PlaneActor.h"
+#include "CloudActor.h"
+#include "DefineConstant.h"
+#include "CameraComponent.h"
 
 namespace dx = DirectX;
 
@@ -20,6 +24,16 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	BaseScene(sm, parameter)
 {
 	Renderer* renderer = GetRenderer();
+
+	PlaneActor* plane = new PlaneActor(this);
+	CloudActor* cloud = new CloudActor(this);
+	cloud->SetScale(dx::XMFLOAT3{ 20.0f,1.0f,20.0f });
+	cloud->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,1.5f });
+
+	Actor* actor = new Actor(this);
+	actor->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
+	CameraComponent* cc = new CameraComponent(actor);
+	cc->SnapToIdeal();
 
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("fade");
@@ -56,6 +70,7 @@ void TitleScene::ProcessInput()
 	}
 	else if (GetInputSystem()->GetB())
 	{
+
 	}
 	else if (GetInputSystem()->GetA())
 	{

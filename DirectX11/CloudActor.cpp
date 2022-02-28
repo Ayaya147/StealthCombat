@@ -50,11 +50,6 @@ CloudActor::CloudActor(BaseScene* scene)
 		}
 		SetPosition(pos);
 	}
-	else
-	{
-		SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
-		SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
-	}
 
 	mCount++;
 	Reset();
