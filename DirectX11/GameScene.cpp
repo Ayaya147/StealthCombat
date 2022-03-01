@@ -194,7 +194,7 @@ void GameScene::ProcessInput()
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
 		}
-		else if (mQuitTime <= 0.0f && GetInputSystem()->GetX())
+		else if (mQuitTime <= 0.0f && GetInputSystem()->GetX() && !mWin)
 		{
 			SetSceneState(SceneState::EQuit);
 			gNextScene = SceneManager::SceneType::EGame;

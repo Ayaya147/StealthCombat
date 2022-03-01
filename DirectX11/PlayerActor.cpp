@@ -173,7 +173,10 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (phys->IsCollidedWithCloud(mBody))
 		{
-			mOutCloudTime = 14.0f;
+			if (mOutCloudTime > 0.0f)
+			{
+				mOutCloudTime = 14.0f;
+			}
 		}
 		else
 		{
