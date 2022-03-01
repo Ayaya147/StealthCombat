@@ -43,7 +43,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		EnemyActor* enemy = new EnemyActor(this);
 	}
-	for (int i = 0; i < 28; i++)
+	for (int i = 0; i < 26; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
@@ -106,7 +106,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, 44.0f, 0.0f });
 	mOutCloudTime->SetScale(0.6f);
 
-	mRestTime = new NumberActor(this, 300, 3);
+	mRestTime = new NumberActor(this, 200, 3);
 	mRestTime->SetOriPosition(dx::XMFLOAT3{ 126.0f, -477.0f, 0.0f });
 	mRestTime->SetScale(0.8f);
 
@@ -231,7 +231,7 @@ void GameScene::Update()
 			mCautionGameTime->SetVisible(false);
 		}
 
-		if (mPlayer->GetOutCloudTime() >= 10.0f)
+		if (mPlayer->GetOutCloudTime() >= 8.0f)
 		{
 			mCautionCloudTime->SetVisible(true);
 		}
@@ -240,7 +240,7 @@ void GameScene::Update()
 			mCautionCloudTime->SetVisible(false);
 		}
 
-		if (mPlayer->GetOutCloudTime() >= 14.0f && !mIsMissile)
+		if (mPlayer->GetOutCloudTime() >= 12.0f && !mIsMissile)
 		{
 			dx::XMFLOAT3 pos = mPlayer->GetPosition() + mPlayer->GetForward() * 60.0f;
 			MissileActor* missile = new MissileActor(this, mPlayer, pos, 25.0f);

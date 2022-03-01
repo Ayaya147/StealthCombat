@@ -39,8 +39,8 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	Actor* sprite = new Actor(this);
 	Texture* tex = GetRenderer()->GetTexture("back");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 700.0f, 420.0f, 0.0f });
-	sprite->SetScale(0.5f);
+	sprite->SetPosition(dx::XMFLOAT3{ 750.0f, 470.0f, 0.0f });
+	sprite->SetScale(0.4f);
 }
 
 DemoScene::~DemoScene()

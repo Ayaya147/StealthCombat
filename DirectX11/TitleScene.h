@@ -12,4 +12,10 @@ public:
 	void GenerateOutput() override;
 
 private:
+	bool mIsTutorial;
+
+	class SpriteComponent* mTitleSprite;
+	class SpriteComponent* mModeSprite;
+	class SpriteComponent* mBackSprite;
+	class SpriteComponent* mTutorialSprite;
 };

@@ -21,7 +21,8 @@ static SceneManager::SceneType gNextScene = SceneManager::SceneType::EGame;
 
 TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	:
-	BaseScene(sm, parameter)
+	BaseScene(sm, parameter),
+	mIsTutorial(false)
 {
 	Renderer* renderer = GetRenderer();
 
@@ -42,13 +43,26 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("mode");
-	sc = new SpriteComponent(sprite, tex);
+	mModeSprite = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 25.0f, 300.0f, 0.0f });
 	sprite->SetScale(0.5f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("title");
-	sc = new SpriteComponent(sprite, tex);
+	mTitleSprite = new SpriteComponent(sprite, tex);
+	sprite->SetScale(1.0f);
+
+	sprite = new Actor(this);
+	tex = GetRenderer()->GetTexture("back");
+	mBackSprite = new SpriteComponent(sprite, tex);
+	mBackSprite->SetVisible(false);
+	sprite->SetPosition(dx::XMFLOAT3{ 750.0f, 470.0f, 0.0f });
+	sprite->SetScale(0.4f);
+
+	sprite = new Actor(this);
+	tex = GetRenderer()->GetTexture("tutorial");
+	mTutorialSprite = new SpriteComponent(sprite, tex);
+	mTutorialSprite->SetVisible(false);
 	sprite->SetScale(1.0f);
 }
 
@@ -58,23 +72,41 @@ TitleScene::~TitleScene()
 
 void TitleScene::ProcessInput()
 {
-	if (GetInputSystem()->GetX())
+	if (!mIsTutorial)
 	{
-		SetSceneState(SceneState::EQuit);
-		gNextScene = SceneManager::SceneType::EGame;
+		if (GetInputSystem()->GetX())
+		{
+			SetSceneState(SceneState::EQuit);
+			gNextScene = SceneManager::SceneType::EGame;
+		}
+		else if (GetInputSystem()->GetY())
+		{
+			SetSceneState(SceneState::EQuit);
+			gNextScene = SceneManager::SceneType::EDemo;
+		}
+		else if (GetInputSystem()->GetB())
+		{
+			mIsTutorial = true;
+			mTitleSprite->SetVisible(false);
+			mModeSprite->SetVisible(false);
+			mBackSprite->SetVisible(true);
+			mTutorialSprite->SetVisible(true);
+		}
+		else if (GetInputSystem()->GetA())
+		{
+			PostQuitMessage(0);
+		}
 	}
-	else if (GetInputSystem()->GetY())
+	else
 	{
-		SetSceneState(SceneState::EQuit);
-		gNextScene = SceneManager::SceneType::EDemo;
-	}
-	else if (GetInputSystem()->GetB())
-	{
-
-	}
-	else if (GetInputSystem()->GetA())
-	{
-		PostQuitMessage(0);
+		if (GetInputSystem()->GetY())
+		{
+			mIsTutorial = false;
+			mTitleSprite->SetVisible(true);
+			mModeSprite->SetVisible(true);
+			mBackSprite->SetVisible(false);
+			mTutorialSprite->SetVisible(false);
+		}
 	}
 
 	BaseScene::ProcessInput();
