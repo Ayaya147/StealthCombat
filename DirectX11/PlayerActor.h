@@ -22,7 +22,9 @@ private:
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;
+	class SpriteComponent* mPlayerSprite;
 	class EnemyActor* mTargetEnemy;
 	bool mIsLockedOn;
 	float mOutCloudTime;
+	float mEmitterCD;
 };

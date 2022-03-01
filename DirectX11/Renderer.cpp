@@ -21,6 +21,7 @@
 #include "PlaneActor.h"
 #include "ExplosionActor.h"
 #include "SmokeActor.h"
+#include "EmitterActor.h"
 #include "DemoScene.h"
 #include "Fade.h"
 #include "Light.h"
@@ -193,6 +194,7 @@ void Renderer::Draw()
 		demo->GetPlane()->ImGuiWindow();
 		demo->GetExplosion()->ImGuiWindow();
 		demo->GetSmoke()->ImGuiWindow();
+		demo->GetEmitter()->ImGuiWindow();
 		mLight->ImGuiWindow();
 
 		ImGui::Render();

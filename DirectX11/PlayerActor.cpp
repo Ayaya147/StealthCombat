@@ -2,6 +2,7 @@
 #include "EnemyActor.h"
 #include "MissileActor.h"
 #include "ExplosionActor.h"
+#include "EmitterActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -18,6 +19,7 @@
 #include "PhysWorld.h"
 #include "DefineConstant.h"
 #include "XMFloatHelper.h"
+#include "Texture.h"
 
 namespace dx = DirectX;
 
@@ -31,7 +33,9 @@ static constexpr float angularRate2 = 1.2f;
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mOutCloudTime(14.0f),
+	mOutCloudTime(13.99f),
+	mEmitterCD(0.05f),
+	mPlayerSprite(nullptr),
 	mTargetEnemy(nullptr)
 {
 	SetScale(0.125f);
@@ -65,6 +69,12 @@ PlayerActor::PlayerActor(BaseScene* scene)
 		mAttackRange->SetSphere(sphere);
 		sphere = new Sphere(GetPosition(), 12.0f);
 		mAttackRange->SetSphereLast(sphere);
+
+		Actor* sprite = new Actor(GetScene());
+		Texture* tex = renderer->GetTexture("player");
+		mPlayerSprite = new SpriteComponent(sprite, tex);
+		sprite->SetScale(0.1f);
+		mPlayerSprite->SetVisible(false);
 	}
 }
 
@@ -136,6 +146,7 @@ void PlayerActor::ActorInput()
 
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 	{
+		mEmitterCD -= GetScene()->GetDeltaTime();
 		mMoveComponent->SetAcceleration(accelW);
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
@@ -208,8 +219,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		sprite = game->GetMarkingEnemySprite();
 		sprite->SetVisible(false);
-		if (!game->GetEnemies().empty() &&
-			phys->IsCollidedWithEnemy(mAttackRange, info))
+		if (!game->GetEnemies().empty() && phys->IsCollidedWithEnemy(mAttackRange, info))
 		{
 			mTargetEnemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!mTargetEnemy->GetIsLockedOn())
@@ -225,6 +235,24 @@ void PlayerActor::UpdateActor(float deltaTime)
 					sprite->GetOwner()->SetPosition(clipPos);
 				}
 			}
+		}
+
+		if (mEmitterCD <= 0.0f)
+		{
+			EmitterActor* emitter = new EmitterActor(GetScene());
+			emitter->SetPosition(GetPosition() - GetForward() * 1.3f);
+			mEmitterCD = 0.05f;
+		}
+
+		if (mOutCloudTime == 14.0f && !mIsLockedOn)
+		{
+			mPlayerSprite->SetVisible(true);
+			dx::XMFLOAT3 clipPos = LocalToClip(this);
+			mPlayerSprite->GetOwner()->SetPosition(clipPos);
+		}
+		else
+		{
+			mPlayerSprite->SetVisible(false);
 		}
 	}
 }

@@ -5,6 +5,7 @@
 #include "PlayerActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
+#include "EmitterActor.h"
 #include "ExplosionActor.h"
 #include "SmokeActor.h"
 #include "InputSystem.h"
@@ -25,15 +26,22 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	ShowCursor(TRUE);
 
 	mPlane = new PlaneActor(this);
+	
 	mCloud = new CloudActor(this);
 	mCloud->SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
 	mCloud->SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
 
 	mExplosion = new ExplosionActor(this);
 	mExplosion->SetPosition(dx::XMFLOAT3{ 6.0f,Constant::height,0.0f });
+	
 	mSmoke = new SmokeActor(this);
 	mSmoke->SetScale(10.0f);
-	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
+	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,5.0f });
+
+	mEmitter = new EmitterActor(this);
+	mEmitter->SetScale(5.0f);
+	mEmitter->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
+	
 	PlayerActor* player = new PlayerActor(this);
 
 	Actor* sprite = new Actor(this);

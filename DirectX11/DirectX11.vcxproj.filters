@@ -231,6 +231,9 @@
     <ClCompile Include="Fade.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EmitterActor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="Fade.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EmitterActor.h">
+      <Filter>Header Files\Actor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
