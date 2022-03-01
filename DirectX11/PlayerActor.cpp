@@ -31,7 +31,7 @@ static constexpr float angularRate2 = 1.2f;
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mOutCloudTime(0.0f),
+	mOutCloudTime(14.0f),
 	mTargetEnemy(nullptr)
 {
 	SetScale(0.125f);
@@ -123,7 +123,7 @@ void PlayerActor::ActorInput()
 
 		if (game)
 		{
-			if (mOutCloudTime != 0.0f)
+			if (mOutCloudTime != 14.0f)
 			{
 				pad->StopVibration();
 			}
@@ -173,11 +173,15 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (phys->IsCollidedWithCloud(mBody))
 		{
-			mOutCloudTime = 0.0f;
+			mOutCloudTime = 14.0f;
 		}
 		else
 		{
-			mOutCloudTime += deltaTime;
+			mOutCloudTime -= deltaTime;
+			if (mOutCloudTime <= 0.0f)
+			{
+				mOutCloudTime = 0.0f;
+			}
 		}
 
 		if (phys->IsCollidedWithEnemy(mBody, info))

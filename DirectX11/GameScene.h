@@ -46,7 +46,6 @@ private:
 	class UIScreen* mVictoryUI;
 	class UIScreen* mDefeatUI;
 
-	bool mIsMissile;
 	bool mWin;
 	float mQuitTime;
 };
