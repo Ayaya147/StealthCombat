@@ -73,13 +73,14 @@ void PlayerActor::ActorInput()
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	InputSystem* input = GetScene()->GetInputSystem();
 	GamePad* pad = input->GetPad();
+	pad->StopVibration();
 
 	if (input->GetPlayerRightTurn() && !input->GetPlayerLeftTurn())
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		if (game)
 		{
-			pad->SetRightVibration(100);
+			pad->SetRightVibration(50);
 		}
 
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
@@ -100,7 +101,7 @@ void PlayerActor::ActorInput()
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		if (game)
 		{
-			pad->SetRightVibration(100);
+			pad->SetLeftVibration(50);
 		}
 
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())

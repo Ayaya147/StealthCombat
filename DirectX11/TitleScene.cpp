@@ -126,23 +126,10 @@ void TitleScene::GenerateOutput()
 		GetInputSystem()->GetPad()->StopVibration();
 		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
 
-		switch (gNextScene)
+		if (GetFade()->GetAlpha() >= 1.0f)
 		{
-		case SceneManager::SceneType::EDemo:
-			if (GetFade()->GetAlpha() >= 1.0f)
-			{
-				Parameter parameter;
-				GetSceneManager()->ChangeScene(SceneManager::SceneType::EDemo, parameter, true);
-			}
-			break;
-
-		case SceneManager::SceneType::EGame:
-			if (GetFade()->GetAlpha() >= 1.0f)
-			{
-				Parameter parameter;
-				GetSceneManager()->ChangeScene(SceneManager::SceneType::EGame, parameter, true);
-			}
-			break;
+			Parameter parameter;
+			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
 		}
 	}
 }

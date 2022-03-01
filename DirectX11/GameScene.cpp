@@ -25,6 +25,8 @@
 
 namespace dx = DirectX;
 
+static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
+
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
@@ -35,6 +37,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mWin(false),
 	mQuitTime(1.5f)
 {
+	gNextScene = SceneManager::SceneType::ETitle;
 	Renderer* renderer = GetRenderer();
 
 	PlaneActor* plane = new PlaneActor(this);
@@ -186,6 +189,16 @@ void GameScene::ProcessInput()
 		if (mQuitTime <= 0.0f && GetInputSystem()->GetY())
 		{
 			SetSceneState(SceneState::EQuit);
+			gNextScene = SceneManager::SceneType::ETitle;
+			for (auto ui : GetUIStack())
+			{
+				ui->SetUIState(UIScreen::UIState::EClosing);
+			}
+		}
+		else if (mQuitTime <= 0.0f && GetInputSystem()->GetX())
+		{
+			SetSceneState(SceneState::EQuit);
+			gNextScene = SceneManager::SceneType::EGame;
 			for (auto ui : GetUIStack())
 			{
 				ui->SetUIState(UIScreen::UIState::EClosing);
@@ -290,11 +303,13 @@ void GameScene::GenerateOutput()
 
 	if (GetSceneState() == SceneState::EQuit)
 	{
+		GetInputSystem()->GetPad()->StopVibration();
 		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
 		}
 	}
 }
