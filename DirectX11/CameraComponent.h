@@ -5,11 +5,11 @@
 class CameraComponent : public Component
 {
 public:
-	enum class CameraState
+	enum class VibrationState
 	{
+		ENone,
 		ENormal,
-		EAccel,
-		EExplosion
+		EHard
 	};
 
 	CameraComponent(class Actor* owner, int updateOrder = 200);
@@ -19,11 +19,11 @@ public:
 	DirectX::XMFLOAT3 ComputeCameraPos();
 	void SnapToIdeal();
 
-	void SetCameraState(CameraState state) { mState = state; }
-	CameraState GetCameraState() const { return mState; }
+	void SetCameraState(VibrationState state) { mState = state; }
+	VibrationState GetCameraState() const { return mState; }
 
 private:
-	CameraState mState;
+	VibrationState mState;
 	float mTargetDist;
 	DirectX::XMFLOAT3 mVelocity;
 	DirectX::XMFLOAT3 mActualPos;

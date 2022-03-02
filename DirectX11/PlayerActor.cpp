@@ -145,9 +145,9 @@ void PlayerActor::ActorInput()
 	}
 
 
-	if (mCameraComponent->GetCameraState() != CameraComponent::CameraState::EExplosion)
+	if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
 	{
-		mCameraComponent->SetCameraState(CameraComponent::CameraState::ENormal);
+		mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENone);
 	}
 
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
@@ -155,10 +155,10 @@ void PlayerActor::ActorInput()
 		mEmitterCD -= GetScene()->GetDeltaTime();
 		mMoveComponent->SetAcceleration(accelW);
 
-		if (mCameraComponent->GetCameraState() == CameraComponent::CameraState::ENormal &&
-			mMoveComponent->GetForwardSpeed() < 15.0f)
+		if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone &&
+			mMoveComponent->GetForwardSpeed() < 15.0f && game)
 		{
-			mCameraComponent->SetCameraState(CameraComponent::CameraState::EAccel);
+			mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
 		}
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
@@ -169,10 +169,10 @@ void PlayerActor::ActorInput()
 		}
 		mMoveComponent->SetAcceleration(accelS);
 
-		if (mCameraComponent->GetCameraState() == CameraComponent::CameraState::ENormal &&
-			mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f)
+		if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone &&
+			mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f && game)
 		{
-			mCameraComponent->SetCameraState(CameraComponent::CameraState::EAccel);
+			mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
 		}
 	}
 	else

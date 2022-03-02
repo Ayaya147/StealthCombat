@@ -62,7 +62,7 @@ void ExplosionActor::UpdateActor(float deltaTime)
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
 		cc = game->GetPlayer()->GetCameraComp();
-		cc->SetCameraState(CameraComponent::CameraState::EExplosion);
+		cc->SetCameraState(CameraComponent::VibrationState::EHard);
 	}
 
 	if (mIsAnimation)
@@ -93,7 +93,7 @@ void ExplosionActor::UpdateActor(float deltaTime)
 					SetActorState(ActorState::EDead);
 					if (cc)
 					{
-						cc->SetCameraState(CameraComponent::CameraState::ENormal);
+						cc->SetCameraState(CameraComponent::VibrationState::ENone);
 					}
 				}
 				else
