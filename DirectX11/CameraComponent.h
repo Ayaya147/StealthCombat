@@ -8,6 +8,7 @@ public:
 	enum class VibrationState
 	{
 		ENone,
+		ELight,
 		ENormal,
 		EHard
 	};

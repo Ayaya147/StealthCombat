@@ -11,6 +11,8 @@
 #include "XMFloatHelper.h"
 #include "CameraComponent.h"
 #include "PlayerActor.h"
+#include "InputSystem.h"
+#include "GamePad.h"
 
 namespace dx = DirectX;
 
@@ -63,6 +65,10 @@ void ExplosionActor::UpdateActor(float deltaTime)
 	{
 		cc = game->GetPlayer()->GetCameraComp();
 		cc->SetCameraState(CameraComponent::VibrationState::EHard);
+
+		InputSystem* input = GetScene()->GetInputSystem();
+		GamePad* pad = input->GetPad();
+		pad->SetVibration(150);
 	}
 
 	if (mIsAnimation)

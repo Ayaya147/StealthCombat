@@ -88,11 +88,6 @@ void PlayerActor::ActorInput()
 	if (input->GetPlayerRightTurn() && !input->GetPlayerLeftTurn())
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
-		if (game)
-		{
-			pad->SetRightVibration(50);
-		}
-
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
 			mMoveComponent->SetAngularSpeed(angularSpd * angularRate1);
@@ -109,11 +104,6 @@ void PlayerActor::ActorInput()
 	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
-		if (game)
-		{
-			pad->SetLeftVibration(50);
-		}
-
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
 			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate1);
@@ -130,18 +120,6 @@ void PlayerActor::ActorInput()
 	else
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
-
-		if (game)
-		{
-			if (mOutCloudTime != 14.0f)
-			{
-				pad->StopVibration();
-			}
-			else
-			{
-				pad->SetVibration(3);
-			}
-		}
 	}
 
 
@@ -152,28 +130,42 @@ void PlayerActor::ActorInput()
 
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 	{
+		if (game)
+		{
+			if (mMoveComponent->GetForwardSpeed() < 15.0f)
+			{
+				pad->SetVibration(100);
+				if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone)
+				{
+					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
+				}
+			}
+			else
+			{
+				pad->SetVibration(4);
+				if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone)
+				{
+					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ELight);
+				}
+			}
+		}
+
 		mEmitterCD -= GetScene()->GetDeltaTime();
 		mMoveComponent->SetAcceleration(accelW);
-
-		if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone &&
-			mMoveComponent->GetForwardSpeed() < 15.0f && game)
-		{
-			mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
-		}
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 	{
-		if (game)
+		if (mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f && game)
 		{
 			pad->SetVibration(100);
-		}
-		mMoveComponent->SetAcceleration(accelS);
 
-		if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone &&
-			mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f && game)
-		{
-			mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
+			if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone)
+			{
+				mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
+			}
 		}
+
+		mMoveComponent->SetAcceleration(accelS);
 	}
 	else
 	{

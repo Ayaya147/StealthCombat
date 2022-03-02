@@ -20,17 +20,22 @@ void MoveComponent::Update(float deltaTime)
 	Actor* owner = GetOwner();
 
 	dx::XMFLOAT3 rotation = owner->GetRotation();
-	if (mType == MoveType::ECornering)
+
+	switch (mType)
 	{
-		rotation.y += mAngularSpeed * deltaTime;
-		rotation.z -= mAngularSpeed * deltaTime;
-	}
-	else
+	case MoveType::EStraight:
 	{
-		float rate = 0.93f;
+		float rate = 0.95f;
 		mAngularSpeed *= rate;
 		rotation.y += mAngularSpeed * deltaTime;
 		rotation.z *= rate;
+	}
+		break;
+
+	case MoveType::ECornering:
+		rotation.y += mAngularSpeed * deltaTime;
+		rotation.z -= mAngularSpeed * deltaTime;
+		break;
 	}
 
 	if (rotation.z > 0.8f)
