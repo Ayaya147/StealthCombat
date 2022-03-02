@@ -5,9 +5,12 @@
 #include "GameScene.h"
 #include "ConstantBuffer.h"
 #include "Random.h"
+#include "GameScene.h"
 #include "ImGui/imgui.h"
 #include "DefineConstant.h"
 #include "XMFloatHelper.h"
+#include "CameraComponent.h"
+#include "PlayerActor.h"
 
 namespace dx = DirectX;
 
@@ -55,6 +58,13 @@ ExplosionActor::~ExplosionActor()
 
 void ExplosionActor::UpdateActor(float deltaTime)
 {
+	CameraComponent* cc = nullptr;
+	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	{
+		cc = game->GetPlayer()->GetCameraComp();
+		cc->SetCameraState(CameraComponent::CameraState::EExplosion);
+	}
+
 	if (mIsAnimation)
 	{
 		float rate = 2.5f;
@@ -81,6 +91,10 @@ void ExplosionActor::UpdateActor(float deltaTime)
 				if (auto game = dynamic_cast<GameScene*>(GetScene()))
 				{
 					SetActorState(ActorState::EDead);
+					if (cc)
+					{
+						cc->SetCameraState(CameraComponent::CameraState::ENormal);
+					}
 				}
 				else
 				{

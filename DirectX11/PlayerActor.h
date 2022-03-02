@@ -15,10 +15,12 @@ public:
 	float GetForwardSpeed() const;
 	float GetOutCloudTime() const { return mOutCloudTime; }
 	class SphereComponent* GetSphereComp() const { return mBody; }
+	class CameraComponent* GetCameraComp() const { return mCameraComponent; }
 
 private:
 	DirectX::XMFLOAT3 LocalToClip(class Actor* actor);
 
+	class CameraComponent* mCameraComponent;
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;

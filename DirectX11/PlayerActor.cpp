@@ -46,8 +46,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	CameraComponent* cc = new CameraComponent(this);
-	cc->SnapToIdeal();
+	mCameraComponent = new CameraComponent(this);
+	mCameraComponent->SnapToIdeal();
 
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(15.0f);
@@ -144,10 +144,22 @@ void PlayerActor::ActorInput()
 		}
 	}
 
+
+	if (mCameraComponent->GetCameraState() != CameraComponent::CameraState::EExplosion)
+	{
+		mCameraComponent->SetCameraState(CameraComponent::CameraState::ENormal);
+	}
+
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 	{
 		mEmitterCD -= GetScene()->GetDeltaTime();
 		mMoveComponent->SetAcceleration(accelW);
+
+		if (mCameraComponent->GetCameraState() == CameraComponent::CameraState::ENormal &&
+			mMoveComponent->GetForwardSpeed() < 15.0f)
+		{
+			mCameraComponent->SetCameraState(CameraComponent::CameraState::EAccel);
+		}
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 	{
@@ -156,6 +168,12 @@ void PlayerActor::ActorInput()
 			pad->SetVibration(100);
 		}
 		mMoveComponent->SetAcceleration(accelS);
+
+		if (mCameraComponent->GetCameraState() == CameraComponent::CameraState::ENormal &&
+			mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f)
+		{
+			mCameraComponent->SetCameraState(CameraComponent::CameraState::EAccel);
+		}
 	}
 	else
 	{

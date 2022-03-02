@@ -1,4 +1,5 @@
 #include "Random.h"
+#include "XMFloatHelper.h"
 
 std::mt19937 Random::mGenerator;
 
@@ -25,8 +26,12 @@ int Random::GetIntRange(int min, int max)
 	return dist(mGenerator);
 }
 
-DirectX::XMFLOAT2 Random::GetVector(const DirectX::XMFLOAT2& min, const DirectX::XMFLOAT2& max)
+DirectX::XMFLOAT3 Random::GetVector()
 {
-	return {};
-	//return min + (max - min) * r;
+	float x = GetFloatRange(-1.0f, 1.0f);
+	float y = GetFloatRange(-1.0f, 1.0f);
+	float z = GetFloatRange(-1.0f, 1.0f);
+	DirectX::XMFLOAT3 vector = { x,y,z };
+
+	return DXMath::Normalize(vector);
 }
