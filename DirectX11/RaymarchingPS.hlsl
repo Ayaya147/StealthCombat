@@ -94,7 +94,7 @@ float DensityFunction(float3 p)
         case 2:
             return f * 0.2f - Torus(p, float2(mRadius, 0.04f));
         case 3:
-            return f * 0.2f - Sphere(p, mRadius);
+            return f * 0.2f - Ellipsoid(p, float3(mRadius / 4.0f, mRadius / 4.0f, mRadius));
         default:
             return 0.0f;
     }

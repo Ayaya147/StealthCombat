@@ -39,7 +39,7 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,5.0f });
 
 	mEmitter = new EmitterActor(this);
-	mEmitter->SetScale(5.0f);
+	mEmitter->SetScale(7.0f);
 	mEmitter->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
 	
 	PlayerActor* player = new PlayerActor(this);

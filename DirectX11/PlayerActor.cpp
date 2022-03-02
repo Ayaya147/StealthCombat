@@ -241,14 +241,17 @@ void PlayerActor::UpdateActor(float deltaTime)
 		{
 			EmitterActor* emitter = new EmitterActor(GetScene());
 			emitter->SetPosition(GetPosition() - GetForward() * 1.3f);
+			emitter->SetRotation(GetRotation());
+			emitter->SetScale(1.5f);
 			mEmitterCD = 0.05f;
 		}
 
 		if (mOutCloudTime == 14.0f && !mIsLockedOn)
 		{
+			Actor* actor = mPlayerSprite->GetOwner();
 			mPlayerSprite->SetVisible(true);
 			dx::XMFLOAT3 clipPos = LocalToClip(this);
-			mPlayerSprite->GetOwner()->SetPosition(clipPos);
+			actor->SetPosition(clipPos);
 		}
 		else
 		{
