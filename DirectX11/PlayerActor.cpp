@@ -33,10 +33,13 @@ static constexpr float angularRate2 = 1.2f;
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mOutCloudTime(13.99f),
+	mOutCloudTime(14.0f),
 	mEmitterCD(0.05f),
 	mPlayerSprite(nullptr),
-	mTargetEnemy(nullptr)
+	mTargetEnemy(nullptr),
+	mIsInCloud(false),
+	mIsLockedOn(false),
+	mOutCloudTimeMax(14.0f)
 {
 	SetScale(0.125f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
@@ -194,13 +197,16 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (phys->IsCollidedWithCloud(mBody))
 		{
-			if (mOutCloudTime > 0.0f)
+			mIsInCloud = true;
+			mOutCloudTime += deltaTime * 2.0f;
+			if (mOutCloudTime > mOutCloudTimeMax)
 			{
-				mOutCloudTime = 14.0f;
+				mOutCloudTime = mOutCloudTimeMax;
 			}
 		}
 		else
 		{
+			mIsInCloud = false;
 			mOutCloudTime -= deltaTime;
 			if (mOutCloudTime <= 0.0f)
 			{
@@ -256,7 +262,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			mEmitterCD = 0.05f;
 		}
 
-		if (mOutCloudTime == 14.0f && !mIsLockedOn)
+		if (mIsInCloud && !mIsLockedOn)
 		{
 			Actor* actor = mPlayerSprite->GetOwner();
 			mPlayerSprite->SetVisible(true);

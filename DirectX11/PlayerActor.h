@@ -14,12 +14,12 @@ public:
 	bool GetIsLockedOn() const { return mIsLockedOn; }
 	float GetForwardSpeed() const;
 	float GetOutCloudTime() const { return mOutCloudTime; }
+	bool GetIsInCloud() const { return mIsInCloud; }
 	class SphereComponent* GetSphereComp() const { return mBody; }
 	class CameraComponent* GetCameraComp() const { return mCameraComponent; }
 
 private:
 	DirectX::XMFLOAT3 LocalToClip(class Actor* actor);
-
 	class CameraComponent* mCameraComponent;
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
@@ -27,6 +27,8 @@ private:
 	class SpriteComponent* mPlayerSprite;
 	class EnemyActor* mTargetEnemy;
 	bool mIsLockedOn;
+	bool mIsInCloud;
 	float mOutCloudTime;
 	float mEmitterCD;
+	float mOutCloudTimeMax;
 };
