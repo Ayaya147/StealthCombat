@@ -198,7 +198,10 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithCloud(mBody))
 		{
 			mIsInCloud = true;
-			mOutCloudTime += deltaTime * 2.0f;
+			if (mOutCloudTime > 0.0f)
+			{
+				mOutCloudTime += deltaTime * 2.0f;
+			}
 			if (mOutCloudTime > mOutCloudTimeMax)
 			{
 				mOutCloudTime = mOutCloudTimeMax;
