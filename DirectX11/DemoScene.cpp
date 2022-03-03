@@ -60,7 +60,7 @@ DemoScene::~DemoScene()
 
 void DemoScene::ProcessInput()
 {
-	if (GetInputSystem()->GetY())
+	if (GetSceneState() == SceneState::EPlay && GetInputSystem()->GetY())
 	{
 		SetSceneState(SceneState::EQuit);
 	}

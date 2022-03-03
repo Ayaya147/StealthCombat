@@ -25,7 +25,7 @@ void MoveComponent::Update(float deltaTime)
 	{
 	case MoveType::EStraight:
 	{
-		float rate = 0.95f;
+		float rate = 0.93f;
 		mAngularSpeed *= rate;
 		rotation.y += mAngularSpeed * deltaTime;
 		rotation.z *= rate;
