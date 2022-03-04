@@ -18,7 +18,7 @@ public:
 	~Fade();
 
 	void Update(float deltaTime);
-	void Draw(class Renderer* renderer);
+	void Draw(class Renderer* renderer, class VertexBuffer* vertexBuffer);
 
 	FadeState GetFadeState() const { return mFadeState; }
 	float GetAlpha() const { return mAlpha; }
@@ -37,6 +37,5 @@ private:
 	FadeState mFadeState;
 
 	class Texture* mTexture;
-	class VertexBuffer* mVertexBuffer;
 	VertexConstantBuffer<Transforms>* mCBuffer;
 };

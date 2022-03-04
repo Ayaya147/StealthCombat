@@ -1,14 +1,10 @@
 #pragma once
 #include "SpriteComponent.h"
-#include <vector>
 
 class NumberSpriteComponent : public SpriteComponent
 {
 public:
-	NumberSpriteComponent(class NumberActor* owner, int drawOrder = 200);
+	NumberSpriteComponent(class NumberActor* owner, class Texture* tex, int drawOrder = 200);
 
-	void Draw(class Renderer* renderer) override;
-
-private:
-	std::vector<class Texture*> mTextures;
+	void Draw(class Renderer* renderer, class VertexBuffer* vertexBuffer) override;
 };

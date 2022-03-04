@@ -12,6 +12,7 @@
 #include "MeshComponent.h"
 #include "Mesh.h"
 #include "SpriteComponent.h"
+#include "NumberSpriteComponent.h"
 #include "Texture.h"
 #include "InputSystem.h"
 #include "GamePad.h"
@@ -32,7 +33,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	BaseScene(sm, parameter),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
-	mFPS(nullptr),
 	mWin(false),
 	mQuitTime(1.5f)
 {
@@ -76,13 +76,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("time");
-	sc = new SpriteComponent(sprite, tex);
+	mTimeSprite = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 70.0f, 0.0f });
 	sprite->SetScale(0.6f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("ui_count");
-	sc = new SpriteComponent(sprite, tex);
+	mUICountSprite = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
 	sprite->SetScale(0.9f);
 
@@ -108,17 +108,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, 44.0f, 0.0f });
 	mOutCloudTime->SetScale(0.6f);
 
-	mRestTime = new NumberActor(this, 300, 3);
+	mRestTime = new NumberActor(this, 12, 3);
 	mRestTime->SetOriPosition(dx::XMFLOAT3{ 126.0f, -477.0f, 0.0f });
 	mRestTime->SetScale(0.8f);
 
 	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 1);
 	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
 	mEnemyNum->SetScale(0.8f);
-
-	//mFPS = new NumberActor(this, 0, 2);
-	//mFPS->SetOriPosition(dx::XMFLOAT3{ -900.0f, -500.0f, 0.0f });
-	//mFPS->SetScale(0.6f);
 
 	tex = renderer->GetTexture("fade");
 	mBackgroundUI = new UIScreen(this, tex);
@@ -219,7 +215,6 @@ void GameScene::Update()
 		mOutCloudTime->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
-		//mFPS->SetValue(1.0f / GetDeltaTime());
 
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
@@ -237,19 +232,29 @@ void GameScene::Update()
 		if (restTime <= 10.0f)
 		{
 			mCautionGameTime->SetVisible(true);
+			mRestTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
+			mEnemyNum->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
+			mUICountSprite->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
 		}
 		else
 		{
 			mCautionGameTime->SetVisible(false);
+			mRestTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
+			mEnemyNum->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
+			mUICountSprite->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
 		}
 
 		if (mPlayer->GetOutCloudTime() <= 4.0f)
 		{
 			mCautionCloudTime->SetVisible(true);
+			mOutCloudTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
+			mTimeSprite->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
 		}
 		else
 		{
 			mCautionCloudTime->SetVisible(false);
+			mOutCloudTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
+			mTimeSprite->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
 		}
 
 		if (mPlayer->GetOutCloudTime() <= 0.0f && !mPlayer->GetIsLockedOn())

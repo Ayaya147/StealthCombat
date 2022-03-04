@@ -34,13 +34,14 @@ private:
 	class NumberActor* mOutCloudTime;
 	class NumberActor* mSpdNum;
 	class NumberActor* mEnemyNum;
-	class NumberActor* mFPS;
 	class NumberActor* mRestTime;
 	class SpriteComponent* mGuideSprite;
 	class SpriteComponent* mMarkingEnemySprite;
 	class SpriteComponent* mMarkingPlayerSprite;
 	class SpriteComponent* mCautionGameTime;
 	class SpriteComponent* mCautionCloudTime;
+	class SpriteComponent* mTimeSprite;
+	class SpriteComponent* mUICountSprite;
 	class UIScreen* mBackgroundUI;
 	class UIScreen* mMenuUI;
 	class UIScreen* mVictoryUI;

@@ -1,9 +1,10 @@
 #include "NumberActor.h"
 #include "GameScene.h"
 #include "PlayerActor.h"
-#include "NumberSpriteComponent.h"
 #include "TransformCBuffer.h"
 #include "Renderer.h"
+#include "NumberSpriteComponent.h"
+#include "Texture.h"
 
 NumberActor::NumberActor(BaseScene* scene, float value, int digit)
 	:
@@ -12,7 +13,8 @@ NumberActor::NumberActor(BaseScene* scene, float value, int digit)
 	mDigit(digit),
 	mOriPos(DirectX::XMFLOAT3{0.0f,0.0f,0.0f})
 {
-	NumberSpriteComponent* nsc = new NumberSpriteComponent(this);
+	Texture* tex = GetScene()->GetRenderer()->GetTexture("number");
+	mNumberSpriteComp = new NumberSpriteComponent(this, tex);
 }
 
 NumberActor::~NumberActor()

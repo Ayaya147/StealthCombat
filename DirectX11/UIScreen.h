@@ -19,7 +19,7 @@ public:
 
 	virtual void Update(float deltaTime);
 	virtual void ProcessInput();
-	virtual void Draw(class Renderer* renderer);
+	virtual void Draw(class Renderer* renderer, class VertexBuffer* vertexBuffer);
 	void ComputeWorldTransform();
 
 	void SetUIState(UIState state) { mState = state;}

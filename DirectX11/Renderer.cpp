@@ -186,7 +186,6 @@ void Renderer::Draw()
 
 	Draw3DScene();
 	Draw2DScene();
-	mScene->GetFade()->Draw(this);
 
 	if (isDemo)
 	{
@@ -217,7 +216,7 @@ void Renderer::Draw3DScene()
 		for (auto m : mc.second)
 		{
 			Mesh* mesh = m->GetMesh();
-			if (mesh && mesh != lastMesh)
+			if (mesh != lastMesh)
 			{
 				mesh->Bind(this);
 				lastMesh = mesh;
@@ -242,7 +241,6 @@ void Renderer::Draw3DScene()
 
 void Renderer::Draw2DScene()
 {
-	mVertexBuffer->Bind(this);
 	mTopology->Bind(this);
 	mInputLayout->Bind(this);
 	mVertexShader->Bind(this);
@@ -254,19 +252,21 @@ void Renderer::Draw2DScene()
 		if (sprite->GetIsVisible())
 		{
 			Texture* tex = sprite->GetTexture();
-			if (tex && tex != lastTex)
+			if (tex != lastTex)
 			{
 				tex->Bind(this);
 				lastTex = tex;
 			}
-			sprite->Draw(this);
+			sprite->Draw(this, mVertexBuffer);
 		}
 	}
 
 	for (auto ui : mScene->GetUIStack())
 	{
-		ui->Draw(this);
+		ui->Draw(this, mVertexBuffer);
 	}
+
+	mScene->GetFade()->Draw(this, mVertexBuffer);
 }
 
 void Renderer::UnloadData()
