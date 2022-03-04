@@ -8,6 +8,13 @@
 class Renderer
 {
 public:
+	struct Vertex
+	{
+		DirectX::XMFLOAT3 pos;
+		DirectX::XMFLOAT4 col;
+		DirectX::XMFLOAT2 tc;
+	};
+
 	Renderer(HWND hWnd, int width, int height);
 	~Renderer();
 

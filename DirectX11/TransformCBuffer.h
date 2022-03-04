@@ -21,7 +21,7 @@ private:
 		DirectX::XMMATRIX mViewProj;
 	};
 
-	static VertexConstantBuffer<Transforms>* mBuffer;
+	static VertexConstantBuffer<Transforms>* mCBuffer;
 	static UINT mCount;
 	class Actor* mOwner;
 };

@@ -8,7 +8,7 @@
 
 namespace dx = DirectX;
 
-VertexConstantBuffer<UIScreen::Transforms>* UIScreen::mBuffer = nullptr;
+VertexConstantBuffer<UIScreen::Transforms>* UIScreen::mCBuffer = nullptr;
 int UIScreen::mCount = 0;
 
 UIScreen::UIScreen(BaseScene* scene, Texture* texture)
@@ -24,9 +24,9 @@ UIScreen::UIScreen(BaseScene* scene, Texture* texture)
 	mCount++;
 	scene->PushUI(this);
 
-	if (!mBuffer)
+	if (!mCBuffer)
 	{
-		mBuffer = new VertexConstantBuffer<Transforms>(scene->GetRenderer(), 0);
+		mCBuffer = new VertexConstantBuffer<Transforms>(scene->GetRenderer(), 0);
 	}
 }
 
@@ -36,8 +36,8 @@ UIScreen::~UIScreen()
 
 	if (mCount == 0)
 	{
-		delete mBuffer;
-		mBuffer = nullptr;
+		delete mCBuffer;
+		mCBuffer = nullptr;
 	}
 }
 
@@ -53,8 +53,8 @@ void UIScreen::Draw(Renderer* renderer)
 {
 	if (mState == UIState::EActive)
 	{
-		mBuffer->Update(renderer, mTransforms);
-		mBuffer->Bind(renderer);
+		mCBuffer->Update(renderer, mTransforms);
+		mCBuffer->Bind(renderer);
 		mTexture->Bind(renderer);
 
 		renderer->GetContext()->Draw(4, 0);

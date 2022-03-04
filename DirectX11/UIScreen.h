@@ -43,6 +43,6 @@ private:
 
 	class BaseScene* mScene;
 	class Texture* mTexture;
-	static VertexConstantBuffer<Transforms>* mBuffer;
+	static VertexConstantBuffer<Transforms>* mCBuffer;
 	static int mCount;
 };

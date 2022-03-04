@@ -5,7 +5,7 @@
 
 namespace dx = DirectX;
 
-VertexConstantBuffer<TransformCBuffer::Transforms>* TransformCBuffer::mBuffer = nullptr;
+VertexConstantBuffer<TransformCBuffer::Transforms>* TransformCBuffer::mCBuffer = nullptr;
 UINT TransformCBuffer::mCount = 0;
 
 TransformCBuffer::TransformCBuffer(Renderer* renderer, Actor* actor, UINT slot)
@@ -14,9 +14,9 @@ TransformCBuffer::TransformCBuffer(Renderer* renderer, Actor* actor, UINT slot)
 {
 	mCount++;
 
-	if (!mBuffer)
+	if (!mCBuffer)
 	{
-		mBuffer = new VertexConstantBuffer<Transforms>(renderer, slot);
+		mCBuffer = new VertexConstantBuffer<Transforms>(renderer, slot);
 	}
 }
 
@@ -26,8 +26,8 @@ TransformCBuffer::~TransformCBuffer()
 
 	if (mCount == 0)
 	{
-		delete mBuffer;
-		mBuffer = nullptr;
+		delete mCBuffer;
+		mCBuffer = nullptr;
 	}
 }
 
@@ -43,8 +43,8 @@ void TransformCBuffer::Bind(Renderer* renderer)
 		dx::XMMatrixTranspose(view * projection)
 	};
 
-	mBuffer->Update(renderer, tf);
-	mBuffer->Bind(renderer);
+	mCBuffer->Update(renderer, tf);
+	mCBuffer->Bind(renderer);
 }
 
 void TransformCBuffer::Bind(Renderer* renderer, float width, float height)
@@ -59,6 +59,6 @@ void TransformCBuffer::Bind(Renderer* renderer, float width, float height)
 		dx::XMMatrixTranspose(projection)
 	};
 
-	mBuffer->Update(renderer, tf);
-	mBuffer->Bind(renderer);
+	mCBuffer->Update(renderer, tf);
+	mCBuffer->Bind(renderer);
 }

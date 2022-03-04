@@ -31,13 +31,6 @@ private:
 		DirectX::XMMATRIX mViewProj;
 	};
 
-	struct Vertex
-	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT4 col;
-		DirectX::XMFLOAT2 tc;
-	};
-
 	class BaseScene* mScene;
 	float mRate;
 	float mAlpha;
@@ -45,5 +38,5 @@ private:
 
 	class Texture* mTexture;
 	class VertexBuffer* mVertexBuffer;
-	VertexConstantBuffer<Transforms>* mBuffer;
+	VertexConstantBuffer<Transforms>* mCBuffer;
 };

@@ -348,13 +348,6 @@ void Renderer::RemoveTranspComp(TransparentComponent* transparent)
 
 void Renderer::Create2DBuffer()
 {
-	struct Vertex
-	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT4 col;
-		DirectX::XMFLOAT2 tc;
-	};
-
 	std::vector<Vertex> vertices;
 	vertices.reserve(4);
 	vertices.push_back({ {-0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{0.0f,0.0f} });

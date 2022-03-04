@@ -20,7 +20,7 @@ Fade::Fade(BaseScene* scene)
 	Renderer* renderer = scene->GetRenderer();
 	mTexture = renderer->GetTexture("fade");
 
-	std::vector<Vertex> vertices;
+	std::vector<Renderer::Vertex> vertices;
 	vertices.reserve(4);
 	vertices.push_back({ {-0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{0.0f,0.0f} });
 	vertices.push_back({ { 0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{1.0f,0.0f} });
@@ -28,13 +28,13 @@ Fade::Fade(BaseScene* scene)
 	vertices.push_back({ { 0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,mAlpha},{1.0f,1.0f} });
 
 	mVertexBuffer = new VertexBuffer(renderer, vertices);
-	mBuffer = new VertexConstantBuffer<Transforms>(renderer, 0);
+	mCBuffer = new VertexConstantBuffer<Transforms>(renderer, 0);
 }
 
 Fade::~Fade()
 {
 	delete mVertexBuffer;
-	delete mBuffer;
+	delete mCBuffer;
 }
 
 void Fade::Update(float deltaTime)
@@ -56,18 +56,6 @@ void Fade::Update(float deltaTime)
 			mAlpha = 1.0f;
 		}
 	}
-
-	Renderer* renderer = mScene->GetRenderer();
-	D3D11_MAPPED_SUBRESOURCE msr;
-	renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
-	Vertex* vertex = static_cast<Vertex*>(msr.pData);
-
-	for (int i = 0; i < 4; i++)
-	{
-		vertex[i].col = dx::XMFLOAT4{ 1.0f,1.0f,1.0f,mAlpha };
-	}
-
-	renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
 }
 
 void Fade::Draw(Renderer* renderer)
@@ -83,9 +71,19 @@ void Fade::Draw(Renderer* renderer)
 			dx::XMMatrixTranspose(projection)
 		};
 
-		mBuffer->Update(renderer, tf);
-		mBuffer->Bind(renderer);
+		mCBuffer->Update(renderer, tf);
+		mCBuffer->Bind(renderer);
+
+		D3D11_MAPPED_SUBRESOURCE msr;
+		renderer->GetContext()->Map(mVertexBuffer->GetVertexBuffer(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &msr);
+		Renderer::Vertex* vertex = static_cast<Renderer::Vertex*>(msr.pData);
+		for (int i = 0; i < 4; i++)
+		{
+			vertex[i].col = dx::XMFLOAT4{ 1.0f,1.0f,1.0f,mAlpha };
+		}
+		renderer->GetContext()->Unmap(mVertexBuffer->GetVertexBuffer(), 0);
 		mVertexBuffer->Bind(renderer);
+
 		mTexture->Bind(renderer);
 
 		renderer->GetContext()->Draw(4, 0);
