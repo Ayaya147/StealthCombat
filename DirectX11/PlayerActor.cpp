@@ -20,6 +20,7 @@
 #include "DefineConstant.h"
 #include "XMFloatHelper.h"
 #include "Texture.h"
+#include "Random.h"
 
 namespace dx = DirectX;
 
@@ -259,9 +260,9 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (mEmitterCD <= 0.0f)
 		{
 			EmitterActor* emitter = new EmitterActor(GetScene());
-			emitter->SetPosition(GetPosition() - GetForward() * 1.3f);
+			emitter->SetPosition(GetPosition() - GetForward()*1.5f + Random::GetVector()*0.08f);
 			emitter->SetRotation(GetRotation());
-			emitter->SetScale(1.5f);
+			emitter->SetScale(2.0f);
 			mEmitterCD = 0.05f;
 		}
 

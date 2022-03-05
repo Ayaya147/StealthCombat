@@ -59,7 +59,7 @@ void EmitterActor::UpdateActor(float deltaTime)
 	if (mIsAnimation)
 	{
 		mData.mNoiseScale += rate * deltaTime;
-		mData.mLoop -= 10.0f * deltaTime;
+		mData.mLoop -= 20.0f * deltaTime;
 
 		if ((mData.mNoiseScale > 60.0f && rate > 0.0f) ||
 			(mData.mNoiseScale < 40.0f && rate < 0.0f))
@@ -79,13 +79,6 @@ void EmitterActor::UpdateActor(float deltaTime)
 			}
 		}
 	}
-
-	//if (auto game = dynamic_cast<GameScene*>(GetScene()))
-	//{
-	//	PlayerActor* player = game->GetPlayer();
-	//	SetPosition(player->GetPosition() - player->GetForward()* 2.2f);
-	//	SetRotation(player->GetRotation());
-	//}
 }
 
 void EmitterActor::Bind(Renderer* renderer)
