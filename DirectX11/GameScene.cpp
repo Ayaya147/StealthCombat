@@ -118,8 +118,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	tex = renderer->GetTexture("fade");
 	mBackgroundUI = new UIScreen(this, tex);
-	mBackgroundUI->SetScale(5.0f);
+	mBackgroundUI->SetScale(40.0f);
 	mBackgroundUI->ComputeWorldTransform();
+	mBackgroundUI->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,0.7f });
 
 	tex = renderer->GetTexture("menu");
 	mMenuUI = new UIScreen(this, tex);

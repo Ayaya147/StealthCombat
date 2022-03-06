@@ -41,7 +41,8 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("fade");
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
-	sprite->SetScale(5.0f);
+	sc->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,0.7f });
+	sprite->SetScale(40.0f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("mode");

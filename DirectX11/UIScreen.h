@@ -26,6 +26,7 @@ public:
 	void SetPosition(const DirectX::XMFLOAT3& postion) { mPosition = postion;}
 	void SetScale(float scale) { mScale = DirectX::XMFLOAT3{ mScale.x*scale,mScale.y*scale ,mScale.z*scale };}
 	void SetRotation(const DirectX::XMFLOAT3& rotation) { mRotation = rotation;}
+	void SetColor(DirectX::XMFLOAT4 color) { mColor = color; }
 
 private:
 	struct Transforms
@@ -40,6 +41,7 @@ private:
 	DirectX::XMFLOAT3 mRotation;
 	DirectX::XMFLOAT3 mScale;
 	DirectX::XMMATRIX mWorldTransform;
+	DirectX::XMFLOAT4 mColor;
 
 	class BaseScene* mScene;
 	class Texture* mTexture;

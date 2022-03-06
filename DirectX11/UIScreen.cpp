@@ -20,7 +20,8 @@ UIScreen::UIScreen(BaseScene* scene, Texture* texture)
 	mWorldTransform(dx::XMMATRIX{}),
 	mPosition(dx::XMFLOAT3{}),
 	mRotation(dx::XMFLOAT3{}),
-	mScale(dx::XMFLOAT3{ 1.0f,1.0f,1.0f })
+	mScale(dx::XMFLOAT3{ 1.0f,1.0f,1.0f }),
+	mColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f })
 {
 	mCount++;
 	scene->PushUI(this);
@@ -63,10 +64,10 @@ void UIScreen::Draw(Renderer* renderer, VertexBuffer* vertexBuffer)
 		vertex[2].pos = { -0.5f, 0.5f,0.0f };
 		vertex[3].pos = {  0.5f, 0.5f,0.0f };
 
-		vertex[0].col = { 1.0f,1.0f,1.0f,1.0f };
-		vertex[1].col = { 1.0f,1.0f,1.0f,1.0f };
-		vertex[2].col = { 1.0f,1.0f,1.0f,1.0f };
-		vertex[3].col = { 1.0f,1.0f,1.0f,1.0f };
+		vertex[0].col = mColor;
+		vertex[1].col = mColor;
+		vertex[2].col = mColor;
+		vertex[3].col = mColor;
 
 		vertex[0].tc = { 0.0f,0.0f };
 		vertex[1].tc = { 1.0f,0.0f };
