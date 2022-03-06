@@ -12,7 +12,6 @@ public:
 
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
-	float CalcDistFromCamera();
 	void ImGuiWindow();
 
 private:

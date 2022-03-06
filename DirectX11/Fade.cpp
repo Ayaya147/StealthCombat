@@ -14,7 +14,7 @@ Fade::Fade(BaseScene* scene)
 	:
 	mScene(scene),
 	mFadeState(FadeState::EFadeIn),
-	mRate(2.0f),
+	mRate(1.5f),
 	mAlpha(1.0f)
 {
 	Renderer* renderer = scene->GetRenderer();

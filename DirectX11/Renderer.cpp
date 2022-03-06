@@ -33,9 +33,6 @@ namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
 
 Renderer::Renderer(HWND hWnd, int width, int height)
-	:
-	mProjection(dx::XMMatrixPerspectiveLH(1, static_cast<float>(height) / static_cast<float>(width), 0.5f, 500.0f)),
-	mProjection2D(dx::XMMatrixOrthographicOffCenterLH(-960.0f, 960.0f, 540.0f, -540.0f, 0.0f, 1.0f))
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
@@ -148,6 +145,16 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 	mLight = new Light(this);
 
 	Create2DBuffer();
+
+	dx::XMMATRIX projection = dx::XMMatrixPerspectiveLH(
+		1, static_cast<float>(height) / static_cast<float>(width),
+		0.5f, 500.0f
+	);
+	dx::XMStoreFloat4x4(&mProjection, projection);
+	dx::XMMATRIX projection2D = dx::XMMatrixOrthographicOffCenterLH(
+		-960.0f, 960.0f, 540.0f, -540.0f, 0.0f, 1.0f
+	);
+	dx::XMStoreFloat4x4(&mProjection2D, projection2D);
 
 	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 }

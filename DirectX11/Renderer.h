@@ -35,11 +35,14 @@ public:
 	class Texture* GetTexture(const std::string& fileName);
 	ID3D11Device* GetDevice() const { return mDevice.Get(); }
 	ID3D11DeviceContext* GetContext() const { return mContext.Get(); }
-	const DirectX::XMMATRIX& GetViewMatrix() const { return mView; }
-	const DirectX::XMMATRIX& GetProjectionMatrix() const { return mProjection; }
-	const DirectX::XMMATRIX& GetProjectionMatrix2D() const { return mProjection2D; }
+	const DirectX::XMFLOAT4X4& GetViewMatrix4x4f() const { return mView; }
+	DirectX::XMMATRIX GetViewMatrix() const { return DirectX::XMLoadFloat4x4(&mView); }
+	const DirectX::XMFLOAT4X4& GetProjectionMatrix4x4f() const { return mProjection; }
+	DirectX::XMMATRIX GetProjectionMatrix() const { return DirectX::XMLoadFloat4x4(&mProjection); }
+	const DirectX::XMFLOAT4X4& GetProjectionMatrix2D4x4f() const { return mProjection2D; }
+	DirectX::XMMATRIX GetProjectionMatrix2D() const { return DirectX::XMLoadFloat4x4(&mProjection2D); }
 
-	void SetViewMatrix(const DirectX::XMMATRIX& view) { mView = view; }
+	void SetViewMatrix(const DirectX::XMFLOAT4X4& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
 	void SetDirectionalLight(const struct DirectionalLight& light);
 
@@ -56,9 +59,9 @@ private:
 	std::vector<class TransparentComponent*> mTranspComps;
 	std::vector<class SpriteComponent*> mSpriteComps;
 
-	DirectX::XMMATRIX mView;
-	DirectX::XMMATRIX mProjection;
-	DirectX::XMMATRIX mProjection2D;
+	DirectX::XMFLOAT4X4 mView;
+	DirectX::XMFLOAT4X4 mProjection;
+	DirectX::XMFLOAT4X4 mProjection2D;
 
 	class Stencil* mDepthStencilOn;
 	class Stencil* mDepthStencilOff;

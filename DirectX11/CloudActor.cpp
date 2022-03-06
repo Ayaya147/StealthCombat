@@ -115,17 +115,6 @@ void CloudActor::Bind(Renderer* renderer)
 	mCloudCBuffer->Bind(renderer);
 }
 
-float CloudActor::CalcDistFromCamera()
-{
-	dx::XMMATRIX view = GetScene()->GetRenderer()->GetViewMatrix();
-	dx::XMMATRIX matrix = GetWorldTransform() * view;
-	float x = matrix.r[3].m128_f32[0];
-	float y = matrix.r[3].m128_f32[1];
-	float z = matrix.r[3].m128_f32[2];
-
-	return x * x + y * y + z * z;
-}
-
 void CloudActor::ImGuiWindow()
 {
 	if (ImGui::Begin("Ray Marching (Cloud)"))

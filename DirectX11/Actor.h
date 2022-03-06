@@ -35,7 +35,8 @@ public:
 	void SetTransformCBuffer(class TransformCBuffer* buffer) { mTransformCBuffer = buffer; }
 	void SetRecomputeWorldTransform(bool recompute) { mRecomputeWorldTransform = recompute; }
 	class BaseScene* GetScene() const { return mScene; }
-	const DirectX::XMMATRIX& GetWorldTransform() const { return mWorldTransform; }
+	const DirectX::XMFLOAT4X4& GetWorldTransform4x4f() const { return mWorldTransform; }
+	DirectX::XMMATRIX GetWorldTransform() const { return DirectX::XMLoadFloat4x4(&mWorldTransform); }
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
 	const DirectX::XMFLOAT3& GetRotation() const { return mRotation; }
 	const DirectX::XMFLOAT3& GetScale() const { return mScale; }
@@ -46,7 +47,7 @@ public:
 private:
 	std::vector<class Component*> mComponents;
 
-	DirectX::XMMATRIX mWorldTransform;
+	DirectX::XMFLOAT4X4 mWorldTransform;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mRotation;
 	DirectX::XMFLOAT3 mScale;

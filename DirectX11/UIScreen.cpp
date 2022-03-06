@@ -17,7 +17,6 @@ UIScreen::UIScreen(BaseScene* scene, Texture* texture)
 	mScene(scene),
 	mTexture(texture),
 	mState(UIState::EClosing),
-	mWorldTransform(dx::XMMATRIX{}),
 	mPosition(dx::XMFLOAT3{}),
 	mRotation(dx::XMFLOAT3{}),
 	mScale(dx::XMFLOAT3{ 1.0f,1.0f,1.0f }),
@@ -87,9 +86,9 @@ void UIScreen::Draw(Renderer* renderer, VertexBuffer* vertexBuffer)
 
 void UIScreen::ComputeWorldTransform()
 {
-	mWorldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
-	mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
-	mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+	dx::XMMATRIX worldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
+	worldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
+	worldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
 	dx::XMMATRIX scaleMat = dx::XMMatrixScaling(
 		static_cast<float>(mTexture->GetTexWidth()),
 		static_cast<float>(mTexture->GetTexHeight()),
@@ -98,7 +97,7 @@ void UIScreen::ComputeWorldTransform()
 	dx::XMMATRIX projection = mScene->GetRenderer()->GetProjectionMatrix2D();
 
 	mTransforms = {
-		dx::XMMatrixTranspose(scaleMat * mWorldTransform),
+		dx::XMMatrixTranspose(scaleMat * worldTransform),
 		dx::XMMatrixTranspose(projection)
 	};
 }

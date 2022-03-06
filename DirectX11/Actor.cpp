@@ -9,7 +9,7 @@ namespace dx = DirectX;
 
 Actor::Actor(BaseScene* scene)
 	:
-	mWorldTransform(dx::XMMATRIX{}),
+	mWorldTransform(dx::XMFLOAT4X4{}),
 	mPosition(dx::XMFLOAT3{}),
 	mRotation(dx::XMFLOAT3{}),
 	mScale(dx::XMFLOAT3{ 1.0f,1.0f,1.0f }),
@@ -37,7 +37,7 @@ void Actor::Update(float deltaTime)
 {
 	if (mState == ActorState::EActive)
 	{
-		//ComputeWorldTransform();
+		ComputeWorldTransform();
 		UpdateComponents(deltaTime);
 		UpdateActor(deltaTime);
 		ComputeWorldTransform();
@@ -94,9 +94,11 @@ void Actor::ComputeWorldTransform()
 	{
 		mRecomputeWorldTransform = false;
 
-		mWorldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
-		mWorldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
-		mWorldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+		dx::XMMATRIX worldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
+		worldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);
+		worldTransform *= dx::XMMatrixTranslation(mPosition.x, mPosition.y, mPosition.z);
+
+		dx::XMStoreFloat4x4(&mWorldTransform, worldTransform);
 
 		for (auto comp : mComponents)
 		{
