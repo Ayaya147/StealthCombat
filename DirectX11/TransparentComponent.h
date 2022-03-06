@@ -10,7 +10,6 @@ public:
 	void Draw(class Renderer* renderer);
 
 	void SetMesh(class Mesh* mesh) { mMesh = mesh; }
-	float GetDistFromCamera() const;
 	class Mesh* GetMesh() const { return mMesh; }
 	int GetDrawOrder() const { return mDrawOrder; }
 

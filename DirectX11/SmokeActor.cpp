@@ -18,7 +18,8 @@ PixelConstantBuffer<SmokeActor::SmokeConstant>* SmokeActor::mSmokeCBuffer = null
 SmokeActor::SmokeActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mIsAnimation(true)
+	mIsAnimation(true),
+	mSpeed(1.0f)
 {
 	mCount++;
 	Reset();
@@ -56,9 +57,9 @@ void SmokeActor::UpdateActor(float deltaTime)
 	if (mIsAnimation)
 	{
 		float rate = 1.0f;
-		mData.mLoop -= 32.0f * rate * deltaTime;
-		mData.mAbsorption += 100.0f * rate * deltaTime;
-		mData.mRadius += 0.2f * rate * deltaTime;
+		mData.mLoop -= 32.0f * rate * mSpeed * deltaTime;
+		mData.mAbsorption += 100.0f * rate * mSpeed * deltaTime;
+		mData.mRadius += 0.2f * rate * mSpeed * deltaTime;
 
 		if (mData.mLoop <= 0.0f || mData.mAbsorption >= 100.0f || mData.mRadius >= 0.2f)
 		{
@@ -110,11 +111,13 @@ void SmokeActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Animation");
+		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 5.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
+			mSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

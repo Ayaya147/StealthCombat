@@ -36,19 +36,18 @@ BaseScene::~BaseScene()
 		mUIStack.pop_back();
 	}
 
-	GetRenderer()->UnloadData();
-
 	if (mTimer)
 	{
 		delete mTimer;
 		mTimer = nullptr;
 	}
-
 	if (mFade)
 	{
 		delete mFade;
 		mFade = nullptr;
 	}
+
+	GetRenderer()->UnloadData();
 }
 
 void BaseScene::ProcessInput()

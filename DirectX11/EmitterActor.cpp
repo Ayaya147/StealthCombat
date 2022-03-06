@@ -21,7 +21,8 @@ PixelConstantBuffer<EmitterActor::EmitterConstant>* EmitterActor::mEmitterCBuffe
 EmitterActor::EmitterActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mIsAnimation(true)
+	mIsAnimation(true),
+	mSpeed(1.0f)
 {
 	mCount++;
 	Reset();
@@ -58,8 +59,8 @@ void EmitterActor::UpdateActor(float deltaTime)
 {
 	if (mIsAnimation)
 	{
-		mData.mNoiseScale += rate * deltaTime;
-		mData.mLoop -= 20.0f * deltaTime;
+		mData.mNoiseScale += rate * mSpeed * deltaTime;
+		mData.mLoop -= 20.0f * mSpeed * deltaTime;
 
 		if ((mData.mNoiseScale > 60.0f && rate > 0.0f) ||
 			(mData.mNoiseScale < 40.0f && rate < 0.0f))
@@ -117,11 +118,13 @@ void EmitterActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Animation");
+		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 2.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
+			mSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

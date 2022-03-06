@@ -47,6 +47,7 @@ private:
 	};
 
 	static int mCount;
+	float mSpeed;
 	ExplosionConstant mData;
 	ExplosionPhase mPhase;
 	bool mIsAnimation;

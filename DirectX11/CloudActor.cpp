@@ -23,7 +23,7 @@ PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = null
 CloudActor::CloudActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mDistFromCamera(0.0f),
+	mSpeed(1.0f),
 	mIsAnimation(true)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
@@ -96,7 +96,7 @@ void CloudActor::UpdateActor(float deltaTime)
 
 	if (mIsAnimation)
 	{
-		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime());
+		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime()*mSpeed);
 	}
 }
 
@@ -152,11 +152,14 @@ void CloudActor::ImGuiWindow()
 		ImGui::SliderFloat("z", &GetScaleChange().z, 0.0f, 120.0f, "%.1f");
 
 		ImGui::Text("Animation");
+		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 10.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
+			SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
+			mSpeed = 1.0f;
 		}
 	}
 	ImGui::End();
@@ -176,9 +179,4 @@ void CloudActor::Reset()
 		1.0f,
 		3,
 	};
-
-	if (auto demo = dynamic_cast<DemoScene*>(GetScene()))
-	{
-		SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
-	}
 }

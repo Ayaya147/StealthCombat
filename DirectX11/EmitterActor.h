@@ -41,6 +41,7 @@ private:
 	void Reset();
 
 	static int mCount;
+	float mSpeed;
 	EmitterConstant mData;
 	bool mIsAnimation;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;

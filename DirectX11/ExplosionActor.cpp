@@ -24,7 +24,8 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	:
 	Actor(scene),
 	mPhase(ExplosionPhase::EOne),
-	mIsAnimation(true)
+	mIsAnimation(true),
+	mSpeed(1.0f)
 {	
 	SetScale(16.0f);
 	mCount++;
@@ -77,7 +78,7 @@ void ExplosionActor::UpdateActor(float deltaTime)
 		switch (mPhase)
 		{
 		case ExplosionActor::ExplosionPhase::EOne:
-			mData.mRadius += 0.4f * rate * deltaTime;
+			mData.mRadius += 0.4f * rate * mSpeed * deltaTime;
 			if (mData.mRadius >= 0.06f)
 			{
 				mData.mRadius = 0.06f;
@@ -86,11 +87,11 @@ void ExplosionActor::UpdateActor(float deltaTime)
 			break;
 
 		case ExplosionActor::ExplosionPhase::ETwo:
-			mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } *rate * deltaTime;
-			mData.mLoop -= 16.0f * rate * deltaTime;
-			mData.mAbsorptionLight += 35.0f * rate * deltaTime;
-			mData.mAbsorption += 50.0f * rate * deltaTime;
-			mData.mRadius += 0.04f * rate * deltaTime;
+			mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } * rate * mSpeed * deltaTime;
+			mData.mLoop -= 16.0f * rate * mSpeed * deltaTime;
+			mData.mAbsorptionLight += 35.0f * rate * mSpeed * deltaTime;
+			mData.mAbsorption += 50.0f * rate * mSpeed * deltaTime;
+			mData.mRadius += 0.04f * rate * mSpeed * deltaTime;
 
 			if (mData.mLoop <= 0.0f || mData.mAbsorptionLight >= 100.0f || mData.mAbsorption >= 100.0f)
 			{
@@ -150,11 +151,13 @@ void ExplosionActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Animation");
+		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 5.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
+			mSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

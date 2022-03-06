@@ -15,8 +15,6 @@ public:
 	float CalcDistFromCamera();
 	void ImGuiWindow();
 
-	float GetDistFromCamera() const { return mDistFromCamera; }
-
 private:
 	struct ObjectConstant
 	{
@@ -43,7 +41,7 @@ private:
 
 	void Reset();
 
-	float mDistFromCamera;
+	float mSpeed;
 	static int mCount;
 	bool mIsAnimation;
 	static CloudConstant mData;

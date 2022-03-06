@@ -24,13 +24,3 @@ void TransparentComponent::Draw(Renderer* renderer)
 	GetOwner()->Bind(renderer);
 	renderer->GetContext()->DrawIndexed(mMesh->GetIndicesNum(), 0, 0);
 }
-
-float TransparentComponent::GetDistFromCamera() const
-{
-	if (auto owner = dynamic_cast<CloudActor*>(GetOwner()))
-	{
-		return owner->GetDistFromCamera();
-	}
-
-	return 0.0f;
-}
