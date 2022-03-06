@@ -17,8 +17,8 @@ public:
 	UIScreen(class BaseScene* scene, class Texture* texture);
 	virtual ~UIScreen();
 
-	virtual void Update(float deltaTime);
 	virtual void ProcessInput();
+	virtual void Update(float deltaTime);
 	virtual void Draw(class Renderer* renderer, class VertexBuffer* vertexBuffer);
 	void ComputeWorldTransform();
 

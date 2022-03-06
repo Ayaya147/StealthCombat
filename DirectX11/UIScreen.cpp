@@ -42,11 +42,11 @@ UIScreen::~UIScreen()
 	}
 }
 
-void UIScreen::Update(float deltaTime)
+void UIScreen::ProcessInput()
 {
 }
 
-void UIScreen::ProcessInput()
+void UIScreen::Update(float deltaTime)
 {
 }
 

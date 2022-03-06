@@ -13,8 +13,11 @@ public:
 
 private:
 	bool mIsTutorial;
+	float mAlpha;
+	float mRate;
 
-	class SpriteComponent* mTitleSprite;
+	class SpriteComponent* mTitle1Sprite;
+	class SpriteComponent* mTitle2Sprite;
 	class SpriteComponent* mModeSprite;
 	class SpriteComponent* mBackSprite;
 	class SpriteComponent* mTutorialSprite;

@@ -22,7 +22,9 @@ static SceneManager::SceneType gNextScene = SceneManager::SceneType::EGame;
 TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
-	mIsTutorial(false)
+	mIsTutorial(false),
+	mAlpha(1.0f),
+	mRate(-1.0f)
 {
 	Renderer* renderer = GetRenderer();
 
@@ -48,8 +50,15 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.5f);
 
 	sprite = new Actor(this);
-	tex = renderer->GetTexture("title");
-	mTitleSprite = new SpriteComponent(sprite, tex);
+	tex = renderer->GetTexture("title_01");
+	mTitle1Sprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -278.0f, -46.0f, 0.0f });
+	sprite->SetScale(1.0f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("title_02");
+	mTitle2Sprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 0.0f, 0.0f });
 	sprite->SetScale(1.0f);
 
 	sprite = new Actor(this);
@@ -89,7 +98,8 @@ void TitleScene::ProcessInput()
 			else if (GetInputSystem()->GetB())
 			{
 				mIsTutorial = true;
-				mTitleSprite->SetVisible(false);
+				mTitle1Sprite->SetVisible(false);
+				mTitle2Sprite->SetVisible(false);
 				mModeSprite->SetVisible(false);
 				mBackSprite->SetVisible(true);
 				mTutorialSprite->SetVisible(true);
@@ -104,7 +114,8 @@ void TitleScene::ProcessInput()
 			if (GetInputSystem()->GetY())
 			{
 				mIsTutorial = false;
-				mTitleSprite->SetVisible(true);
+				mTitle1Sprite->SetVisible(true);
+				mTitle2Sprite->SetVisible(true);
 				mModeSprite->SetVisible(true);
 				mBackSprite->SetVisible(false);
 				mTutorialSprite->SetVisible(false);
@@ -117,6 +128,13 @@ void TitleScene::ProcessInput()
 
 void TitleScene::Update()
 {
+	mAlpha += mRate * GetDeltaTime();
+	if ((mAlpha <= 0.0f && mRate < 0.0f) || (mAlpha >= 1.0f && mRate > 0.0f))
+	{
+		mRate *= -1.0f;
+	}
+	mTitle1Sprite->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,mAlpha });
+
 	BaseScene::Update();
 }
 
