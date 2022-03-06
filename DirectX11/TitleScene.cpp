@@ -24,7 +24,7 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	BaseScene(sm, parameter),
 	mIsTutorial(false),
 	mAlpha(1.0f),
-	mRate(-1.0f)
+	mRate(-0.8f)
 {
 	Renderer* renderer = GetRenderer();
 
@@ -128,12 +128,15 @@ void TitleScene::ProcessInput()
 
 void TitleScene::Update()
 {
-	mAlpha += mRate * GetDeltaTime();
-	if ((mAlpha <= 0.0f && mRate < 0.0f) || (mAlpha >= 1.0f && mRate > 0.0f))
+	if (GetSceneState() == SceneState::EPlay)
 	{
-		mRate *= -1.0f;
+		mAlpha += mRate * GetDeltaTime();
+		if ((mAlpha <= 0.0f && mRate < 0.0f) || (mAlpha >= 1.0f && mRate > 0.0f))
+		{
+			mRate *= -1.0f;
+		}
+		mTitle1Sprite->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,mAlpha });
 	}
-	mTitle1Sprite->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,mAlpha });
 
 	BaseScene::Update();
 }

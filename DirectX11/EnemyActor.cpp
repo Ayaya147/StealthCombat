@@ -29,7 +29,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	SetScale(0.12f);
 	SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 
-	float range = Constant::createRange * 0.8f;
+	float range = Constant::createRange * 0.9f;
 	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	dx::XMFLOAT3 player = { 0.0f,Constant::height,0.0f};
 	while (DXMath::LengthSq(pos - player) < std::powf(20.0f, 2.0f))
@@ -121,7 +121,7 @@ void EnemyActor::UpdateActor(float deltaTime)
 
 void EnemyActor::CalcNextPos()
 {
-	float range = Constant::createRange * 0.8f;
+	float range = Constant::createRange * 0.9f;
 	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 	while (DXMath::LengthSq(pos - GetPosition()) < std::powf(150.0f, 2.0f))
 	{
