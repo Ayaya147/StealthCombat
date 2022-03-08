@@ -221,6 +221,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithEnemy(mBody, info))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
+			explosion->SetScale(18.0f);
 			explosion->SetPosition(GetPosition() + GetForward() * 1.25f);
 			game->SetSceneState(BaseScene::SceneState::EGameEnd);
 		}

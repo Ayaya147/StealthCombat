@@ -32,10 +32,11 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mCloud->SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
 
 	mExplosion = new ExplosionActor(this);
+	mExplosion->SetScale(16.0f);
 	mExplosion->SetPosition(dx::XMFLOAT3{ 6.0f,Constant::height,0.0f });
 	
 	mSmoke = new SmokeActor(this);
-	mSmoke->SetScale(10.0f);
+	mSmoke->SetScale(12.0f);
 	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,5.0f });
 
 	mEmitter = new EmitterActor(this);
