@@ -22,9 +22,9 @@ cbuffer CBuf1 : register(b1)
     float mShallowColorStrength;
     float mShininess;
     float mColorHeightOffset;
+    float mF0;
 }
 
-static const float r = 0.02f;
 static const int waveNumber = 8;
 static const int count = 4;
 
@@ -41,8 +41,8 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
     float3 viewDir = normalize(mCameraPos - worldPos);
     float3 mirrorEyeDir = normalize(reflect(-viewDir, normal));
 
-    float facing = saturate(1.0f - dot(normal, lightDir));
-    float fresnel = r + (1.0f - r) * pow(facing, 5.0f);	
+    float facing = saturate(1.0f - dot(viewDir, normal));
+    float fresnel = mF0 + (1.0f - mF0) * pow(facing, 5.0f);
     
     float3 diffuse = saturate(dot(normal, lightDir)) * mDiffuseColor;
     

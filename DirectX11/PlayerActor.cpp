@@ -187,7 +187,8 @@ void PlayerActor::ActorInput()
 				GetScene(), mTargetEnemy, GetPosition(), mMoveComponent->GetForwardSpeed()
 			);
 
-			game->GetAudioSystem()->PlaySoundEx("Asset/Sound/se_missile.wav", 0);
+			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_missile.wav");
+			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 	}
 }
@@ -227,6 +228,9 @@ void PlayerActor::UpdateActor(float deltaTime)
 			explosion->SetScale(18.0f);
 			explosion->SetPosition(GetPosition() + GetForward() * 1.25f);
 			game->SetSceneState(BaseScene::SceneState::EGameEnd);
+
+			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_explosion.wav");
+			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 
 		SpriteComponent* sprite = game->GetMarkingPlayerSprite();

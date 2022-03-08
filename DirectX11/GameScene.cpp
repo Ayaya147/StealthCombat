@@ -140,7 +140,12 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mMap = new Minimap(this);
 	renderer->ResetLight();
 
-	GetAudioSystem()->PlaySoundEx("Asset/Sound/bgm_game.wav", XAUDIO2_LOOP_INFINITE);
+	int index = GetAudioSystem()->LoadSound("Asset/Sound/bgm_game.wav");
+	GetAudioSystem()->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
+	//GetAudioSystem()->SetVolume(index, 0.1f);
+
+	index = GetAudioSystem()->LoadSound("Asset/Sound/bgm_airplane.wav");
+	GetAudioSystem()->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
 }
 
 GameScene::~GameScene()

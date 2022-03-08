@@ -74,27 +74,31 @@ int AudioSystem::LoadSound(const char* filename)
 	return retIndex;
 }
 
-void AudioSystem::PlaySoundEx(const char* filename, int loopCount)
+void AudioSystem::SetVolume(int id, float vol)
 {
-	int index = LoadSound(filename);
+	mSourceVoice[id]->SetVolume(vol);
+}
+
+void AudioSystem::PlaySoundEx(int id, int loopCount)
+{
 	XAUDIO2_VOICE_STATE xa2state;
 	XAUDIO2_BUFFER buffer;
 
 	memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
-	buffer.AudioBytes = mSizeAudio[index];
-	buffer.pAudioData = mDataAudio[index];
+	buffer.AudioBytes = mSizeAudio[id];
+	buffer.pAudioData = mDataAudio[id];
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
 	buffer.LoopCount = loopCount;
 
-	mSourceVoice[index]->GetState(&xa2state);
+	mSourceVoice[id]->GetState(&xa2state);
 	if (xa2state.BuffersQueued != 0)
 	{
-		mSourceVoice[index]->Stop(0);
-		mSourceVoice[index]->FlushSourceBuffers();
+		mSourceVoice[id]->Stop(0);
+		mSourceVoice[id]->FlushSourceBuffers();
 	}
 
-	mSourceVoice[index]->SubmitSourceBuffer(&buffer);
-	mSourceVoice[index]->Start(0);
+	mSourceVoice[id]->SubmitSourceBuffer(&buffer);
+	mSourceVoice[id]->Start(0);
 }
 
 void AudioSystem::StopSound(int index)

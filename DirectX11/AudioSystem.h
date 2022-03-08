@@ -10,12 +10,13 @@ public:
 	AudioSystem();
 	~AudioSystem();
 
-	void PlaySoundEx(const char* filename, int loopCount);
+	int LoadSound(const char* filename);
+	void SetVolume(int id, float vol);
+	void PlaySoundEx(int id, int loopCount);
 	void StopSound(int index);
 	void StopSoundAll();
 
 private:
-	int LoadSound(const char* filename);
 	HRESULT CheckChunk(HANDLE file, DWORD format, DWORD* chunkSize, DWORD* chunkDataPosition);
 	HRESULT ReadChunkData(HANDLE file, void* buffer, DWORD buffersize, DWORD bufferoffset);
 

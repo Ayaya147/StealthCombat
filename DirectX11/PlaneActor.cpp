@@ -83,6 +83,7 @@ void PlaneActor::ImGuiWindow()
 		ImGui::Text("Other");
 		ImGui::SliderFloat("Wave Speed", &mPixelData.mWaveSpeed, 0.0f, 5.0f, "%.2f");
 		ImGui::SliderFloat("Shininess", &mPixelData.mShininess, 0.0f, 1.0f, "%.2f");
+		ImGui::SliderFloat("f0 (fresnel)", &mPixelData.mF0, 0.0f, 1.0f, "%.2f");
 
 		if (ImGui::Button("Reset"))
 		{
@@ -104,14 +105,15 @@ void PlaneActor::Reset()
 	mPixelData = {
 		{0.05f, 0.19f, 0.35f},
 		{0.36f, 0.54f, 0.19f},
-		{0.0f, 0.4f, 1.0f},
+		{0.0f, 0.6f, 1.0f},
 		GetScene()->GetGameTime(),
 		1.7f,
 		0.75f,
 		0.8f,
-		1.0f,
-		0.30f,
+		0.80f,
+		0.25f,
 		0.75f,
-		0.12f
+		0.12f,
+		0.20f
 	};
 }

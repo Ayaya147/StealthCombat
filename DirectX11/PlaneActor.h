@@ -39,6 +39,8 @@ private:
 		float mShallowColorStrength;
 		float mShininess;
 		float mColorHeightOffset;
+		float mF0;
+		float padding[3];
 	};
 
 	void Reset();

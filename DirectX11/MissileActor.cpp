@@ -13,6 +13,7 @@
 #include "XMFloatHelper.h"
 #include "PhysWorld.h"
 #include "Collision.h"
+#include "AudioSystem.h"
 
 namespace dx = DirectX;
 
@@ -89,6 +90,9 @@ void MissileActor::UpdateActor(float deltaTime)
 			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
 			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
+
+			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_explosion.wav");
+			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 	}
 		break;
@@ -100,6 +104,9 @@ void MissileActor::UpdateActor(float deltaTime)
 			explosion->SetScale(18.0f);
 			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
 			game->SetSceneState(BaseScene::SceneState::EGameEnd);
+
+			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_explosion.wav");
+			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		break;
 	}
