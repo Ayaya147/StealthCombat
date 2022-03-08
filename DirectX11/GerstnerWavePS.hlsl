@@ -39,23 +39,23 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
 {
     float3 lightDir = normalize(-mDirection);
     float3 viewDir = normalize(mCameraPos - worldPos);
-	
-    float facing = saturate(1.0f - dot(normal, viewDir));
-    float fresnel = r + (1.0f - r) * pow(facing, 5.0f);
-    float3 reflectDir = reflect(-viewDir, normal);
-	
-    float3 diff = saturate(dot(normal, lightDir)) * mDiffuseColor;
-	
-    float dotSpec = saturate(dot(reflectDir, lightDir) * 0.5f + 0.5f);
-    float3 spec = (1.0f - fresnel) * saturate(lightDir.y) * pow(dotSpec, 512.0f) * (mShininess * 1.8f + 0.2f);
-    spec += spec * 25.0f * saturate(mShininess - 0.05f) * mSpecColor;
+    float3 mirrorEyeDir = normalize(reflect(-viewDir, normal));
 
-    float3 seaReflectColor = GetSkyColor(reflectDir, mSkyColor);
-    float3 seaBaseColor = mSeaBaseColor * diff * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diff);
+    float facing = saturate(1.0f - dot(normal, lightDir));
+    float fresnel = r + (1.0f - r) * pow(facing, 5.0f);	
+    
+    float3 diffuse = saturate(dot(normal, lightDir)) * mDiffuseColor;
+    
+    float dotSpec = saturate(dot(mirrorEyeDir, lightDir) * 0.5f + 0.5f);
+    float3 specular = (1.0f - fresnel) * saturate(lightDir.y) * pow(dotSpec, 512.0f) * (mShininess * 1.8f + 0.2f);
+    specular += specular * 25.0f * saturate(mShininess - 0.05f) * mSpecColor;
+
+    float3 seaReflectColor = GetSkyColor(mirrorEyeDir, mSkyColor);
+    float3 seaBaseColor = mSeaBaseColor * diffuse * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diffuse);
     float3 waterColor = lerp(seaBaseColor, seaReflectColor, fresnel);
     float3 seaColor = waterColor + mSeaShallowColor * (waveHeight * 0.5f + 0.2f) * mColorHeightOffset;
  
-    return mAmbientLight + seaColor + spec;
+    return mAmbientLight + seaColor + specular;
 }
 
 float4 main(float3 worldPos : POSITION) : SV_TARGET
