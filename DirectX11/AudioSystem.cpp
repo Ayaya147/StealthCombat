@@ -1,6 +1,10 @@
 ﻿#include "AudioSystem.h"
 
 AudioSystem::AudioSystem()
+	:
+	mXAudio2(nullptr),
+	mMasteringVoice(nullptr),
+	mSoundIndex(0)
 {
 	CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	XAudio2Create(&mXAudio2, 0);
@@ -9,7 +13,7 @@ AudioSystem::AudioSystem()
 
 AudioSystem::~AudioSystem()
 {
-	for (int nCntSound = 0; nCntSound < static_cast<int>(mSoundIndex); nCntSound++)
+	for (int nCntSound = 0; nCntSound < mSoundIndex; nCntSound++)
 	{
 		if (mSourceVoice[nCntSound])
 		{
@@ -33,8 +37,16 @@ AudioSystem::~AudioSystem()
 	CoUninitialize();
 }
 
-int AudioSystem::LoadSound(const char* filename)
+int AudioSystem::LoadSound(const std::string& filename)
 {
+	for (int i = 0; i < mSoundIndex; i++)
+	{
+		if (mSoundName[i] == filename)
+		{
+			return i;
+		}
+	}
+
 	HANDLE file;
 	DWORD chunkSize = 0;
 	DWORD chunkPosition = 0;
@@ -42,35 +54,23 @@ int AudioSystem::LoadSound(const char* filename)
 	WAVEFORMATEXTENSIBLE wfx;
 	XAUDIO2_BUFFER buffer;
 
-	for (unsigned int i = 0; i < mSoundIndex; i++)
-	{
-		if (strcmp(mSoundName[i], filename) == 0)
-		{
-			return i;
-		}
-	}
-
 	memset(&wfx, 0, sizeof(WAVEFORMATEXTENSIBLE));
 	memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 
-	file = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+	file = CreateFile(filename.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 
 	CheckChunk(file, 'FFIR', &chunkSize, &chunkPosition);
 	ReadChunkData(file, &filetype, sizeof(DWORD), chunkPosition);
 	CheckChunk(file, ' tmf', &chunkSize, &chunkPosition);
 	ReadChunkData(file, &wfx, chunkSize, chunkPosition);
 	CheckChunk(file, 'atad', &mSizeAudio[mSoundIndex], &chunkPosition);
-
 	mDataAudio[mSoundIndex] = (BYTE*)malloc(mSizeAudio[mSoundIndex]);
 	ReadChunkData(file, mDataAudio[mSoundIndex], mSizeAudio[mSoundIndex], chunkPosition);
 	mXAudio2->CreateSourceVoice(&mSourceVoice[mSoundIndex], &(wfx.Format));
 
-	strcpy_s(mSoundName[mSoundIndex], 256, filename);
-
+	mSoundName[mSoundIndex] = filename;
 	int retIndex = mSoundIndex;
-
 	mSoundIndex++;
-
 	return retIndex;
 }
 
@@ -115,7 +115,7 @@ void AudioSystem::StopSound(int index)
 
 void AudioSystem::StopSoundAll()
 {
-	for (int nCntSound = 0; nCntSound < (int)mSoundIndex; nCntSound++)
+	for (int nCntSound = 0; nCntSound < mSoundIndex; nCntSound++)
 	{
 		if (mSourceVoice[nCntSound])
 		{

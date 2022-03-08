@@ -24,6 +24,7 @@ public:
 	class PlayerActor* GetPlayer() const { return mPlayer; }
 	class SpriteComponent* GetMarkingEnemySprite() const { return mMarkingEnemySprite; }
 	class SpriteComponent* GetMarkingPlayerSprite() const { return mMarkingPlayerSprite; }
+	int GetAirplaneBGM() const { return mAirplaneBGM; }
 
 private:
 	std::vector<class EnemyActor*> mEnemies;
@@ -46,6 +47,7 @@ private:
 	class UIScreen* mMenuUI;
 	class UIScreen* mVictoryUI;
 	class UIScreen* mDefeatUI;
+	int mAirplaneBGM;
 
 	bool mWin;
 	float mQuitTime;

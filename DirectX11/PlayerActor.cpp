@@ -153,9 +153,12 @@ void PlayerActor::ActorInput()
 					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ELight);
 				}
 			}
+
+			mEmitterCD -= GetScene()->GetDeltaTime();
+			
+			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 1.0f);
 		}
 
-		mEmitterCD -= GetScene()->GetDeltaTime();
 		mMoveComponent->SetAcceleration(accelW);
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
@@ -171,13 +174,23 @@ void PlayerActor::ActorInput()
 		}
 
 		mMoveComponent->SetAcceleration(accelS);
+
+		if (game)
+		{
+			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 0.5f);
+		}
 	}
 	else
 	{
 		mMoveComponent->SetAcceleration(accelNatural);
+
+		if (game)
+		{
+			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 0.5f);
+		}
 	}
 
-	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	if (game)
 	{
 		SpriteComponent* sprite = game->GetMarkingEnemySprite();
 		if (input->GetPlayerEmitMissile() && sprite->GetIsVisible())

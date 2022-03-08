@@ -37,7 +37,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mQuitTime(1.5f)
 {
 	gNextScene = SceneManager::SceneType::ETitle;
-	Renderer* renderer = GetRenderer();
 
 	PlaneActor* plane = new PlaneActor(this);
 
@@ -49,7 +48,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	{
 		CloudActor* cloud = new CloudActor(this);
 	}
-
+	
+	Renderer* renderer = GetRenderer();
 	Actor* sprite = new Actor(this);
 	Texture* tex = renderer->GetTexture("guide_keyboard");
 	mGuideSprite = new SpriteComponent(sprite, tex);
@@ -140,12 +140,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mMap = new Minimap(this);
 	renderer->ResetLight();
 
-	int index = GetAudioSystem()->LoadSound("Asset/Sound/bgm_game.wav");
-	GetAudioSystem()->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
-	//GetAudioSystem()->SetVolume(index, 0.1f);
+	AudioSystem* audio = GetAudioSystem();
+	int index = audio->LoadSound("Asset/Sound/bgm_game.wav");
+	audio->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
 
-	index = GetAudioSystem()->LoadSound("Asset/Sound/bgm_airplane.wav");
-	GetAudioSystem()->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
+	mAirplaneBGM = audio->LoadSound("Asset/Sound/bgm_airplane.wav");
+	audio->PlaySoundEx(mAirplaneBGM, XAUDIO2_LOOP_INFINITE);
+	audio->SetVolume(mAirplaneBGM, 0.5f);
 }
 
 GameScene::~GameScene()

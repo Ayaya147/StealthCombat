@@ -65,7 +65,7 @@ void CameraComponent::Update(float deltaTime)
 			strength = 0.0f;
 			break;
 		case CameraComponent::VibrationState::ELight:
-			strength = 0.04f;
+			strength = 0.05f;
 			break;
 		case CameraComponent::VibrationState::ENormal:
 			strength = 0.1f;

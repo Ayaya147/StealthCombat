@@ -105,7 +105,7 @@ void PlaneActor::Reset()
 	mPixelData = {
 		{0.05f, 0.19f, 0.35f},
 		{0.36f, 0.54f, 0.19f},
-		{0.0f, 0.6f, 1.0f},
+		{0.0f, 0.5f, 0.8f},
 		GetScene()->GetGameTime(),
 		1.7f,
 		0.75f,
