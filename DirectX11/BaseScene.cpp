@@ -172,6 +172,11 @@ InputSystem* BaseScene::GetInputSystem()
 	return mSceneManager->GetInputSystem();
 }
 
+AudioSystem* BaseScene::GetAudioSystem()
+{
+	return mSceneManager->GetAudioSystem();
+}
+
 Window* BaseScene::GetWindow()
 {
 	return mSceneManager->GetWindow();

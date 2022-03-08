@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "Random.h"
 #include "InputSystem.h"
+#include "AudioSystem.h"
 #include "GameApp.h"
 #include "Window.h"
 
@@ -71,6 +72,11 @@ Renderer* SceneManager::GetRenderer()
 InputSystem* SceneManager::GetInputSystem()
 {
 	return mApp->GetInputSystem();
+}
+
+AudioSystem* SceneManager::GetAudioSystem()
+{
+	return mApp->GetAudioSystem();
 }
 
 Window* SceneManager::GetWindow()

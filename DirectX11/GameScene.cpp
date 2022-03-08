@@ -1,5 +1,4 @@
 #include "GameScene.h"
-#include <algorithm>
 #include "SceneManager.h"
 #include "Parameter.h"
 #include "Renderer.h"
@@ -15,6 +14,7 @@
 #include "NumberSpriteComponent.h"
 #include "Texture.h"
 #include "InputSystem.h"
+#include "AudioSystem.h"
 #include "GamePad.h"
 #include "Keyboard.h"
 #include "Random.h"
@@ -139,10 +139,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 
 	mMap = new Minimap(this);
 	renderer->ResetLight();
+
+	GetAudioSystem()->PlaySoundEx("Asset/Sound/bgm_game.wav", XAUDIO2_LOOP_INFINITE);
 }
 
 GameScene::~GameScene()
 {
+	GetAudioSystem()->StopSoundAll();
 	delete mPhysWorld;
 	delete mMap;
 }

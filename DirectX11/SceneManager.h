@@ -19,6 +19,7 @@ public:
 
 	class Renderer* GetRenderer();
 	class InputSystem* GetInputSystem();
+	class AudioSystem* GetAudioSystem();
 	class Window* GetWindow();
 
 private:

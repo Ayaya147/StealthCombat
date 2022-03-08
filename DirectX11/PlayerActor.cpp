@@ -13,6 +13,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "InputSystem.h"
+#include "AudioSystem.h"
 #include "Keyboard.h"
 #include "GamePad.h"
 #include "Collision.h"
@@ -185,6 +186,8 @@ void PlayerActor::ActorInput()
 			MissileActor* missile = new MissileActor(
 				GetScene(), mTargetEnemy, GetPosition(), mMoveComponent->GetForwardSpeed()
 			);
+
+			game->GetAudioSystem()->PlaySoundEx("Asset/Sound/se_missile.wav", 0);
 		}
 	}
 }

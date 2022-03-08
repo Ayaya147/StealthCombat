@@ -1,12 +1,14 @@
 #include "GameApp.h"
 #include "ImguiManager.h"
 #include "InputSystem.h"
+#include "AudioSystem.h"
 #include "Window.h"
 #include "Renderer.h"
 #include "SceneManager.h"
 
 ImguiManager* GameApp::mImgui = nullptr;
 InputSystem* GameApp::mInputSystem = nullptr;
+AudioSystem* GameApp::mAudioSystem = nullptr;
 Window* GameApp::mWindow = nullptr;
 Renderer* GameApp::mRenderer = nullptr;
 SceneManager* GameApp::mSceneManager = nullptr;
@@ -15,6 +17,7 @@ GameApp::GameApp()
 {
 	mImgui = new ImguiManager();
 	mInputSystem = new InputSystem();
+	mAudioSystem = new AudioSystem();
 	mWindow = new Window(1280, 720, mInputSystem);
 	mRenderer = new Renderer(mWindow->GetHandle(), mWindow->GetClientWidth(), mWindow->GetClientHeight());
 	mSceneManager = new SceneManager(this);
@@ -26,6 +29,7 @@ GameApp::~GameApp()
 	delete mRenderer;
 	delete mWindow;
 	delete mInputSystem;
+	delete mAudioSystem;
 	delete mImgui;
 }
 

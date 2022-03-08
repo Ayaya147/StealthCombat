@@ -26,6 +26,7 @@ public:
 	void SetSceneState(SceneState state) { mSceneState = state; }
 	class Renderer* GetRenderer();
 	class InputSystem* GetInputSystem();
+	class AudioSystem* GetAudioSystem();
 	class Window* GetWindow();
 	class SceneManager* GetSceneManager() const { return mSceneManager; }
 	class Fade* GetFade() const { return mFade; }
