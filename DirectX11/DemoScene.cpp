@@ -80,7 +80,6 @@ void DemoScene::GenerateOutput()
 
 	if (GetSceneState() == SceneState::EQuit)
 	{
-		GetInputSystem()->GetPad()->StopVibration();
 		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{

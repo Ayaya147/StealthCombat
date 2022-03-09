@@ -71,7 +71,7 @@ void CameraComponent::Update(float deltaTime)
 			strength = 0.1f;
 			break;
 		case CameraComponent::VibrationState::EHard:
-			strength = 0.4f;
+			strength = 0.5f;
 			break;
 		}
 		at += Random::GetVector() * strength;

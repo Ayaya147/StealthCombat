@@ -13,6 +13,7 @@
 #include "XMFloatHelper.h"
 #include "Minimap.h"
 #include "PhysWorld.h"
+#include "AudioSystem.h"
 
 namespace dx = DirectX;
 
@@ -98,6 +99,9 @@ void EnemyActor::UpdateActor(float deltaTime)
 		MissileActor* missile = new MissileActor(
 			GetScene(), player, GetPosition(), mMoveComponent->GetForwardSpeed()
 		);
+
+		int index = game->GetAudioSystem()->LoadSound("se_missile");
+		game->GetAudioSystem()->PlaySoundEx(index, 0);
 	}
 
 	if (CalcAngle() > 0.2f)

@@ -104,8 +104,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("destroyed");
 	mDestroyedSprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -150.0f, 0.0f });
-	sprite->SetScale(0.55f);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -130.0f, 0.0f });
+	sprite->SetScale(0.52f);
 	mCautionCloudTime->SetVisible(false);
 
 	mSpdNum = new NumberActor(this, 0, 4);
@@ -149,8 +149,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	renderer->ResetLight();
 
 	AudioSystem* audio = GetAudioSystem();
-	int index = audio->LoadSound("bgm_game");
-	audio->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
+	mGameBGM = audio->LoadSound("bgm_game");
+	audio->PlaySoundEx(mGameBGM, XAUDIO2_LOOP_INFINITE);
 
 	mAirplaneBGM = audio->LoadSound("bgm_airplane");
 	audio->PlaySoundEx(mAirplaneBGM, XAUDIO2_LOOP_INFINITE);
@@ -307,7 +307,6 @@ void GameScene::Update()
 		break;
 
 	case SceneState::EGameEnd:
-		GetInputSystem()->GetPad()->StopVibration();
 		mQuitTime -= GetDeltaTime();
 		if (mQuitTime <= 0.0f)
 		{
@@ -338,12 +337,22 @@ void GameScene::GenerateOutput()
 	{
 		GamePad* pad = GetInputSystem()->GetPad();
 		pad->SetVibration(mVibrationStrength);
+		GetAudioSystem()->SetVolume(mGameBGM, 1.0f);
 	}
+		break;
+
+	case SceneState::EPaused:
+	case SceneState::EGameEnd:
+		GetInputSystem()->GetPad()->StopVibration();
+		GetAudioSystem()->SetVolume(mGameBGM, 0.0f);
+		GetAudioSystem()->SetVolume(mAirplaneBGM, 0.0f);
 		break;
 
 	case SceneState::EQuit:
 		GetInputSystem()->GetPad()->StopVibration();
 		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
+		GetAudioSystem()->SetVolume(mGameBGM, 0.0f);
+		GetAudioSystem()->SetVolume(mAirplaneBGM, 0.0f);
 
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{

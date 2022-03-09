@@ -55,5 +55,6 @@ private:
 	float mQuitTime;
 	float mDestroyedSpriteTime;
 	int mAirplaneBGM;
+	int mGameBGM;
 	int mVibrationStrength;
 };
