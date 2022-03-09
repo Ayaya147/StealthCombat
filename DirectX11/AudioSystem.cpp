@@ -39,6 +39,8 @@ AudioSystem::~AudioSystem()
 
 int AudioSystem::LoadSound(const std::string& filename)
 {
+	std::string name = "Asset\\Sound\\" + filename + ".wav";
+
 	for (int i = 0; i < mSoundIndex; i++)
 	{
 		if (mSoundName[i] == filename)
@@ -57,7 +59,7 @@ int AudioSystem::LoadSound(const std::string& filename)
 	memset(&wfx, 0, sizeof(WAVEFORMATEXTENSIBLE));
 	memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 
-	file = CreateFile(filename.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+	file = CreateFile(name.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 
 	CheckChunk(file, 'FFIR', &chunkSize, &chunkPosition);
 	ReadChunkData(file, &filetype, sizeof(DWORD), chunkPosition);

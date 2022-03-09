@@ -17,6 +17,8 @@ public:
 	void AddCloud(class CloudActor* cloud);
 	void RemoveCloud(class CloudActor* cloud);
 
+	void SetDestroyedSpriteTime(float time) { mDestroyedSpriteTime = time; }
+	void SetVibrationStrength(int strength) { mVibrationStrength = strength; }
 	const std::vector<class EnemyActor*>& GetEnemies() const { return mEnemies; }
 	const std::vector<class CloudActor*>& GetClouds() const { return mClouds; }
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
@@ -43,12 +45,15 @@ private:
 	class SpriteComponent* mCautionCloudTime;
 	class SpriteComponent* mTimeSprite;
 	class SpriteComponent* mUICountSprite;
+	class SpriteComponent* mDestroyedSprite;
 	class UIScreen* mBackgroundUI;
 	class UIScreen* mMenuUI;
 	class UIScreen* mVictoryUI;
 	class UIScreen* mDefeatUI;
-	int mAirplaneBGM;
 
 	bool mWin;
 	float mQuitTime;
+	float mDestroyedSpriteTime;
+	int mAirplaneBGM;
+	int mVibrationStrength;
 };

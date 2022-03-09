@@ -19,7 +19,6 @@ public:
 	class CameraComponent* GetCameraComp() const { return mCameraComponent; }
 
 private:
-	DirectX::XMFLOAT3 LocalToClip(class Actor* actor);
 	class CameraComponent* mCameraComponent;
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;

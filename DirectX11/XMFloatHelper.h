@@ -372,6 +372,18 @@ namespace DXMath
 		return rv;
 	}
 
+	_NODISCARD static inline auto LocalToClip(const DirectX::XMMATRIX& worldtransform, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& projection)
+	{
+		DirectX::XMVECTOR localPos = DirectX::XMVectorZero();
+		DirectX::XMMATRIX matrix = worldtransform * view * projection;
+
+		DirectX::XMVECTOR ndc = DirectX::XMVector3TransformCoord(localPos, matrix);
+		float ndcX = DirectX::XMVectorGetX(ndc);
+		float ndcY = DirectX::XMVectorGetY(ndc);
+
+		return DirectX::XMFLOAT3{ ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
+	}
+
 	//XMFLOAT2
 	_NODISCARD static inline float LengthSq(const DirectX::XMFLOAT2& vf2)
 	{

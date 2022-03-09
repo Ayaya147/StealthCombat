@@ -91,8 +91,10 @@ void MissileActor::UpdateActor(float deltaTime)
 			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
 
-			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_explosion.wav");
+			int index = game->GetAudioSystem()->LoadSound("se_explosion");
 			game->GetAudioSystem()->PlaySoundEx(index, 0);
+
+			game->SetDestroyedSpriteTime(2.5f);
 		}
 	}
 		break;
@@ -105,7 +107,7 @@ void MissileActor::UpdateActor(float deltaTime)
 			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
 			game->SetSceneState(BaseScene::SceneState::EGameEnd);
 
-			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_explosion.wav");
+			int index = game->GetAudioSystem()->LoadSound("se_explosion");
 			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		break;

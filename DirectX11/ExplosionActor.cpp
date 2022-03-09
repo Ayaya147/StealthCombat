@@ -60,15 +60,13 @@ ExplosionActor::~ExplosionActor()
 
 void ExplosionActor::UpdateActor(float deltaTime)
 {
+	auto game = dynamic_cast<GameScene*>(GetScene());
 	CameraComponent* cc = nullptr;
-	if (auto game = dynamic_cast<GameScene*>(GetScene()))
+	if (game)
 	{
 		cc = game->GetPlayer()->GetCameraComp();
 		cc->SetCameraState(CameraComponent::VibrationState::EHard);
-
-		InputSystem* input = GetScene()->GetInputSystem();
-		GamePad* pad = input->GetPad();
-		pad->SetVibration(150);
+		game->SetVibrationStrength(150);
 	}
 
 	if (mIsAnimation)
@@ -94,13 +92,10 @@ void ExplosionActor::UpdateActor(float deltaTime)
 
 			if (mData.mLoop <= 0.0f || mData.mAbsorptionLight >= 100.0f || mData.mAbsorption >= 100.0f)
 			{
-				if (auto game = dynamic_cast<GameScene*>(GetScene()))
+				if (game)
 				{
 					SetActorState(ActorState::EDead);
-					if (cc)
-					{
-						cc->SetCameraState(CameraComponent::VibrationState::ENone);
-					}
+					cc->SetCameraState(CameraComponent::VibrationState::ENone);
 				}
 				else
 				{

@@ -87,8 +87,6 @@ void PlayerActor::ActorInput()
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	InputSystem* input = GetScene()->GetInputSystem();
-	GamePad* pad = input->GetPad();
-	pad->StopVibration();
 
 	if (input->GetPlayerRightTurn() && !input->GetPlayerLeftTurn())
 	{
@@ -127,35 +125,28 @@ void PlayerActor::ActorInput()
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
 	}
 
-
-	if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
-	{
-		mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENone);
-	}
-
 	if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 	{
 		if (game)
 		{
 			if (mMoveComponent->GetForwardSpeed() < 15.0f)
 			{
-				pad->SetVibration(100);
-				if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone)
+				game->SetVibrationStrength(100);
+				if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
 				{
 					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
 				}
 			}
 			else
 			{
-				pad->SetVibration(4);
-				if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone)
+				game->SetVibrationStrength(4);
+				if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
 				{
 					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ELight);
 				}
 			}
 
-			mEmitterCD -= GetScene()->GetDeltaTime();
-			
+			mEmitterCD -= GetScene()->GetDeltaTime();			
 			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 1.0f);
 		}
 
@@ -163,31 +154,43 @@ void PlayerActor::ActorInput()
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 	{
-		if (mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f && game)
+		if (game)
 		{
-			pad->SetVibration(100);
+			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 0.5f);
 
-			if (mCameraComponent->GetCameraState() == CameraComponent::VibrationState::ENone)
+			if (mMoveComponent->GetForwardSpeed() > 600.0f / 160.0f)
 			{
-				mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
+				game->SetVibrationStrength(100);
+				if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
+				{
+					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENormal);
+				}
+			}
+			else
+			{
+				game->SetVibrationStrength(0);
+				if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
+				{
+					mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENone);
+				}
 			}
 		}
 
 		mMoveComponent->SetAcceleration(accelS);
-
-		if (game)
-		{
-			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 0.5f);
-		}
 	}
 	else
 	{
-		mMoveComponent->SetAcceleration(accelNatural);
-
 		if (game)
 		{
 			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 0.5f);
+			game->SetVibrationStrength(0);
+			if (mCameraComponent->GetCameraState() != CameraComponent::VibrationState::EHard)
+			{
+				mCameraComponent->SetCameraState(CameraComponent::VibrationState::ENone);
+			}
 		}
+
+		mMoveComponent->SetAcceleration(accelNatural);
 	}
 
 	if (game)
@@ -200,7 +203,7 @@ void PlayerActor::ActorInput()
 				GetScene(), mTargetEnemy, GetPosition(), mMoveComponent->GetForwardSpeed()
 			);
 
-			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_missile.wav");
+			int index = game->GetAudioSystem()->LoadSound("se_missile");
 			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 	}
@@ -212,6 +215,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 	{
 		PhysWorld* phys = game->GetPhysWorld();
 		PhysWorld::CollisionInfo info;
+		Renderer* renderer = game->GetRenderer();
 
 		if (phys->IsCollidedWithCloud(mBody))
 		{
@@ -242,7 +246,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			explosion->SetPosition(GetPosition() + GetForward() * 1.25f);
 			game->SetSceneState(BaseScene::SceneState::EGameEnd);
 
-			int index = game->GetAudioSystem()->LoadSound("Asset/Sound/se_explosion.wav");
+			int index = game->GetAudioSystem()->LoadSound("se_explosion");
 			game->GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 
@@ -250,7 +254,11 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (mIsLockedOn)
 		{
 			sprite->SetVisible(true);
-			dx::XMFLOAT3 clipPos = LocalToClip(this);
+			dx::XMFLOAT3 clipPos = DXMath::LocalToClip(
+				this->GetWorldTransform(),
+				renderer->GetViewMatrix(),
+				renderer->GetProjectionMatrix()
+			);
 			sprite->GetOwner()->SetPosition(clipPos);
 		}
 		else
@@ -265,7 +273,11 @@ void PlayerActor::UpdateActor(float deltaTime)
 			mTargetEnemy = dynamic_cast<EnemyActor*>(info.mActor);
 			if (!mTargetEnemy->GetIsLockedOn())
 			{
-				dx::XMFLOAT3 clipPos = LocalToClip(mTargetEnemy);
+				dx::XMFLOAT3 clipPos = DXMath::LocalToClip(
+					mTargetEnemy->GetWorldTransform(),
+					renderer->GetViewMatrix(),
+					renderer->GetProjectionMatrix()
+				);
 
 				if (clipPos.y > -540.0f &&
 					clipPos.y < 0.0f &&
@@ -291,7 +303,12 @@ void PlayerActor::UpdateActor(float deltaTime)
 		{
 			Actor* actor = mPlayerSprite->GetOwner();
 			mPlayerSprite->SetVisible(true);
-			dx::XMFLOAT3 clipPos = LocalToClip(this);
+			dx::XMFLOAT3 clipPos = DXMath::LocalToClip(
+				this->GetWorldTransform(),
+				renderer->GetViewMatrix(),
+				renderer->GetProjectionMatrix()
+			);
+
 			actor->SetPosition(clipPos);
 		}
 		else
@@ -299,23 +316,6 @@ void PlayerActor::UpdateActor(float deltaTime)
 			mPlayerSprite->SetVisible(false);
 		}
 	}
-}
-
-DirectX::XMFLOAT3 PlayerActor::LocalToClip(Actor* actor)
-{
-	Renderer* renderer = GetScene()->GetRenderer();
-
-	dx::XMVECTOR localPos = dx::XMVectorZero();
-	dx::XMMATRIX worldtransform = actor->GetWorldTransform();
-	dx::XMMATRIX view = renderer->GetViewMatrix();
-	dx::XMMATRIX projection = renderer->GetProjectionMatrix();
-	dx::XMMATRIX matrix = worldtransform * view * projection;
-
-	dx::XMVECTOR ndc = dx::XMVector3TransformCoord(localPos, matrix);
-	float ndcX = dx::XMVectorGetX(ndc);
-	float ndcY = dx::XMVectorGetY(ndc);
-
-	return dx::XMFLOAT3{ ndcX * 960.0f, -ndcY * 540.0f, 0.0f };
 }
 
 float PlayerActor::GetForwardSpeed() const

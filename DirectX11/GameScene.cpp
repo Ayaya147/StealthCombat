@@ -34,7 +34,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mWin(false),
-	mQuitTime(1.5f)
+	mQuitTime(1.5f),
+	mDestroyedSpriteTime(0.0f)
 {
 	gNextScene = SceneManager::SceneType::ETitle;
 
@@ -100,6 +101,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(0.5f);
 	mCautionCloudTime->SetVisible(false);
 
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("destroyed");
+	mDestroyedSprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -150.0f, 0.0f });
+	sprite->SetScale(0.55f);
+	mCautionCloudTime->SetVisible(false);
+
 	mSpdNum = new NumberActor(this, 0, 4);
 	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, 44.0f, 0.0f });
 	mSpdNum->SetScale(0.6f);
@@ -141,10 +149,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	renderer->ResetLight();
 
 	AudioSystem* audio = GetAudioSystem();
-	int index = audio->LoadSound("Asset/Sound/bgm_game.wav");
+	int index = audio->LoadSound("bgm_game");
 	audio->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
 
-	mAirplaneBGM = audio->LoadSound("Asset/Sound/bgm_airplane.wav");
+	mAirplaneBGM = audio->LoadSound("bgm_airplane");
 	audio->PlaySoundEx(mAirplaneBGM, XAUDIO2_LOOP_INFINITE);
 	audio->SetVolume(mAirplaneBGM, 0.5f);
 }
@@ -285,6 +293,16 @@ void GameScene::Update()
 			Texture* tex = GetRenderer()->GetTexture("guide_keyboard");
 			mGuideSprite->SetTexture(tex);
 		}
+
+		if (mDestroyedSpriteTime > 0.0f)
+		{
+			mDestroyedSpriteTime -= GetDeltaTime();
+			mDestroyedSprite->SetVisible(true);
+		}
+		else
+		{
+			mDestroyedSprite->SetVisible(false);
+		}
 	}
 		break;
 
@@ -314,8 +332,16 @@ void GameScene::GenerateOutput()
 {
 	BaseScene::GenerateOutput();
 
-	if (GetSceneState() == SceneState::EQuit)
+	switch (GetSceneState())
 	{
+	case SceneState::EPlay:
+	{
+		GamePad* pad = GetInputSystem()->GetPad();
+		pad->SetVibration(mVibrationStrength);
+	}
+		break;
+
+	case SceneState::EQuit:
 		GetInputSystem()->GetPad()->StopVibration();
 		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
 
@@ -324,6 +350,7 @@ void GameScene::GenerateOutput()
 			Parameter parameter;
 			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
 		}
+		break;
 	}
 }
 
