@@ -50,6 +50,8 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	SpriteComponent* sc = new SpriteComponent(sprite, tex);
 	sprite->SetPosition(dx::XMFLOAT3{ 750.0f, 470.0f, 0.0f });
 	sprite->SetScale(0.4f);
+
+	GetRenderer()->ResetLight();
 }
 
 DemoScene::~DemoScene()

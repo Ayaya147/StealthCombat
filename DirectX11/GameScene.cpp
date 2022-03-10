@@ -104,8 +104,8 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("destroyed");
 	mDestroyedSprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -130.0f, 0.0f });
-	sprite->SetScale(0.52f);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -140.0f, 0.0f });
+	sprite->SetScale(0.55f);
 	mCautionCloudTime->SetVisible(false);
 
 	mSpdNum = new NumberActor(this, 0, 4);
@@ -146,6 +146,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mDefeatUI->ComputeWorldTransform();
 
 	mMap = new Minimap(this);
+
 	renderer->ResetLight();
 
 	AudioSystem* audio = GetAudioSystem();
@@ -280,6 +281,9 @@ void GameScene::Update()
 			dx::XMFLOAT3 pos = mPlayer->GetPosition() + mPlayer->GetForward() * 60.0f;
 			MissileActor* missile = new MissileActor(this, mPlayer, pos, 25.0f);
 			mPlayer->SetLockedOn(true);
+
+			int index = GetAudioSystem()->LoadSound("se_missile");
+			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 
 		GamePad* pad = GetInputSystem()->GetPad();

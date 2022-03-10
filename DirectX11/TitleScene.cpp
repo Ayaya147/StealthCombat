@@ -74,6 +74,8 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	mTutorialSprite = new SpriteComponent(sprite, tex);
 	mTutorialSprite->SetVisible(false);
 	sprite->SetScale(1.0f);
+
+	GetRenderer()->ResetLight();
 }
 
 TitleScene::~TitleScene()
