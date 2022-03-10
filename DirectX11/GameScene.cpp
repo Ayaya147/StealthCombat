@@ -176,6 +176,9 @@ void GameScene::ProcessInput()
 			SetSceneState(SceneState::EPaused);
 			mBackgroundUI->SetUIState(UIScreen::UIState::EActive);
 			mMenuUI->SetUIState(UIScreen::UIState::EActive);
+
+			int index = GetAudioSystem()->LoadSound("se_ok");
+			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		break;
 
@@ -187,6 +190,9 @@ void GameScene::ProcessInput()
 			{
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
+
+			int index = GetAudioSystem()->LoadSound("se_ok");
+			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		else if (GetInputSystem()->GetY())
 		{
@@ -196,6 +202,9 @@ void GameScene::ProcessInput()
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
 			mQuitTime = 0.0f;
+
+			int index = GetAudioSystem()->LoadSound("se_ok");
+			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		break;
 
@@ -208,6 +217,9 @@ void GameScene::ProcessInput()
 			{
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
+
+			int index = GetAudioSystem()->LoadSound("se_ok");
+			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		else if (mQuitTime <= 0.0f && GetInputSystem()->GetX() && !mWin)
 		{
@@ -217,6 +229,9 @@ void GameScene::ProcessInput()
 			{
 				ui->SetUIState(UIScreen::UIState::EClosing);
 			}
+
+			int index = GetAudioSystem()->LoadSound("se_ok");
+			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
 		break;
 	}

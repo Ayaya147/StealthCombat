@@ -16,6 +16,7 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "SpriteComponent.h"
+#include "AudioSystem.h"
 
 namespace dx = DirectX;
 
@@ -66,6 +67,9 @@ void DemoScene::ProcessInput()
 	if (GetSceneState() == SceneState::EPlay && GetInputSystem()->GetY())
 	{
 		SetSceneState(SceneState::EQuit);
+
+		int index = GetAudioSystem()->LoadSound("se_ok");
+		GetAudioSystem()->PlaySoundEx(index, 0);
 	}
 
 	BaseScene::ProcessInput();
@@ -86,6 +90,7 @@ void DemoScene::GenerateOutput()
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
+			parameter.SetIsFromDemo(true);
 			GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
 		}
 	}

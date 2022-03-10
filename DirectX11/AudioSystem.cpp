@@ -39,8 +39,6 @@ AudioSystem::~AudioSystem()
 
 int AudioSystem::LoadSound(const std::string& filename)
 {
-	std::string name = "Asset\\Sound\\" + filename + ".wav";
-
 	for (int i = 0; i < mSoundIndex; i++)
 	{
 		if (mSoundName[i] == filename)
@@ -48,7 +46,8 @@ int AudioSystem::LoadSound(const std::string& filename)
 			return i;
 		}
 	}
-
+	
+	std::string name = "Asset\\Sound\\" + filename + ".wav";
 	HANDLE file;
 	DWORD chunkSize = 0;
 	DWORD chunkPosition = 0;

@@ -14,6 +14,7 @@
 #include "CloudActor.h"
 #include "DefineConstant.h"
 #include "CameraComponent.h"
+#include "AudioSystem.h"
 
 namespace dx = DirectX;
 
@@ -76,6 +77,14 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(1.0f);
 
 	GetRenderer()->ResetLight();
+
+	if (!parameter.GetIsFromDemo())
+	{
+		AudioSystem* audio = GetAudioSystem();
+		int idx = audio->LoadSound("bgm_title");
+		audio->PlaySoundEx(idx, XAUDIO2_LOOP_INFINITE);
+		audio->SetVolume(idx, 0.2f);
+	}
 }
 
 TitleScene::~TitleScene()
@@ -92,11 +101,17 @@ void TitleScene::ProcessInput()
 			{
 				SetSceneState(SceneState::EQuit);
 				gNextScene = SceneManager::SceneType::EGame;
+
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
 			}
 			else if (GetInputSystem()->GetY())
 			{
 				SetSceneState(SceneState::EQuit);
 				gNextScene = SceneManager::SceneType::EDemo;
+
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
 			}
 			else if (GetInputSystem()->GetB())
 			{
@@ -106,6 +121,9 @@ void TitleScene::ProcessInput()
 				mModeSprite->SetVisible(false);
 				mBackSprite->SetVisible(true);
 				mTutorialSprite->SetVisible(true);
+
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
 			}
 			else if (GetInputSystem()->GetA())
 			{
@@ -122,6 +140,9 @@ void TitleScene::ProcessInput()
 				mModeSprite->SetVisible(true);
 				mBackSprite->SetVisible(false);
 				mTutorialSprite->SetVisible(false);
+
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
 			}
 		}
 	}
@@ -154,6 +175,11 @@ void TitleScene::GenerateOutput()
 
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
+			if (gNextScene == SceneManager::SceneType::EGame)
+			{
+				GetAudioSystem()->StopSoundAll();
+			}
+
 			Parameter parameter;
 			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
 		}
