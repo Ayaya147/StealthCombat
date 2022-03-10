@@ -10,6 +10,7 @@ public:
 	void ActorInput() override;
 	void UpdateActor(float deltaTime) override;
 
+	void SetIsLockOnSE(bool is) { mIsLockOnSE = is; }
 	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
 	float GetForwardSpeed() const;
@@ -27,6 +28,7 @@ private:
 	class EnemyActor* mTargetEnemy;
 	bool mIsLockedOn;
 	bool mIsInCloud;
+	bool mIsLockOnSE;
 	float mOutCloudTime;
 	float mEmitterCD;
 	float mOutCloudTimeMax;

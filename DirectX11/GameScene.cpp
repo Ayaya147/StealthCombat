@@ -34,6 +34,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mWin(false),
+	mIsCautionSE(false),
 	mQuitTime(1.5f),
 	mDestroyedSpriteTime(0.0f)
 {
@@ -156,6 +157,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mAirplaneBGM = audio->LoadSound("bgm_airplane");
 	audio->PlaySoundEx(mAirplaneBGM, XAUDIO2_LOOP_INFINITE);
 	audio->SetVolume(mAirplaneBGM, 0.5f);
+
+	mCautionSE = audio->LoadSound("se_caution");
+	mLockOnSE = audio->LoadSound("se_lockOn");
 }
 
 GameScene::~GameScene()
@@ -269,6 +273,12 @@ void GameScene::Update()
 			mRestTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
 			mEnemyNum->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
 			mUICountSprite->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
+
+			if (!mIsCautionSE)
+			{
+				GetAudioSystem()->PlaySoundEx(mCautionSE, XAUDIO2_LOOP_INFINITE);
+				mIsCautionSE = true;
+			}
 		}
 		else
 		{
@@ -283,12 +293,24 @@ void GameScene::Update()
 			mCautionCloudTime->SetVisible(true);
 			mOutCloudTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
 			mTimeSprite->SetColor(dx::XMFLOAT4{ 100.0f,0.0f,0.0f,1.0f });
+
+			if (!mIsCautionSE)
+			{
+				GetAudioSystem()->PlaySoundEx(mCautionSE, XAUDIO2_LOOP_INFINITE);
+				mIsCautionSE = true;
+			}
 		}
 		else
 		{
 			mCautionCloudTime->SetVisible(false);
 			mOutCloudTime->GetNumberSpriteComp()->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
 			mTimeSprite->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,1.0f });
+
+			if (mIsCautionSE && restTime > 10.0f)
+			{
+				GetAudioSystem()->StopSound(mCautionSE);
+				mIsCautionSE = false;
+			}
 		}
 
 		if (mPlayer->GetOutCloudTime() <= 0.0f && !mPlayer->GetIsLockedOn())
@@ -365,13 +387,14 @@ void GameScene::GenerateOutput()
 		GetInputSystem()->GetPad()->StopVibration();
 		GetAudioSystem()->SetVolume(mGameBGM, 0.0f);
 		GetAudioSystem()->SetVolume(mAirplaneBGM, 0.0f);
+		GetAudioSystem()->StopSound(mCautionSE);
+		GetAudioSystem()->StopSound(mLockOnSE);
+		mIsCautionSE = false;
+		mPlayer->SetIsLockOnSE(false);
 		break;
 
 	case SceneState::EQuit:
-		GetInputSystem()->GetPad()->StopVibration();
 		GetFade()->SetFadeState(Fade::FadeState::EFadeOut);
-		GetAudioSystem()->SetVolume(mGameBGM, 0.0f);
-		GetAudioSystem()->SetVolume(mAirplaneBGM, 0.0f);
 
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{

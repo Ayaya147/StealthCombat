@@ -41,7 +41,8 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mTargetEnemy(nullptr),
 	mIsInCloud(false),
 	mIsLockedOn(false),
-	mOutCloudTimeMax(14.0f)
+	mOutCloudTimeMax(14.0f),
+	mIsLockOnSE(false)
 {
 	SetScale(0.125f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
@@ -266,6 +267,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			sprite->SetVisible(false);
 		}
 
+		int index = game->GetAudioSystem()->LoadSound("se_lockOn");
 		sprite = game->GetMarkingEnemySprite();
 		sprite->SetVisible(false);
 		if (!game->GetEnemies().empty() && phys->IsCollidedWithEnemy(mAttackRange, info))
@@ -284,10 +286,31 @@ void PlayerActor::UpdateActor(float deltaTime)
 					clipPos.x > -960.0f &&
 					clipPos.x < 960.0f)
 				{
+					if (!mIsLockOnSE)
+					{
+						game->GetAudioSystem()->PlaySoundEx(index, XAUDIO2_LOOP_INFINITE);
+						mIsLockOnSE = true;
+					}
+
 					sprite->SetVisible(true);
 					sprite->GetOwner()->SetPosition(clipPos);
 				}
+				else
+				{
+					game->GetAudioSystem()->StopSound(index);
+					mIsLockOnSE = false;
+				}
 			}
+			else
+			{
+				game->GetAudioSystem()->StopSound(index);
+				mIsLockOnSE = false;
+			}
+		}
+		else
+		{
+			game->GetAudioSystem()->StopSound(index);
+			mIsLockOnSE = false;
 		}
 
 		if (mEmitterCD <= 0.0f)

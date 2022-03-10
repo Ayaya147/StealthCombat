@@ -52,9 +52,12 @@ private:
 	class UIScreen* mDefeatUI;
 
 	bool mWin;
+	bool mIsCautionSE;
 	float mQuitTime;
 	float mDestroyedSpriteTime;
 	int mAirplaneBGM;
 	int mGameBGM;
+	int mCautionSE;
+	int mLockOnSE;
 	int mVibrationStrength;
 };
