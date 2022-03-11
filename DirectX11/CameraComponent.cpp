@@ -12,9 +12,10 @@
 
 namespace dx = DirectX;
 
-CameraComponent::CameraComponent(Actor* owner, int updateOrder)
+CameraComponent::CameraComponent(Actor* owner, CameraType type, int updateOrder)
 	:
 	Component(owner, updateOrder),
+	mType(type),
 	mState(VibrationState::ENone),
 	mTargetDist(20.0f),
 	mVelocity(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
@@ -30,8 +31,9 @@ void CameraComponent::Update(float deltaTime)
 {
 	dx::XMMATRIX view;
 
-	if (auto demo = dynamic_cast<DemoScene*>(GetOwner()->GetScene()))
+	switch (mType)
 	{
+	case CameraComponent::CameraType::ENormal:
 		dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
 			GetOwner()->GetPosition().x,
 			GetOwner()->GetPosition().y + mTargetDist,
@@ -44,8 +46,10 @@ void CameraComponent::Update(float deltaTime)
 			dx::XMLoadFloat3(&GetOwner()->GetPosition()),
 			dx::XMLoadFloat3(&up)
 		);
-	}
-	else
+
+		break;
+
+	case CameraComponent::CameraType::ESpring:
 	{
 		float sprintConstant = 64.0f;
 		float dampening = 5.0f * sqrtf(sprintConstant);
@@ -81,6 +85,8 @@ void CameraComponent::Update(float deltaTime)
 			dx::XMLoadFloat3(&at),
 			dx::XMLoadFloat3(&up)
 		);
+	}
+		break;
 	}
 
 	dx::XMFLOAT4X4 v;

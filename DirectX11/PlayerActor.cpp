@@ -52,9 +52,6 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mesh->ParseMesh(renderer, "player", L"Phong");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
-	mCameraComponent = new CameraComponent(this);
-	mCameraComponent->SnapToIdeal();
-
 	mMoveComponent = new MoveComponent(this);
 	mMoveComponent->SetForwardSpeedMax(15.0f);
 
@@ -81,7 +78,15 @@ PlayerActor::PlayerActor(BaseScene* scene)
 		mPlayerSprite = new SpriteComponent(sprite, tex);
 		sprite->SetScale(0.1f);
 		mPlayerSprite->SetVisible(false);
+
+		mCameraComponent = new CameraComponent(this, CameraComponent::CameraType::ESpring);
 	}
+	else
+	{
+		mCameraComponent = new CameraComponent(this, CameraComponent::CameraType::ENormal);
+	}
+
+	mCameraComponent->SnapToIdeal();
 }
 
 void PlayerActor::ActorInput()

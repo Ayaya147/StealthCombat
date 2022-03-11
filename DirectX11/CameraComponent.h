@@ -5,6 +5,12 @@
 class CameraComponent : public Component
 {
 public:
+	enum class CameraType
+	{
+		ENormal,
+		ESpring
+	};
+
 	enum class VibrationState
 	{
 		ENone,
@@ -13,7 +19,7 @@ public:
 		EHard
 	};
 
-	CameraComponent(class Actor* owner, int updateOrder = 200);
+	CameraComponent(class Actor* owner, CameraType type, int updateOrder = 200);
 
 	void ProcessInput() override;
 	void Update(float deltaTime) override;
@@ -24,6 +30,7 @@ public:
 	VibrationState GetCameraState() const { return mState; }
 
 private:
+	CameraType mType;
 	VibrationState mState;
 	float mTargetDist;
 	DirectX::XMFLOAT3 mVelocity;

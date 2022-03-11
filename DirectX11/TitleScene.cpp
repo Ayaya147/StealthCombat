@@ -36,7 +36,7 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 
 	Actor* actor = new Actor(this);
 	actor->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
-	CameraComponent* cc = new CameraComponent(actor);
+	CameraComponent* cc = new CameraComponent(actor, CameraComponent::CameraType::ENormal);
 	cc->SnapToIdeal();
 
 	Actor* sprite = new Actor(this);
