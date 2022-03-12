@@ -109,7 +109,7 @@
     <ClCompile Include="EnemyActor.cpp" />
     <ClCompile Include="ExplosionActor.cpp" />
     <ClCompile Include="Fade.cpp" />
-    <ClCompile Include="EmitterActor.cpp" />
+    <ClCompile Include="EmissionActor.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -240,7 +240,7 @@
     <ClInclude Include="EnemyActor.h" />
     <ClInclude Include="ExplosionActor.h" />
     <ClInclude Include="Fade.h" />
-    <ClInclude Include="EmitterActor.h" />
+    <ClInclude Include="EmissionActor.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GameScene.h" />

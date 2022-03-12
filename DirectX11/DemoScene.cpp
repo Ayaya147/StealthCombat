@@ -5,7 +5,7 @@
 #include "PlayerActor.h"
 #include "CloudActor.h"
 #include "PlaneActor.h"
-#include "EmitterActor.h"
+#include "EmissionActor.h"
 #include "ExplosionActor.h"
 #include "SmokeActor.h"
 #include "InputSystem.h"
@@ -40,9 +40,9 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mSmoke->SetScale(12.0f);
 	mSmoke->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,5.0f });
 
-	mEmitter = new EmitterActor(this);
-	mEmitter->SetScale(7.0f);
-	mEmitter->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
+	mEmission = new EmissionActor(this);
+	mEmission->SetScale(7.0f);
+	mEmission->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,-5.0f });
 	
 	PlayerActor* player = new PlayerActor(this);
 

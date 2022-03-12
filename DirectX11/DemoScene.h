@@ -16,12 +16,12 @@ public:
 	class CloudActor* GetCloud() const { return mCloud; }
 	class ExplosionActor* GetExplosion() const { return mExplosion; }
 	class SmokeActor* GetSmoke() const { return mSmoke; }
-	class EmitterActor* GetEmitter() const { return mEmitter; }
+	class EmissionActor* GetEmission() const { return mEmission; }
 
 private:
 	class PlaneActor* mPlane;
 	class CloudActor* mCloud;
 	class ExplosionActor* mExplosion;
 	class SmokeActor* mSmoke;
-	class EmitterActor* mEmitter;
+	class EmissionActor* mEmission;
 };

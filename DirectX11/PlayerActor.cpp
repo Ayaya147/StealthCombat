@@ -2,7 +2,7 @@
 #include "EnemyActor.h"
 #include "MissileActor.h"
 #include "ExplosionActor.h"
-#include "EmitterActor.h"
+#include "EmissionActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -320,7 +320,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (mEmitterCD <= 0.0f)
 		{
-			EmitterActor* emitter = new EmitterActor(GetScene());
+			EmissionActor* emitter = new EmissionActor(GetScene());
 			emitter->SetPosition(GetPosition() - GetForward()*1.5f + Random::GetVector()*0.08f);
 			emitter->SetRotation(GetRotation());
 			emitter->SetScale(2.0f);

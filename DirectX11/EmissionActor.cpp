@@ -1,4 +1,4 @@
-#include "EmitterActor.h"
+#include "EmissionActor.h"
 #include "PlayerActor.h"
 #include "Renderer.h"
 #include "Mesh.h"
@@ -14,11 +14,11 @@ namespace dx = DirectX;
 
 static float rate = 100.0f;
 
-int EmitterActor::mCount = 0;
-PixelConstantBuffer<EmitterActor::ObjectConstant>* EmitterActor::mObjectCBuffer = nullptr;
-PixelConstantBuffer<EmitterActor::EmitterConstant>* EmitterActor::mEmitterCBuffer = nullptr;
+int EmissionActor::mCount = 0;
+PixelConstantBuffer<EmissionActor::ObjectConstant>* EmissionActor::mObjectCBuffer = nullptr;
+PixelConstantBuffer<EmissionActor::EmissionConstant>* EmissionActor::mEmissionCBuffer = nullptr;
 
-EmitterActor::EmitterActor(BaseScene* scene)
+EmissionActor::EmissionActor(BaseScene* scene)
 	:
 	Actor(scene),
 	mIsAnimation(true),
@@ -36,13 +36,13 @@ EmitterActor::EmitterActor(BaseScene* scene)
 	{
 		mObjectCBuffer = new PixelConstantBuffer<ObjectConstant>(renderer, 1);
 	}
-	if (!mEmitterCBuffer)
+	if (!mEmissionCBuffer)
 	{
-		mEmitterCBuffer = new PixelConstantBuffer<EmitterConstant>(renderer, 2);
+		mEmissionCBuffer = new PixelConstantBuffer<EmissionConstant>(renderer, 2);
 	}
 }
 
-EmitterActor::~EmitterActor()
+EmissionActor::~EmissionActor()
 {
 	mCount--;
 
@@ -50,12 +50,12 @@ EmitterActor::~EmitterActor()
 	{
 		delete mObjectCBuffer;
 		mObjectCBuffer = nullptr;
-		delete mEmitterCBuffer;
-		mEmitterCBuffer = nullptr;
+		delete mEmissionCBuffer;
+		mEmissionCBuffer = nullptr;
 	}
 }
 
-void EmitterActor::UpdateActor(float deltaTime)
+void EmissionActor::UpdateActor(float deltaTime)
 {
 	if (mIsAnimation)
 	{
@@ -82,7 +82,7 @@ void EmitterActor::UpdateActor(float deltaTime)
 	}
 }
 
-void EmitterActor::Bind(Renderer* renderer)
+void EmissionActor::Bind(Renderer* renderer)
 {
 	Actor::Bind(renderer);
 
@@ -93,13 +93,13 @@ void EmitterActor::Bind(Renderer* renderer)
 	mObjectCBuffer->Update(renderer, c);
 	mObjectCBuffer->Bind(renderer);
 
-	mEmitterCBuffer->Update(renderer, mData);
-	mEmitterCBuffer->Bind(renderer);
+	mEmissionCBuffer->Update(renderer, mData);
+	mEmissionCBuffer->Bind(renderer);
 }
 
-void EmitterActor::ImGuiWindow()
+void EmissionActor::ImGuiWindow()
 {
-	if (ImGui::Begin("Ray Marching (Emitter)"))
+	if (ImGui::Begin("Ray Marching (Emission)"))
 	{
 		ImGui::Text("Base");
 		ImGui::ColorEdit3("Base Color", &mData.mColor.x);
@@ -130,7 +130,7 @@ void EmitterActor::ImGuiWindow()
 	ImGui::End();
 }
 
-void EmitterActor::Reset()
+void EmissionActor::Reset()
 {
 	mData = {
 		{0.3f, 0.3f, 1.0f},

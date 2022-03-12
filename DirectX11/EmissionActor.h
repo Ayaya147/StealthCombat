@@ -4,11 +4,11 @@
 template<class C>
 class PixelConstantBuffer;
 
-class EmitterActor : public Actor
+class EmissionActor : public Actor
 {
 public:
-	EmitterActor(class BaseScene* scene);
-	~EmitterActor();
+	EmissionActor(class BaseScene* scene);
+	~EmissionActor();
 
 	void UpdateActor(float deltaTime) override;
 	void Bind(class Renderer* renderer) override;
@@ -23,7 +23,7 @@ private:
 		float padding[2];
 	};
 
-	struct EmitterConstant
+	struct EmissionConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 mColor;
 		float mLoop;
@@ -42,8 +42,8 @@ private:
 
 	static int mCount;
 	float mSpeed;
-	EmitterConstant mData;
+	EmissionConstant mData;
 	bool mIsAnimation;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
-	static PixelConstantBuffer<EmitterConstant>* mEmitterCBuffer;
+	static PixelConstantBuffer<EmissionConstant>* mEmissionCBuffer;
 };
