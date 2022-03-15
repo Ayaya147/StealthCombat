@@ -26,8 +26,7 @@ CloudActor::CloudActor(BaseScene* scene)
 	mSpeed(1.0f),
 	mIsAnimation(true)
 {
-	auto game = dynamic_cast<GameScene*>(GetScene());
-	if (game)
+	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
 		game->AddCloud(this);
 
