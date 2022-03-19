@@ -43,7 +43,7 @@ Minimap::Minimap(GameScene* game)
 	for (int i = 0; i < clouds.size(); i++)
 	{
 		Actor* sprite = new Actor(game);
-		sprite->SetScale(clouds[i]->GetScale().x / range);
+		sprite->SetScale(clouds[i]->GetScale().x / range * 0.9f);
 		sc = new SpriteComponent(sprite, tex);
 		mCloudSprites.emplace_back(sc);
 	}

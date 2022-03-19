@@ -35,7 +35,7 @@ CloudActor::CloudActor(BaseScene* scene)
 		SetScale(dx::XMFLOAT3{ size,size / 5.0f,size });
 		SetRotation(dx::XMFLOAT3{ 0.0f,Random::GetFloatRange(-Constant::PI,Constant::PI),0.0f });
 
-		float radius = 0.33f;
+		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
 		Sphere* sphere = new Sphere(pos, radius * GetScale().x);
@@ -160,10 +160,10 @@ void CloudActor::Reset()
 		32.0f,
 		10.0f,
 		0.7f,
-		50.0f,
-		100.0f,
 		40.0f,
-		100.0f,
+		70.0f,
+		20.0f,
+		30.0f,
 		1.0f,
 		3,
 	};
