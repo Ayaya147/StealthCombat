@@ -29,8 +29,6 @@ private:
 		float padding[2];
 	};
 
-	void Reset();
-
 	struct ExplosionConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 mColor;
@@ -46,11 +44,13 @@ private:
 		float padding[3];
 	};
 
+	void Reset();
+
 	static int mCount;
 	float mSpeed;
+	bool mIsAnimation;
 	ExplosionConstant mData;
 	ExplosionPhase mPhase;
-	bool mIsAnimation;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<ExplosionConstant>* mExplosionCBuffer;
 };

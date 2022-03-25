@@ -30,8 +30,8 @@ private:
 	static constexpr int mThumbDeadZone = 15000;
 	static constexpr int mTriggerDeadZone = 30;
 
-	XINPUT_STATE		mLastState;
-	XINPUT_STATE		mState;
-	XINPUT_VIBRATION	mVibration;
+	XINPUT_STATE mLastState;
+	XINPUT_STATE mState;
+	XINPUT_VIBRATION mVibration;
 	bool mIsGamePad;
 };

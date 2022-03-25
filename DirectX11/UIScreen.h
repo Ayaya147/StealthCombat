@@ -34,14 +34,13 @@ private:
 		DirectX::XMMATRIX mWorldTransform;
 		DirectX::XMMATRIX mViewProj;
 	};
-	Transforms mTransforms;
 
+	Transforms mTransforms;
 	UIState mState;
 	DirectX::XMFLOAT3 mPosition;
 	DirectX::XMFLOAT3 mRotation;
 	DirectX::XMFLOAT3 mScale;
 	DirectX::XMFLOAT4 mColor;
-
 	class BaseScene* mScene;
 	class Texture* mTexture;
 	static VertexConstantBuffer<Transforms>* mCBuffer;

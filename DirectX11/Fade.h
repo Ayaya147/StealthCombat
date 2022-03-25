@@ -35,7 +35,6 @@ private:
 	float mRate;
 	float mAlpha;
 	FadeState mFadeState;
-
 	class Texture* mTexture;
 	VertexConstantBuffer<Transforms>* mCBuffer;
 };

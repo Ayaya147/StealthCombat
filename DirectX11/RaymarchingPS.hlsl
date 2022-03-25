@@ -134,10 +134,14 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     
     float4 color = float4(mCloudColor + mAmbientLight, 0.0f);
     float transmittance = 1.0f;
-    float3 diffuseColor = mDiffuseColor;
+    float3 diffuseColor = 0.0f;
     if (mType == 1)
     {
         diffuseColor = float3(1.0f, 1.0f, 0.0f) * mDiffuseColor;
+    }
+    else
+    {
+        diffuseColor = mDiffuseColor;
     }
     
     for (int i = 0; i < loop; i++)

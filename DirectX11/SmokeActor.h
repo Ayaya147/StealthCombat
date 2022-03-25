@@ -40,10 +40,10 @@ private:
 
 	void Reset();
 
-	static int mCount;
 	float mSpeed;
 	SmokeConstant mData;
 	bool mIsAnimation;
+	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<SmokeConstant>* mSmokeCBuffer;
 };

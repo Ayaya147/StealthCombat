@@ -37,7 +37,7 @@ VSOut main(float3 pos : POSITION)
     {
         p += GerstnerWave(amp[i], freq[i], steep[i], spd[i], noiseSize[i], dir[i], worldPos.xz, time, i, mNoiseStrength);
     }
-    for (int j = waveNumber - count; j < waveNumber; j++)
+    for (int j = count; j < waveNumber; j++)
     {
         p += GerstnerWaveCross(amp[j], freq[j], steep[j], spd[j], noiseSize[j], dir[j], worldPos.xz, time, j, mNoiseStrength, mNoiseSizeLerp);
     }

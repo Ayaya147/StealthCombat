@@ -74,7 +74,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
         pb += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], vBi.xz, time, m, mNoiseStrength);
         pt += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], vTan.xz, time, m, mNoiseStrength);
     }
-    for (int n = waveNumber - count; n < waveNumber; n++)
+    for (int n = count; n < waveNumber; n++)
     {
         p += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], worldPosition.xz, time, n, mNoiseStrength, mNoiseSizeLerp);
         pb += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], vBi.xz, time, n, mNoiseStrength, mNoiseSizeLerp);

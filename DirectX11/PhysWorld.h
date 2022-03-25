@@ -21,6 +21,6 @@ public:
 	void RemoveSphere(class SphereComponent* sc);
 
 private:
-	class BaseScene* mScene;
 	std::vector<class SphereComponent*> mSphereComponents;
+	class BaseScene* mScene;
 };

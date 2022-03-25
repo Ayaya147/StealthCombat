@@ -40,10 +40,10 @@ private:
 
 	void Reset();
 
-	static int mCount;
 	float mSpeed;
 	EmissionConstant mData;
 	bool mIsAnimation;
+	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<EmissionConstant>* mEmissionCBuffer;
 };
