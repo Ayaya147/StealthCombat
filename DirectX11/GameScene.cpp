@@ -125,6 +125,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
 	mEnemyNum->SetScale(0.8f);
 
+	//mFPS = new NumberActor(this, 0.0f, 3);
+	//mFPS->SetOriPosition(dx::XMFLOAT3{ -890.0f, -500.0f, 0.0f });
+	//mFPS->SetScale(0.5f);
+
 	tex = renderer->GetTexture("fade");
 	mBackgroundUI = new UIScreen(this, tex);
 	mBackgroundUI->SetScale(40.0f);
@@ -253,6 +257,7 @@ void GameScene::Update()
 		mOutCloudTime->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
+		//mFPS->SetValue(10.0f / GetDeltaTime());
 
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);

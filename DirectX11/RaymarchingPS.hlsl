@@ -28,6 +28,12 @@ cbuffer CBuf2 : register(b2)
     int mLoopLight;
 };
 
+static const float3x3 m = float3x3(
+     0.00f, 0.80f, 0.60f,
+    -0.80f, 0.36f, -0.48f,
+    -0.60f, -0.48f, 0.64f
+);
+
 float Hash(float n)
 {
     return frac(sin(n) * 43758.5453f);
@@ -50,12 +56,6 @@ float Noise(float3 x)
 
 float FBM(float3 p)
 {
-    float3x3 m = float3x3(
-         0.00f,  0.80f,  0.60f,
-        -0.80f,  0.36f, -0.48f,
-        -0.60f, -0.48f,  0.64f
-    );
-    
     float f = 0.0f;
     f += 0.500f * Noise(p); p = mul(m, p) * 2.02f;
     f += 0.250f * Noise(p); p = mul(m, p) * 2.03f;
@@ -182,6 +182,11 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             
             color.a += 1.0f * (mOpacity * d * transmittance);
             color.rgb += diffuseColor * (mOpacityLight * d * transmittance * transmittanceLight);
+            
+            if (color.a > 1.0f)
+            {
+                break;
+            }
         }
         
         color = clamp(color, 0.0f, 1.0f);

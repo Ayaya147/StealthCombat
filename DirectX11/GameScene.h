@@ -39,6 +39,7 @@ private:
 	class NumberActor* mSpdNum;
 	class NumberActor* mEnemyNum;
 	class NumberActor* mRestTime;
+	class NumberActor* mFPS;
 	class SpriteComponent* mGuideSprite;
 	class SpriteComponent* mMarkingEnemySprite;
 	class SpriteComponent* mMarkingPlayerSprite;
