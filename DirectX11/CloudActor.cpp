@@ -38,16 +38,20 @@ CloudActor::CloudActor(BaseScene* scene)
 		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		Sphere* sphere = new Sphere(pos, radius * GetScale().x);
-		sc->SetSphere(sphere);
+		Sphere sphere(pos, radius * GetScale().x*1.1f);
+		sc->SetSphere(&sphere);
 
 		PhysWorld* phys = game->GetPhysWorld();
 		while (phys->IsCollidedWithCloud(sc))
 		{
 			pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-			sphere->mCenter = pos;
+			sphere.mCenter = pos;
 		}
+
 		SetPosition(pos);
+		Sphere* sphere1 = new Sphere(pos, radius * GetScale().x);
+		sc->SetSphere(sphere1);
+		sphere1->mCenter = sphere.mCenter;
 	}
 
 	mCount++;
@@ -161,7 +165,7 @@ void CloudActor::Reset()
 		10.0f,
 		0.7f,
 		40.0f,
-		70.0f,
+		85.0f,
 		20.0f,
 		30.0f,
 		1.0f,

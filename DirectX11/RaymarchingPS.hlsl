@@ -153,7 +153,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             float d = density * step;
             transmittance *= 1.0f - d * mAbsorption;
             
-            if (transmittance < 0.01f)
+            if (transmittance < 0.1f)
             {
                 break;
             }
