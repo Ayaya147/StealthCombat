@@ -71,7 +71,7 @@ void ExplosionActor::UpdateActor(float deltaTime)
 
 	if (mIsAnimation)
 	{
-		float rate = 2.5f;
+		float rate = 2.0f;
 		switch (mPhase)
 		{
 		case ExplosionActor::ExplosionPhase::EOne:
@@ -84,9 +84,9 @@ void ExplosionActor::UpdateActor(float deltaTime)
 			break;
 
 		case ExplosionActor::ExplosionPhase::ETwo:
-			mData.mColor -= dx::XMFLOAT3{ 0.5f, 0.05f, 0.05f } * rate * mSpeed * deltaTime;
+			mData.mColor -= dx::XMFLOAT3{ 0.8f, 0.08f, 0.08f } * rate * mSpeed * deltaTime;
 			mData.mLoop -= 16.0f * rate * mSpeed * deltaTime;
-			mData.mAbsorptionLight += 35.0f * rate * mSpeed * deltaTime;
+			mData.mAbsorptionLight += 25.0f * rate * mSpeed * deltaTime;
 			mData.mAbsorption += 50.0f * rate * mSpeed * deltaTime;
 			mData.mRadius += 0.04f * rate * mSpeed * deltaTime;
 
@@ -165,8 +165,8 @@ void ExplosionActor::Reset()
 		20.0f,
 		0.0f,
 		0.0f,
-		100.0f,
-		30.0f,
+		65.0f,
+		50.0f,
 		80.0f,
 		1.0f,
 		4,

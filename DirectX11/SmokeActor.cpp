@@ -15,11 +15,12 @@ int SmokeActor::mCount = 0;
 PixelConstantBuffer<SmokeActor::ObjectConstant>* SmokeActor::mObjectCBuffer = nullptr;
 PixelConstantBuffer<SmokeActor::SmokeConstant>* SmokeActor::mSmokeCBuffer = nullptr;
 
-SmokeActor::SmokeActor(BaseScene* scene)
+SmokeActor::SmokeActor(BaseScene* scene, DirectX::XMFLOAT3 rotation)
 	:
 	Actor(scene),
 	mIsAnimation(true),
-	mSpeed(1.0f)
+	mSpeed(1.0f),
+	mRotation(rotation)
 {
 	mCount++;
 	Reset();
@@ -54,6 +55,8 @@ SmokeActor::~SmokeActor()
 
 void SmokeActor::UpdateActor(float deltaTime)
 {
+	auto game = dynamic_cast<GameScene*>(GetScene());
+
 	if (mIsAnimation)
 	{
 		float rate = 1.0f;
@@ -63,7 +66,7 @@ void SmokeActor::UpdateActor(float deltaTime)
 
 		if (mData.mLoop <= 0.0f || mData.mAbsorption >= 100.0f || mData.mRadius >= 0.2f)
 		{
-			if (auto game = dynamic_cast<GameScene*>(GetScene()))
+			if (game)
 			{
 				SetActorState(ActorState::EDead);
 			}
@@ -72,6 +75,15 @@ void SmokeActor::UpdateActor(float deltaTime)
 				Reset();
 			}
 		}
+	}
+
+	if (game)
+	{
+		SetRotation(dx::XMFLOAT3{
+			mRotation.x + Constant::PI / 2.0f,
+			mRotation.y,
+			mRotation.z
+		});
 	}
 }
 

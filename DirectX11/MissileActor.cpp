@@ -116,7 +116,7 @@ void MissileActor::UpdateActor(float deltaTime)
 	mSmokeCD -= deltaTime;
 	if (mSmokeCD <= 0.0f)
 	{
-		SmokeActor* smoke = new SmokeActor(game);
+		SmokeActor* smoke = new SmokeActor(game, GetRotation());
 		smoke->SetPosition(GetPosition() - GetForward() * 0.7f);
 		smoke->SetScale(4.5f);
 		mSmokeCD = 0.06f;

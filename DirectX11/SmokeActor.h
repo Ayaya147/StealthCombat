@@ -7,7 +7,7 @@ class PixelConstantBuffer;
 class SmokeActor : public Actor
 {
 public:
-	SmokeActor(class BaseScene* scene);
+	SmokeActor(class BaseScene* scene, DirectX::XMFLOAT3 rotation = {});
 	~SmokeActor();
 
 	void UpdateActor(float deltaTime) override;
@@ -43,6 +43,7 @@ private:
 	float mSpeed;
 	SmokeConstant mData;
 	bool mIsAnimation;
+	DirectX::XMFLOAT3 mRotation;
 	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<SmokeConstant>* mSmokeCBuffer;
