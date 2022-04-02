@@ -9,12 +9,12 @@ public:
 
 	void OnUpdateWorldTransform() override;
 
-	void SetSphere(struct Sphere* model) { mSphere1 = model; }
-	struct Sphere* GetSphere() const { return mSphere1; }
-	void SetSphereLast(struct Sphere* model) { mSphere0 = model; }
-	struct Sphere* GetSphereLast() const { return mSphere0; }
+	void SetSphere(struct Sphere* model) { mSphereCurrent = model; }
+	struct Sphere* GetSphere() const { return mSphereCurrent; }
+	void SetSphereLast(struct Sphere* model) { mSphereLast = model; }
+	struct Sphere* GetSphereLast() const { return mSphereLast; }
 
 private:
-	struct Sphere* mSphere0;
-	struct Sphere* mSphere1;
+	struct Sphere* mSphereLast;
+	struct Sphere* mSphereCurrent;
 };

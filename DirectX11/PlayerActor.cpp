@@ -29,8 +29,8 @@ static constexpr float accelW = 2.5f;
 static constexpr float accelS = -3.5f;
 static constexpr float accelNatural = -1.0f;
 static constexpr float angularSpd = 0.8f;
-static constexpr float angularRate1 = 1.6f;
-static constexpr float angularRate2 = 1.2f;
+static constexpr float angularSpd1 = 1.6f;
+static constexpr float angularSpd2 = 1.2f;
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -99,7 +99,7 @@ void PlayerActor::ActorInput()
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd * angularRate1);
+			mMoveComponent->SetAngularSpeed(angularSpd * angularSpd1);
 		}
 		else if(input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
@@ -107,7 +107,7 @@ void PlayerActor::ActorInput()
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd * angularRate2);
+			mMoveComponent->SetAngularSpeed(angularSpd * angularSpd2);
 		}
 	}
 	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
@@ -115,7 +115,7 @@ void PlayerActor::ActorInput()
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate1);
+			mMoveComponent->SetAngularSpeed(-angularSpd * angularSpd1);
 		}
 		else if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
@@ -123,7 +123,7 @@ void PlayerActor::ActorInput()
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd * angularRate2);
+			mMoveComponent->SetAngularSpeed(-angularSpd * angularSpd2);
 		}
 	}
 	else

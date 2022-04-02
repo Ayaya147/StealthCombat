@@ -25,7 +25,7 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	Actor(scene),
 	mPhase(ExplosionPhase::EOne),
 	mIsAnimation(true),
-	mSpeed(1.0f)
+	mAnimationSpeed(1.0f)
 {	
 	mCount++;
 	Reset();
@@ -75,7 +75,7 @@ void ExplosionActor::UpdateActor(float deltaTime)
 		switch (mPhase)
 		{
 		case ExplosionActor::ExplosionPhase::EOne:
-			mData.mRadius += 0.4f * rate * mSpeed * deltaTime;
+			mData.mRadius += 0.4f * rate * mAnimationSpeed * deltaTime;
 			if (mData.mRadius >= 0.06f)
 			{
 				mData.mRadius = 0.06f;
@@ -84,11 +84,11 @@ void ExplosionActor::UpdateActor(float deltaTime)
 			break;
 
 		case ExplosionActor::ExplosionPhase::ETwo:
-			mData.mColor -= dx::XMFLOAT3{ 0.8f, 0.08f, 0.08f } * rate * mSpeed * deltaTime;
-			mData.mLoop -= 16.0f * rate * mSpeed * deltaTime;
-			mData.mAbsorptionLight += 25.0f * rate * mSpeed * deltaTime;
-			mData.mAbsorption += 50.0f * rate * mSpeed * deltaTime;
-			mData.mRadius += 0.04f * rate * mSpeed * deltaTime;
+			mData.mColor -= dx::XMFLOAT3{ 0.8f, 0.08f, 0.08f } * rate * mAnimationSpeed * deltaTime;
+			mData.mLoop -= 16.0f * rate * mAnimationSpeed * deltaTime;
+			mData.mAbsorptionLight += 25.0f * rate * mAnimationSpeed * deltaTime;
+			mData.mAbsorption += 50.0f * rate * mAnimationSpeed * deltaTime;
+			mData.mRadius += 0.04f * rate * mAnimationSpeed * deltaTime;
 
 			if (mData.mLoop <= 0.0f || mData.mAbsorptionLight >= 100.0f || mData.mAbsorption >= 100.0f)
 			{
@@ -145,13 +145,13 @@ void ExplosionActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Animation");
-		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 5.0f, "%.1f");
+		ImGui::SliderFloat("Speed", &mAnimationSpeed, 0.0f, 5.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
-			mSpeed = 1.0f;
+			mAnimationSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

@@ -47,7 +47,7 @@ private:
 	void Reset();
 
 	static int mCount;
-	float mSpeed;
+	float mAnimationSpeed;
 	bool mIsAnimation;
 	ExplosionConstant mData;
 	ExplosionPhase mPhase;

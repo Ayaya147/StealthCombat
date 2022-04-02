@@ -5,7 +5,7 @@
 template<class C>
 class VertexConstantBuffer;
 
-class UIScreen
+class PauseScreen
 {
 public:
 	enum class UIState
@@ -14,8 +14,8 @@ public:
 		EClosing
 	};
 
-	UIScreen(class BaseScene* scene, class Texture* texture);
-	virtual ~UIScreen();
+	PauseScreen(class BaseScene* scene, class Texture* texture);
+	virtual ~PauseScreen();
 
 	virtual void ProcessInput();
 	virtual void Update(float deltaTime);

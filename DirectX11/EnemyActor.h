@@ -16,7 +16,7 @@ public:
 	class SphereComponent* GetSphereComp() const { return mBody; }
 
 private:
-	void CalcNextPos();
+	void CalcNextDestination();
 	float CalcAngle();
 
 	class MoveComponent* mMoveComponent;
@@ -24,7 +24,7 @@ private:
 	class SphereComponent* mAttackRange;
 	bool mIsLockedOn;
 	bool mIsInCloud;
-	float mTime;
+	float mTimeChangeDestination;
 	float mSign;
 	DirectX::XMFLOAT3 mTargetLocationPos;
 };

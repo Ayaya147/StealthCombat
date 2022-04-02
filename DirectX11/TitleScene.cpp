@@ -64,19 +64,19 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetScale(1.0f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("back");
+	tex = renderer->GetTexture("back");
 	mBackSprite = new SpriteComponent(sprite, tex);
 	mBackSprite->SetVisible(false);
 	sprite->SetPosition(dx::XMFLOAT3{ 750.0f, 470.0f, 0.0f });
 	sprite->SetScale(0.4f);
 
 	sprite = new Actor(this);
-	tex = GetRenderer()->GetTexture("tutorial");
+	tex = renderer->GetTexture("tutorial");
 	mTutorialSprite = new SpriteComponent(sprite, tex);
 	mTutorialSprite->SetVisible(false);
 	sprite->SetScale(1.0f);
 
-	GetRenderer()->ResetLight();
+	renderer->ResetLight();
 
 	if (!parameter.GetIsFromDemo())
 	{

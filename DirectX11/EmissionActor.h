@@ -40,7 +40,7 @@ private:
 
 	void Reset();
 
-	float mSpeed;
+	float mAnimationSpeed;
 	EmissionConstant mData;
 	bool mIsAnimation;
 	static int mCount;

@@ -29,6 +29,12 @@ public:
 	int GetAirplaneBGM() const { return mAirplaneBGM; }
 
 private:
+	void CreateGameActor();
+	void CreateNumberActor();
+	void CreateUIActor();
+	void CreatePauseScreen();
+	void CreateSound();
+
 	std::vector<class EnemyActor*> mEnemies;
 	std::vector<class CloudActor*> mClouds;
 
@@ -48,10 +54,10 @@ private:
 	class SpriteComponent* mTimeSprite;
 	class SpriteComponent* mUICountSprite;
 	class SpriteComponent* mDestroyedSprite;
-	class UIScreen* mBackgroundUI;
-	class UIScreen* mMenuUI;
-	class UIScreen* mVictoryUI;
-	class UIScreen* mDefeatUI;
+	class PauseScreen* mBackgroundUI;
+	class PauseScreen* mMenuUI;
+	class PauseScreen* mVictoryUI;
+	class PauseScreen* mDefeatUI;
 
 	bool mWin;
 	bool mIsCautionSE;

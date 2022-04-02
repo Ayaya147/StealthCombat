@@ -22,7 +22,7 @@ EmissionActor::EmissionActor(BaseScene* scene)
 	:
 	Actor(scene),
 	mIsAnimation(true),
-	mSpeed(1.0f)
+	mAnimationSpeed(1.0f)
 {
 	mCount++;
 	Reset();
@@ -59,8 +59,8 @@ void EmissionActor::UpdateActor(float deltaTime)
 {
 	if (mIsAnimation)
 	{
-		mData.mNoiseScale += rate * mSpeed * deltaTime;
-		mData.mLoop -= 20.0f * mSpeed * deltaTime;
+		mData.mNoiseScale += rate * mAnimationSpeed * deltaTime;
+		mData.mLoop -= 20.0f * mAnimationSpeed * deltaTime;
 
 		if ((mData.mNoiseScale > 60.0f && rate > 0.0f) ||
 			(mData.mNoiseScale < 40.0f && rate < 0.0f))
@@ -118,13 +118,13 @@ void EmissionActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Animation");
-		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 2.0f, "%.1f");
+		ImGui::SliderFloat("Speed", &mAnimationSpeed, 0.0f, 2.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
-			mSpeed = 1.0f;
+			mAnimationSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

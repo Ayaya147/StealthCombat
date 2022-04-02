@@ -40,10 +40,10 @@ private:
 
 	void Reset();
 
-	float mSpeed;
+	float mAnimationSpeed;
 	SmokeConstant mData;
 	bool mIsAnimation;
-	DirectX::XMFLOAT3 mRotation;
+	DirectX::XMFLOAT3 mMissileRotation;
 	static int mCount;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<SmokeConstant>* mSmokeCBuffer;

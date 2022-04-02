@@ -6,7 +6,7 @@
 #include "Actor.h"
 #include "InputSystem.h"
 #include "Parameter.h"
-#include "UIScreen.h"
+#include "PauseScreen.h"
 
 BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:
@@ -30,10 +30,10 @@ BaseScene::~BaseScene()
 	{
 		delete mPendingActors.back();
 	}
-	while (!mUIStack.empty())
+	while (!mPauseUIStack.empty())
 	{
-		delete mUIStack.back();
-		mUIStack.pop_back();
+		delete mPauseUIStack.back();
+		mPauseUIStack.pop_back();
 	}
 
 	if (mTimer)
@@ -65,7 +65,7 @@ void BaseScene::ProcessInput()
 	}
 	else if (mSceneState == SceneState::EPaused)
 	{
-		for (auto ui : mUIStack)
+		for (auto ui : mPauseUIStack)
 		{
 			ui->ProcessInput();
 		}
@@ -114,7 +114,7 @@ void BaseScene::Update()
 	}
 	else if (mSceneState == SceneState::EPaused)
 	{
-		for (auto ui : mUIStack)
+		for (auto ui : mPauseUIStack)
 		{
 			ui->Update(mDeltaTime);
 		}
@@ -157,9 +157,9 @@ void BaseScene::RemoveActor(Actor* actor)
 	}
 }
 
-void BaseScene::PushUI(UIScreen* screen)
+void BaseScene::PushUI(PauseScreen* screen)
 {
-	mUIStack.emplace_back(screen);
+	mPauseUIStack.emplace_back(screen);
 }
 
 Renderer* BaseScene::GetRenderer()

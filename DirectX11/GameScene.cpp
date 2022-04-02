@@ -22,7 +22,7 @@
 #include "Minimap.h"
 #include "XMFloatHelper.h"
 #include "Fade.h"
-#include "UIScreen.h"
+#include "PauseScreen.h"
 
 namespace dx = DirectX;
 
@@ -39,131 +39,13 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mDestroyedSpriteTime(0.0f)
 {
 	gNextScene = SceneManager::SceneType::ETitle;
+	GetRenderer()->ResetLight();
 
-	PlaneActor* plane = new PlaneActor(this);
-
-	for (int i = 0; i < 5; i++)
-	{
-		EnemyActor* enemy = new EnemyActor(this);
-	}
-	for (int i = 0; i < 28; i++)
-	{
-		CloudActor* cloud = new CloudActor(this);
-	}
-	
-	Renderer* renderer = GetRenderer();
-	Actor* sprite = new Actor(this);
-	Texture* tex = renderer->GetTexture("guide_keyboard");
-	mGuideSprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
-	sprite->SetScale(0.7f);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("marking");
-	mMarkingEnemySprite = new SpriteComponent(sprite, tex, 110);
-	mMarkingEnemySprite->SetVisible(false);
-	sprite->SetScale(0.3f);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("marking");
-	mMarkingPlayerSprite = new SpriteComponent(sprite, tex, 110);
-	mMarkingPlayerSprite->SetVisible(false);
-	sprite->SetScale(0.3f);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("speed");
-	SpriteComponent* sc = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 70.0f, 0.0f });
-	sprite->SetScale(0.6f);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("time");
-	mTimeSprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 70.0f, 0.0f });
-	sprite->SetScale(0.6f);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("ui_count");
-	mUICountSprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
-	sprite->SetScale(0.9f);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("caution");
-	mCautionGameTime = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -476.0f, 0.0f });
-	sprite->SetScale(0.5f);
-	mCautionGameTime->SetVisible(false);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("caution");
-	mCautionCloudTime = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 205.0f, -12.0f, 0.0f });
-	sprite->SetScale(0.5f);
-	mCautionCloudTime->SetVisible(false);
-
-	sprite = new Actor(this);
-	tex = renderer->GetTexture("destroyed");
-	mDestroyedSprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -140.0f, 0.0f });
-	sprite->SetScale(0.55f);
-	mCautionCloudTime->SetVisible(false);
-
-	mSpdNum = new NumberActor(this, 0, 4);
-	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, 44.0f, 0.0f });
-	mSpdNum->SetScale(0.6f);
-
-	mOutCloudTime = new NumberActor(this, 0, 4);
-	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, 44.0f, 0.0f });
-	mOutCloudTime->SetScale(0.6f);
-
-	mRestTime = new NumberActor(this, 240, 3);
-	mRestTime->SetOriPosition(dx::XMFLOAT3{ 126.0f, -477.0f, 0.0f });
-	mRestTime->SetScale(0.8f);
-
-	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 1);
-	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
-	mEnemyNum->SetScale(0.8f);
-
-	//mFPS = new NumberActor(this, 0.0f, 3);
-	//mFPS->SetOriPosition(dx::XMFLOAT3{ -890.0f, -500.0f, 0.0f });
-	//mFPS->SetScale(0.5f);
-
-	tex = renderer->GetTexture("fade");
-	mBackgroundUI = new UIScreen(this, tex);
-	mBackgroundUI->SetScale(40.0f);
-	mBackgroundUI->ComputeWorldTransform();
-	mBackgroundUI->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,0.7f });
-
-	tex = renderer->GetTexture("menu");
-	mMenuUI = new UIScreen(this, tex);
-	mMenuUI->SetScale(0.8f);
-	mMenuUI->ComputeWorldTransform();
-
-	tex = renderer->GetTexture("victory");
-	mVictoryUI = new UIScreen(this, tex);
-	mVictoryUI->SetScale(1.0f);
-	mVictoryUI->ComputeWorldTransform();
-
-	tex = renderer->GetTexture("defeat");
-	mDefeatUI = new UIScreen(this, tex);
-	mDefeatUI->SetScale(1.0f);
-	mDefeatUI->ComputeWorldTransform();
-
-	mMap = new Minimap(this);
-
-	renderer->ResetLight();
-
-	AudioSystem* audio = GetAudioSystem();
-	mGameBGM = audio->LoadSound("bgm_game");
-	audio->PlaySoundEx(mGameBGM, XAUDIO2_LOOP_INFINITE);
-
-	mAirplaneBGM = audio->LoadSound("bgm_airplane");
-	audio->PlaySoundEx(mAirplaneBGM, XAUDIO2_LOOP_INFINITE);
-	audio->SetVolume(mAirplaneBGM, 0.5f);
-
-	mCautionSE = audio->LoadSound("se_caution");
-	mLockOnSE = audio->LoadSound("se_lockOn");
+	CreateGameActor();
+	CreateNumberActor();
+	CreateUIActor();
+	CreatePauseScreen();
+	CreateSound();
 }
 
 GameScene::~GameScene()
@@ -182,8 +64,8 @@ void GameScene::ProcessInput()
 		{
 			GetInputSystem()->GetPad()->StopVibration();
 			SetSceneState(SceneState::EPaused);
-			mBackgroundUI->SetUIState(UIScreen::UIState::EActive);
-			mMenuUI->SetUIState(UIScreen::UIState::EActive);
+			mBackgroundUI->SetUIState(PauseScreen::UIState::EActive);
+			mMenuUI->SetUIState(PauseScreen::UIState::EActive);
 
 			int index = GetAudioSystem()->LoadSound("se_ok");
 			GetAudioSystem()->PlaySoundEx(index, 0);
@@ -194,9 +76,9 @@ void GameScene::ProcessInput()
 		if (GetInputSystem()->GetX())
 		{
 			SetSceneState(SceneState::EPlay);
-			for (auto ui : GetUIStack())
+			for (auto ui : GetPauseUIStack())
 			{
-				ui->SetUIState(UIScreen::UIState::EClosing);
+				ui->SetUIState(PauseScreen::UIState::EClosing);
 			}
 
 			int index = GetAudioSystem()->LoadSound("se_ok");
@@ -205,9 +87,9 @@ void GameScene::ProcessInput()
 		else if (GetInputSystem()->GetY())
 		{
 			SetSceneState(SceneState::EQuit);
-			for (auto ui : GetUIStack())
+			for (auto ui : GetPauseUIStack())
 			{
-				ui->SetUIState(UIScreen::UIState::EClosing);
+				ui->SetUIState(PauseScreen::UIState::EClosing);
 			}
 			mQuitTime = 0.0f;
 
@@ -221,9 +103,9 @@ void GameScene::ProcessInput()
 		{
 			SetSceneState(SceneState::EQuit);
 			gNextScene = SceneManager::SceneType::ETitle;
-			for (auto ui : GetUIStack())
+			for (auto ui : GetPauseUIStack())
 			{
-				ui->SetUIState(UIScreen::UIState::EClosing);
+				ui->SetUIState(PauseScreen::UIState::EClosing);
 			}
 
 			int index = GetAudioSystem()->LoadSound("se_ok");
@@ -233,9 +115,9 @@ void GameScene::ProcessInput()
 		{
 			SetSceneState(SceneState::EQuit);
 			gNextScene = SceneManager::SceneType::EGame;
-			for (auto ui : GetUIStack())
+			for (auto ui : GetPauseUIStack())
 			{
-				ui->SetUIState(UIScreen::UIState::EClosing);
+				ui->SetUIState(PauseScreen::UIState::EClosing);
 			}
 
 			int index = GetAudioSystem()->LoadSound("se_ok");
@@ -356,15 +238,15 @@ void GameScene::Update()
 		mQuitTime -= GetDeltaTime();
 		if (mQuitTime <= 0.0f)
 		{
-			mBackgroundUI->SetUIState(UIScreen::UIState::EActive);
+			mBackgroundUI->SetUIState(PauseScreen::UIState::EActive);
 
 			if (mWin)
 			{
-				mVictoryUI->SetUIState(UIScreen::UIState::EActive);
+				mVictoryUI->SetUIState(PauseScreen::UIState::EActive);
 			}
 			else
 			{
-				mDefeatUI->SetUIState(UIScreen::UIState::EActive);
+				mDefeatUI->SetUIState(PauseScreen::UIState::EActive);
 			}
 		}
 		break;
@@ -438,4 +320,146 @@ void GameScene::RemoveCloud(CloudActor* cloud)
 		std::iter_swap(iter, mClouds.end() - 1);
 		mClouds.pop_back();
 	}
+}
+
+void GameScene::CreateGameActor()
+{
+	PlaneActor* plane = new PlaneActor(this);
+
+	for (int i = 0; i < 5; i++)
+	{
+		EnemyActor* enemy = new EnemyActor(this);
+	}
+
+	for (int i = 0; i < 28; i++)
+	{
+		CloudActor* cloud = new CloudActor(this);
+	}
+}
+
+void GameScene::CreateNumberActor()
+{
+	mSpdNum = new NumberActor(this, 0, 4);
+	mSpdNum->SetOriPosition(dx::XMFLOAT3{ -178.0f, 44.0f, 0.0f });
+	mSpdNum->SetScale(0.6f);
+
+	mOutCloudTime = new NumberActor(this, 0, 4);
+	mOutCloudTime->SetOriPosition(dx::XMFLOAT3{ 242.0f, 44.0f, 0.0f });
+	mOutCloudTime->SetScale(0.6f);
+
+	mRestTime = new NumberActor(this, 240, 3);
+	mRestTime->SetOriPosition(dx::XMFLOAT3{ 126.0f, -477.0f, 0.0f });
+	mRestTime->SetScale(0.8f);
+
+	mEnemyNum = new NumberActor(this, static_cast<float>(mEnemies.size()), 1);
+	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
+	mEnemyNum->SetScale(0.8f);
+
+	//mFPS = new NumberActor(this, 0.0f, 3);
+	//mFPS->SetOriPosition(dx::XMFLOAT3{ -890.0f, -500.0f, 0.0f });
+	//mFPS->SetScale(0.5f);
+}
+
+void GameScene::CreateUIActor()
+{
+	Renderer* renderer = GetRenderer();
+
+	Actor* sprite = new Actor(this);
+	Texture* tex = renderer->GetTexture("guide_keyboard");
+	mGuideSprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -670.0f, 270.0f, 0.0f });
+	sprite->SetScale(0.7f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("marking");
+	mMarkingEnemySprite = new SpriteComponent(sprite, tex, 110);
+	mMarkingEnemySprite->SetVisible(false);
+	sprite->SetScale(0.3f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("marking");
+	mMarkingPlayerSprite = new SpriteComponent(sprite, tex, 110);
+	mMarkingPlayerSprite->SetVisible(false);
+	sprite->SetScale(0.3f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("speed");
+	SpriteComponent* sc = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -200.0f, 70.0f, 0.0f });
+	sprite->SetScale(0.6f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("time");
+	mTimeSprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 70.0f, 0.0f });
+	sprite->SetScale(0.6f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("ui_count");
+	mUICountSprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ -95.0f, -450.0f, 0.0f });
+	sprite->SetScale(0.9f);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("caution");
+	mCautionGameTime = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -476.0f, 0.0f });
+	sprite->SetScale(0.5f);
+	mCautionGameTime->SetVisible(false);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("caution");
+	mCautionCloudTime = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 205.0f, -12.0f, 0.0f });
+	sprite->SetScale(0.5f);
+	mCautionCloudTime->SetVisible(false);
+
+	sprite = new Actor(this);
+	tex = renderer->GetTexture("destroyed");
+	mDestroyedSprite = new SpriteComponent(sprite, tex);
+	sprite->SetPosition(dx::XMFLOAT3{ 0.0f, -140.0f, 0.0f });
+	sprite->SetScale(0.55f);
+	mCautionCloudTime->SetVisible(false);
+
+	mMap = new Minimap(this);
+}
+
+void GameScene::CreatePauseScreen()
+{
+	Renderer* renderer = GetRenderer();
+
+	Texture* tex = renderer->GetTexture("fade");
+	mBackgroundUI = new PauseScreen(this, tex);
+	mBackgroundUI->SetScale(40.0f);
+	mBackgroundUI->ComputeWorldTransform();
+	mBackgroundUI->SetColor(dx::XMFLOAT4{ 1.0f,1.0f,1.0f,0.7f });
+
+	tex = renderer->GetTexture("menu");
+	mMenuUI = new PauseScreen(this, tex);
+	mMenuUI->SetScale(0.8f);
+	mMenuUI->ComputeWorldTransform();
+
+	tex = renderer->GetTexture("victory");
+	mVictoryUI = new PauseScreen(this, tex);
+	mVictoryUI->SetScale(1.0f);
+	mVictoryUI->ComputeWorldTransform();
+
+	tex = renderer->GetTexture("defeat");
+	mDefeatUI = new PauseScreen(this, tex);
+	mDefeatUI->SetScale(1.0f);
+	mDefeatUI->ComputeWorldTransform();
+}
+
+void GameScene::CreateSound()
+{
+	AudioSystem* audio = GetAudioSystem();
+	mGameBGM = audio->LoadSound("bgm_game");
+	audio->PlaySoundEx(mGameBGM, XAUDIO2_LOOP_INFINITE);
+
+	mAirplaneBGM = audio->LoadSound("bgm_airplane");
+	audio->PlaySoundEx(mAirplaneBGM, XAUDIO2_LOOP_INFINITE);
+	audio->SetVolume(mAirplaneBGM, 0.5f);
+
+	mCautionSE = audio->LoadSound("se_caution");
+	mLockOnSE = audio->LoadSound("se_lockOn");
 }

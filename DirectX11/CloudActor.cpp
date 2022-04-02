@@ -23,7 +23,7 @@ PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = null
 CloudActor::CloudActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mSpeed(1.0f),
+	mAnimationSpeed(1.0f),
 	mIsAnimation(true)
 {
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
@@ -38,20 +38,20 @@ CloudActor::CloudActor(BaseScene* scene)
 		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		Sphere sphere(pos, radius * GetScale().x*1.1f);
-		sc->SetSphere(&sphere);
+		Sphere tempSphere(pos, radius * GetScale().x*1.15f);
+		sc->SetSphere(&tempSphere);
 
 		PhysWorld* phys = game->GetPhysWorld();
 		while (phys->IsCollidedWithCloud(sc))
 		{
 			pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-			sphere.mCenter = pos;
+			tempSphere.mCenter = pos;
 		}
 
 		SetPosition(pos);
-		Sphere* sphere1 = new Sphere(pos, radius * GetScale().x);
-		sc->SetSphere(sphere1);
-		sphere1->mCenter = sphere.mCenter;
+		Sphere* sphere = new Sphere(pos, radius * GetScale().x);
+		sc->SetSphere(sphere);
+		sphere->mCenter = tempSphere.mCenter;
 	}
 
 	mCount++;
@@ -99,7 +99,7 @@ void CloudActor::UpdateActor(float deltaTime)
 
 	if (mIsAnimation)
 	{
-		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime()*mSpeed);
+		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime() * mAnimationSpeed);
 	}
 }
 
@@ -139,19 +139,19 @@ void CloudActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Scale");
-		ImGui::SliderFloat("x", &GetScaleChange().x, 0.0f, 120.0f, "%.1f");
-		ImGui::SliderFloat("y", &GetScaleChange().y, 0.0f, 20.0f, "%.1f");
-		ImGui::SliderFloat("z", &GetScaleChange().z, 0.0f, 120.0f, "%.1f");
+		ImGui::SliderFloat("x", &GetScaleWithoutConst().x, 0.0f, 120.0f, "%.1f");
+		ImGui::SliderFloat("y", &GetScaleWithoutConst().y, 0.0f, 20.0f, "%.1f");
+		ImGui::SliderFloat("z", &GetScaleWithoutConst().z, 0.0f, 120.0f, "%.1f");
 
 		ImGui::Text("Animation");
-		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 10.0f, "%.1f");
+		ImGui::SliderFloat("Speed", &mAnimationSpeed, 0.0f, 10.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
 			SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
-			mSpeed = 1.0f;
+			mAnimationSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

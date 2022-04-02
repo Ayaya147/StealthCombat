@@ -22,7 +22,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	Actor(scene),
 	mIsLockedOn(false),
 	mIsInCloud(false),
-	mTime(Random::GetFloatRange(6.0f, 12.0f))
+	mTimeChangeDestination(Random::GetFloatRange(6.0f, 12.0f))
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -39,7 +39,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	}
 	SetPosition(pos);
 	
-	CalcNextPos();
+	CalcNextDestination();
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("enemy");
@@ -113,17 +113,17 @@ void EnemyActor::UpdateActor(float deltaTime)
 	{
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
 		mSign = Random::GetIntRange(0, 1) == 0 ? -1.0f : 1.0f;
-		mTime -= deltaTime;
+		mTimeChangeDestination -= deltaTime;
 	}
 
-	if (mTime <= 0.0f)
+	if (mTimeChangeDestination <= 0.0f)
 	{
-		CalcNextPos();
-		mTime = Random::GetFloatRange(6.0f, 12.0f);
+		CalcNextDestination();
+		mTimeChangeDestination = Random::GetFloatRange(6.0f, 12.0f);
 	}
 }
 
-void EnemyActor::CalcNextPos()
+void EnemyActor::CalcNextDestination()
 {
 	float range = Constant::createRange * 0.9f;
 	dx::XMFLOAT3 pos = { Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };

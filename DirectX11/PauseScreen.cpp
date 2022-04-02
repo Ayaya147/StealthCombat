@@ -1,4 +1,4 @@
-#include "UIScreen.h"
+#include "PauseScreen.h"
 #include "Renderer.h"
 #include "Bindable.h"
 #include "ConstantBuffer.h"
@@ -9,10 +9,10 @@
 
 namespace dx = DirectX;
 
-VertexConstantBuffer<UIScreen::Transforms>* UIScreen::mCBuffer = nullptr;
-int UIScreen::mCount = 0;
+VertexConstantBuffer<PauseScreen::Transforms>* PauseScreen::mCBuffer = nullptr;
+int PauseScreen::mCount = 0;
 
-UIScreen::UIScreen(BaseScene* scene, Texture* texture)
+PauseScreen::PauseScreen(BaseScene* scene, Texture* texture)
 	:
 	mScene(scene),
 	mTexture(texture),
@@ -31,7 +31,7 @@ UIScreen::UIScreen(BaseScene* scene, Texture* texture)
 	}
 }
 
-UIScreen::~UIScreen()
+PauseScreen::~PauseScreen()
 {
 	mCount--;
 
@@ -42,15 +42,15 @@ UIScreen::~UIScreen()
 	}
 }
 
-void UIScreen::ProcessInput()
+void PauseScreen::ProcessInput()
 {
 }
 
-void UIScreen::Update(float deltaTime)
+void PauseScreen::Update(float deltaTime)
 {
 }
 
-void UIScreen::Draw(Renderer* renderer, VertexBuffer* vertexBuffer)
+void PauseScreen::Draw(Renderer* renderer, VertexBuffer* vertexBuffer)
 {
 	if (mState == UIState::EActive)
 	{
@@ -84,7 +84,7 @@ void UIScreen::Draw(Renderer* renderer, VertexBuffer* vertexBuffer)
 	}
 }
 
-void UIScreen::ComputeWorldTransform()
+void PauseScreen::ComputeWorldTransform()
 {
 	dx::XMMATRIX worldTransform = dx::XMMatrixScaling(mScale.x, mScale.y, mScale.z);
 	worldTransform *= dx::XMMatrixRotationRollPitchYaw(mRotation.x, mRotation.y, mRotation.z);

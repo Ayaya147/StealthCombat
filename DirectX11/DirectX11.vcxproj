@@ -169,7 +169,7 @@
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuffer.cpp" />
     <ClCompile Include="TransparentComponent.cpp" />
-    <ClCompile Include="UIScreen.cpp" />
+    <ClCompile Include="PauseScreen.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -285,7 +285,7 @@
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCBuffer.h" />
     <ClInclude Include="TransparentComponent.h" />
-    <ClInclude Include="UIScreen.h" />
+    <ClInclude Include="PauseScreen.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />

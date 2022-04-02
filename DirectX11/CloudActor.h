@@ -40,7 +40,7 @@ private:
 
 	void Reset();
 
-	float mSpeed;
+	float mAnimationSpeed;
 	bool mIsAnimation;
 	static int mCount;
 	static CloudConstant mData;

@@ -33,6 +33,7 @@ protected:
 
 private:
 	std::vector<class Bindable*> mBinds;
+
 	class IndexBuffer* mIndexBuffer;
 	std::string mFileName;
 	int mVerticesCount;

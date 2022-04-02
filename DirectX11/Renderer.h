@@ -28,7 +28,6 @@ public:
 	void RemoveMeshComp(class MeshComponent* mesh);
 	void AddTranspComp(class TransparentComponent* mesh);
 	void RemoveTranspComp(class TransparentComponent* mesh);
-	void Create2DBuffer();
 	void ResetLight();
 
 	class Mesh* GetMesh(const std::string& fileName);
@@ -47,6 +46,9 @@ public:
 	void SetDirectionalLight(const struct DirectionalLight& light);
 
 private:
+	void InitDirectX(HWND hWnd, int width, int height);
+	void CreateBuffer();
+
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> mContext;

@@ -25,7 +25,7 @@
 #include "DemoScene.h"
 #include "Fade.h"
 #include "Light.h"
-#include "UIScreen.h"
+#include "PauseScreen.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
 
@@ -34,117 +34,10 @@ namespace wrl = Microsoft::WRL;
 
 Renderer::Renderer(HWND hWnd, int width, int height)
 {
-	DXGI_SWAP_CHAIN_DESC sd = {};
-	sd.BufferDesc.Width = 0;
-	sd.BufferDesc.Height = 0;
-	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 0;
-	sd.BufferDesc.RefreshRate.Denominator = 0;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = 1;
-	sd.OutputWindow = hWnd;
-	sd.Windowed = TRUE;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.Flags = 0;
+	InitDirectX(hWnd, width, height);
+	CreateBuffer();
 
-	wrl::ComPtr<IDXGIFactory1> dxgiFactory;
-	CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
-	std::vector<wrl::ComPtr<IDXGIAdapter>> adapters;
-	wrl::ComPtr<IDXGIAdapter> tmpAdapter;
-
-	for (int i = 0; dxgiFactory->EnumAdapters(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND; i++)
-	{
-		adapters.emplace_back(tmpAdapter);
-	}
-
-	for (auto adpt : adapters)
-	{
-		DXGI_ADAPTER_DESC adesc = {};
-		adpt->GetDesc(&adesc);
-
-		std::wstring strDesc = adesc.Description;
-		if (strDesc.find(L"NVIDIA") != std::string::npos || strDesc.find(L"AMD") != std::string::npos)
-		{
-			tmpAdapter = adpt;
-			break;
-		}
-	}
-
-	D3D_DRIVER_TYPE driverType;
-	if (tmpAdapter)
-	{
-		driverType = D3D_DRIVER_TYPE_UNKNOWN;
-	}
-	else
-	{
-		driverType = D3D_DRIVER_TYPE_HARDWARE;
-	}
-
-	UINT createDeviceFlags = 0;
-#ifdef DEBUG
-	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
-	ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
-		tmpAdapter.Get(),
-		driverType,
-		nullptr,
-		createDeviceFlags,
-		nullptr,
-		0,
-		D3D11_SDK_VERSION,
-		&sd,
-		&mSwapChain,
-		&mDevice,
-		nullptr,
-		&mContext
-	));
-
-	wrl::ComPtr<ID3D11Texture2D> backBuffer;
-	ThrowIfFailed(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
-	ThrowIfFailed(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &mRenderTargetView));
-
-	wrl::ComPtr<ID3D11Texture2D> depthStencilBuffer;
-	D3D11_TEXTURE2D_DESC depthStencilDesc = {};
-	depthStencilDesc.Width = width;
-	depthStencilDesc.Height = height;
-	depthStencilDesc.MipLevels = 1;
-	depthStencilDesc.ArraySize = 1;
-	depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	depthStencilDesc.SampleDesc.Count = 1;
-	depthStencilDesc.SampleDesc.Quality = 0;
-	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	ThrowIfFailed(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &depthStencilBuffer));
-
-	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
-	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	dsvDesc.Texture2D.MipSlice = 0;
-	ThrowIfFailed(mDevice->CreateDepthStencilView(depthStencilBuffer.Get(), &dsvDesc, &mDepthStencilView));
-	mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
-
-	D3D11_VIEWPORT vp = {};
-	vp.Width = static_cast<FLOAT>(width);
-	vp.Height = static_cast<FLOAT>(height);
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0.0f;
-	vp.TopLeftY = 0.0f;
-	mContext->RSSetViewports(1, &vp);
-
-	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
-	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
-	mSampler = new Sampler(this);
-	mBlenderOff = new Blender(this, Blender::Mode::EOff);
-	mBlenderOn = new Blender(this, Blender::Mode::EOn);
 	mLight = new Light(this);
-
-	Create2DBuffer();
 
 	dx::XMMATRIX projection = dx::XMMatrixPerspectiveLH(
 		1, static_cast<float>(height) / static_cast<float>(width),
@@ -268,7 +161,7 @@ void Renderer::Draw2DScene()
 		}
 	}
 
-	for (auto ui : mScene->GetUIStack())
+	for (auto ui : mScene->GetPauseUIStack())
 	{
 		ui->Draw(this, mVertexBuffer);
 	}
@@ -353,29 +246,6 @@ void Renderer::RemoveTranspComp(TransparentComponent* transparent)
 	mTranspComps.erase(iter);
 }
 
-void Renderer::Create2DBuffer()
-{
-	std::vector<Vertex> vertices;
-	vertices.reserve(4);
-	vertices.push_back({ {-0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{0.0f,0.0f} });
-	vertices.push_back({ { 0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{1.0f,0.0f} });
-	vertices.push_back({ {-0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{0.0f,1.0f} });
-	vertices.push_back({ { 0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{1.0f,1.0f} });
-
-	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-	{
-		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,28,D3D11_INPUT_PER_VERTEX_DATA,0 },
-	};
-
-	mVertexBuffer = new VertexBuffer(this, vertices);
-	mVertexShader = new VertexShader(this, L"ShaderBin\\SpriteVS.cso");
-	mPixelShader = new PixelShader(this, L"ShaderBin\\SpritePS.cso");
-	mTopology = new Topology(this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	mInputLayout = new InputLayout(this, ied, mVertexShader);
-}
-
 void Renderer::ResetLight()
 {
 	mLight->Reset();
@@ -427,4 +297,139 @@ Texture* Renderer::GetTexture(const std::string& fileName)
 void Renderer::SetDirectionalLight(const DirectionalLight& light)
 {
 	mLight->SetDirectionalLight(light);
+}
+
+void Renderer::InitDirectX(HWND hWnd, int width, int height)
+{
+	DXGI_SWAP_CHAIN_DESC sd = {};
+	sd.BufferDesc.Width = 0;
+	sd.BufferDesc.Height = 0;
+	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	sd.BufferDesc.RefreshRate.Numerator = 0;
+	sd.BufferDesc.RefreshRate.Denominator = 0;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	sd.SampleDesc.Count = 1;
+	sd.SampleDesc.Quality = 0;
+	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.BufferCount = 1;
+	sd.OutputWindow = hWnd;
+	sd.Windowed = TRUE;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	sd.Flags = 0;
+
+	wrl::ComPtr<IDXGIFactory1> dxgiFactory;
+	CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
+	std::vector<wrl::ComPtr<IDXGIAdapter>> adapters;
+	wrl::ComPtr<IDXGIAdapter> tmpAdapter;
+
+	for (int i = 0; dxgiFactory->EnumAdapters(i, &tmpAdapter) != DXGI_ERROR_NOT_FOUND; i++)
+	{
+		adapters.emplace_back(tmpAdapter);
+	}
+
+	for (auto adpt : adapters)
+	{
+		DXGI_ADAPTER_DESC adesc = {};
+		adpt->GetDesc(&adesc);
+
+		std::wstring strDesc = adesc.Description;
+		if (strDesc.find(L"NVIDIA") != std::string::npos || strDesc.find(L"AMD") != std::string::npos)
+		{
+			tmpAdapter = adpt;
+			break;
+		}
+	}
+
+	D3D_DRIVER_TYPE driverType;
+	if (tmpAdapter)
+	{
+		driverType = D3D_DRIVER_TYPE_UNKNOWN;
+	}
+	else
+	{
+		driverType = D3D_DRIVER_TYPE_HARDWARE;
+	}
+
+	UINT createDeviceFlags = 0;
+#ifdef DEBUG
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+	ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
+		tmpAdapter.Get(),
+		driverType,
+		nullptr,
+		createDeviceFlags,
+		nullptr,
+		0,
+		D3D11_SDK_VERSION,
+		&sd,
+		&mSwapChain,
+		&mDevice,
+		nullptr,
+		&mContext
+	));
+
+	wrl::ComPtr<ID3D11Texture2D> backBuffer;
+	ThrowIfFailed(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
+	ThrowIfFailed(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &mRenderTargetView));
+
+	wrl::ComPtr<ID3D11Texture2D> depthStencilBuffer;
+	D3D11_TEXTURE2D_DESC depthStencilDesc = {};
+	depthStencilDesc.Width = width;
+	depthStencilDesc.Height = height;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	depthStencilDesc.SampleDesc.Count = 1;
+	depthStencilDesc.SampleDesc.Quality = 0;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	ThrowIfFailed(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &depthStencilBuffer));
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Texture2D.MipSlice = 0;
+	ThrowIfFailed(mDevice->CreateDepthStencilView(depthStencilBuffer.Get(), &dsvDesc, &mDepthStencilView));
+	mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
+
+	D3D11_VIEWPORT vp = {};
+	vp.Width = static_cast<FLOAT>(width);
+	vp.Height = static_cast<FLOAT>(height);
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	mContext->RSSetViewports(1, &vp);
+}
+
+void Renderer::CreateBuffer()
+{
+	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
+	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
+	mSampler = new Sampler(this);
+	mBlenderOff = new Blender(this, Blender::Mode::EOff);
+	mBlenderOn = new Blender(this, Blender::Mode::EOn);
+
+	std::vector<Vertex> vertices;
+	vertices.reserve(4);
+	vertices.push_back({ {-0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{0.0f,0.0f} });
+	vertices.push_back({ { 0.5f,-0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{1.0f,0.0f} });
+	vertices.push_back({ {-0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{0.0f,1.0f} });
+	vertices.push_back({ { 0.5f, 0.5f,0.0f},{1.0f,1.0f,1.0f,1.0f},{1.0f,1.0f} });
+
+	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
+	{
+		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,28,D3D11_INPUT_PER_VERTEX_DATA,0 },
+	};
+
+	mVertexBuffer = new VertexBuffer(this, vertices);
+	mVertexShader = new VertexShader(this, L"ShaderBin\\SpriteVS.cso");
+	mPixelShader = new PixelShader(this, L"ShaderBin\\SpritePS.cso");
+	mTopology = new Topology(this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	mInputLayout = new InputLayout(this, ied, mVertexShader);
 }

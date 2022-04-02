@@ -40,7 +40,7 @@ public:
 	const DirectX::XMFLOAT3& GetPosition() const { return mPosition; }
 	const DirectX::XMFLOAT3& GetRotation() const { return mRotation; }
 	const DirectX::XMFLOAT3& GetScale() const { return mScale; }
-	DirectX::XMFLOAT3& GetScaleChange() { return mScale; }
+	DirectX::XMFLOAT3& GetScaleWithoutConst() { return mScale; }
 	DirectX::XMFLOAT3 GetForward() const { return DirectX::XMFLOAT3{ sin(mRotation.y),0.0f,cos(mRotation.y) }; }
 	ActorState GetActorState() const { return mState; }
 

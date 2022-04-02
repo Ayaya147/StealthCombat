@@ -19,8 +19,8 @@ SmokeActor::SmokeActor(BaseScene* scene, DirectX::XMFLOAT3 rotation)
 	:
 	Actor(scene),
 	mIsAnimation(true),
-	mSpeed(1.0f),
-	mRotation(rotation)
+	mAnimationSpeed(1.0f),
+	mMissileRotation(rotation)
 {
 	mCount++;
 	Reset();
@@ -60,9 +60,9 @@ void SmokeActor::UpdateActor(float deltaTime)
 	if (mIsAnimation)
 	{
 		float rate = 1.0f;
-		mData.mLoop -= 32.0f * rate * mSpeed * deltaTime;
-		mData.mAbsorption += 100.0f * rate * mSpeed * deltaTime;
-		mData.mRadius += 0.2f * rate * mSpeed * deltaTime;
+		mData.mLoop -= 32.0f * rate * mAnimationSpeed * deltaTime;
+		mData.mAbsorption += 100.0f * rate * mAnimationSpeed * deltaTime;
+		mData.mRadius += 0.2f * rate * mAnimationSpeed * deltaTime;
 
 		if (mData.mLoop <= 0.0f || mData.mAbsorption >= 100.0f || mData.mRadius >= 0.2f)
 		{
@@ -80,9 +80,9 @@ void SmokeActor::UpdateActor(float deltaTime)
 	if (game)
 	{
 		SetRotation(dx::XMFLOAT3{
-			mRotation.x + Constant::PI / 2.0f,
-			mRotation.y,
-			mRotation.z
+			mMissileRotation.x + Constant::PI / 2.0f,
+			mMissileRotation.y,
+			mMissileRotation.z
 		});
 	}
 }
@@ -123,13 +123,13 @@ void SmokeActor::ImGuiWindow()
 		ImGui::SliderInt("Loop Light", &mData.mLoopLight, 0, 16, "%d");
 
 		ImGui::Text("Animation");
-		ImGui::SliderFloat("Speed", &mSpeed, 0.0f, 5.0f, "%.1f");
+		ImGui::SliderFloat("Speed", &mAnimationSpeed, 0.0f, 5.0f, "%.1f");
 		ImGui::Checkbox("Enable", &mIsAnimation);
 
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
-			mSpeed = 1.0f;
+			mAnimationSpeed = 1.0f;
 		}
 	}
 	ImGui::End();

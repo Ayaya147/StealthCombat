@@ -3,13 +3,12 @@
 #include "GameScene.h"
 #include "Actor.h"
 #include "PhysWorld.h"
-#include "XMFloatHelper.h"
 
 SphereComponent::SphereComponent(Actor* owner, int updateOrder)
 	:
 	Component(owner, updateOrder),
-	mSphere0(nullptr),
-	mSphere1(nullptr)
+	mSphereLast(nullptr),
+	mSphereCurrent(nullptr)
 {
 	auto game = dynamic_cast<GameScene*>(GetOwner()->GetScene());
 	game->GetPhysWorld()->AddSphere(this);
@@ -17,8 +16,8 @@ SphereComponent::SphereComponent(Actor* owner, int updateOrder)
 
 SphereComponent::~SphereComponent()
 {
-	delete mSphere0;
-	delete mSphere1;
+	delete mSphereLast;
+	delete mSphereCurrent;
 
 	if (auto game = dynamic_cast<GameScene*>(GetOwner()->GetScene()))
 	{
@@ -28,9 +27,9 @@ SphereComponent::~SphereComponent()
 
 void SphereComponent::OnUpdateWorldTransform()
 {
-	if (mSphere0)
+	if (mSphereLast)
 	{
-		mSphere0->mCenter = mSphere1->mCenter;
+		mSphereLast->mCenter = mSphereCurrent->mCenter;
 	}
-	mSphere1->mCenter = GetOwner()->GetPosition();
+	mSphereCurrent->mCenter = GetOwner()->GetPosition();
 }
