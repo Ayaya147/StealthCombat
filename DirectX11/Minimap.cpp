@@ -65,6 +65,7 @@ Minimap::~Minimap()
 
 void Minimap::Update(GameScene* game)
 {
+	// cloud sprites
 	int idx = 0;
 	float range = Constant::createRange * 1.2f;
 	float angle = -game->GetPlayer()->GetRotation().y;
@@ -92,6 +93,7 @@ void Minimap::Update(GameScene* game)
 		idx++;
 	}
 
+	// enemy sprites
 	idx = 0;
 	std::vector<EnemyActor*> enemies = game->GetEnemies();
 	for (auto es : mEnemySprites)
@@ -125,6 +127,7 @@ void Minimap::Update(GameScene* game)
 		idx++;
 	}
 
+	// direction sprites
 	float dist = 200.0f;
 	for (int i = 0; i < 4; i++)
 	{

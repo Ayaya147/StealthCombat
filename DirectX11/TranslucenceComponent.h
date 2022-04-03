@@ -1,11 +1,11 @@
 #pragma once
 #include "Component.h"
 
-class TransparentComponent : public Component
+class TranslucenceComponent : public Component
 {
 public:
-	TransparentComponent(class Actor* owner, class Mesh* mesh, int drawOrder = 100);
-	~TransparentComponent();
+	TranslucenceComponent(class Actor* owner, class Mesh* mesh, int drawOrder = 100);
+	~TranslucenceComponent();
 
 	void Draw(class Renderer* renderer);
 

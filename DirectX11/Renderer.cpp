@@ -13,7 +13,7 @@
 #include "DxException.h"
 #include "PlaneMesh.h"
 #include "MeshComponent.h"
-#include "TransparentComponent.h"
+#include "TranslucenceComponent.h"
 #include "SpriteComponent.h"
 #include "Texture.h"
 #include "Actor.h"
@@ -36,20 +36,10 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 {
 	InitDirectX(hWnd, width, height);
 	CreateBuffer();
+	CreateProjectionMatrix(width, height);
+	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 
 	mLight = new Light(this);
-
-	dx::XMMATRIX projection = dx::XMMatrixPerspectiveLH(
-		1, static_cast<float>(height) / static_cast<float>(width),
-		0.5f, 500.0f
-	);
-	dx::XMStoreFloat4x4(&mProjection, projection);
-	dx::XMMATRIX projection2D = dx::XMMatrixOrthographicOffCenterLH(
-		-960.0f, 960.0f, 540.0f, -540.0f, 0.0f, 1.0f
-	);
-	dx::XMStoreFloat4x4(&mProjection2D, projection2D);
-
-	ImGui_ImplDX11_Init(mDevice.Get(), mContext.Get());
 }
 
 Renderer::~Renderer()
@@ -73,6 +63,7 @@ void Renderer::Draw()
 	auto demo = dynamic_cast<DemoScene*>(mScene);
 	bool isDemo = demo && mScene->GetFade()->GetFadeState() == Fade::FadeState::EFadeNone;
 
+	// imgui begin frame
 	if (isDemo)
 	{
 		ImGui_ImplDX11_NewFrame();
@@ -87,6 +78,7 @@ void Renderer::Draw()
 	Draw3DScene();
 	Draw2DScene();
 
+	// imgui windows
 	if (isDemo)
 	{
 		demo->GetCloud()->ImGuiWindow();
@@ -110,6 +102,7 @@ void Renderer::Draw3DScene()
 	mBlenderOff->Bind(this);
 	mLight->Bind(this);
 
+	// draw opaque 3D objects
 	Mesh* lastMesh = nullptr;
 	for (auto mc : mMeshComps)
 	{
@@ -125,10 +118,11 @@ void Renderer::Draw3DScene()
 		}
 	}
 
+	// draw translucent 3D objects
 	mDepthStencilOff->Bind(this);
 	mBlenderOn->Bind(this);
 	bool isBind = false;
-	for (auto tc : mTranspComps)
+	for (auto tc : mTranslucenceComps)
 	{
 		if (!isBind)
 		{
@@ -146,6 +140,7 @@ void Renderer::Draw2DScene()
 	mVertexShader->Bind(this);
 	mPixelShader->Bind(this);
 
+	// draw 2D sprites
 	Texture* lastTex = nullptr;
 	for (auto sprite : mSpriteComps)
 	{
@@ -161,11 +156,13 @@ void Renderer::Draw2DScene()
 		}
 	}
 
+	// draw 2D pause screen
 	for (auto ui : mScene->GetPauseUIStack())
 	{
 		ui->Draw(this, mVertexBuffer);
 	}
 
+	// draw fade
 	mScene->GetFade()->Draw(this, mVertexBuffer);
 }
 
@@ -225,11 +222,11 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-void Renderer::AddTranspComp(TransparentComponent* transparent)
+void Renderer::AddTranslucenceComp(TranslucenceComponent* transparent)
 {
 	int myDrawOrder = transparent->GetDrawOrder();
-	auto iter = mTranspComps.begin();
-	for (; iter != mTranspComps.end(); ++iter)
+	auto iter = mTranslucenceComps.begin();
+	for (; iter != mTranslucenceComps.end(); ++iter)
 	{
 		if (myDrawOrder < (*iter)->GetDrawOrder())
 		{
@@ -237,13 +234,13 @@ void Renderer::AddTranspComp(TransparentComponent* transparent)
 		}
 	}
 
-	mTranspComps.insert(iter, transparent);
+	mTranslucenceComps.insert(iter, transparent);
 }
 
-void Renderer::RemoveTranspComp(TransparentComponent* transparent)
+void Renderer::RemoveTranslucenceComp(TranslucenceComponent* transparent)
 {
-	auto iter = std::find(mTranspComps.begin(), mTranspComps.end(), transparent);
-	mTranspComps.erase(iter);
+	auto iter = std::find(mTranslucenceComps.begin(), mTranslucenceComps.end(), transparent);
+	mTranslucenceComps.erase(iter);
 }
 
 void Renderer::ResetLight()
@@ -318,6 +315,12 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags = 0;
 
+	UINT createDeviceFlags = 0;
+#ifdef DEBUG
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+	// search for adapters
 	wrl::ComPtr<IDXGIFactory1> dxgiFactory;
 	CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
 	std::vector<wrl::ComPtr<IDXGIAdapter>> adapters;
@@ -351,11 +354,7 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 		driverType = D3D_DRIVER_TYPE_HARDWARE;
 	}
 
-	UINT createDeviceFlags = 0;
-#ifdef DEBUG
-	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
+	// create device, swap chain and rendering context
 	ThrowIfFailed(D3D11CreateDeviceAndSwapChain(
 		tmpAdapter.Get(),
 		driverType,
@@ -371,10 +370,12 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 		&mContext
 	));
 
+	// gain access to back buffer
 	wrl::ComPtr<ID3D11Texture2D> backBuffer;
 	ThrowIfFailed(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
 	ThrowIfFailed(mDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, &mRenderTargetView));
 
+	// create depth stencil texture
 	wrl::ComPtr<ID3D11Texture2D> depthStencilBuffer;
 	D3D11_TEXTURE2D_DESC depthStencilDesc = {};
 	depthStencilDesc.Width = width;
@@ -395,6 +396,7 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 	ThrowIfFailed(mDevice->CreateDepthStencilView(depthStencilBuffer.Get(), &dsvDesc, &mDepthStencilView));
 	mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
+	// viewport
 	D3D11_VIEWPORT vp = {};
 	vp.Width = static_cast<FLOAT>(width);
 	vp.Height = static_cast<FLOAT>(height);
@@ -432,4 +434,18 @@ void Renderer::CreateBuffer()
 	mPixelShader = new PixelShader(this, L"ShaderBin\\SpritePS.cso");
 	mTopology = new Topology(this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 	mInputLayout = new InputLayout(this, ied, mVertexShader);
+}
+
+void Renderer::CreateProjectionMatrix(int width, int height)
+{
+	dx::XMMATRIX projection = dx::XMMatrixPerspectiveLH(
+		1, static_cast<float>(height) / static_cast<float>(width),
+		0.5f, 500.0f
+	);
+	dx::XMStoreFloat4x4(&mProjection, projection);
+
+	dx::XMMATRIX projection2D = dx::XMMatrixOrthographicOffCenterLH(
+		-960.0f, 960.0f, 540.0f, -540.0f, 0.0f, 1.0f
+	);
+	dx::XMStoreFloat4x4(&mProjection2D, projection2D);
 }

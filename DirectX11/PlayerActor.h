@@ -16,7 +16,7 @@ public:
 	float GetForwardSpeed() const;
 	float GetOutCloudTime() const { return mOutCloudTime; }
 	bool GetIsInCloud() const { return mIsInCloud; }
-	class SphereComponent* GetSphereComp() const { return mBody; }
+	class SphereComponent* GetBodySphereComp() const { return mBody; }
 	class CameraComponent* GetCameraComp() const { return mCameraComponent; }
 
 private:
@@ -31,5 +31,4 @@ private:
 	bool mIsLockOnSE;
 	float mOutCloudTime;
 	float mEmitterCD;
-	float mOutCloudTimeMax;
 };

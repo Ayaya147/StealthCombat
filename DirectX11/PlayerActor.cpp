@@ -31,6 +31,7 @@ static constexpr float accelNatural = -1.0f;
 static constexpr float angularSpd = 0.8f;
 static constexpr float angularSpd1 = 1.6f;
 static constexpr float angularSpd2 = 1.2f;
+static constexpr float outCloudTimeMax = 14.0f;
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -41,7 +42,6 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mTargetEnemy(nullptr),
 	mIsInCloud(false),
 	mIsLockedOn(false),
-	mOutCloudTimeMax(14.0f),
 	mIsLockOnSE(false)
 {
 	SetScale(0.125f);
@@ -226,13 +226,13 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithCloud(mBody))
 		{
 			mIsInCloud = true;
-			if (mOutCloudTime > 0.0f)
+			if (mOutCloudTime >= outCloudTimeMax)
+			{
+				mOutCloudTime = outCloudTimeMax;
+			}
+			else if (mOutCloudTime > 0.0f)
 			{
 				mOutCloudTime += deltaTime * 2.0f;
-			}
-			if (mOutCloudTime > mOutCloudTimeMax)
-			{
-				mOutCloudTime = mOutCloudTimeMax;
 			}
 		}
 		else
@@ -272,6 +272,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			sprite->SetVisible(false);
 		}
 
+		bool stopLockOnSE = true;
 		int index = game->GetAudioSystem()->LoadSound("se_lockOn");
 		sprite = game->GetMarkingEnemySprite();
 		sprite->SetVisible(false);
@@ -286,6 +287,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 					renderer->GetProjectionMatrix()
 				);
 
+				// if target enemy is inside screen
 				if (clipPos.y > -540.0f &&
 					clipPos.y < 0.0f &&
 					clipPos.x > -960.0f &&
@@ -299,20 +301,12 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 					sprite->SetVisible(true);
 					sprite->GetOwner()->SetPosition(clipPos);
+					stopLockOnSE = false;
 				}
-				else
-				{
-					game->GetAudioSystem()->StopSound(index);
-					mIsLockOnSE = false;
-				}
-			}
-			else
-			{
-				game->GetAudioSystem()->StopSound(index);
-				mIsLockOnSE = false;
 			}
 		}
-		else
+
+		if (stopLockOnSE)
 		{
 			game->GetAudioSystem()->StopSound(index);
 			mIsLockOnSE = false;

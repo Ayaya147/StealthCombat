@@ -39,7 +39,7 @@ bool PhysWorld::IsCollidedWithEnemy(SphereComponent* sc, CollisionInfo& info)
 	{
 		if (auto enemy = dynamic_cast<EnemyActor*>(s->GetOwner()))
 		{
-			if (s == enemy->GetSphereComp() &&
+			if (s == enemy->GetBodySphereComp() &&
 				(Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
 				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere())))
 			{
@@ -69,7 +69,7 @@ bool PhysWorld::IsCollidedWithPlayer(SphereComponent* sc)
 	{
 		if (auto player = dynamic_cast<PlayerActor*>(s->GetOwner()))
 		{
-			if (s == player->GetSphereComp() &&
+			if (s == player->GetBodySphereComp() &&
 				(Collision::Intersect(sc->GetSphere(), s->GetSphere()) ||
 				Collision::SweptSphere(sc->GetSphereLast(), sc->GetSphere(), s->GetSphereLast(), s->GetSphere())))
 			{

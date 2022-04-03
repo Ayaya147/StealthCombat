@@ -168,7 +168,7 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuffer.cpp" />
-    <ClCompile Include="TransparentComponent.cpp" />
+    <ClCompile Include="TranslucenceComponent.cpp" />
     <ClCompile Include="PauseScreen.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -284,7 +284,7 @@
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Topology.h" />
     <ClInclude Include="TransformCBuffer.h" />
-    <ClInclude Include="TransparentComponent.h" />
+    <ClInclude Include="TranslucenceComponent.h" />
     <ClInclude Include="PauseScreen.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />

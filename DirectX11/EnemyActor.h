@@ -13,7 +13,7 @@ public:
 	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }
 	bool GetIsInCloud() const { return mIsInCloud; }
-	class SphereComponent* GetSphereComp() const { return mBody; }
+	class SphereComponent* GetBodySphereComp() const { return mBody; }
 
 private:
 	void CalcNextDestination();

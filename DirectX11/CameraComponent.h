@@ -23,13 +23,14 @@ public:
 
 	void ProcessInput() override;
 	void Update(float deltaTime) override;
-	DirectX::XMFLOAT3 ComputeCameraPos();
 	void SnapToIdeal();
 
 	void SetCameraState(VibrationState state) { mState = state; }
 	VibrationState GetCameraState() const { return mState; }
 
 private:
+	DirectX::XMFLOAT3 ComputeCameraPos();
+
 	CameraType mType;
 	VibrationState mState;
 	float mTargetDist;

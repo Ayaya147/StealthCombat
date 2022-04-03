@@ -83,11 +83,12 @@ void MissileActor::UpdateActor(float deltaTime)
 	case MissileActor::MissileType::ETargetEnemy:
 	{
 		auto enemy = dynamic_cast<EnemyActor*>(mTarget);
-		if (phys->IsCollidedWithEnemy(mSphereComponent, enemy->GetSphereComp()))
+		if (phys->IsCollidedWithEnemy(mSphereComponent, enemy->GetBodySphereComp()))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
-			explosion->SetScale(18.0f);
+			explosion->SetScale(20.0f);
 			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
+
 			enemy->SetActorState(Actor::ActorState::EDead);
 			SetActorState(Actor::ActorState::EDead);
 
@@ -103,8 +104,9 @@ void MissileActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithPlayer(mSphereComponent))
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
-			explosion->SetScale(18.0f);
+			explosion->SetScale(20.0f);
 			explosion->SetPosition(GetPosition() + GetForward()* 0.8f);
+
 			game->SetSceneState(BaseScene::SceneState::EGameEnd);
 
 			int index = game->GetAudioSystem()->LoadSound("se_explosion");

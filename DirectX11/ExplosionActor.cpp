@@ -1,7 +1,7 @@
 #include "ExplosionActor.h"
 #include "Renderer.h"
 #include "Mesh.h"
-#include "TransparentComponent.h"
+#include "TranslucenceComponent.h"
 #include "GameScene.h"
 #include "ConstantBuffer.h"
 #include "Random.h"
@@ -33,7 +33,7 @@ ExplosionActor::ExplosionActor(BaseScene* scene)
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"RayMarching", false);
-	TransparentComponent* tc = new TransparentComponent(this, mesh, 150);
+	TranslucenceComponent* tc = new TranslucenceComponent(this, mesh, 150);
 
 	if (!mObjectCBuffer)
 	{

@@ -1,7 +1,7 @@
 #include "CloudActor.h"
 #include "Renderer.h"
 #include "Mesh.h"
-#include "TransparentComponent.h"
+#include "TranslucenceComponent.h"
 #include "SphereComponent.h"
 #include "GameScene.h"
 #include "DemoScene.h"
@@ -38,7 +38,7 @@ CloudActor::CloudActor(BaseScene* scene)
 		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		Sphere tempSphere(pos, radius * GetScale().x*1.15f);
+		Sphere tempSphere(pos, radius * GetScale().x*1.2f);
 		sc->SetSphere(&tempSphere);
 
 		PhysWorld* phys = game->GetPhysWorld();
@@ -60,7 +60,7 @@ CloudActor::CloudActor(BaseScene* scene)
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
 	mesh->ParseMesh(renderer, "cube", L"RayMarching", false);
-	TransparentComponent* tc = new TransparentComponent(this, mesh, 200);
+	TranslucenceComponent* tc = new TranslucenceComponent(this, mesh, 200);
 
 	if (!mObjectCBuffer)
 	{

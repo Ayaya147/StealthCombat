@@ -54,6 +54,7 @@ float Noise(float3 x)
     return res;
 }
 
+// fractional Brownian motion
 float FBM(float3 p)
 {
     float f = 0.0f;
@@ -85,6 +86,7 @@ float Torus(float3 pos, float2 radius)
 float DensityFunction(float3 p)
 {
     float f = FBM(p * mNoiseScale);
+    
     switch (mType)
     {
     case 0:
@@ -112,21 +114,25 @@ float DensityFunctionAnime(float3 p)
 
 float4 main(float3 worldPos : POSITION) : SV_TARGET
 {
+    // raymarching step setting
     float step = 1.0f / mLoop;
     float3 worldDir = normalize(worldPos - mCameraPos);    
     float3 localPos = (float3) mul(mWorldInverse, float4(worldPos, 1.0f));
     float3 localDir = normalize(mul((float3x3) mWorldInverse, worldDir));
     float3 localStep = localDir * step;
-    float jitter = Hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
-    localPos += jitter * localStep;
     
     float lightStep = 1.0f / mLoopLight;
     float3 localLightDir = normalize(mul((float3x3) mWorldInverse, -mDirection));
     float3 localLightStep = localLightDir * lightStep * mLightStepScale;
     
+    //jitter to avoid artifact
+    float jitter = Hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
+    localPos += jitter * localStep;
+    
     float4 color = float4(mBaseColor + mAmbientLight, 0.0f);
     float transmittance = 1.0f;
     
+    // calculate the loop when ray is inside the polygon (cube)
     float3 invLocalDir = 1.0f / localDir;
     float3 t1 = (-0.5f - localPos) * invLocalDir;
     float3 t2 = (0.5f - localPos) * invLocalDir;
@@ -135,6 +141,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     float traverseDist = min(tmax2.x, tmax2.y);
     int loop = floor(traverseDist / step);
     
+    // raymarching loop
     for (int i = 0; i < loop; i++)
     {
         float density = DensityFunction(localPos);
@@ -152,6 +159,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             float transmittanceLight = 1.0f;
             float3 lightPos = localPos;
             
+            // lighting loop
             for (int j = 0; j < mLoopLight; j++)
             {
                 float densityLight = DensityFunction(lightPos);

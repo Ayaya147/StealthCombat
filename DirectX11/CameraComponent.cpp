@@ -94,17 +94,6 @@ void CameraComponent::Update(float deltaTime)
 	GetOwner()->GetScene()->GetRenderer()->SetViewMatrix(v);
 }
 
-DirectX::XMFLOAT3 CameraComponent::ComputeCameraPos()
-{
-	dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
-		GetOwner()->GetPosition().x,
-		GetOwner()->GetPosition().y + mTargetDist,
-		GetOwner()->GetPosition().z
-	};
-
-	return cameraPos;
-}
-
 void CameraComponent::SnapToIdeal()
 {
 	mActualPos = ComputeCameraPos();
@@ -119,4 +108,15 @@ void CameraComponent::SnapToIdeal()
 	dx::XMFLOAT4X4 v;
 	dx::XMStoreFloat4x4(&v, view);
 	GetOwner()->GetScene()->GetRenderer()->SetViewMatrix(v);
+}
+
+DirectX::XMFLOAT3 CameraComponent::ComputeCameraPos()
+{
+	dx::XMFLOAT3 cameraPos = dx::XMFLOAT3{
+		GetOwner()->GetPosition().x,
+		GetOwner()->GetPosition().y + mTargetDist,
+		GetOwner()->GetPosition().z
+	};
+
+	return cameraPos;
 }

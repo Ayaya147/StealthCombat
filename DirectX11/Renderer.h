@@ -26,8 +26,8 @@ public:
 	void RemoveSprite(class SpriteComponent* sprite);
 	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
-	void AddTranspComp(class TransparentComponent* mesh);
-	void RemoveTranspComp(class TransparentComponent* mesh);
+	void AddTranslucenceComp(class TranslucenceComponent* mesh);
+	void RemoveTranslucenceComp(class TranslucenceComponent* mesh);
 	void ResetLight();
 
 	class Mesh* GetMesh(const std::string& fileName);
@@ -48,6 +48,7 @@ public:
 private:
 	void InitDirectX(HWND hWnd, int width, int height);
 	void CreateBuffer();
+	void CreateProjectionMatrix(int width, int height);
 
 	Microsoft::WRL::ComPtr<ID3D11Device> mDevice;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
@@ -58,7 +59,7 @@ private:
 	std::unordered_map<std::string, class Mesh*> mMeshes;
 	std::unordered_map<std::string, class Texture*> mTextures;
 	std::unordered_map<std::string, std::vector<class MeshComponent*>> mMeshComps;
-	std::vector<class TransparentComponent*> mTranspComps;
+	std::vector<class TranslucenceComponent*> mTranslucenceComps;
 	std::vector<class SpriteComponent*> mSpriteComps;
 
 	DirectX::XMFLOAT4X4 mView;

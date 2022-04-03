@@ -49,6 +49,5 @@ private:
 	PixelConstant mPixelData;
 	VertexConstantBuffer<VertexConstant>* mVertexCBuffer;
 	PixelConstantBuffer<PixelConstant>* mPixelCBuffer;
-	class VertexBuffer* mVertexBuffer;
 	int mCount;
 };

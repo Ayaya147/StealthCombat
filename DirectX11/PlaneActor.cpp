@@ -5,7 +5,6 @@
 #include "BaseScene.h"
 #include "SceneManager.h"
 #include "Renderer.h"
-#include "VertexBuffer.h"
 #include "DxException.h"
 #include "Random.h"
 #include "ConstantBuffer.h"
@@ -25,14 +24,6 @@ PlaneActor::PlaneActor(BaseScene* scene)
 	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 101, 20.0f);
 	MeshComponent* mc = new MeshComponent(this, planeMesh);
 	mCount = planeMesh->GetVerticesCount();
-
-	for (auto b : mesh->GetBindables())
-	{
-		if (auto vertexBuffer = dynamic_cast<VertexBuffer*>(b))
-		{
-			mVertexBuffer = vertexBuffer;
-		}
-	}
 
 	mVertexCBuffer = new VertexConstantBuffer<VertexConstant>(renderer, 1);
 	mPixelCBuffer = new PixelConstantBuffer<PixelConstant>(renderer, 1);
