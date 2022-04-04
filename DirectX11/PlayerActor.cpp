@@ -245,7 +245,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 			}
 		}
 
-		if (phys->IsCollidedWithEnemy(mBody, info))
+		if (phys->IsCollidedWithEnemy(mBody, info) && !mIsInCloud)
 		{
 			ExplosionActor* explosion = new ExplosionActor(game);
 			explosion->SetScale(18.0f);
