@@ -51,7 +51,7 @@ artifacts/
 *.ilk
 *.meta
 *.obj
-!DirectX11/Assets/Models/*.obj
+!DirectX11/Asset/Model/*.obj
 !DirectX11/Assimp/*
 !DirectX11/Dxtex/
 !DirectX11/Dxtex/**
