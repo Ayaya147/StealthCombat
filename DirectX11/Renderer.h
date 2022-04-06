@@ -26,8 +26,8 @@ public:
 	void RemoveSprite(class SpriteComponent* sprite);
 	void AddMeshComp(const std::string& name, class MeshComponent* mesh);
 	void RemoveMeshComp(class MeshComponent* mesh);
-	void AddTranslucenceComp(class TranslucenceComponent* mesh);
-	void RemoveTranslucenceComp(class TranslucenceComponent* mesh);
+	void AddTranslucenceComp(class TranslucenceComponent* translucence);
+	void RemoveTranslucenceComp(class TranslucenceComponent* translucence);
 	void ResetLight();
 
 	class Mesh* GetMesh(const std::string& fileName);

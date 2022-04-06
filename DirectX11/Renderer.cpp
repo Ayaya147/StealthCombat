@@ -222,9 +222,9 @@ void Renderer::RemoveMeshComp(MeshComponent* mesh)
 	}
 }
 
-void Renderer::AddTranslucenceComp(TranslucenceComponent* transparent)
+void Renderer::AddTranslucenceComp(TranslucenceComponent* translucence)
 {
-	int myDrawOrder = transparent->GetDrawOrder();
+	int myDrawOrder = translucence->GetDrawOrder();
 	auto iter = mTranslucenceComps.begin();
 	for (; iter != mTranslucenceComps.end(); ++iter)
 	{
@@ -234,12 +234,12 @@ void Renderer::AddTranslucenceComp(TranslucenceComponent* transparent)
 		}
 	}
 
-	mTranslucenceComps.insert(iter, transparent);
+	mTranslucenceComps.insert(iter, translucence);
 }
 
-void Renderer::RemoveTranslucenceComp(TranslucenceComponent* transparent)
+void Renderer::RemoveTranslucenceComp(TranslucenceComponent* translucence)
 {
-	auto iter = std::find(mTranslucenceComps.begin(), mTranslucenceComps.end(), transparent);
+	auto iter = std::find(mTranslucenceComps.begin(), mTranslucenceComps.end(), translucence);
 	mTranslucenceComps.erase(iter);
 }
 
