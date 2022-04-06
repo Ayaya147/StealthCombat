@@ -44,17 +44,12 @@ dlldata.c
 project.lock.json
 project.fragment.lock.json
 artifacts/
-
 *_i.c
 *_p.c
 *_i.h
 *.ilk
 *.meta
 *.obj
-!DirectX11/Asset/Model/*.obj
-!DirectX11/Assimp/*
-!DirectX11/Dxtex/
-!DirectX11/Dxtex/**
 *.pch
 *.pdb
 *.pgc
@@ -264,4 +259,8 @@ paket-files/
 __pycache__/
 *.pyc
 *.cso
+
 /DirectX11/imgui.ini
+!DirectX11/Asset/**
+!DirectX11/Assimp/**
+!DirectX11/Dxtex/**
