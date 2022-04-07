@@ -30,13 +30,12 @@ float Noise2(float2 st, int seed)
 {
     float2 p = floor(st);
     float2 f = frac(st);
- 
+    float2 u = f * f * (3.0f - 2.0f * f);
+
     float w00 = dot(Rand2d(p, seed), f);
     float w10 = dot(Rand2d(p + float2(1.0f, 0.0f), seed), f - float2(1.0f, 0.0f));
     float w01 = dot(Rand2d(p + float2(0.0f, 1.0f), seed), f - float2(0.0f, 1.0f));
-    float w11 = dot(Rand2d(p + float2(1.0f, 1.0f), seed), f - float2(1.0f, 1.0f));
-	
-    float2 u = f * f * (3.0f - 2.0f * f);
+    float w11 = dot(Rand2d(p + float2(1.0f, 1.0f), seed), f - float2(1.0f, 1.0f));	
  
     return lerp(lerp(w00, w10, u.x), lerp(w01, w11, u.x), u.y);
 }

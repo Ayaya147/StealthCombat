@@ -62,30 +62,31 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
 {
     float3 worldPosition = worldPos;
     float time = mTime / 20.0f * mWaveSpeed;    
-    float3 p = 0.0;
-    float3 pb = float3(0.05f, 0.0f, 0.0f);
-    float3 pt = float3(0.0f, 0.0f, 0.05f);
+    float3 p = 0.0f;
+    float3 pBi = float3(0.05f, 0.0f, 0.0f);
+    float3 pTan = float3(0.0f, 0.0f, 0.05f);
     float3 vBi = worldPosition + float3(0.05f, 0.0f, 0.0f);
     float3 vTan = worldPosition + float3(0.0f, 0.0f, 0.05f);
 
     for (int m = 0; m < count; m++)
     {
         p += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], worldPosition.xz, time, m, mNoiseStrength);
-        pb += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], vBi.xz, time, m, mNoiseStrength);
-        pt += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], vTan.xz, time, m, mNoiseStrength);
+        pBi += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], vBi.xz, time, m, mNoiseStrength);
+        pTan += GerstnerWave(amp[m], freq[m], steep[m], spd[m], noiseSize[m], dir[m], vTan.xz, time, m, mNoiseStrength);
     }
     for (int n = count; n < waveNumber; n++)
     {
         p += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], worldPosition.xz, time, n, mNoiseStrength, mNoiseSizeLerp);
-        pb += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], vBi.xz, time, n, mNoiseStrength, mNoiseSizeLerp);
-        pt += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], vTan.xz, time, n, mNoiseStrength, mNoiseSizeLerp);
+        pBi += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], vBi.xz, time, n, mNoiseStrength, mNoiseSizeLerp);
+        pTan += GerstnerWaveCross(amp[n], freq[n], steep[n], spd[n], noiseSize[n], dir[n], vTan.xz, time, n, mNoiseStrength, mNoiseSizeLerp);
     }
-    worldPosition += p;
-    float3 normal = normalize(cross(pt - p, pb - p));
-
-    float waveHeight = worldPosition.y - worldPos.y;
-    float3 result = OceanColor(worldPosition, waveHeight, normal);
-    float4 col = float4(result, 1.0f);
     
-    return col;
+    worldPosition += p;
+    float3 normal = normalize(cross(pTan - p, pBi - p));
+    float waveHeight = p.y;
+    
+    float3 result = OceanColor(worldPosition, waveHeight, normal);
+    float4 color = float4(result, 1.0f);
+    
+    return color;
 }

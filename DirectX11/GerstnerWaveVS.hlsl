@@ -30,19 +30,19 @@ VSOut main(float3 pos : POSITION)
     float4 worldPos = mul(float4(pos, 1.0f), mWorldTransform);
     vso.worldPos = (float3) worldPos;
 
-    float time = mTime / 20.0f * mWaveSpeed;
+    float time = mTime / 20.0f * mWaveSpeed;    
+    float3 position = 0.0f;
     
-    float3 p = 0.0;
     for (int i = 0; i < count; i++)
     {
-        p += GerstnerWave(amp[i], freq[i], steep[i], spd[i], noiseSize[i], dir[i], worldPos.xz, time, i, mNoiseStrength);
+        position += GerstnerWave(amp[i], freq[i], steep[i], spd[i], noiseSize[i], dir[i], worldPos.xz, time, i, mNoiseStrength);
     }
     for (int j = count; j < waveNumber; j++)
     {
-        p += GerstnerWaveCross(amp[j], freq[j], steep[j], spd[j], noiseSize[j], dir[j], worldPos.xz, time, j, mNoiseStrength, mNoiseSizeLerp);
+        position += GerstnerWaveCross(amp[j], freq[j], steep[j], spd[j], noiseSize[j], dir[j], worldPos.xz, time, j, mNoiseStrength, mNoiseSizeLerp);
     }
-    worldPos.xyz += p;
-
+    
+    worldPos.xyz += position;
     vso.pos = mul(worldPos, mViewProj);
 
     return vso;
