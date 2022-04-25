@@ -132,7 +132,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     float4 color = float4(mBaseColor + mAmbientLight, 0.0f);
     float transmittance = 1.0f;
     
-    // calculate the loop when ray is inside the polygon (cube)
+    // calculate the max loop when ray is inside the volume
     float3 invLocalDir = 1.0f / localDir;
     float3 t1 = (-0.5f - localPos) * invLocalDir;
     float3 t2 = (0.5f - localPos) * invLocalDir;
@@ -146,13 +146,8 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     {
         float density = DensityFunction(localPos);
         
-        if (density > 0.0f)
+        if (density > 0.0f && transmittance > 0.1f && color.a < 1.0f)
         {
-            if (transmittance < 0.1f || color.a >= 1.0f)
-            {
-                break;
-            }
-            
             float d = density * step;
             transmittance *= 1.0f - d * mAbsorption;
             
@@ -169,7 +164,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
                     float dl = densityLight * lightStep;
                     transmittanceLight *= 1.0f - dl * mAbsorptionLight;
                     
-                    if ( transmittanceLight < 0.01f)
+                    if ( transmittanceLight < 0.1f)
                     {
                         transmittanceLight = 0.0f;
                         break;
@@ -183,7 +178,6 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             color.rgb += mDiffuseColor * (mOpacityLight * d * transmittance * transmittanceLight);
         }
         
-        color = clamp(color, 0.0f, 1.0f);
         localPos += localStep;
     }
 

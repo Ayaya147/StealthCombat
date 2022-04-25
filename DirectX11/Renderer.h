@@ -66,8 +66,8 @@ private:
 	DirectX::XMFLOAT4X4 mProjection;
 	DirectX::XMFLOAT4X4 mProjection2D;
 
-	class Stencil* mDepthStencilOn;
-	class Stencil* mDepthStencilOff;
+	class Stencil* mDepthOn;
+	class Stencil* mDepthOff;
 	class Blender* mBlenderOff;
 	class Blender* mBlenderOn;
 	class Sampler* mSampler;

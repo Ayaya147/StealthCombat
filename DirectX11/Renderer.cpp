@@ -45,8 +45,8 @@ Renderer::Renderer(HWND hWnd, int width, int height)
 Renderer::~Renderer()
 {
 	delete mLight;
-	delete mDepthStencilOff;
-	delete mDepthStencilOn;
+	delete mDepthOff;
+	delete mDepthOn;
 	delete mVertexBuffer;
 	delete mVertexShader;
 	delete mPixelShader;
@@ -98,7 +98,7 @@ void Renderer::Draw()
 void Renderer::Draw3DScene()
 {
 	mSampler->Bind(this);
-	mDepthStencilOn->Bind(this);
+	mDepthOn->Bind(this);
 	mBlenderOff->Bind(this);
 	mLight->Bind(this);
 
@@ -119,7 +119,7 @@ void Renderer::Draw3DScene()
 	}
 
 	// draw translucent 3D objects
-	mDepthStencilOff->Bind(this);
+	mDepthOff->Bind(this);
 	mBlenderOn->Bind(this);
 	bool isBind = false;
 	for (auto tc : mTranslucenceComps)
@@ -409,8 +409,8 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 
 void Renderer::CreateBuffer()
 {
-	mDepthStencilOff = new Stencil(this, Stencil::Mode::EOff);
-	mDepthStencilOn = new Stencil(this, Stencil::Mode::EOn);
+	mDepthOff = new Stencil(this, Stencil::Mode::EOff);
+	mDepthOn = new Stencil(this, Stencil::Mode::EOn);
 	mSampler = new Sampler(this);
 	mBlenderOff = new Blender(this, Blender::Mode::EOff);
 	mBlenderOn = new Blender(this, Blender::Mode::EOn);
