@@ -32,7 +32,7 @@ float3 GetSkyColor(float3 dir, float3 c)
 {
     dir.y = max(0.0f, dir.y);
     float et = 1.0f - dir.y;
-    return (1.0f - c) * et * 0.5f + c;
+    return (1.0f - c) * et + c;
 }
 
 float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
