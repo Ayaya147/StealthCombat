@@ -23,14 +23,16 @@
 #include "XMFloatHelper.h"
 #include "Fade.h"
 #include "PauseScreen.h"
+#include "ParticleSystem.h"
 
 namespace dx = DirectX;
-static constexpr bool FPS_ENABLE = false;
+static constexpr bool FPS_ENABLE = true;
 static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
+	mParticleSystem(new ParticleSystem(GetRenderer())),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mWin(false),
@@ -51,6 +53,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 GameScene::~GameScene()
 {
 	GetAudioSystem()->StopSoundAll();
+	delete mParticleSystem;
 	delete mPhysWorld;
 	delete mMap;
 }

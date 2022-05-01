@@ -38,6 +38,7 @@ private:
 	std::vector<class EnemyActor*> mEnemies;
 	std::vector<class CloudActor*> mClouds;
 
+	class ParticleSystem* mParticleSystem;
 	class Minimap* mMap;
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;

@@ -49,6 +49,9 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{82f40278-8443-4f77-b07a-86c1adca966d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Particle">
+      <UniqueIdentifier>{4f8e02ae-e931-437a-b28e-db4c24916b0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -233,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Source Files\System</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeShader.cpp">
+      <Filter>Source Files\Bindable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,6 +443,9 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
+    <ClInclude Include="ComputeShader.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PhongPS.hlsl">
@@ -463,19 +472,31 @@
     <FxCompile Include="RayMarchingVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="ParticleCS.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="ParticlePS.hlsl">
+      <Filter>Shaders\Particle</Filter>
     </FxCompile>
     <FxCompile Include="ParticleVS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders\Particle</Filter>
     </FxCompile>
-    <FxCompile Include="ParticlePS.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="ParticleCSEmit.hlsl">
+      <Filter>Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleCSUpdate.hlsl">
+      <Filter>Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleCSInit.hlsl">
+      <Filter>Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleGS.hlsl">
+      <Filter>Shaders\Particle</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="GerstnerWave.hlsli">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="Particle.hlsli">
+      <Filter>Shaders\Particle</Filter>
     </None>
   </ItemGroup>
 </Project>
