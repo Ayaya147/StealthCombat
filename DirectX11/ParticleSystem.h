@@ -17,24 +17,24 @@ public:
 private:
 	struct SystemConstant
 	{
-		float screenWidth;
-		float screenHeight;
-		float deltaTime;
-		float time;
-		float fps;
-		float d1;
-		float d2;
-		float d3;
+		float mScreenWidth;
+		float mScreenHeight;
+		float mDeltaTime;
+		float mTime;
+		float mFPS;
+		float mD1;
+		float mD2;
+		float mD3;
 	};
 
 	struct CameraConstant
 	{
-		DirectX::XMMATRIX viewMatrix;
-		DirectX::XMMATRIX projectionMatrix;
-		DirectX::XMMATRIX invProjectionMatrix;
-		DirectX::XMMATRIX invViewMatrix;
-		DirectX::XMFLOAT4 cameraPosition;
-		DirectX::XMFLOAT4 cameraDir;
+		DirectX::XMMATRIX mViewMatrix;
+		DirectX::XMMATRIX mProjectionMatrix;
+		DirectX::XMMATRIX mInvProjectionMatrix;
+		DirectX::XMMATRIX mInvViewMatrix;
+		DirectX::XMFLOAT4 mCameraPosition;
+		DirectX::XMFLOAT4 mCameraDir;
 	};
 
 	class ComputeShader* mParticleInitShader;

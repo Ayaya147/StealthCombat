@@ -1,10 +1,6 @@
 #include "ParticleSystem.h"
 #include "Renderer.h"
-#include "ComputeShader.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
-#include "GeometryShader.h"
-#include "ConstantBuffer.h"
+#include "BindableCommon.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -39,6 +35,8 @@ ParticleSystem::~ParticleSystem()
 	delete mParticleVertexShader;
 	delete mParticlePixelShader;
 	delete mParticleGeometryShader;
+	delete mComputeCBufferSystem;
+	delete mComputeCBufferCamera;
 }
 
 void ParticleSystem::Update(Renderer* renderer)

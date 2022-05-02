@@ -286,6 +286,7 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Bindable.h" />
+    <ClInclude Include="BindableCommon.h" />
     <ClInclude Include="Blender.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CloudActor.h" />
