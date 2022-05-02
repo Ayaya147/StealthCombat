@@ -81,3 +81,17 @@ public:
 		renderer->GetContext()->PSSetConstantBuffers(mSlot, 1, mConstantBuffer.GetAddressOf());
 	}
 };
+
+template<class C>
+class ComputeConstantBuffer : public ConstantBuffer<C>
+{
+public:
+	using ConstantBuffer<C>::ConstantBuffer;
+	using ConstantBuffer<C>::mConstantBuffer;
+	using ConstantBuffer<C>::mSlot;
+
+	void Bind(Renderer* renderer) override
+	{
+		renderer->GetContext()->CSSetConstantBuffers(mSlot, 1, mConstantBuffer.GetAddressOf());
+	}
+};

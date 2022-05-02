@@ -240,6 +240,9 @@
     <ClCompile Include="ComputeShader.cpp">
       <Filter>Source Files\Bindable</Filter>
     </ClCompile>
+    <ClCompile Include="GeometryShader.cpp">
+      <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -444,6 +447,9 @@
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="ComputeShader.h">
+      <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryShader.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
