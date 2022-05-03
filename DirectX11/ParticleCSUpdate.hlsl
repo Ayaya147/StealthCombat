@@ -11,7 +11,7 @@ float3 GetAcceleration(in float3 movement, in float acceleration, in float3 velo
 [numthreads(numThreads, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
-    uint i = DTid.x;
+    int i = DTid.x;
     if (i == 0)
     {
         uint val = 0;

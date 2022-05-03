@@ -4,7 +4,8 @@
 void main(uint3 DTid : SV_DispatchThreadID)
 {
     int currentParticleAmount = ParticleCountIn[0].x;
-    if (DTid.x == 0)
+    int i = DTid.x;
+    if (i == 0)
     {
         uint val = 0;
         InterlockedExchange(ParticleCountOut[0], 0, val);
@@ -13,13 +14,13 @@ void main(uint3 DTid : SV_DispatchThreadID)
     AllMemoryBarrier();
 	
 	//Any particles that are alive get added to the "alive" buffer, so we don't have to check or skip over dead particles during the simulation.
-    if (DTid.x < ParticleCountIn[0].x)
+    if (i < ParticleCountIn[0].x)
     {
-        if (ParticleIn[DTid.x].age > 0)
+        if (ParticleIn[i].age > 0)
         {
             uint index = 0;
             InterlockedAdd(ParticleCountOut[0].x, 1, index);
-            ParticleOut[index] = ParticleIn[DTid.x];
+            ParticleOut[index] = ParticleIn[i];
         }
     }
 	
@@ -28,9 +29,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
     currentParticleAmount = ParticleCountOut[0].x;
 
 	//Try to get as random as we can, this is such a pain.
-    float2 uv = float2((float) DTid.x + _time + _random.x, _time + _random.y);
+    float2 uv = float2((float) i + _time + _random.x, _time + _random.y);
 	//The texture returns a value between 0 and 1, so we multiply it with max uint32 to get a full uint range
-    uint rand = DTid.x + (uint) _random.z + ((uint) (Random.Gather(WrappedPointSampler, uv).x * (float) 0xFFFFFFFF));
+    uint rand = i + (uint) _random.z + ((uint) (Random.Gather(WrappedPointSampler, uv).x * (float) 0xFFFFFFFF));
 
 
 	//prepare to "spawn" our amount of particles
@@ -49,7 +50,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
             return;
 
         const float numSpawningThreads = totalThreads * particlesToEmitPerThread;
-        if (DTid.x <= floor(numSpawningThreads))
+        if (i <= floor(numSpawningThreads))
         {
             SpawnParticle(rand);
         }
@@ -62,12 +63,10 @@ void main(uint3 DTid : SV_DispatchThreadID)
 		//for example, if we'd spawn 1.5 particles per thread, we'd lose half of em by flooring, so 1.5 % 1.0 = 0.5, so we make sure to add those missing few, any smaller deviation can be considered irrelevant
         const uint DivCutoff = fmod(particlesToEmitPerThread, 1.0) * totalThreads;
         //add the missing particles to the first thread
-        const uint endEmit = (NumParticlesPerThread + (DTid.x == 0 ? DivCutoff : 0));
+        const uint endEmit = (NumParticlesPerThread + (i == 0 ? DivCutoff : 0));
         for (uint i = 0; i < endEmit; i++)
         {
             SpawnParticle(rand);
         }
     }
 }
-
-
