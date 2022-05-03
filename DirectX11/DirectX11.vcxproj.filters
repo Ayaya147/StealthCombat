@@ -252,6 +252,9 @@
     <ClCompile Include="ParticleManager.cpp">
       <Filter>Source Files\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="ComputeData.cpp">
+      <Filter>Source Files\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -465,6 +468,9 @@
       <Filter>Header Files\Particle</Filter>
     </ClInclude>
     <ClInclude Include="ParticleManager.h">
+      <Filter>Header Files\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeData.h">
       <Filter>Header Files\Particle</Filter>
     </ClInclude>
   </ItemGroup>

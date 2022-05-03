@@ -105,6 +105,7 @@
     <ClCompile Include="CloudActor.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComputeData.cpp" />
     <ClCompile Include="ComputeShader.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EnemyActor.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="CloudActor.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComputeData.h" />
     <ClInclude Include="ComputeShader.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="DefineConstant.h" />

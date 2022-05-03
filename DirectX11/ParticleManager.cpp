@@ -50,11 +50,14 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 
 void ParticleManager::Update(Renderer* renderer)
 {
+	mComputeCBufferSystem->Bind(renderer);
+	mComputeCBufferCamera->Bind(renderer);
+
 	for (auto ps : mParticleSystems)
 	{
 		if (!ps->GetIsInit())
 		{
-			ps->Init(renderer);
+			ps->Init(renderer, mParticleInitShader);
 		}
 
 		ps->Update(renderer);
