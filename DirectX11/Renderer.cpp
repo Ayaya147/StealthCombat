@@ -14,9 +14,11 @@
 #include "SmokeActor.h"
 #include "EmissionActor.h"
 #include "DemoScene.h"
+#include "GameScene.h"
 #include "Fade.h"
 #include "Light.h"
 #include "PauseScreen.h"
+#include "ParticleManager.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
 
@@ -121,6 +123,11 @@ void Renderer::Draw3DScene()
 			isBind = true;
 		}
 		tc->Draw(this);
+	}
+
+	if (auto game = dynamic_cast<GameScene*>(mScene))
+	{
+		game->GetParticleManager()->Draw(this);
 	}
 }
 

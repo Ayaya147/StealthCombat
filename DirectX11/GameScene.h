@@ -21,6 +21,7 @@ public:
 	void SetVibrationStrength(int strength) { mVibrationStrength = strength; }
 	const std::vector<class EnemyActor*>& GetEnemies() const { return mEnemies; }
 	const std::vector<class CloudActor*>& GetClouds() const { return mClouds; }
+	class ParticleManager* GetParticleManager() const { return mParticleManager; }
 	class PhysWorld* GetPhysWorld() const { return mPhysWorld; }
 	class Minimap* GetMinimap() const { return mMap; }
 	class PlayerActor* GetPlayer() const { return mPlayer; }
@@ -38,7 +39,7 @@ private:
 	std::vector<class EnemyActor*> mEnemies;
 	std::vector<class CloudActor*> mClouds;
 
-	class ParticleSystem* mParticleSystem;
+	class ParticleManager* mParticleManager;
 	class Minimap* mMap;
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;

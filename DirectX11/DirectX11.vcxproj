@@ -135,6 +135,7 @@
     <ClCompile Include="NumberActor.cpp" />
     <ClCompile Include="NumberSpriteComponent.cpp" />
     <ClCompile Include="Parameter.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PhysWorld.cpp" />
     <ClCompile Include="PixelShader.cpp" />
@@ -327,6 +328,7 @@
     <ClInclude Include="NumberActor.h" />
     <ClInclude Include="NumberSpriteComponent.h" />
     <ClInclude Include="Parameter.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PhysWorld.h" />
     <ClInclude Include="PixelShader.h" />

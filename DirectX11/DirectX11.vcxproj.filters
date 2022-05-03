@@ -52,6 +52,12 @@
     <Filter Include="Shaders\Particle">
       <UniqueIdentifier>{4f8e02ae-e931-437a-b28e-db4c24916b0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Particle">
+      <UniqueIdentifier>{9c7ec439-a4bd-4f19-b58e-f3375cea4521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Particle">
+      <UniqueIdentifier>{1e405132-7c1d-4e43-809d-06150faa4648}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -234,14 +240,17 @@
     <ClCompile Include="TranslucenceComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
     <ClCompile Include="ComputeShader.cpp">
       <Filter>Source Files\Bindable</Filter>
     </ClCompile>
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Source Files\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleManager.cpp">
+      <Filter>Source Files\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,9 +452,6 @@
     <ClInclude Include="TranslucenceComponent.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
     <ClInclude Include="ComputeShader.h">
       <Filter>Header Files\Bindable</Filter>
     </ClInclude>
@@ -454,6 +460,12 @@
     </ClInclude>
     <ClInclude Include="BindableCommon.h">
       <Filter>Header Files\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Header Files\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleManager.h">
+      <Filter>Header Files\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

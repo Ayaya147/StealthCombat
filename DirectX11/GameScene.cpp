@@ -23,7 +23,7 @@
 #include "XMFloatHelper.h"
 #include "Fade.h"
 #include "PauseScreen.h"
-#include "ParticleSystem.h"
+#include "ParticleManager.h"
 
 namespace dx = DirectX;
 static constexpr bool FPS_ENABLE = true;
@@ -32,7 +32,7 @@ static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
-	mParticleSystem(new ParticleSystem(GetRenderer())),
+	mParticleManager(new ParticleManager(GetRenderer())),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mWin(false),
@@ -40,6 +40,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mQuitTime(1.5f),
 	mDestroyedSpriteTime(0.0f)
 {
+	mParticleManager->CreateParticleSystem(GetRenderer());
 	gNextScene = SceneManager::SceneType::ETitle;
 	GetRenderer()->ResetLight();
 
@@ -53,7 +54,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 GameScene::~GameScene()
 {
 	GetAudioSystem()->StopSoundAll();
-	delete mParticleSystem;
+	delete mParticleManager;
 	delete mPhysWorld;
 	delete mMap;
 }
@@ -138,6 +139,7 @@ void GameScene::Update()
 	{
 	case SceneState::EPlay:
 	{
+		mParticleManager->Update(GetRenderer());
 		mMap->Update(this);
 		mOutCloudTime->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
