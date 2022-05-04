@@ -18,6 +18,9 @@ public:
 	bool GetIsInit() { return mIsInit; }
 
 private:
+	void ForceUpdateBuffer(class Renderer* renderer);
+	void UpdateDispatchBuffer(class Renderer* renderer);
+
 	struct DispatchBuffer
 	{
 		uint32_t x;
@@ -55,7 +58,8 @@ private:
 	};
 
 	bool mIsInit;
-	unsigned int mCurrentParticleCount = 0;
+	bool mIsBackBuffer;
+	unsigned int mCurrentParticleCount;
 
 	DispatchBuffer mDispatchBufferData;
 	ID3D11Buffer* mDispatchBuffer = nullptr;

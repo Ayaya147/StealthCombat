@@ -10,7 +10,8 @@ namespace wrl = Microsoft::WRL;
 
 ParticleSystem::ParticleSystem(Renderer* renderer)
 	:
-	mIsInit(false)
+	mIsInit(false),
+	mIsBackBuffer(false)
 {
 	mCurrentParticleCount = mData.newParticles;
 
@@ -47,6 +48,12 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 	renderer->GetContext()->Unmap(mDispatchBuffer, 0);
 
 	//
+	bd = {};
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.Usage = D3D11_USAGE_DYNAMIC;
+	bd.ByteWidth = sizeof(ParticleConstant);
+
 	D3D11_SUBRESOURCE_DATA sd;
 	sd.pSysMem = &mData;
 	renderer->GetDevice()->CreateBuffer(&bd, &sd, &mComputeCBufferParticle);
@@ -101,12 +108,55 @@ void ParticleSystem::Init(Renderer* renderer, ComputeShader* particleInitShader)
 	mIsInit = true;
 
 	particleInitShader->Bind(renderer);
+
+	renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
+	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
+	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
+	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
+	renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
+
+	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr,nullptr };
+	ID3D11UnorderedAccessView* nullUAVs[2] = { nullptr,nullptr };
+	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
+
+	mIsBackBuffer = !mIsBackBuffer;
 }
 
 void ParticleSystem::Update(Renderer* renderer)
 {
+	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr,nullptr };
+	ID3D11UnorderedAccessView* nullUAVs[2] = { nullptr,nullptr };
+
+	UpdateDispatchBuffer(renderer);
 }
 
 void ParticleSystem::Draw(Renderer* renderer)
 {
+}
+
+void ParticleSystem::ForceUpdateBuffer(Renderer* renderer)
+{
+	D3D11_MAPPED_SUBRESOURCE ms{ 0 };
+	renderer->GetContext()->Map(mComputeCBufferParticle, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &ms);
+	memcpy(ms.pData, &mData, sizeof(ParticleConstant));
+	renderer->GetContext()->Unmap(mComputeCBufferParticle, 0);
+}
+
+void ParticleSystem::UpdateDispatchBuffer(Renderer* renderer)
+{
+	int temp = mCurrentParticleCount / 512 + mCurrentParticleCount % 512;
+	temp = temp > 1 ? temp : 1;
+	temp = temp < D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION ? temp : D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
+	mData.numDispatch = temp;
+
+	{
+		ForceUpdateBuffer(renderer);
+		mDispatchBufferData.x = mData.numDispatch;
+		D3D11_MAPPED_SUBRESOURCE ms{ 0 };
+		renderer->GetContext()->Map(mDispatchBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &ms);
+		memcpy(ms.pData, &mDispatchBufferData, sizeof(DispatchBuffer));
+		renderer->GetContext()->Unmap(mDispatchBuffer, 0);
+	}
 }

@@ -31,7 +31,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
 	//Try to get as random as we can, this is such a pain.
     float2 uv = float2((float) i + _time + _random.x, _time + _random.y);
 	//The texture returns a value between 0 and 1, so we multiply it with max uint32 to get a full uint range
-    uint rand = i + (uint) _random.z + ((uint) (Random.Gather(WrappedPointSampler, uv).x * (float) 0xFFFFFFFF));
+    //uint rand = i + (uint) _random.z + ((uint) (Random.Gather(WrappedPointSampler, uv).x * (float) 0xFFFFFFFF));
+    uint rand = 5;
 
 
 	//prepare to "spawn" our amount of particles

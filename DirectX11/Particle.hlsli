@@ -44,7 +44,7 @@ struct Particle
 };
 StructuredBuffer<Particle> ParticleIn : register(t0);
 StructuredBuffer<int> ParticleCountIn : register(t1);
-Texture2D<float> Random : register(t2);
+//Texture2D<float> Random : register(t2);
 
 RWStructuredBuffer<Particle> ParticleOut : register(u0);
 RWStructuredBuffer<int> ParticleCountOut : register(u1);

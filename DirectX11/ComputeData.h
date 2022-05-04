@@ -10,7 +10,7 @@ public:
 	void InitUAV(class Renderer* renderer);
 	void InitSRV(class Renderer* renderer);
 
-private:
+
 	ID3D11Buffer* buf = nullptr;
 	ID3D11ShaderResourceView* srv = nullptr;
 	ID3D11UnorderedAccessView* uav = nullptr;
