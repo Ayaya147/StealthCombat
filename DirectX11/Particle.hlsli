@@ -49,7 +49,7 @@ StructuredBuffer<int> ParticleCountIn : register(t1);
 RWStructuredBuffer<Particle> ParticleOut : register(u0);
 RWStructuredBuffer<int> ParticleCountOut : register(u1);
 
-SamplerState WrappedPointSampler : register(s0);
+//SamplerState WrappedPointSampler : register(s0);
 
 float wang_hash(inout uint seed)
 {

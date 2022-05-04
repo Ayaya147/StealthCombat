@@ -5,6 +5,8 @@
 
 template<class C>
 class ComputeConstantBuffer;
+template<class C>
+class VertexConstantBuffer;
 
 class ParticleManager
 {
@@ -50,4 +52,5 @@ private:
 
 	ComputeConstantBuffer<SystemConstant>* mComputeCBufferSystem;
 	ComputeConstantBuffer<CameraConstant>* mComputeCBufferCamera;
+	VertexConstantBuffer<CameraConstant>* mVertexCBufferCamera;
 };

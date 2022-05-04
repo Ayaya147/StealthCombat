@@ -23,6 +23,7 @@ ParticleManager::ParticleManager(Renderer* renderer)
 
 	mComputeCBufferSystem = new ComputeConstantBuffer<SystemConstant>(renderer, 0);
 	mComputeCBufferCamera = new ComputeConstantBuffer<CameraConstant>(renderer, 1);
+	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
 }
 
 ParticleManager::~ParticleManager()
@@ -40,6 +41,7 @@ ParticleManager::~ParticleManager()
 	delete mParticleGeometryShader;
 	delete mComputeCBufferSystem;
 	delete mComputeCBufferCamera;
+	delete mVertexCBufferCamera;
 }
 
 void ParticleManager::CreateParticleSystem(Renderer* renderer)
@@ -62,12 +64,39 @@ void ParticleManager::Update(Renderer* renderer)
 
 		ps->Update(renderer, mParticleEmitShader, mParticleUpdateShader);
 	}
+
+	renderer->GetContext()->CSSetShader(nullptr, nullptr, 0);
+	ID3D11Buffer* nullBuffs[3] = { nullptr, nullptr, nullptr };
+	renderer->GetContext()->CSSetConstantBuffers(0, 3, nullBuffs);
+	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr, nullptr };
+	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
+	ID3D11UnorderedAccessView* nullViews[2] = { nullptr,nullptr };
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullViews, 0);
 }
 
 void ParticleManager::Draw(Renderer* renderer)
 {
+	ID3D11Buffer* nullBuffs[3] = { nullptr, nullptr, nullptr};
+	uint32_t nullstrides[1] = { 0 };
+	renderer->GetContext()->IASetInputLayout(nullptr);
+	renderer->GetContext()->IASetIndexBuffer(nullptr, DXGI_FORMAT::DXGI_FORMAT_UNKNOWN, 0);
+	renderer->GetContext()->IASetVertexBuffers(0, 1, nullBuffs, nullstrides, nullstrides);
+	mParticleVertexShader->Bind(renderer);
+	mParticlePixelShader->Bind(renderer);
+
+	//
+	mVertexCBufferCamera->Bind(renderer);
+	//
+
 	for (auto ps : mParticleSystems)
 	{
 		ps->Draw(renderer);
 	}
+
+	renderer->GetContext()->CSSetShader(nullptr, nullptr, 0);
+	renderer->GetContext()->CSSetConstantBuffers(0, 3, nullBuffs);
+	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr, nullptr };
+	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
+	ID3D11UnorderedAccessView* nullViews[2] = { nullptr,nullptr };
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullViews, 0);
 }
