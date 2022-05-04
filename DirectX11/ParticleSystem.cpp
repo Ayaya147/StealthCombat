@@ -159,6 +159,27 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 
 void ParticleSystem::Draw(Renderer* renderer)
 {
+	D3D11_MAPPED_SUBRESOURCE msDraw{};
+	D3D11_MAPPED_SUBRESOURCE msCount{};
+	D3D11_DRAW_INSTANCED_INDIRECT_ARGS instancedArgs{};
+
+	renderer->GetContext()->CopyResource(mCPUParticleCountReadBuffer, mParticleCount[mIsBackBuffer]->buf);
+	renderer->GetContext()->Map(mInstancedDrawBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &msDraw);
+	renderer->GetContext()->Map(mCPUParticleCountReadBuffer, 0, D3D11_MAP::D3D11_MAP_READ, 0, &msCount);
+
+	instancedArgs.InstanceCount = 1;
+	instancedArgs.VertexCountPerInstance = *(int*)msCount.pData;
+	memcpy(msDraw.pData, &instancedArgs, sizeof(D3D11_DRAW_INSTANCED_INDIRECT_ARGS));
+
+	renderer->GetContext()->Unmap(mCPUParticleCountReadBuffer, 0);
+	renderer->GetContext()->Unmap(mInstancedDrawBuffer, 0);
+
+	mCurrentParticleCount = instancedArgs.VertexCountPerInstance;
+	renderer->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	renderer->GetContext()->VSSetShaderResources(0, 1, &mParticles[!mIsBackBuffer]->srv);
+	renderer->GetContext()->DrawInstancedIndirect(mInstancedDrawBuffer, 0);
+	ID3D11ShaderResourceView* nullSRVs[1] = { nullptr };
+	renderer->GetContext()->VSSetShaderResources(0, 1, nullSRVs);
 }
 
 void ParticleSystem::ForceUpdateBuffer(Renderer* renderer)
