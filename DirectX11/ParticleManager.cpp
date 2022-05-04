@@ -60,7 +60,7 @@ void ParticleManager::Update(Renderer* renderer)
 			ps->Init(renderer, mParticleInitShader);
 		}
 
-		ps->Update(renderer);
+		ps->Update(renderer, mParticleEmitShader, mParticleUpdateShader);
 	}
 }
 

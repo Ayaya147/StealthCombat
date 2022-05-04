@@ -12,7 +12,7 @@ public:
 	~ParticleSystem();
 
 	void Init(class Renderer* renderer, class ComputeShader* particleInitShader);
-	void Update(class Renderer* renderer);
+	void Update(class Renderer* renderer, class ComputeShader* particleEmitShader, class ComputeShader* particleUpdateShader);
 	void Draw(class Renderer* renderer);
 
 	bool GetIsInit() { return mIsInit; }

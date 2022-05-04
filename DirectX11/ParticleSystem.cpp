@@ -108,7 +108,6 @@ void ParticleSystem::Init(Renderer* renderer, ComputeShader* particleInitShader)
 	mIsInit = true;
 
 	particleInitShader->Bind(renderer);
-
 	renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
 	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
@@ -124,12 +123,38 @@ void ParticleSystem::Init(Renderer* renderer, ComputeShader* particleInitShader)
 	mIsBackBuffer = !mIsBackBuffer;
 }
 
-void ParticleSystem::Update(Renderer* renderer)
+void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShader, ComputeShader* particleUpdateShader)
 {
 	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr,nullptr };
 	ID3D11UnorderedAccessView* nullUAVs[2] = { nullptr,nullptr };
 
 	UpdateDispatchBuffer(renderer);
+	{
+		particleEmitShader->Bind(renderer);
+		renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
+		ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
+		renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
+		ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
+		renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
+		renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
+		renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
+		renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
+		mIsBackBuffer = !mIsBackBuffer;
+	}
+
+	{
+		particleUpdateShader->Bind(renderer);
+		renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
+		ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
+		renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
+		ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
+		renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
+		renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
+		mIsBackBuffer = !mIsBackBuffer;
+	}
+
+	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
 }
 
 void ParticleSystem::Draw(Renderer* renderer)
@@ -151,12 +176,10 @@ void ParticleSystem::UpdateDispatchBuffer(Renderer* renderer)
 	temp = temp < D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION ? temp : D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
 	mData.numDispatch = temp;
 
-	{
-		ForceUpdateBuffer(renderer);
-		mDispatchBufferData.x = mData.numDispatch;
-		D3D11_MAPPED_SUBRESOURCE ms{ 0 };
-		renderer->GetContext()->Map(mDispatchBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &ms);
-		memcpy(ms.pData, &mDispatchBufferData, sizeof(DispatchBuffer));
-		renderer->GetContext()->Unmap(mDispatchBuffer, 0);
-	}
+	ForceUpdateBuffer(renderer);
+	mDispatchBufferData.x = mData.numDispatch;
+	D3D11_MAPPED_SUBRESOURCE ms{ 0 };
+	renderer->GetContext()->Map(mDispatchBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &ms);
+	memcpy(ms.pData, &mDispatchBufferData, sizeof(DispatchBuffer));
+	renderer->GetContext()->Unmap(mDispatchBuffer, 0);
 }
