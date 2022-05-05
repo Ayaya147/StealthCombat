@@ -42,8 +42,8 @@ private:
 		float LifeTimeMax = 20.0f;
 		float ScaleMin = 1.0f;
 		float ScaleMax = 2.0f;
-		uint32_t newParticles = 1024 * 256;
-		uint32_t maxParticles = 1024 * 1024 * 2;
+		uint32_t newParticles = 1024 * 64;
+		uint32_t maxParticles = 1024 * 512;
 		float gravity = 100.0f;
 		float mass = 5000.0f;
 		int rate = 50000;

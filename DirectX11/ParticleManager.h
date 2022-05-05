@@ -58,4 +58,5 @@ private:
 	GeometryConstantBuffer<SystemConstant>* mGeometryCBufferSystem;
 
 	class BaseScene* mScene;
+	DirectX::XMMATRIX mVirtualViewMatrix;
 };

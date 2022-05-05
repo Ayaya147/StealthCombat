@@ -4,6 +4,7 @@
 #include "ParticleSystem.h"
 #include "BaseScene.h"
 #include "Window.h"
+#include "Random.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -29,6 +30,15 @@ ParticleManager::ParticleManager(BaseScene* scene, Renderer* renderer)
 	mComputeCBufferCamera = new ComputeConstantBuffer<CameraConstant>(renderer, 1);
 	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
 	mGeometryCBufferSystem = new GeometryConstantBuffer<SystemConstant>(renderer, 0);
+
+	dx::XMFLOAT3 cameraPos = { 0.0f,0.0f,-400.0f };
+	dx::XMFLOAT3 at = { 0.0f,0.0f,0.0f };
+	dx::XMFLOAT3 up = { 0.0f,1.0f,0.0f };
+	mVirtualViewMatrix = dx::XMMatrixLookAtLH(
+		dx::XMLoadFloat3(&cameraPos),
+		dx::XMLoadFloat3(&at),
+		dx::XMLoadFloat3(&up)
+	);
 }
 
 ParticleManager::~ParticleManager()
@@ -64,25 +74,23 @@ void ParticleManager::Update(Renderer* renderer)
 	sc.mDeltaTime = mScene->GetDeltaTime();
 	sc.mTime = mScene->GetGameTime();
 	sc.mFPS = 1.0f / sc.mDeltaTime;
-	sc.mD1 = (float)rand();
 	sc.mD2 = (float)rand();
 	sc.mD3 = (float)rand();
+	sc.mD1 = (float)rand();
 
 	mComputeCBufferSystem->Update(renderer, sc);
 	mComputeCBufferSystem->Bind(renderer);
 	mGeometryCBufferSystem->Update(renderer, sc);
-	//mGeometryCBufferSystem->Bind(renderer);
 
 	CameraConstant cc = {};
 	cc.mProjectionMatrix = mScene->GetRenderer()->GetProjectionMatrix();
-	cc.mViewMatrix = mScene->GetRenderer()->GetViewMatrix();
+	cc.mViewMatrix = mVirtualViewMatrix;
 	cc.mInvProjectionMatrix = dx::XMMatrixInverse(nullptr, cc.mProjectionMatrix);
 	cc.mInvViewMatrix = dx::XMMatrixInverse(nullptr, cc.mViewMatrix);
 
 	mComputeCBufferCamera->Update(renderer, cc);
 	mComputeCBufferCamera->Bind(renderer);
 	mVertexCBufferCamera->Update(renderer, cc);
-	//mVertexCBufferCamera->Bind(renderer);
 
 	for (auto ps : mParticleSystems)
 	{
@@ -95,12 +103,6 @@ void ParticleManager::Update(Renderer* renderer)
 	}
 
 	renderer->GetContext()->CSSetShader(nullptr, nullptr, 0);
-	ID3D11Buffer* nullBuffs[3] = { nullptr, nullptr, nullptr };
-	renderer->GetContext()->CSSetConstantBuffers(0, 3, nullBuffs);
-	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr, nullptr };
-	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
-	ID3D11UnorderedAccessView* nullViews[2] = { nullptr,nullptr };
-	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullViews, 0);
 }
 
 void ParticleManager::Draw(Renderer* renderer)
@@ -113,10 +115,8 @@ void ParticleManager::Draw(Renderer* renderer)
 	mParticleVertexShader->Bind(renderer);
 	mParticlePixelShader->Bind(renderer);
 	mParticleGeometryShader->Bind(renderer);
-	//
 	mVertexCBufferCamera->Bind(renderer);
 	mGeometryCBufferSystem->Bind(renderer);
-	//
 
 	for (auto ps : mParticleSystems)
 	{
@@ -124,10 +124,4 @@ void ParticleManager::Draw(Renderer* renderer)
 	}
 
 	renderer->GetContext()->GSSetShader(nullptr, nullptr, 0);
-	renderer->GetContext()->CSSetShader(nullptr, nullptr, 0);
-	renderer->GetContext()->CSSetConstantBuffers(0, 3, nullBuffs);
-	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr, nullptr };
-	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
-	ID3D11UnorderedAccessView* nullViews[2] = { nullptr,nullptr };
-	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullViews, 0);
 }
