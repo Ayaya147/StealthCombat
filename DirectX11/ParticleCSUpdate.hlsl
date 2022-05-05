@@ -3,7 +3,7 @@
 float3 GetAcceleration(in float3 movement, in float acceleration, in float3 velocity, in float friction, in float mass)
 {
     float3 force = movement * acceleration;
-   return force - (friction * mass * velocity);
+    return force - (friction * mass * velocity);
 }
 
 [numthreads(numThreads, 1, 1)]

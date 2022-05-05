@@ -125,9 +125,15 @@ void Renderer::Draw3DScene()
 		tc->Draw(this);
 	}
 
-	if (auto game = dynamic_cast<GameScene*>(mScene))
+	auto demo = dynamic_cast<DemoScene*>(mScene);
+	auto game = dynamic_cast<GameScene*>(mScene);
+	if (game)
 	{
 		game->GetParticleManager()->Draw(this);
+	}
+	else if (demo)
+	{
+		demo->GetParticleManager()->Draw(this);
 	}
 }
 

@@ -129,6 +129,7 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 	ID3D11UnorderedAccessView* nullUAVs[2] = { nullptr,nullptr };
 
 	UpdateDispatchBuffer(renderer);
+
 	{
 		particleEmitShader->Bind(renderer);
 		renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
@@ -175,7 +176,6 @@ void ParticleSystem::Draw(Renderer* renderer)
 	renderer->GetContext()->Unmap(mInstancedDrawBuffer, 0);
 
 	mCurrentParticleCount = instancedArgs.VertexCountPerInstance;
-	renderer->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	renderer->GetContext()->VSSetShaderResources(0, 1, &mParticles[!mIsBackBuffer]->srv);
 	renderer->GetContext()->DrawInstancedIndirect(mInstancedDrawBuffer, 0);
 	ID3D11ShaderResourceView* nullSRVs[1] = { nullptr };

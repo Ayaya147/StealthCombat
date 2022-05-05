@@ -110,6 +110,7 @@ void ParticleManager::Draw(Renderer* renderer)
 	ID3D11Buffer* nullBuffs[3] = { nullptr, nullptr, nullptr};
 	uint32_t nullstrides[1] = { 0 };
 	renderer->GetContext()->IASetInputLayout(nullptr);
+	renderer->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	renderer->GetContext()->IASetIndexBuffer(nullptr, DXGI_FORMAT::DXGI_FORMAT_UNKNOWN, 0);
 	renderer->GetContext()->IASetVertexBuffers(0, 1, nullBuffs, nullstrides, nullstrides);
 	mParticleVertexShader->Bind(renderer);

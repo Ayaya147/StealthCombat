@@ -1,11 +1,9 @@
 #define DEBUG_MODE 0
-#pragma pack_matrix( row_major )
-
 #define PI 3.1415926535897932384626433832795
-
 #define RandomTextureSize 1024.0
 
 static const uint numThreads = 512;
+
 cbuffer SystemBuffer : register(b0)
 {
     float _screenWidth;
@@ -15,6 +13,7 @@ cbuffer SystemBuffer : register(b0)
     float _fps;
     float3 _random;
 };
+
 cbuffer CameraBuffer : register(b1)
 {
     float4x4 _viewMatrix;
@@ -24,6 +23,7 @@ cbuffer CameraBuffer : register(b1)
     float4 _cameraPosition;
     float4 _cameraDir;
 };
+
 cbuffer ParticleEmitter : register(b2)
 {
     float _lifeTimeMin, _lifeTimeMax, _scaleMin, _scaleMax; //16
@@ -42,14 +42,12 @@ struct Particle
     float4 color;
     float4 position;
 };
+
 StructuredBuffer<Particle> ParticleIn : register(t0);
 StructuredBuffer<int> ParticleCountIn : register(t1);
-//Texture2D<float> Random : register(t2);
 
 RWStructuredBuffer<Particle> ParticleOut : register(u0);
 RWStructuredBuffer<int> ParticleCountOut : register(u1);
-
-//SamplerState WrappedPointSampler : register(s0);
 
 float wang_hash(inout uint seed)
 {

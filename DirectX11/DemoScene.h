@@ -17,6 +17,7 @@ public:
 	class ExplosionActor* GetExplosion() const { return mExplosion; }
 	class SmokeActor* GetSmoke() const { return mSmoke; }
 	class EmissionActor* GetEmission() const { return mEmission; }
+	class ParticleManager* GetParticleManager() const { return mParticleManager; }
 
 private:
 	class PlaneActor* mPlane;
@@ -24,4 +25,5 @@ private:
 	class ExplosionActor* mExplosion;
 	class SmokeActor* mSmoke;
 	class EmissionActor* mEmission;
+	class ParticleManager* mParticleManager;
 };
