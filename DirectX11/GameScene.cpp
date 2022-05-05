@@ -32,7 +32,7 @@ static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
-	mParticleManager(new ParticleManager(GetRenderer())),
+	mParticleManager(new ParticleManager(this, GetRenderer())),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mWin(false),

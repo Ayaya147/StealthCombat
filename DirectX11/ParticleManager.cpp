@@ -2,11 +2,15 @@
 #include "Renderer.h"
 #include "BindableCommon.h"
 #include "ParticleSystem.h"
+#include "BaseScene.h"
+#include "Window.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
 
-ParticleManager::ParticleManager(Renderer* renderer)
+ParticleManager::ParticleManager(BaseScene* scene, Renderer* renderer)
+	:
+	mScene(scene)
 {
 	std::wstring fileName = L"ShaderBin\\ParticleCSInit.cso";
 	mParticleInitShader = new ComputeShader(renderer, fileName);
@@ -24,6 +28,7 @@ ParticleManager::ParticleManager(Renderer* renderer)
 	mComputeCBufferSystem = new ComputeConstantBuffer<SystemConstant>(renderer, 0);
 	mComputeCBufferCamera = new ComputeConstantBuffer<CameraConstant>(renderer, 1);
 	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
+	mGeometryCBufferSystem = new GeometryConstantBuffer<SystemConstant>(renderer, 0);
 }
 
 ParticleManager::~ParticleManager()
@@ -42,6 +47,7 @@ ParticleManager::~ParticleManager()
 	delete mComputeCBufferSystem;
 	delete mComputeCBufferCamera;
 	delete mVertexCBufferCamera;
+	delete mGeometryCBufferSystem;
 }
 
 void ParticleManager::CreateParticleSystem(Renderer* renderer)
@@ -52,8 +58,31 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 
 void ParticleManager::Update(Renderer* renderer)
 {
+	SystemConstant sc = {};
+	sc.mScreenWidth = (float)mScene->GetWindow()->GetClientWidth();
+	sc.mScreenHeight = (float)mScene->GetWindow()->GetClientHeight();
+	sc.mDeltaTime = mScene->GetDeltaTime();
+	sc.mTime = mScene->GetGameTime();
+	sc.mFPS = 1.0f / sc.mDeltaTime;
+	sc.mD1 = (float)rand();
+	sc.mD2 = (float)rand();
+	sc.mD3 = (float)rand();
+
+	mComputeCBufferSystem->Update(renderer, sc);
 	mComputeCBufferSystem->Bind(renderer);
+	mGeometryCBufferSystem->Update(renderer, sc);
+	//mGeometryCBufferSystem->Bind(renderer);
+
+	CameraConstant cc = {};
+	cc.mProjectionMatrix = mScene->GetRenderer()->GetProjectionMatrix();
+	cc.mViewMatrix = mScene->GetRenderer()->GetViewMatrix();
+	cc.mInvProjectionMatrix = dx::XMMatrixInverse(nullptr, cc.mProjectionMatrix);
+	cc.mInvViewMatrix = dx::XMMatrixInverse(nullptr, cc.mViewMatrix);
+
+	mComputeCBufferCamera->Update(renderer, cc);
 	mComputeCBufferCamera->Bind(renderer);
+	mVertexCBufferCamera->Update(renderer, cc);
+	//mVertexCBufferCamera->Bind(renderer);
 
 	for (auto ps : mParticleSystems)
 	{
@@ -83,9 +112,10 @@ void ParticleManager::Draw(Renderer* renderer)
 	renderer->GetContext()->IASetVertexBuffers(0, 1, nullBuffs, nullstrides, nullstrides);
 	mParticleVertexShader->Bind(renderer);
 	mParticlePixelShader->Bind(renderer);
-
+	mParticleGeometryShader->Bind(renderer);
 	//
 	mVertexCBufferCamera->Bind(renderer);
+	mGeometryCBufferSystem->Bind(renderer);
 	//
 
 	for (auto ps : mParticleSystems)
@@ -93,6 +123,7 @@ void ParticleManager::Draw(Renderer* renderer)
 		ps->Draw(renderer);
 	}
 
+	renderer->GetContext()->GSSetShader(nullptr, nullptr, 0);
 	renderer->GetContext()->CSSetShader(nullptr, nullptr, 0);
 	renderer->GetContext()->CSSetConstantBuffers(0, 3, nullBuffs);
 	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr, nullptr };

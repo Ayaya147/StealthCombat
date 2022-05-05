@@ -95,3 +95,17 @@ public:
 		renderer->GetContext()->CSSetConstantBuffers(mSlot, 1, mConstantBuffer.GetAddressOf());
 	}
 };
+
+template<class C>
+class GeometryConstantBuffer : public ConstantBuffer<C>
+{
+public:
+	using ConstantBuffer<C>::ConstantBuffer;
+	using ConstantBuffer<C>::mConstantBuffer;
+	using ConstantBuffer<C>::mSlot;
+
+	void Bind(Renderer* renderer) override
+	{
+		renderer->GetContext()->GSSetConstantBuffers(mSlot, 1, mConstantBuffer.GetAddressOf());
+	}
+};

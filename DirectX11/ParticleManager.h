@@ -7,11 +7,13 @@ template<class C>
 class ComputeConstantBuffer;
 template<class C>
 class VertexConstantBuffer;
+template<class C>
+class GeometryConstantBuffer;
 
 class ParticleManager
 {
 public:
-	ParticleManager(class Renderer* renderer);
+	ParticleManager(class BaseScene* scene, class Renderer* renderer);
 	~ParticleManager();
 
 	void CreateParticleSystem(class Renderer* renderer);
@@ -53,4 +55,7 @@ private:
 	ComputeConstantBuffer<SystemConstant>* mComputeCBufferSystem;
 	ComputeConstantBuffer<CameraConstant>* mComputeCBufferCamera;
 	VertexConstantBuffer<CameraConstant>* mVertexCBufferCamera;
+	GeometryConstantBuffer<SystemConstant>* mGeometryCBufferSystem;
+
+	class BaseScene* mScene;
 };

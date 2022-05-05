@@ -28,9 +28,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
     float2 uv = float2((float) i + _time + _random.x, _time + _random.y);
     //uint rand = i + (uint) _random.z + ((uint) (Random.Gather(WrappedPointSampler, uv).x * (float) 0xFFFFFFFF));
-    uint rand = 5;
-
-
+    uint rand = i + (uint) _random.z;
+    //uint rand = 5;
+    
     float particlesToEmit = (float) _emitRate * _deltaTime;
     if ((float) currentParticleAmount + particlesToEmit >= (float) _maxParticles)
     {
