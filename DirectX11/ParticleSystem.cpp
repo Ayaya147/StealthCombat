@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "BindableCommon.h"
 #include "ComputeData.h"
+#include "ImGui/imgui.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -13,6 +14,8 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 	mIsInit(false),
 	mIsBackBuffer(false)
 {
+	Reset();
+
 	mCurrentParticleCount = mData.newParticles;
 
 	int temp = mCurrentParticleCount / 512 + mCurrentParticleCount % 512;
@@ -180,6 +183,52 @@ void ParticleSystem::Draw(Renderer* renderer)
 	renderer->GetContext()->DrawInstancedIndirect(mInstancedDrawBuffer, 0);
 	ID3D11ShaderResourceView* nullSRVs[1] = { nullptr };
 	renderer->GetContext()->VSSetShaderResources(0, 1, nullSRVs);
+}
+
+void ParticleSystem::ImGuiWindow()
+{
+	if (ImGui::Begin("Particle System"))
+	{
+		ImGui::Text("Particle Count: %i", mCurrentParticleCount);
+		ImGui::SliderInt("Particles Per Second", &mData.rate, 0, 100000);
+		ImGui::SliderFloat("Gravity", &mData.gravity, 0.1f, 100.0f);
+		ImGui::SliderFloat("Mass", &mData.mass, 0.1f, 10000.0f);
+		ImGui::SliderFloat2("Lifetime (Min/Max)", &mData.LifeTimeMin, 0, 30);
+		ImGui::SliderFloat2("Scale (Min/Max)", &mData.ScaleMin, 0, 30);
+		ImGui::SliderFloat3("Min Velocity", (float*)&mData.VelocityMin, -100, 100);
+		ImGui::SliderFloat3("Max Velocity", (float*)&mData.VelocityMax, -100, 100);
+		ImGui::SliderFloat3("Min Position", (float*)&mData.PositionMin, -100, 100);
+		ImGui::SliderFloat3("Max Position", (float*)&mData.PositionMax, -100, 100);
+
+		if (ImGui::Button("Reset"))
+		{
+			Reset();
+		}
+	}
+	ImGui::End();
+}
+
+void ParticleSystem::Reset()
+{
+	mData = {
+		5.0f,
+		10.0f,
+		2.0f,
+		4.0f,
+		1024 * 64,
+		1024 * 512,
+		50.0f,
+		5000.0f,
+		50000,
+		1,
+		0,
+		0,
+		{ -50, -50, 0, 0 },
+		{ 50, 50, 50, 0 },
+		{ -100, -100, -100, 0 },
+		{ 100, 100, 100, 0 },
+		{0, 0, 0, 1}
+	};
 }
 
 void ParticleSystem::ForceUpdateBuffer(Renderer* renderer)

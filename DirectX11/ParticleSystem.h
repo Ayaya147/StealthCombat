@@ -14,10 +14,12 @@ public:
 	void Init(class Renderer* renderer, class ComputeShader* particleInitShader);
 	void Update(class Renderer* renderer, class ComputeShader* particleEmitShader, class ComputeShader* particleUpdateShader);
 	void Draw(class Renderer* renderer);
+	void ImGuiWindow();
 
 	bool GetIsInit() { return mIsInit; }
 
 private:
+	void Reset();
 	void ForceUpdateBuffer(class Renderer* renderer);
 	void UpdateDispatchBuffer(class Renderer* renderer);
 
@@ -38,23 +40,23 @@ private:
 
 	struct ParticleConstant
 	{
-		float LifeTimeMin = 10.0f;
-		float LifeTimeMax = 20.0f;
-		float ScaleMin = 1.0f;
-		float ScaleMax = 2.0f;
-		uint32_t newParticles = 1024 * 64;
-		uint32_t maxParticles = 1024 * 512;
-		float gravity = 100.0f;
-		float mass = 5000.0f;
-		int rate = 50000;
-		int numDispatch = 1;
+		float LifeTimeMin;
+		float LifeTimeMax;
+		float ScaleMin;
+		float ScaleMax;
+		uint32_t newParticles;
+		uint32_t maxParticles;
+		float gravity;
+		float mass;
+		int rate;
+		int numDispatch;
 		int d2;
 		int d3;
-		DirectX::XMFLOAT4 VelocityMin = { -30, -30, -30, 0 };
-		DirectX::XMFLOAT4 VelocityMax = { 30, 30, 30, 0 };
-		DirectX::XMFLOAT4 PositionMin = { -100, -100, -100, 0 };
-		DirectX::XMFLOAT4 PositionMax = { 100, 100, 100, 0 };
-		DirectX::XMFLOAT4 Position = {0, 0, 0, 1};
+		DirectX::XMFLOAT4 VelocityMin;
+		DirectX::XMFLOAT4 VelocityMax;
+		DirectX::XMFLOAT4 PositionMin;
+		DirectX::XMFLOAT4 PositionMax;
+		DirectX::XMFLOAT4 Position;
 	};
 
 	bool mIsInit;

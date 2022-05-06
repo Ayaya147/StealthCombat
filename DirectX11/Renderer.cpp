@@ -19,6 +19,7 @@
 #include "Light.h"
 #include "PauseScreen.h"
 #include "ParticleManager.h"
+#include "ParticleSystem.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
 
@@ -79,6 +80,7 @@ void Renderer::Draw()
 		demo->GetExplosion()->ImGuiWindow();
 		demo->GetSmoke()->ImGuiWindow();
 		demo->GetEmission()->ImGuiWindow();
+		demo->GetParticleManager()->GetParticleSystem()->ImGuiWindow();
 		mLight->ImGuiWindow();
 
 		ImGui::Render();

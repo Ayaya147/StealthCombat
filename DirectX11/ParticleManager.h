@@ -20,6 +20,8 @@ public:
 	void Update(class Renderer* renderer);
 	void Draw(class Renderer* renderer);
 
+	class ParticleSystem* GetParticleSystem() { return mParticleSystems[0]; }
+
 private:
 	struct SystemConstant
 	{

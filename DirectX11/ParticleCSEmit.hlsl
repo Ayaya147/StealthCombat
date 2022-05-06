@@ -20,14 +20,11 @@ void main(uint3 DTid : SV_DispatchThreadID)
             InterlockedAdd(ParticleCountOut[0].x, 1, index);
             ParticleOut[index] = ParticleIn[i];
         }
-    }
-	
+    }	
     AllMemoryBarrier();
 
     currentParticleAmount = ParticleCountOut[0].x;
-
-    float2 uv = float2((float) i + _time + _random.x, _time + _random.y);
-    uint rand = i + (uint) _random.z;
+    uint rand = i + (uint) _random.x;
     
     float particlesToEmit = (float) _emitRate * _deltaTime;
     if ((float) currentParticleAmount + particlesToEmit >= (float) _maxParticles)

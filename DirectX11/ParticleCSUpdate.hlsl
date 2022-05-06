@@ -16,6 +16,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         InterlockedExchange(ParticleCountOut[0], 0, val);
     }
     AllMemoryBarrier();
+    
     if (i < ParticleCountIn[0].x && ParticleIn[i].age > 0.0)
     {
         InterlockedAdd(ParticleCountOut[0].x, 1);
@@ -41,6 +42,5 @@ void main(uint3 DTid : SV_DispatchThreadID)
 
         ParticleOut[i].velocity = float4(newVelocity, 0.0);
         ParticleOut[i].age -= _deltaTime;
-
     }
 }
