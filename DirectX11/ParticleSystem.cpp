@@ -235,8 +235,8 @@ void ParticleSystem::Reset()
 		1,
 		0,
 		0,
-		{ -50, -50, 80, 0 },
-		{ 50, 50, 150, 0 },
+		{ -50, -150, -50, 0 },
+		{ 50, -80, 50, 0 },
 		{ -distance, -distance, -distance, 0 },
 		{ distance, distance, distance, 0 },
 		{0, 0, 0, 1}

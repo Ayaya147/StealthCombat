@@ -26,7 +26,7 @@
 #include "ParticleManager.h"
 
 namespace dx = DirectX;
-static constexpr bool FPS_ENABLE = true;
+static constexpr bool FPS_ENABLE = false;
 static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
