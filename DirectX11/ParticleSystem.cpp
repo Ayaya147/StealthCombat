@@ -220,7 +220,7 @@ void ParticleSystem::DisableEmitParticle()
 
 void ParticleSystem::Reset()
 {
-	float distance = 100.0f;
+	float distance = 200.0f;
 
 	mData = {
 		2.0f,
@@ -235,8 +235,8 @@ void ParticleSystem::Reset()
 		1,
 		0,
 		0,
-		{ -50, -50, -100, 0 },
-		{ 50, 50, -50, 0 },
+		{ -50, -50, -150, 0 },
+		{ 50, 50, -80, 0 },
 		{ -distance, -distance, -distance, 0 },
 		{ distance, distance, distance, 0 },
 		{0, 0, 0, 1}
