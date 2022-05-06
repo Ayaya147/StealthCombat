@@ -208,25 +208,37 @@ void ParticleSystem::ImGuiWindow()
 	ImGui::End();
 }
 
+void ParticleSystem::EnableEmitParticle()
+{
+	mData.rate = 50000;
+}
+
+void ParticleSystem::DisableEmitParticle()
+{
+	mData.rate = 0;
+}
+
 void ParticleSystem::Reset()
 {
+	float distance = 100.0f;
+
 	mData = {
+		2.0f,
 		5.0f,
-		10.0f,
 		2.0f,
 		4.0f,
+		1024 * 1,
 		1024 * 64,
-		1024 * 512,
-		50.0f,
-		5000.0f,
-		50000,
+		10.0f,
+		2000.0f,
+		5000,
 		1,
 		0,
 		0,
-		{ -50, -50, 0, 0 },
-		{ 50, 50, 50, 0 },
-		{ -100, -100, -100, 0 },
-		{ 100, 100, 100, 0 },
+		{ -50, -50, -100, 0 },
+		{ 50, 50, -50, 0 },
+		{ -distance, -distance, -distance, 0 },
+		{ distance, distance, distance, 0 },
 		{0, 0, 0, 1}
 	};
 }

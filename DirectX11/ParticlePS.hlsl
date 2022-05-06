@@ -13,7 +13,7 @@ float4 main(PS_INPUT input) : SV_Target
     float4 out_col = input.col;
     float alphaX = sin(input.uv.x * 2 * PI / 2.0);
     float alphaY = sin(input.uv.y * 2 * PI / 2.0);
-    float finalAlpha = alphaX * alphaY;
+    float finalAlpha = alphaX * alphaY * 0.1f;
     out_col.a = finalAlpha;
     return out_col;
 }

@@ -32,7 +32,7 @@ private:
 		float mFPS;
 		float mD1;
 		float mD2;
-		float mD3;
+		float mTest;
 	};
 
 	struct CameraConstant

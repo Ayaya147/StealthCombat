@@ -3,8 +3,10 @@
 #include "BindableCommon.h"
 #include "ParticleSystem.h"
 #include "BaseScene.h"
+#include "GameScene.h"
 #include "Window.h"
 #include "Random.h"
+#include "PlayerActor.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -68,15 +70,23 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 
 void ParticleManager::Update(Renderer* renderer)
 {
+	auto game = dynamic_cast<GameScene*>(mScene);
+	bool isInCloud = false;
+	if (game)
+	{
+		isInCloud = game->GetPlayer()->GetIsInCloud();
+	}
+	bool temp = game && !isInCloud;
+
 	SystemConstant sc = {};
 	sc.mScreenWidth = (float)mScene->GetWindow()->GetClientWidth();
 	sc.mScreenHeight = (float)mScene->GetWindow()->GetClientHeight();
 	sc.mDeltaTime = mScene->GetDeltaTime();
 	sc.mTime = mScene->GetGameTime();
 	sc.mFPS = 1.0f / sc.mDeltaTime;
-	sc.mD2 = (float)rand();
-	sc.mD3 = (float)rand();
 	sc.mD1 = (float)rand();
+	sc.mD2 = (float)rand();
+	sc.mTest = temp;
 
 	mComputeCBufferSystem->Update(renderer, sc);
 	mComputeCBufferSystem->Bind(renderer);
@@ -97,6 +107,18 @@ void ParticleManager::Update(Renderer* renderer)
 		if (!ps->GetIsInit())
 		{
 			ps->Init(renderer, mParticleInitShader);
+		}
+
+		if (auto game = dynamic_cast<GameScene*>(mScene))
+		{
+			if (game->GetPlayer()->GetIsInCloud())
+			{
+				ps->EnableEmitParticle();
+			}
+			else
+			{
+				ps->DisableEmitParticle();
+			}
 		}
 
 		ps->Update(renderer, mParticleEmitShader, mParticleUpdateShader);
