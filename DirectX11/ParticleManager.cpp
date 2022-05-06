@@ -33,8 +33,8 @@ ParticleManager::ParticleManager(BaseScene* scene, Renderer* renderer)
 	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
 	mGeometryCBufferSystem = new GeometryConstantBuffer<SystemConstant>(renderer, 0);
 
-	dx::XMFLOAT3 cameraPos = { 0.0f,0.0f,-400.0f };
-	dx::XMFLOAT3 at = { 0.0f,0.0f,0.0f };
+	dx::XMFLOAT3 cameraPos = { 0.0f,0.0f,-100.0f };
+	dx::XMFLOAT3 at = { 0.0f,0.0f,100.0f };
 	dx::XMFLOAT3 up = { 0.0f,1.0f,0.0f };
 	mVirtualViewMatrix = dx::XMMatrixLookAtLH(
 		dx::XMLoadFloat3(&cameraPos),

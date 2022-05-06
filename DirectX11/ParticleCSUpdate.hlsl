@@ -44,7 +44,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
         
         if (_random.z)
         {
-            ParticleOut[i].age -= _deltaTime * 5.0f;
+            ParticleOut[i].age -= _deltaTime * 4.0f;
         }
         else
         {

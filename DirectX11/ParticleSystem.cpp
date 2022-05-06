@@ -225,8 +225,8 @@ void ParticleSystem::Reset()
 	mData = {
 		2.0f,
 		5.0f,
-		2.0f,
-		4.0f,
+		1.0f,
+		3.0f,
 		1024 * 1,
 		1024 * 64,
 		10.0f,
@@ -235,8 +235,8 @@ void ParticleSystem::Reset()
 		1,
 		0,
 		0,
-		{ -50, -50, -150, 0 },
-		{ 50, 50, -80, 0 },
+		{ -50, -50, 80, 0 },
+		{ 50, 50, 150, 0 },
 		{ -distance, -distance, -distance, 0 },
 		{ distance, distance, distance, 0 },
 		{0, 0, 0, 1}
