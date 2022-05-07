@@ -12,6 +12,7 @@ public:
 	void Update() override;
 	void GenerateOutput() override;
 
+	class SpriteComponent* GetMouseSprite() const { return mMouseSprite; }
 	class PlaneActor* GetPlane() const { return mPlane; }
 	class CloudActor* GetCloud() const { return mCloud; }
 	class ExplosionActor* GetExplosion() const { return mExplosion; }
@@ -26,4 +27,6 @@ private:
 	class SmokeActor* mSmoke;
 	class EmissionActor* mEmission;
 	class ParticleManager* mParticleManager;
+	class Actor* mMouseCursor;
+	class SpriteComponent* mMouseSprite;
 };

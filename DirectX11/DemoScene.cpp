@@ -18,6 +18,7 @@
 #include "SpriteComponent.h"
 #include "AudioSystem.h"
 #include "ParticleManager.h"
+#include "Window.h"
 
 namespace dx = DirectX;
 
@@ -31,8 +32,6 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mEmission(new EmissionActor(this)),
 	mParticleManager(new ParticleManager(this, GetRenderer()))
 {
-	ShowCursor(TRUE);
-
 	mParticleManager->CreateParticleSystem(GetRenderer());
 	
 	mCloud->SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
@@ -55,15 +54,16 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	sprite->SetPosition(dx::XMFLOAT3{ 750.0f, 470.0f, 0.0f });
 	sprite->SetScale(0.4f);
 
+	mMouseCursor = new Actor(this);
+	tex = GetRenderer()->GetTexture("mouse");
+	mMouseSprite = new SpriteComponent(mMouseCursor, tex);
+	mMouseCursor->SetScale(0.15f);
+
 	GetRenderer()->ResetLight();
 }
 
 DemoScene::~DemoScene()
 {
-#ifdef NDEBUG
-	ShowCursor(FALSE);
-#endif
-
 	delete mParticleManager;
 }
 
@@ -86,6 +86,7 @@ void DemoScene::Update()
 	{
 	case SceneState::EPlay:
 		mParticleManager->Update(GetRenderer());
+		mMouseCursor->SetPosition(GetWindow()->GetMouseCursorPos());
 		break;
 	}
 

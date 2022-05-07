@@ -11,6 +11,8 @@ Window::Window(int width, int height, InputSystem* input)
 	mHeight(height),
 	mhInst(GetModuleHandle(nullptr))
 {
+	ShowCursor(FALSE);
+
 	WNDCLASSEX wc = {};
 	wc.cbSize = sizeof(wc);
 	wc.style = CS_OWNDC;
@@ -46,8 +48,6 @@ Window::Window(int width, int height, InputSystem* input)
 		nullptr, nullptr, mhInst, nullptr
 	);
 #else
-	ShowCursor(FALSE);
-
 	RECT rDesk = {};
 	HWND hDesk = GetDesktopWindow();
 	GetWindowRect(hDesk, &rDesk);
@@ -56,21 +56,21 @@ Window::Window(int width, int height, InputSystem* input)
 
 	if (deskWidth / deskHeight < 16.0f / 9.0f)
 	{
-		mWidth = deskWidth;
-		mHeight = static_cast<int>(mWidth / 16.0f * 9.0f);
+		int w = deskWidth;
+		int h = static_cast<int>(w / 16.0f * 9.0f);
 		mhWnd = CreateWindow(
 			wc.lpszClassName, "GameApp",
-			WS_POPUP, 0, (deskHeight - mHeight) / 2, mWidth, mHeight,
+			WS_POPUP, 0, (deskHeight - h) / 2, w, h,
 			nullptr, nullptr, mhInst, nullptr
 		);
 	}
 	else
 	{
-		mHeight = deskHeight;
-		mWidth = static_cast<int>(deskHeight / 9.0f * 16.0f);
+		int h = deskHeight;
+		int w = static_cast<int>(h / 9.0f * 16.0f);
 		mhWnd = CreateWindow(
 			wc.lpszClassName, "GameApp",
-			WS_POPUP, (deskWidth - mWidth) / 2, 0, mWidth, mHeight,
+			WS_POPUP, (deskWidth - w) / 2, 0, w, h,
 			nullptr, nullptr, mhInst, nullptr
 		);
 	}
@@ -87,6 +87,18 @@ Window::~Window()
 {
 	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(mhWnd);
+}
+
+DirectX::XMFLOAT3 Window::GetMouseCursorPos()
+{
+	POINT p = {};
+	GetCursorPos(&p);
+	ScreenToClient(mhWnd, &p);
+
+	float x = static_cast<float>(p.x) / mWidth * 1920 - 1920 /2.0f;
+	float y = static_cast<float>(p.y) / mHeight * 1080 - 1080 /2.0f;
+
+	return DirectX::XMFLOAT3{ x,y,0 };
 }
 
 LRESULT Window::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept

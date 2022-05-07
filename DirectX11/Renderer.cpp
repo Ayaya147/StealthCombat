@@ -82,9 +82,10 @@ void Renderer::Draw()
 		demo->GetEmission()->ImGuiWindow();
 		demo->GetParticleManager()->GetParticleSystem()->ImGuiWindow();
 		mLight->ImGuiWindow();
-
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+		demo->GetMouseSprite()->Draw(this, mVertexBuffer);
 	}
 
 	mSwapChain->Present(1, 0);
@@ -305,8 +306,8 @@ void Renderer::SetDirectionalLight(const DirectionalLight& light)
 void Renderer::InitDirectX(HWND hWnd, int width, int height)
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
-	sd.BufferDesc.Width = 0;
-	sd.BufferDesc.Height = 0;
+	sd.BufferDesc.Width = width;
+	sd.BufferDesc.Height = height;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 0;

@@ -226,7 +226,7 @@ void ParticleSystem::Reset()
 		2.0f,
 		5.0f,
 		1.0f,
-		3.0f,
+		2.0f,
 		1024 * 1,
 		1024 * 64,
 		10.0f,
