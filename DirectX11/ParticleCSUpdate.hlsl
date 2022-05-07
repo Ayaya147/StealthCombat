@@ -41,14 +41,6 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float3 newVelocity = halfStepVel + 0.5 * _deltaTime * acceleration;
 
         ParticleOut[i].velocity = float4(newVelocity, 0.0);
-        
-        if (_random.z)
-        {
-            ParticleOut[i].age -= _deltaTime * 4.0f;
-        }
-        else
-        {
-            ParticleOut[i].age -= _deltaTime;
-        }
+        ParticleOut[i].age -= _deltaTime;
     }
 }

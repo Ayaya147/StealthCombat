@@ -70,14 +70,6 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 
 void ParticleManager::Update(Renderer* renderer)
 {
-	auto game = dynamic_cast<GameScene*>(mScene);
-	bool isInCloud = false;
-	if (game)
-	{
-		isInCloud = game->GetPlayer()->GetIsInCloud();
-	}
-	bool temp = game && !isInCloud;
-
 	SystemConstant sc = {};
 	sc.mScreenWidth = (float)mScene->GetWindow()->GetClientWidth();
 	sc.mScreenHeight = (float)mScene->GetWindow()->GetClientHeight();
@@ -86,7 +78,7 @@ void ParticleManager::Update(Renderer* renderer)
 	sc.mFPS = 1.0f / sc.mDeltaTime;
 	sc.mD1 = (float)rand();
 	sc.mD2 = (float)rand();
-	sc.mTest = temp;
+	sc.mTest = (float)rand();
 
 	mComputeCBufferSystem->Update(renderer, sc);
 	mComputeCBufferSystem->Bind(renderer);
