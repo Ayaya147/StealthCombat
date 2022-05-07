@@ -128,15 +128,10 @@ void Renderer::Draw3DScene()
 		tc->Draw(this);
 	}
 
-	auto demo = dynamic_cast<DemoScene*>(mScene);
-	auto game = dynamic_cast<GameScene*>(mScene);
-	if (game)
+	// draw particles
+	if (mScene->GetParticleManager())
 	{
-		game->GetParticleManager()->Draw(this);
-	}
-	else if (demo)
-	{
-		demo->GetParticleManager()->Draw(this);
+		mScene->GetParticleManager()->Draw(this);
 	}
 }
 

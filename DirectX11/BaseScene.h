@@ -24,11 +24,13 @@ public:
 	void PushUI(class PauseScreen* screen);
 
 	void SetSceneState(SceneState state) { mSceneState = state; }
+	void SetParticleManager(class ParticleManager* pm) { mParticleManager = pm; }
 	class Renderer* GetRenderer();
 	class InputSystem* GetInputSystem();
 	class AudioSystem* GetAudioSystem();
 	class Window* GetWindow();
 	class SceneManager* GetSceneManager() const { return mSceneManager; }
+	class ParticleManager* GetParticleManager() const { return mParticleManager; }
 	class Fade* GetFade() const { return mFade; }
 	float GetGameTime() const { return mGameTime; }
 	float GetDeltaTime() const { return mDeltaTime; }
@@ -43,6 +45,7 @@ private:
 	class Timer* mTimer;
 	class Fade* mFade;
 	class SceneManager* mSceneManager;
+	class ParticleManager* mParticleManager;
 	SceneState mSceneState;
 	bool mUpdatingActors;
 	float mGameTime;

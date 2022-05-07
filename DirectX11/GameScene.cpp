@@ -25,14 +25,13 @@
 #include "PauseScreen.h"
 #include "ParticleManager.h"
 
+//#define FPS_ENABLE
 namespace dx = DirectX;
-static constexpr bool FPS_ENABLE = false;
 static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
-	mParticleManager(new ParticleManager(this, GetRenderer())),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
 	mWin(false),
@@ -40,7 +39,9 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mQuitTime(1.5f),
 	mDestroyedSpriteTime(0.0f)
 {
-	mParticleManager->CreateParticleSystem(GetRenderer());
+	SetParticleManager(new ParticleManager(this, GetRenderer()));
+	GetParticleManager()->CreateParticleSystem(GetRenderer());
+
 	gNextScene = SceneManager::SceneType::ETitle;
 	GetRenderer()->ResetLight();
 
@@ -54,7 +55,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 GameScene::~GameScene()
 {
 	GetAudioSystem()->StopSoundAll();
-	delete mParticleManager;
 	delete mPhysWorld;
 	delete mMap;
 }
@@ -139,15 +139,15 @@ void GameScene::Update()
 	{
 	case SceneState::EPlay:
 	{
-		mParticleManager->Update(GetRenderer());
+		GetParticleManager()->Update(GetRenderer());
 		mMap->Update(this);
 		mOutCloudTime->SetValue(mPlayer->GetOutCloudTime() * 100.0f);
 		mSpdNum->SetValue(mPlayer->GetForwardSpeed() * 160.0f);
 		mEnemyNum->SetValue(static_cast<float>(mEnemies.size()));
-		if (FPS_ENABLE)
-		{
-			mFPS->SetValue(10.0f / GetDeltaTime());
-		}
+
+#ifdef  FPS_ENABLE
+		mFPS->SetValue(10.0f / GetDeltaTime());
+#endif
 
 		float restTime = mRestTime->GetValue() - GetDeltaTime();
 		mRestTime->SetValue(restTime);
@@ -363,12 +363,11 @@ void GameScene::CreateNumberActor()
 	mEnemyNum->SetOriPosition(dx::XMFLOAT3{ 105.0f, -423.0f, 0.0f });
 	mEnemyNum->SetScale(0.8f);
 
-	if (FPS_ENABLE)
-	{
-		mFPS = new NumberActor(this, 0.0f, 3);
-		mFPS->SetOriPosition(dx::XMFLOAT3{ -890.0f, -500.0f, 0.0f });
-		mFPS->SetScale(0.5f);
-	}
+#ifdef  FPS_ENABLE
+	mFPS = new NumberActor(this, 0.0f, 3);
+	mFPS->SetOriPosition(dx::XMFLOAT3{ -890.0f, -500.0f, 0.0f });
+	mFPS->SetScale(0.5f);
+#endif
 }
 
 void GameScene::CreateUIActor()

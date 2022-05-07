@@ -7,9 +7,11 @@
 #include "InputSystem.h"
 #include "Parameter.h"
 #include "PauseScreen.h"
+#include "ParticleManager.h"
 
 BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	:
+	mParticleManager(nullptr),
 	mSceneManager(sm),
 	mTimer(new Timer()),
 	mUpdatingActors(false),
@@ -45,6 +47,12 @@ BaseScene::~BaseScene()
 	{
 		delete mFade;
 		mFade = nullptr;
+	}
+
+	if (mParticleManager)
+	{
+		delete mParticleManager;
+		mParticleManager = nullptr;
 	}
 
 	GetRenderer()->UnloadData();

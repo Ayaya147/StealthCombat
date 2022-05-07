@@ -29,10 +29,10 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mCloud(new CloudActor(this)),
 	mExplosion(new ExplosionActor(this)),
 	mSmoke(new SmokeActor(this)),
-	mEmission(new EmissionActor(this)),
-	mParticleManager(new ParticleManager(this, GetRenderer()))
+	mEmission(new EmissionActor(this))
 {
-	mParticleManager->CreateParticleSystem(GetRenderer());
+	SetParticleManager(new ParticleManager(this, GetRenderer()));
+	GetParticleManager()->CreateParticleSystem(GetRenderer());
 	
 	mCloud->SetScale(dx::XMFLOAT3{ 10.0f,5.0f,10.0f });
 	mCloud->SetPosition(dx::XMFLOAT3{ -7.0f,Constant::height,0.0f });
@@ -64,7 +64,6 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 
 DemoScene::~DemoScene()
 {
-	delete mParticleManager;
 }
 
 void DemoScene::ProcessInput()
@@ -85,7 +84,7 @@ void DemoScene::Update()
 	switch (GetSceneState())
 	{
 	case SceneState::EPlay:
-		mParticleManager->Update(GetRenderer());
+		GetParticleManager()->Update(GetRenderer());
 		mMouseCursor->SetPosition(GetWindow()->GetMouseCursorPos());
 		break;
 	}

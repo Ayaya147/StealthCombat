@@ -42,7 +42,7 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
     float3 mirrorEyeDir = normalize(reflect(-viewDir, normal));
 
     float facing = saturate(1.0f - dot(viewDir, normal));
-    float fresnel = mF0 + (1.0f - mF0) * pow(facing, 20.0f);
+    float fresnel = mF0 + (1.0f - mF0) * pow(facing, 30.0f);
     
     float3 diffuse = saturate(dot(normal, lightDir)) * mDiffuseColor;
     
