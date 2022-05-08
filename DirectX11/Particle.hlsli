@@ -68,5 +68,5 @@ void SpawnParticle(inout uint rand)
     ParticleOut[index].velocity = (float4(lerp(_velocityMin.x, _velocityMax.x, wang_hash(rand)), lerp(_velocityMin.y, _velocityMax.y, wang_hash(rand)), lerp(_velocityMin.z, _velocityMax.z, wang_hash(rand)), 0));
     ParticleOut[index].scale = lerp(_scaleMin, _scaleMax, wang_hash(rand));
     ParticleOut[index].position = _position + float4(lerp(_positionMin.x, _positionMax.x, wang_hash(rand)), lerp(_positionMin.y, _positionMax.y, wang_hash(rand)), lerp(_positionMin.z, _positionMax.z, wang_hash(rand)), 0);
-    ParticleOut[index].color = float4(lerp(0, 0.5, wang_hash(rand)), lerp(0, 0.5, wang_hash(rand)), lerp(0.5, 1, wang_hash(rand)), 1);
+    ParticleOut[index].color = float4(lerp(0, 1, wang_hash(rand)), lerp(0, 1, wang_hash(rand)), lerp(0, 1, wang_hash(rand)), 1);
 }

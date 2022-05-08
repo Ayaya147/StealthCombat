@@ -141,7 +141,6 @@
     <ClCompile Include="PhysWorld.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PlaneActor.cpp" />
-    <ClCompile Include="PlaneMesh.cpp" />
     <ClCompile Include="PlayerActor.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -335,7 +334,6 @@
     <ClInclude Include="PhysWorld.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PlaneActor.h" />
-    <ClInclude Include="PlaneMesh.h" />
     <ClInclude Include="PlayerActor.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />

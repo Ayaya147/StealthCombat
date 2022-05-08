@@ -1,5 +1,5 @@
 #include "PlaneActor.h"
-#include "PlaneMesh.h"
+#include "Mesh.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
 #include "BaseScene.h"
@@ -20,10 +20,8 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("plane");
-	PlaneMesh* planeMesh = dynamic_cast<PlaneMesh*>(mesh);
-	planeMesh->ParseMesh(renderer, "plane", L"GerstnerWave", 101, 20.0f);
-	MeshComponent* mc = new MeshComponent(this, planeMesh);
-	mCount = planeMesh->GetVerticesCount();
+	mesh->ParsePlaneMesh(renderer, "plane", L"GerstnerWave", 101, 20.0f, false);
+	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mVertexCBuffer = new VertexConstantBuffer<VertexConstant>(renderer, 1);
 	mPixelCBuffer = new PixelConstantBuffer<PixelConstant>(renderer, 1);

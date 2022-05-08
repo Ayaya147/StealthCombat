@@ -23,7 +23,7 @@ struct VSOut
     float4 pos : SV_POSITION;
 };
 
-VSOut main(float3 pos : POSITION)
+VSOut main(float3 pos : POSITION, float3 n : NORMAL, float2 tc : TEXCOORD)
 {
     VSOut vso;
 

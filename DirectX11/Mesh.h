@@ -17,6 +17,7 @@ public:
 	virtual ~Mesh();
 
 	void ParseMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, bool textured = true);
+	void ParsePlaneMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int n, float size, bool textured = true);
 	void Bind(class Renderer* renderer);
 	void AddBind(class Bindable* bind);
 
@@ -26,15 +27,11 @@ public:
 	class IndexBuffer* GetIndexBuffer() const { return mIndexBuffer; }
 	int GetVerticesCount() const { return mVerticesCount; }
 	void SetIndexBuffer(class IndexBuffer* indexBuffer) { mIndexBuffer = indexBuffer; }
-	void SetVerticesCount(int count) { mVerticesCount = count; }
-
-protected:
-	bool mIsMeshParsed;
 
 private:
 	std::vector<class Bindable*> mBinds;
-
 	class IndexBuffer* mIndexBuffer;
 	std::string mFileName;
 	int mVerticesCount;
+	bool mIsMeshParsed;
 };

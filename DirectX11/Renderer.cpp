@@ -3,7 +3,6 @@
 #include "BindableCommon.h"
 #include "Renderer.h"
 #include "DxException.h"
-#include "PlaneMesh.h"
 #include "MeshComponent.h"
 #include "TranslucenceComponent.h"
 #include "SpriteComponent.h"
@@ -22,6 +21,7 @@
 #include "ParticleSystem.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui//imgui_impl_win32.h"
+#include "Mesh.h"
 
 namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
@@ -260,14 +260,7 @@ Mesh* Renderer::GetMesh(const std::string& fileName)
 	}
 	else
 	{
-		if (fileName != "plane")
-		{
-			mesh = new Mesh(fileName);
-		}
-		else
-		{
-			mesh = new PlaneMesh(fileName);
-		}
+		mesh = new Mesh(fileName);
 		mMeshes.emplace(fileName, mesh);
 	}
 

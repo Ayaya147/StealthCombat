@@ -132,9 +132,10 @@ void Minimap::Update(GameScene* game)
 	for (int i = 0; i < 4; i++)
 	{
 		Actor* sprite = mDirectionSprites[i]->GetOwner();
+		float sign = i % 2 == 0 ? 1.0f : -1.0f;
+
 		if (i / 2 == 0)
 		{
-			float sign = i % 2 == 0 ? 1.0f : -1.0f;
 			sprite->SetPosition({
 				-sin(angle)* sign*dist + mOrigin.x,
 				+cos(angle)* sign*dist + mOrigin.y,
@@ -143,7 +144,6 @@ void Minimap::Update(GameScene* game)
 		}
 		else
 		{
-			float sign = i % 2 == 0 ? 1.0f : -1.0f;
 			sprite->SetPosition({
 				+cos(-angle)* sign*dist + mOrigin.x,
 				-sin(-angle)* sign*dist + mOrigin.y,
