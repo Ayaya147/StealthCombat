@@ -197,8 +197,6 @@ void ParticleSystem::ImGuiWindow()
 		ImGui::SliderFloat2("Scale (Min/Max)", &mData.ScaleMin, 0, 30);
 		ImGui::SliderFloat3("Min Velocity", (float*)&mData.VelocityMin, -100, 100);
 		ImGui::SliderFloat3("Max Velocity", (float*)&mData.VelocityMax, -100, 100);
-		ImGui::SliderFloat3("Min Position", (float*)&mData.PositionMin, -100, 100);
-		ImGui::SliderFloat3("Max Position", (float*)&mData.PositionMax, -100, 100);
 
 		if (ImGui::Button("Reset"))
 		{
@@ -231,7 +229,7 @@ void ParticleSystem::Reset()
 		1024 * 512,
 		10.0f,
 		2000.0f,
-		5000,
+		10000,
 		1,
 		0,
 		0,
