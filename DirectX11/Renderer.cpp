@@ -70,7 +70,6 @@ void Renderer::Draw()
 	mContext->ClearDepthStencilView(mDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 
 	Draw3DScene();
-	Draw2DScene();
 
 	// imgui windows
 	if (isDemo)
@@ -82,16 +81,12 @@ void Renderer::Draw()
 		demo->GetEmission()->ImGuiWindow();
 		demo->GetParticleManager()->GetParticleSystem()->ImGuiWindow();
 		mLight->ImGuiWindow();
+
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-		SpriteComponent* mouseSpriteComp = demo->GetMouseSprite();
-		if (mouseSpriteComp->GetIsVisible())
-		{
-			mouseSpriteComp->GetTexture()->Bind(this);
-			mouseSpriteComp->Draw(this, mVertexBuffer);
-		}
 	}
+
+	Draw2DScene();
 
 	mSwapChain->Present(1, 0);
 }
