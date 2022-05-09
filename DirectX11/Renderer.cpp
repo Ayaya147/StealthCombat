@@ -85,7 +85,12 @@ void Renderer::Draw()
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-		demo->GetMouseSprite()->Draw(this, mVertexBuffer);
+		SpriteComponent* mouseSpriteComp = demo->GetMouseSprite();
+		if (mouseSpriteComp->GetIsVisible())
+		{
+			mouseSpriteComp->GetTexture()->Bind(this);
+			mouseSpriteComp->Draw(this, mVertexBuffer);
+		}
 	}
 
 	mSwapChain->Present(1, 0);

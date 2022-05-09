@@ -58,6 +58,10 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	tex = GetRenderer()->GetTexture("mouse");
 	mMouseSprite = new SpriteComponent(mMouseCursor, tex);
 	mMouseCursor->SetScale(0.15f);
+#ifdef DEBUG
+	mMouseSprite->SetVisible(false);
+#endif
+
 
 	GetRenderer()->ResetLight();
 }

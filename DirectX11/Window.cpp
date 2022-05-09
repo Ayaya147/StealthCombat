@@ -11,7 +11,9 @@ Window::Window(int width, int height, InputSystem* input)
 	mHeight(height),
 	mhInst(GetModuleHandle(nullptr))
 {
+#ifdef NDEBUG
 	ShowCursor(FALSE);
+#endif
 
 	WNDCLASSEX wc = {};
 	wc.cbSize = sizeof(wc);
