@@ -22,6 +22,7 @@
 #include "XMFloatHelper.h"
 #include "Texture.h"
 #include "Random.h"
+#include "TranslucenceComponent.h"
 
 namespace dx = DirectX;
 
@@ -38,7 +39,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	Actor(scene),
 	mOutCloudTime(14.0f),
 	mEmitterCD(0.05f),
-	mPlayerSprite(nullptr),
+	mPlayerTranslucenceComp(nullptr),
 	mTargetEnemy(nullptr),
 	mIsInCloud(false),
 	mIsLockedOn(false),
@@ -73,11 +74,10 @@ PlayerActor::PlayerActor(BaseScene* scene)
 		sphere = new Sphere(GetPosition(), 12.0f);
 		mAttackRange->SetSphereLast(sphere);
 
-		Actor* sprite = new Actor(GetScene());
-		Texture* tex = renderer->GetTexture("player");
-		mPlayerSprite = new SpriteComponent(sprite, tex);
-		sprite->SetScale(0.1f);
-		mPlayerSprite->SetVisible(false);
+		Actor* actor = new Actor(GetScene());
+		Mesh* mesh = renderer->GetMesh("planePlayer");
+		mesh->ParsePlaneMesh(renderer, "player_guide", L"Phong", 2, 1.5f, true);
+		mPlayerTranslucenceComp = new TranslucenceComponent(actor, mesh, 300);
 
 		mCameraComponent = new CameraComponent(this, CameraComponent::CameraType::ESpring);
 	}
@@ -323,19 +323,13 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (mIsInCloud && !mIsLockedOn)
 		{
-			Actor* actor = mPlayerSprite->GetOwner();
-			mPlayerSprite->SetVisible(true);
-			dx::XMFLOAT3 clipPos = DXMath::LocalToClip(
-				this->GetWorldTransform(),
-				renderer->GetViewMatrix(),
-				renderer->GetProjectionMatrix()
-			);
-
-			actor->SetPosition(clipPos);
+			mPlayerTranslucenceComp->SetVisible(true);
+			mPlayerTranslucenceComp->GetOwner()->SetPosition(GetPosition());
+			mPlayerTranslucenceComp->GetOwner()->SetRotation(GetRotation());
 		}
 		else
 		{
-			mPlayerSprite->SetVisible(false);
+			mPlayerTranslucenceComp->SetVisible(false);
 		}
 	}
 }

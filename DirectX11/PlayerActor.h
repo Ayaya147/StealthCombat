@@ -24,7 +24,7 @@ private:
 	class MoveComponent* mMoveComponent;
 	class SphereComponent* mBody;
 	class SphereComponent* mAttackRange;
-	class SpriteComponent* mPlayerSprite;
+	class TranslucenceComponent* mPlayerTranslucenceComp;
 	class EnemyActor* mTargetEnemy;
 	bool mIsLockedOn;
 	bool mIsInCloud;

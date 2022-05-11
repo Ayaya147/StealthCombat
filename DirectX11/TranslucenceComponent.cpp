@@ -9,7 +9,8 @@ TranslucenceComponent::TranslucenceComponent(Actor* owner, Mesh* mesh, int drawO
 	:
 	Component(owner),
 	mMesh(mesh),
-	mDrawOrder(drawOrder)
+	mDrawOrder(drawOrder),
+	mIsVisible(true)
 {
 	GetOwner()->GetScene()->GetRenderer()->AddTranslucenceComp(this);
 }

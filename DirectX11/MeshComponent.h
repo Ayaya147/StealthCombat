@@ -12,6 +12,6 @@ public:
 	class Mesh* GetMesh() const { return mMesh; }
 	void SetMesh(class Mesh* mesh) { mMesh = mesh; }
 
-protected:
+private:
 	class Mesh* mMesh;
 };

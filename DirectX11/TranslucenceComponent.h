@@ -10,10 +10,13 @@ public:
 	void Draw(class Renderer* renderer);
 
 	void SetMesh(class Mesh* mesh) { mMesh = mesh; }
+	void SetVisible(bool visible) { mIsVisible = visible; }
 	class Mesh* GetMesh() const { return mMesh; }
 	int GetDrawOrder() const { return mDrawOrder; }
+	bool GetIsVisible() const { return mIsVisible; }
 
-protected:
+private:
 	class Mesh* mMesh;
 	int mDrawOrder;
+	bool mIsVisible;
 };
