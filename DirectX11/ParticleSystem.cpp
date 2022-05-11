@@ -195,8 +195,8 @@ void ParticleSystem::ImGuiWindow()
 		ImGui::SliderFloat("Mass", &mData.mass, 0.1f, 10000.0f);
 		ImGui::SliderFloat2("Lifetime (Min/Max)", &mData.LifeTimeMin, 0, 30);
 		ImGui::SliderFloat2("Scale (Min/Max)", &mData.ScaleMin, 0, 30);
-		ImGui::SliderFloat3("Min Velocity", (float*)&mData.VelocityMin, -100, 100);
-		ImGui::SliderFloat3("Max Velocity", (float*)&mData.VelocityMax, -100, 100);
+		ImGui::SliderFloat3("Min Velocity", (float*)&mData.VelocityMin, -200, 200);
+		ImGui::SliderFloat3("Max Velocity", (float*)&mData.VelocityMax, -200, 200);
 
 		if (ImGui::Button("Reset"))
 		{
@@ -206,16 +206,6 @@ void ParticleSystem::ImGuiWindow()
 	ImGui::End();
 }
 
-void ParticleSystem::EnableEmitParticle()
-{
-	mData.rate = 20000;
-}
-
-void ParticleSystem::DisableEmitParticle()
-{
-	mData.rate = 0;
-}
-
 void ParticleSystem::Reset()
 {
 	float distance = 200.0f;
@@ -223,18 +213,18 @@ void ParticleSystem::Reset()
 	mData = {
 		2.0f,
 		5.0f,
-		1.0f,
-		3.0f,
+		2.0f,
+		4.0f,
 		1024 * 1,
 		1024 * 512,
 		10.0f,
 		2000.0f,
-		10000,
+		5000,
 		1,
 		0,
 		0,
-		{ -50, 100, -50, 0 },
-		{ 50, 150, 50, 0 },
+		{ -50, -150, -50, 0 },
+		{ 50, -100, 50, 0 },
 		{ -distance, -distance, -distance, 0 },
 		{ distance, distance, distance, 0 },
 		{0, 0, 0, 1}
@@ -245,6 +235,8 @@ void ParticleSystem::ForceUpdateBuffer(Renderer* renderer)
 {
 	D3D11_MAPPED_SUBRESOURCE ms{ 0 };
 	renderer->GetContext()->Map(mComputeCBufferParticle, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &ms);
+	dx::XMFLOAT3 at = renderer->GetViewAtPosition();
+	mData.Position = { at.x,at.y, at.z, 1.0f };
 	memcpy(ms.pData, &mData, sizeof(ParticleConstant));
 	renderer->GetContext()->Unmap(mComputeCBufferParticle, 0);
 }

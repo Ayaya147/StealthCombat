@@ -40,10 +40,12 @@ public:
 	DirectX::XMMATRIX GetProjectionMatrix() const { return DirectX::XMLoadFloat4x4(&mProjection); }
 	const DirectX::XMFLOAT4X4& GetProjectionMatrix2D4x4f() const { return mProjection2D; }
 	DirectX::XMMATRIX GetProjectionMatrix2D() const { return DirectX::XMLoadFloat4x4(&mProjection2D); }
+	DirectX::XMFLOAT3 GetViewAtPosition() const { return mViewAtPosition; }
 
 	void SetViewMatrix(const DirectX::XMFLOAT4X4& view) { mView = view; }
 	void SetScene(class BaseScene* scene) { mScene = scene; }
 	void SetDirectionalLight(const struct DirectionalLight& light);
+	void SetViewAtPosition(const DirectX::XMFLOAT3& pos) { mViewAtPosition = pos; }
 
 private:
 	void InitDirectX(HWND hWnd, int width, int height);
@@ -65,6 +67,7 @@ private:
 	DirectX::XMFLOAT4X4 mView;
 	DirectX::XMFLOAT4X4 mProjection;
 	DirectX::XMFLOAT4X4 mProjection2D;
+	DirectX::XMFLOAT3 mViewAtPosition;
 
 	class Stencil* mDepthOn;
 	class Stencil* mDepthOff;

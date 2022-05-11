@@ -32,15 +32,6 @@ ParticleManager::ParticleManager(BaseScene* scene, Renderer* renderer)
 	mComputeCBufferCamera = new ComputeConstantBuffer<CameraConstant>(renderer, 1);
 	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
 	mGeometryCBufferSystem = new GeometryConstantBuffer<SystemConstant>(renderer, 0);
-
-	dx::XMFLOAT3 cameraPos = { 0.0f,100.0f,0.0f };
-	dx::XMFLOAT3 at = { 0.0f,0.0f,0.0f };
-	dx::XMFLOAT3 up = { 0.0f,0.0f,1.0f };
-	mVirtualViewMatrix = dx::XMMatrixLookAtLH(
-		dx::XMLoadFloat3(&cameraPos),
-		dx::XMLoadFloat3(&at),
-		dx::XMLoadFloat3(&up)
-	);
 }
 
 ParticleManager::~ParticleManager()
@@ -86,7 +77,7 @@ void ParticleManager::Update(Renderer* renderer)
 
 	CameraConstant cc = {};
 	cc.mProjectionMatrix = mScene->GetRenderer()->GetProjectionMatrix();
-	cc.mViewMatrix = mVirtualViewMatrix;
+	cc.mViewMatrix = mScene->GetRenderer()->GetViewMatrix();
 	cc.mInvProjectionMatrix = dx::XMMatrixInverse(nullptr, cc.mProjectionMatrix);
 	cc.mInvViewMatrix = dx::XMMatrixInverse(nullptr, cc.mViewMatrix);
 
@@ -99,18 +90,6 @@ void ParticleManager::Update(Renderer* renderer)
 		if (!ps->GetIsInit())
 		{
 			ps->Init(renderer, mParticleInitShader);
-		}
-
-		if (auto game = dynamic_cast<GameScene*>(mScene))
-		{
-			if (game->GetPlayer()->GetIsInCloud())
-			{
-				ps->EnableEmitParticle();
-			}
-			else
-			{
-				ps->DisableEmitParticle();
-			}
 		}
 
 		ps->Update(renderer, mParticleEmitShader, mParticleUpdateShader);

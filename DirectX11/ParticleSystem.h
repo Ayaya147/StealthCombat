@@ -15,8 +15,6 @@ public:
 	void Update(class Renderer* renderer, class ComputeShader* particleEmitShader, class ComputeShader* particleUpdateShader);
 	void Draw(class Renderer* renderer);
 	void ImGuiWindow();
-	void EnableEmitParticle();
-	void DisableEmitParticle();
 
 	bool GetIsInit() { return mIsInit; }
 

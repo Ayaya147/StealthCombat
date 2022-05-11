@@ -114,9 +114,15 @@ void Renderer::Draw3DScene()
 		}
 	}
 
-	// draw translucent 3D objects
-	mDepthOff->Bind(this);
+	// draw particles
 	mBlenderOn->Bind(this);
+	mDepthOff->Bind(this);
+	if (mScene->GetParticleManager())
+	{
+		mScene->GetParticleManager()->Draw(this);
+	}
+
+	// draw translucent 3D objects
 	lastMesh = nullptr;
 	for (auto tc : mTranslucenceComps)
 	{
@@ -130,12 +136,6 @@ void Renderer::Draw3DScene()
 			}
 			tc->Draw(this);
 		}
-	}
-
-	// draw particles
-	if (mScene->GetParticleManager())
-	{
-		mScene->GetParticleManager()->Draw(this);
 	}
 }
 

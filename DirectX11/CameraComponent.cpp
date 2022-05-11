@@ -29,7 +29,8 @@ void CameraComponent::ProcessInput()
 
 void CameraComponent::Update(float deltaTime)
 {
-	dx::XMMATRIX view;
+	dx::XMMATRIX view = {};
+	dx::XMFLOAT3 at = {};
 
 	switch (mType)
 	{
@@ -40,10 +41,12 @@ void CameraComponent::Update(float deltaTime)
 			GetOwner()->GetPosition().z
 		};
 
+		at = GetOwner()->GetPosition();
+
 		dx::XMFLOAT3 up = GetOwner()->GetForward();
 		view = dx::XMMatrixLookAtLH(
 			dx::XMLoadFloat3(&cameraPos),
-			dx::XMLoadFloat3(&GetOwner()->GetPosition()),
+			dx::XMLoadFloat3(&at),
 			dx::XMLoadFloat3(&up)
 		);
 
@@ -60,7 +63,7 @@ void CameraComponent::Update(float deltaTime)
 		mActualPos += mVelocity * deltaTime;
 
 		dx::XMFLOAT3 up = GetOwner()->GetForward();
-		dx::XMFLOAT3 at = GetOwner()->GetPosition() + GetOwner()->GetForward() * 1.5f;
+		at = GetOwner()->GetPosition() + GetOwner()->GetForward() * 1.5f;
 
 		float strength = 0.0f;
 		switch (mState)
@@ -92,6 +95,7 @@ void CameraComponent::Update(float deltaTime)
 	dx::XMFLOAT4X4 v;
 	dx::XMStoreFloat4x4(&v, view);
 	GetOwner()->GetScene()->GetRenderer()->SetViewMatrix(v);
+	GetOwner()->GetScene()->GetRenderer()->SetViewAtPosition(at);
 }
 
 void CameraComponent::SnapToIdeal()
