@@ -72,7 +72,8 @@ EnemyActor::~EnemyActor()
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
 		game->RemoveEnemy(this);
-		game->GetMinimap()->RemoveEnemySprites(game, this);
+		game->GetMinimap()->RemoveEnemySprites();
+		game->RemoveEnemyGuideTranslucenceComp();
 	}
 }
 

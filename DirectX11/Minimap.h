@@ -9,7 +9,7 @@ public:
 	~Minimap();
 
 	void Update(class GameScene* game);
-	void RemoveEnemySprites(class GameScene* game, class EnemyActor* enemy);
+	void RemoveEnemySprites();
 
 private:
 	static constexpr DirectX::XMFLOAT2 mOrigin = { -670.0f, -270.0f };

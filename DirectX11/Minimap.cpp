@@ -153,13 +153,8 @@ void Minimap::Update(GameScene* game)
 	}
 }
 
-void Minimap::RemoveEnemySprites(GameScene* game, EnemyActor* enemy)
+void Minimap::RemoveEnemySprites()
 {
-	std::vector<EnemyActor*> enemies = game->GetEnemies();
-	auto iter = std::find(enemies.begin(), enemies.end(), enemy);
-	auto idx = iter - enemies.begin();
-
-	delete mEnemySprites[idx];
-	auto iter1 = std::find(mEnemySprites.begin(), mEnemySprites.end(), mEnemySprites[idx]);
-	mEnemySprites.erase(iter1);
+	delete mEnemySprites.back();
+	mEnemySprites.pop_back();
 }

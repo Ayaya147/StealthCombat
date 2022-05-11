@@ -208,7 +208,7 @@ void ParticleSystem::ImGuiWindow()
 
 void ParticleSystem::EnableEmitParticle()
 {
-	mData.rate = 50000;
+	mData.rate = 20000;
 }
 
 void ParticleSystem::DisableEmitParticle()
@@ -224,7 +224,7 @@ void ParticleSystem::Reset()
 		2.0f,
 		5.0f,
 		1.0f,
-		2.0f,
+		3.0f,
 		1024 * 1,
 		1024 * 512,
 		10.0f,

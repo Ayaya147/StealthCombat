@@ -16,6 +16,7 @@ public:
 	void RemoveEnemy(class EnemyActor* enemy);
 	void AddCloud(class CloudActor* cloud);
 	void RemoveCloud(class CloudActor* cloud);
+	void RemoveEnemyGuideTranslucenceComp();
 
 	void SetDestroyedSpriteTime(float time) { mDestroyedSpriteTime = time; }
 	void SetVibrationStrength(int strength) { mVibrationStrength = strength; }
@@ -37,7 +38,7 @@ private:
 
 	std::vector<class EnemyActor*> mEnemies;
 	std::vector<class CloudActor*> mClouds;
-
+	std::vector<class TranslucenceComponent*> mEnemyGuideTranslucenceComps;
 	class Minimap* mMap;
 	class PhysWorld* mPhysWorld;
 	class PlayerActor* mPlayer;
