@@ -22,7 +22,7 @@ EmissionActor::EmissionActor(BaseScene* scene)
 	:
 	Actor(scene),
 	mIsAnimation(true),
-	mAnimationSpeed(1.0f)
+	mAnimationSpeed(1.5f)
 {
 	mCount++;
 	Reset();

@@ -51,14 +51,6 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	CreateUIActor();
 	CreatePauseScreen();
 	CreateSound();
-
-	Mesh* mesh = GetRenderer()->GetMesh("planeEnemy");
-	for (int i = 0; i < mEnemies.size(); i++)
-	{
-		Actor* actor = new Actor(this);
-		mesh->ParsePlaneMesh(GetRenderer(), "enemy_guide", L"Phong", 2, 0.6f, true);
-		mEnemyGuideTranslucenceComps.emplace_back(new TranslucenceComponent(actor, mesh, 400));
-	}
 }
 
 GameScene::~GameScene()
@@ -252,13 +244,13 @@ void GameScene::Update()
 		for (int i = 0; i < mEnemyGuideTranslucenceComps.size(); i++)
 		{
 			float dist = 3.0f;
-			dx::XMFLOAT3 playerToEnemy = DXMath::Normalize(mEnemies[i]->GetPosition() - mPlayer->GetPosition());
+			dx::XMFLOAT3 playerToEnemy = DXMath::Normalize(
+				mEnemies[i]->GetPosition() - mPlayer->GetPosition()
+			);
 			mEnemyGuideTranslucenceComps[i]->GetOwner()->SetPosition(
 				mPlayer->GetPosition() + playerToEnemy * dist
 			);
-			mEnemyGuideTranslucenceComps[i]->GetOwner()->SetRotation(
-				{0.0f, mEnemies[i]->GetRotation().y, 0.0f}
-			);
+			mEnemyGuideTranslucenceComps[i]->GetOwner()->SetRotation({ mEnemies[i]->GetRotation() });
 		}
 	}
 		break;
@@ -369,6 +361,14 @@ void GameScene::CreateGameActor()
 	for (int i = 0; i < 28; i++)
 	{
 		CloudActor* cloud = new CloudActor(this);
+	}
+
+	Mesh* mesh = GetRenderer()->GetMesh("planeEnemy");
+	for (int i = 0; i < mEnemies.size(); i++)
+	{
+		Actor* actor = new Actor(this);
+		mesh->ParsePlaneMesh(GetRenderer(), "enemy_guide", L"Phong", 2, 0.6f, true);
+		mEnemyGuideTranslucenceComps.emplace_back(new TranslucenceComponent(actor, mesh, 400));
 	}
 }
 
