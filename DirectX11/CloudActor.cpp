@@ -38,7 +38,7 @@ CloudActor::CloudActor(BaseScene* scene)
 		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		Sphere tempSphere(pos, radius * GetScale().x*1.2f);
+		Sphere tempSphere(pos, radius * GetScale().x*1.3f);
 		sc->SetSphere(&tempSphere);
 
 		PhysWorld* phys = game->GetPhysWorld();

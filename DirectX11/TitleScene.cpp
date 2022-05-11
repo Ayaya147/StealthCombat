@@ -15,6 +15,7 @@
 #include "DefineConstant.h"
 #include "CameraComponent.h"
 #include "AudioSystem.h"
+#include "ParticleManager.h"
 
 namespace dx = DirectX;
 
@@ -29,9 +30,12 @@ TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 {
 	Renderer* renderer = GetRenderer();
 
+	SetParticleManager(new ParticleManager(this, renderer));
+	GetParticleManager()->CreateParticleSystem(renderer);
+
 	PlaneActor* plane = new PlaneActor(this);
 	CloudActor* cloud = new CloudActor(this);
-	cloud->SetScale(dx::XMFLOAT3{ 20.0f,1.0f,20.0f });
+	cloud->SetScale(dx::XMFLOAT3{ 20.0f,5.0f,20.0f });
 	cloud->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,1.5f });
 
 	Actor* actor = new Actor(this);
@@ -154,6 +158,8 @@ void TitleScene::Update()
 {
 	if (GetSceneState() == SceneState::EPlay)
 	{
+		GetParticleManager()->Update(GetRenderer());
+
 		mAlpha += mRate * GetDeltaTime();
 		if ((mAlpha <= 0.0f && mRate < 0.0f) || (mAlpha >= 1.0f && mRate > 0.0f))
 		{
