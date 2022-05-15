@@ -264,3 +264,4 @@ __pycache__/
 !DirectX11/Asset/**
 !DirectX11/Assimp/**
 !DirectX11/Dxtex/**
+!DirectX11/ImGui/**
