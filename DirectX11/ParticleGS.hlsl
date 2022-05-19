@@ -1,17 +1,3 @@
-#define DEBUG_MODE 0
-#pragma pack_matrix( row_major )
-#define PI 3.1415926535897932384626433832795
-
-cbuffer ConstantBuffer : register(b0)
-{
-    float _screenWidth;
-    float _screenHeight;
-    float _visualType;
-    float _time;
-    float _fps;
-    float3 _dummyCB;
-};
-
 struct Particle
 {
     float age, scale, d1, d2;
@@ -31,11 +17,12 @@ struct PS_INPUT
     float scale : SCALE;
 };
 
-[maxvertexcount(6)]
+[maxvertexcount(4)]
 void main(point PS_INPUT input[1], inout TriangleStream<PS_INPUT> outputStream)
 {
     float posX = 0.5 * input[0].scale;
-    float posY = posX * (_screenWidth / _screenHeight);
+    float posY = posX * 16.0f / 9.0f;
+    
     PS_INPUT output;
     output.scale = input[0].scale;
     output.col = input[0].col;

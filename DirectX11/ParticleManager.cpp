@@ -29,7 +29,6 @@ ParticleManager::ParticleManager(BaseScene* scene, Renderer* renderer)
 	mParticleGeometryShader = new GeometryShader(renderer, fileName);
 
 	mComputeCBufferSystem = new ComputeConstantBuffer<SystemConstant>(renderer, 0);
-	mComputeCBufferCamera = new ComputeConstantBuffer<CameraConstant>(renderer, 1);
 	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
 	mGeometryCBufferSystem = new GeometryConstantBuffer<SystemConstant>(renderer, 0);
 }
@@ -48,7 +47,6 @@ ParticleManager::~ParticleManager()
 	delete mParticlePixelShader;
 	delete mParticleGeometryShader;
 	delete mComputeCBufferSystem;
-	delete mComputeCBufferCamera;
 	delete mVertexCBufferCamera;
 	delete mGeometryCBufferSystem;
 }
@@ -81,8 +79,6 @@ void ParticleManager::Update(Renderer* renderer)
 	cc.mInvProjectionMatrix = dx::XMMatrixInverse(nullptr, cc.mProjectionMatrix);
 	cc.mInvViewMatrix = dx::XMMatrixInverse(nullptr, cc.mViewMatrix);
 
-	mComputeCBufferCamera->Update(renderer, cc);
-	mComputeCBufferCamera->Bind(renderer);
 	mVertexCBufferCamera->Update(renderer, cc);
 
 	for (auto ps : mParticleSystems)

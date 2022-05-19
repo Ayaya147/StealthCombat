@@ -8,15 +8,15 @@ ComputeData::~ComputeData()
 	uav->Release();
 }
 
-void ComputeData::InitBuf(Renderer* renderer, int data_size, int structSize, D3D11_CPU_ACCESS_FLAG cpuType, void* initData)
+void ComputeData::InitBuf(Renderer* renderer, int data_size, int structSize, void* initData)
 {
-	D3D11_BUFFER_DESC desc{ 0 };
+	D3D11_BUFFER_DESC desc = {};
 	desc.ByteWidth = data_size;
 	desc.StructureByteStride = structSize;
 	desc.BindFlags = D3D11_BIND_UNORDERED_ACCESS | D3D11_BIND_SHADER_RESOURCE;
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-	desc.CPUAccessFlags = cpuType;
+	desc.CPUAccessFlags = 0;
 	if (initData != nullptr)
 	{
 		D3D11_SUBRESOURCE_DATA data;
@@ -31,11 +31,10 @@ void ComputeData::InitBuf(Renderer* renderer, int data_size, int structSize, D3D
 
 void ComputeData::InitUAV(Renderer* renderer)
 {
-	D3D11_BUFFER_DESC bufDesc{ 0 };
+	D3D11_BUFFER_DESC bufDesc = {};
 	buf->GetDesc(&bufDesc);
 
-	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVdesc;
-	ZeroMemory(&UAVdesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+	D3D11_UNORDERED_ACCESS_VIEW_DESC UAVdesc = {};
 	UAVdesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 	UAVdesc.Buffer.FirstElement = 0;
 	UAVdesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -45,12 +44,10 @@ void ComputeData::InitUAV(Renderer* renderer)
 
 void ComputeData::InitSRV(Renderer* renderer)
 {
-	D3D11_BUFFER_DESC bufDesc{ 0 };
+	D3D11_BUFFER_DESC bufDesc = {};
 	buf->GetDesc(&bufDesc);
 
-	D3D11_SHADER_RESOURCE_VIEW_DESC SRVdesc;
-	ZeroMemory(&SRVdesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-
+	D3D11_SHADER_RESOURCE_VIEW_DESC SRVdesc = {};
 	SRVdesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
 	SRVdesc.Format = DXGI_FORMAT_UNKNOWN;
 	SRVdesc.BufferEx.FirstElement = 0;

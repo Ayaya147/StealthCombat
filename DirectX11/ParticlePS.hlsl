@@ -1,5 +1,3 @@
-#define PI 3.1415926535897932384626433832795
-
 struct PS_INPUT
 {
     float4 pos : SV_POSITION;
@@ -7,6 +5,8 @@ struct PS_INPUT
     float2 uv : TEXCOORD0;
     float scale : SCALE;
 };
+
+static const float PI = 3.14159;
 
 float4 main(PS_INPUT input) : SV_Target
 {

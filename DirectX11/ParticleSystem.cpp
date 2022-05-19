@@ -1,6 +1,4 @@
 #include "ParticleSystem.h"
-#include <cassert>
-#include <functional>
 #include "Renderer.h"
 #include "BindableCommon.h"
 #include "ComputeData.h"
@@ -79,14 +77,14 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 	uint32_t count = mCurrentParticleCount;
 	for (int i = 0; i < 2; i++)
 	{
-		mParticles[i] = new ComputeData;
-		mParticleCount[i] = new ComputeData;
+		mParticles[i] = new ComputeData();
+		mParticleCount[i] = new ComputeData();
 
 		mParticles[i]->InitBuf(renderer, mData.maxParticles * sizeof(Particle), sizeof(Particle));
 		mParticles[i]->InitUAV(renderer);
 		mParticles[i]->InitSRV(renderer);
 
-		mParticleCount[i]->InitBuf(renderer, sizeof(uint32_t), sizeof(uint32_t), (D3D11_CPU_ACCESS_FLAG)0, &count);
+		mParticleCount[i]->InitBuf(renderer, sizeof(uint32_t), sizeof(uint32_t), &count);
 		mParticleCount[i]->InitUAV(renderer);
 		mParticleCount[i]->InitSRV(renderer);
 	}
@@ -111,19 +109,18 @@ void ParticleSystem::Init(Renderer* renderer, ComputeShader* particleInitShader)
 	mIsInit = true;
 
 	particleInitShader->Bind(renderer);
-	renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
+	renderer->GetContext()->CSSetConstantBuffers(1, 1, &mComputeCBufferParticle);
 	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
 	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
 	renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
+	mIsBackBuffer = !mIsBackBuffer;
 
 	ID3D11ShaderResourceView* nullSRVs[2] = { nullptr,nullptr };
 	ID3D11UnorderedAccessView* nullUAVs[2] = { nullptr,nullptr };
 	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
-
-	mIsBackBuffer = !mIsBackBuffer;
 }
 
 void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShader, ComputeShader* particleUpdateShader)
@@ -133,29 +130,28 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 
 	UpdateDispatchBuffer(renderer);
 
-	{
-		particleEmitShader->Bind(renderer);
-		renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
-		ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
-		renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
-		ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
-		renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
-		renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
-		renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
-		renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
-		mIsBackBuffer = !mIsBackBuffer;
-	}
+	//
+	particleEmitShader->Bind(renderer);
+	renderer->GetContext()->CSSetConstantBuffers(1, 1, &mComputeCBufferParticle);
+	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
+	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
+	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
+	renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
+	mIsBackBuffer = !mIsBackBuffer;
 
-	{
-		particleUpdateShader->Bind(renderer);
-		renderer->GetContext()->CSSetConstantBuffers(2, 1, &mComputeCBufferParticle);
-		ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
-		renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
-		ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
-		renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
-		renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
-		mIsBackBuffer = !mIsBackBuffer;
-	}
+	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
+
+	//
+	particleUpdateShader->Bind(renderer);
+	renderer->GetContext()->CSSetConstantBuffers(1, 1, &mComputeCBufferParticle);
+	ID3D11ShaderResourceView* srvs_[2] = { mParticles[!mIsBackBuffer]->srv,mParticleCount[!mIsBackBuffer]->srv };
+	renderer->GetContext()->CSSetShaderResources(0, 2, srvs_);
+	ID3D11UnorderedAccessView* uavs_[2] = { mParticles[mIsBackBuffer]->uav, mParticleCount[mIsBackBuffer]->uav };
+	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs_, nullptr);
+	renderer->GetContext()->DispatchIndirect(mDispatchBuffer, 0);
+	mIsBackBuffer = !mIsBackBuffer;
 
 	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
@@ -174,13 +170,14 @@ void ParticleSystem::Draw(Renderer* renderer)
 	instancedArgs.InstanceCount = 1;
 	instancedArgs.VertexCountPerInstance = *(int*)msCount.pData;
 	memcpy(msDraw.pData, &instancedArgs, sizeof(D3D11_DRAW_INSTANCED_INDIRECT_ARGS));
+	mCurrentParticleCount = instancedArgs.VertexCountPerInstance;
 
 	renderer->GetContext()->Unmap(mCPUParticleCountReadBuffer, 0);
 	renderer->GetContext()->Unmap(mInstancedDrawBuffer, 0);
 
-	mCurrentParticleCount = instancedArgs.VertexCountPerInstance;
 	renderer->GetContext()->VSSetShaderResources(0, 1, &mParticles[!mIsBackBuffer]->srv);
 	renderer->GetContext()->DrawInstancedIndirect(mInstancedDrawBuffer, 0);
+
 	ID3D11ShaderResourceView* nullSRVs[1] = { nullptr };
 	renderer->GetContext()->VSSetShaderResources(0, 1, nullSRVs);
 }
@@ -208,8 +205,6 @@ void ParticleSystem::ImGuiWindow()
 
 void ParticleSystem::Reset()
 {
-	float distance = 200.0f;
-
 	mData = {
 		2.0f,
 		5.0f,
@@ -225,8 +220,8 @@ void ParticleSystem::Reset()
 		0,
 		{ -50, -100, -50, 0 },
 		{ 50, -50, 50, 0 },
-		{ -distance, -distance, -distance, 0 },
-		{ distance, distance, distance, 0 },
+		{ -200.0f, -200.0f, -200.0f, 0 },
+		{ 200.0f, 200.0f, 200.0f, 0 },
 		{0, 0, 0, 1}
 	};
 }

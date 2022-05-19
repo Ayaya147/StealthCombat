@@ -14,17 +14,7 @@ cbuffer SystemBuffer : register(b0)
     float3 _random;
 };
 
-cbuffer CameraBuffer : register(b1)
-{
-    float4x4 _viewMatrix;
-    float4x4 _projectionMatrix;
-    float4x4 _invProjectionMatrix;
-    float4x4 _invViewMatrix;
-    float4 _cameraPosition;
-    float4 _cameraDir;
-};
-
-cbuffer ParticleEmitter : register(b2)
+cbuffer ParticleEmitter : register(b1)
 {
     float _lifeTimeMin, _lifeTimeMax, _scaleMin, _scaleMax; //16
     int _newParticles = 0, _maxParticles = 0; //8 

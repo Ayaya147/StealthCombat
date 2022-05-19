@@ -37,7 +37,9 @@ void main(uint3 DTid : SV_DispatchThreadID)
     if (particlesToEmitPerThread <= 1.0)
     {
         if (particlesToEmitPerThread < 0.000001f)
+        {
             return;
+        }
 
         const float numSpawningThreads = totalThreads * particlesToEmitPerThread;
         if (i <= floor(numSpawningThreads))

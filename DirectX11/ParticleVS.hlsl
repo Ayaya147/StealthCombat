@@ -1,15 +1,9 @@
-#define DEBUG_MODE 0
 #pragma pack_matrix( row_major )
-#define PI 3.1415926535897932384626433832795
 
-cbuffer CameraBuffer : register(b0)
+cbuffer CBuf : register(b0)
 {
     float4x4 _viewMatrix;
     float4x4 _projectionMatrix;
-    float4x4 _invProjectionMatrix;
-    float4x4 _invViewMatrix;
-    float4 _cameraPosition;
-    float4 _cameraDir;
 };
 
 struct Particle
