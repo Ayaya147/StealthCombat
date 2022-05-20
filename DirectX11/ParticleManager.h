@@ -24,7 +24,7 @@ private:
 	struct SystemConstant
 	{
 		float mDeltaTime;
-		float mD1;
+		float mRandom;
 		float padding[2];
 	};
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
 #include <d3d11.h>
+#include <wrl.h>
 
 template<class C>
 class ComputeConstantBuffer;
@@ -20,8 +21,7 @@ public:
 
 private:
 	void Reset();
-	void ForceUpdateBuffer(class Renderer* renderer);
-	void UpdateDispatchBuffer(class Renderer* renderer);
+	void UpdateBuffers(class Renderer* renderer);
 
 	struct DispatchBuffer
 	{
@@ -32,30 +32,30 @@ private:
 
 	struct Particle
 	{
-		DirectX::XMFLOAT4 velocity;
-		DirectX::XMFLOAT4 color;
-		DirectX::XMFLOAT4 position;
-		float age;
-		float scale;
+		DirectX::XMFLOAT4 mVelocity;
+		DirectX::XMFLOAT4 mColor;
+		DirectX::XMFLOAT4 mPosition;
+		float mAge;
+		float mScale;
 	};
 
 	struct ParticleConstant
 	{
-		DirectX::XMFLOAT4 VelocityMin;
-		DirectX::XMFLOAT4 VelocityMax;
-		DirectX::XMFLOAT4 PositionMin;
-		DirectX::XMFLOAT4 PositionMax;
-		DirectX::XMFLOAT4 Position;
-		float LifeTimeMin;
-		float LifeTimeMax;
-		float ScaleMin;
-		float ScaleMax;
-		uint32_t newParticles;
-		uint32_t maxParticles;
-		float gravity;
-		float mass;
-		int rate;
-		int numDispatch;
+		DirectX::XMFLOAT4 mVelocityMin;
+		DirectX::XMFLOAT4 mVelocityMax;
+		DirectX::XMFLOAT4 mPositionMin;
+		DirectX::XMFLOAT4 mPositionMax;
+		DirectX::XMFLOAT4 mPosition;
+		float mLifeTimeMin;
+		float mLifeTimeMax;
+		float mScaleMin;
+		float mScaleMax;
+		uint32_t mNewParticles;
+		uint32_t mMaxParticles;
+		float mGravity;
+		float mMass;
+		int mRate;
+		int mNumDispatch;
 		float padding[2];
 	};
 
@@ -64,12 +64,12 @@ private:
 	unsigned int mCurrentParticleCount;
 
 	DispatchBuffer mDispatchBufferData;
-	ID3D11Buffer* mDispatchBuffer = nullptr;
-	ID3D11Buffer* mCPUParticleCountReadBuffer = nullptr;
-	ID3D11Buffer* mInstancedDrawBuffer = nullptr;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> mDispatchBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> mCPUParticleCountReadBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> mInstancedDrawBuffer;
 
 	ParticleConstant mData;
-	ID3D11Buffer* mComputeCBufferParticle;
+	ComputeConstantBuffer<ParticleConstant>* mComputeCBufferParticle;
 
 	class ComputeData* mParticleCount[2];
 	class ComputeData* mParticles[2];

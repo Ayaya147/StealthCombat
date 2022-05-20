@@ -5,7 +5,6 @@
 #include "BaseScene.h"
 #include "GameScene.h"
 #include "Window.h"
-#include "Random.h"
 #include "PlayerActor.h"
 
 namespace dx = DirectX;
@@ -59,7 +58,7 @@ void ParticleManager::Update(Renderer* renderer)
 {
 	SystemConstant sc = {};
 	sc.mDeltaTime = mScene->GetDeltaTime();
-	sc.mD1 = (float)rand();
+	sc.mRandom = static_cast<float>(rand());
 
 	mComputeCBufferSystem->Update(renderer, sc);
 	mComputeCBufferSystem->Bind(renderer);
@@ -67,6 +66,7 @@ void ParticleManager::Update(Renderer* renderer)
 	CameraConstant cc = {};
 	cc.mProjectionMatrix = dx::XMMatrixTranspose(mScene->GetRenderer()->GetProjectionMatrix());
 	cc.mViewMatrix = dx::XMMatrixTranspose(mScene->GetRenderer()->GetViewMatrix());
+
 	mVertexCBufferCamera->Update(renderer, cc);
 
 	for (auto ps : mParticleSystems)
@@ -84,12 +84,13 @@ void ParticleManager::Update(Renderer* renderer)
 
 void ParticleManager::Draw(Renderer* renderer)
 {
-	ID3D11Buffer* nullBuffs[1] = { nullptr };
-	uint32_t nullstrides[1] = { 0 };
+	ID3D11Buffer* nullBuff = nullptr;
+	uint32_t nullstride = 0;
+
 	renderer->GetContext()->IASetInputLayout(nullptr);
 	renderer->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	renderer->GetContext()->IASetIndexBuffer(nullptr, DXGI_FORMAT::DXGI_FORMAT_UNKNOWN, 0);
-	renderer->GetContext()->IASetVertexBuffers(0, 1, nullBuffs, nullstrides, nullstrides);
+	renderer->GetContext()->IASetVertexBuffers(0, 1, &nullBuff, &nullstride, &nullstride);
 	mParticleVertexShader->Bind(renderer);
 	mParticlePixelShader->Bind(renderer);
 	mParticleGeometryShader->Bind(renderer);

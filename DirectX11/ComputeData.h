@@ -1,17 +1,19 @@
 #pragma once
 #include <d3d11.h>
+#include <wrl.h>
 
 class ComputeData
 {
 public:
+	ComputeData(class Renderer* renderer, int dataSize, int structSize, void* initData = nullptr);
 	~ComputeData();
 
-	void InitBuf(class Renderer* renderer, int data_size, int structSize, void* initData = nullptr);
+	Microsoft::WRL::ComPtr<ID3D11Buffer> mBuffer;
+	Microsoft::WRL::ComPtr<ID3D11UnorderedAccessView> mUAV;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mSRV;
+
+private:
+	void InitBuf(class Renderer* renderer, int dataSize, int structSize, void* initData);
 	void InitUAV(class Renderer* renderer);
-	void InitSRV(class Renderer* renderer);
-
-
-	ID3D11Buffer* buf = nullptr;
-	ID3D11ShaderResourceView* srv = nullptr;
-	ID3D11UnorderedAccessView* uav = nullptr;
+	void InitSRV(class Renderer* renderer);	
 };
