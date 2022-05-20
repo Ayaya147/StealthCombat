@@ -2,8 +2,7 @@
 
 float3 GetAcceleration(in float3 movement, in float acceleration, in float3 velocity, in float friction, in float mass)
 {
-    float3 force = movement * acceleration;
-    return force - (friction * mass * velocity);
+    return movement * acceleration - (friction * mass * velocity);
 }
 
 [numthreads(numThreads, 1, 1)]
@@ -17,7 +16,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     }
     AllMemoryBarrier();
     
-    if (i < ParticleCountIn[0].x && ParticleIn[i].age > 0.0)
+    if (i < ParticleCountIn[0].x && ParticleIn[i].age > 0.0f)
     {
         InterlockedAdd(ParticleCountOut[0].x, 1);
 
@@ -25,22 +24,22 @@ void main(uint3 DTid : SV_DispatchThreadID)
         float3 cPos = ParticleIn[i].position.xyz;
         float3 oldVelocity = (ParticleIn[i].velocity.xyz);
 		
-        float3 dirToCenter = normalize(_position.xyz - cPos);
-        float dist = distance(_position.xyz, cPos);
+        float3 dirToCenter = normalize(mPosition.xyz - cPos);
+        float dist = distance(mPosition.xyz, cPos);
         dist *= dist;
 		
-        float force = clamp((_gravity * _mass) / (dist + 0.01), 0, 750);
+        float force = clamp((mGravity * mMass) / (dist + 0.01f), 0.0f, 750.0f);
         float3 movementVector = dirToCenter;
 
-        float3 acceleration = GetAcceleration(movementVector, force, oldVelocity, 0, _mass);
-        float3 halfStepVel = oldVelocity + 0.5 * _deltaTime * acceleration;
+        float3 acceleration = GetAcceleration(movementVector, force, oldVelocity, 0.0f, mMass);
+        float3 halfStepVel = oldVelocity + 0.5f * mDeltaTime * acceleration;
 
-        ParticleOut[i].position += float4(halfStepVel * _deltaTime, 0.0);
+        ParticleOut[i].position += float4(halfStepVel * mDeltaTime, 0.0f);
 		
-        acceleration = GetAcceleration(movementVector, force, halfStepVel, 0, _mass);
-        float3 newVelocity = halfStepVel + 0.5 * _deltaTime * acceleration;
+        acceleration = GetAcceleration(movementVector, force, halfStepVel, 0.0f, mMass);
+        float3 newVelocity = halfStepVel + 0.5f * mDeltaTime * acceleration;
 
         ParticleOut[i].velocity = float4(newVelocity, 0.0);
-        ParticleOut[i].age -= _deltaTime;
+        ParticleOut[i].age -= mDeltaTime;
     }
 }

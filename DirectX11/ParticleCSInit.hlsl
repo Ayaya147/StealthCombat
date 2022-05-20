@@ -3,13 +3,13 @@
 [numthreads(numThreads, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
-    uint particlesToEmit = clamp(_newParticles, 0, _maxParticles);
+    uint particlesToEmit = clamp(mNewParticles, 0, mMaxParticles);
 
-    ParticleOut[DTid.x].age = 0;
-    ParticleOut[DTid.x].color = float4(1, 1, 1, 1);
-    ParticleOut[DTid.x].position = float4(0, 0, 0, 0);
-    ParticleOut[DTid.x].scale = 0;
-    ParticleOut[DTid.x].velocity = float4(1, 1, 1, 0);
+    ParticleOut[DTid.x].age = 0.0f;
+    ParticleOut[DTid.x].color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    ParticleOut[DTid.x].position = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    ParticleOut[DTid.x].scale = 0.0f;
+    ParticleOut[DTid.x].velocity = float4(1.0f, 1.0f, 1.0f, 0.0f);
 	
     uint rand = DTid.x + 512;
 
