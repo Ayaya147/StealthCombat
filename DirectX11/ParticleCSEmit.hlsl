@@ -5,6 +5,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
 {
     int currentParticleAmount = ParticleCountIn[0].x;
     int i = DTid.x;
+    
     if (i == 0)
     {
         uint val = 0;
