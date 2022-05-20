@@ -1,5 +1,3 @@
-#pragma pack_matrix( row_major )
-
 cbuffer CBuf : register(b0)
 {
     float4x4 _viewMatrix;
@@ -8,11 +6,10 @@ cbuffer CBuf : register(b0)
 
 struct Particle
 {
-    float age, scale, d1, d2;
-    float3 velocity;
-    float d3;
+    float4 velocity;
     float4 color;
     float4 position;
+    float age, scale;
 };
 
 StructuredBuffer<Particle> ParticleIn : register(t0);

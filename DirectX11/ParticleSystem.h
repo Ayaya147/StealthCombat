@@ -32,14 +32,20 @@ private:
 
 	struct Particle
 	{
-		float age, scale, dummy1, dummy2;
 		DirectX::XMFLOAT4 velocity;
 		DirectX::XMFLOAT4 color;
 		DirectX::XMFLOAT4 position;
+		float age;
+		float scale;
 	};
 
 	struct ParticleConstant
 	{
+		DirectX::XMFLOAT4 VelocityMin;
+		DirectX::XMFLOAT4 VelocityMax;
+		DirectX::XMFLOAT4 PositionMin;
+		DirectX::XMFLOAT4 PositionMax;
+		DirectX::XMFLOAT4 Position;
 		float LifeTimeMin;
 		float LifeTimeMax;
 		float ScaleMin;
@@ -50,13 +56,7 @@ private:
 		float mass;
 		int rate;
 		int numDispatch;
-		int d2;
-		int d3;
-		DirectX::XMFLOAT4 VelocityMin;
-		DirectX::XMFLOAT4 VelocityMax;
-		DirectX::XMFLOAT4 PositionMin;
-		DirectX::XMFLOAT4 PositionMax;
-		DirectX::XMFLOAT4 Position;
+		float padding[2];
 	};
 
 	bool mIsInit;

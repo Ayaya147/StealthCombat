@@ -7,8 +7,6 @@ template<class C>
 class ComputeConstantBuffer;
 template<class C>
 class VertexConstantBuffer;
-template<class C>
-class GeometryConstantBuffer;
 
 class ParticleManager
 {
@@ -25,24 +23,15 @@ public:
 private:
 	struct SystemConstant
 	{
-		float mScreenWidth;
-		float mScreenHeight;
 		float mDeltaTime;
-		float mTime;
-		float mFPS;
 		float mD1;
-		float mD2;
-		float mTest;
+		float padding[2];
 	};
 
 	struct CameraConstant
 	{
 		DirectX::XMMATRIX mViewMatrix;
 		DirectX::XMMATRIX mProjectionMatrix;
-		DirectX::XMMATRIX mInvProjectionMatrix;
-		DirectX::XMMATRIX mInvViewMatrix;
-		DirectX::XMFLOAT4 mCameraPosition;
-		DirectX::XMFLOAT4 mCameraDir;
 	};
 
 	std::vector<class ParticleSystem*> mParticleSystems;
@@ -55,9 +44,7 @@ private:
 	class GeometryShader* mParticleGeometryShader;
 
 	ComputeConstantBuffer<SystemConstant>* mComputeCBufferSystem;
-	ComputeConstantBuffer<CameraConstant>* mComputeCBufferCamera;
 	VertexConstantBuffer<CameraConstant>* mVertexCBufferCamera;
-	GeometryConstantBuffer<SystemConstant>* mGeometryCBufferSystem;
 
 	class BaseScene* mScene;
 };

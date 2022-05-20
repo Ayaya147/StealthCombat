@@ -30,7 +30,6 @@ ParticleManager::ParticleManager(BaseScene* scene, Renderer* renderer)
 
 	mComputeCBufferSystem = new ComputeConstantBuffer<SystemConstant>(renderer, 0);
 	mVertexCBufferCamera = new VertexConstantBuffer<CameraConstant>(renderer, 0);
-	mGeometryCBufferSystem = new GeometryConstantBuffer<SystemConstant>(renderer, 0);
 }
 
 ParticleManager::~ParticleManager()
@@ -48,7 +47,6 @@ ParticleManager::~ParticleManager()
 	delete mParticleGeometryShader;
 	delete mComputeCBufferSystem;
 	delete mVertexCBufferCamera;
-	delete mGeometryCBufferSystem;
 }
 
 void ParticleManager::CreateParticleSystem(Renderer* renderer)
@@ -60,25 +58,15 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 void ParticleManager::Update(Renderer* renderer)
 {
 	SystemConstant sc = {};
-	sc.mScreenWidth = (float)mScene->GetWindow()->GetClientWidth();
-	sc.mScreenHeight = (float)mScene->GetWindow()->GetClientHeight();
 	sc.mDeltaTime = mScene->GetDeltaTime();
-	sc.mTime = mScene->GetGameTime();
-	sc.mFPS = 1.0f / sc.mDeltaTime;
 	sc.mD1 = (float)rand();
-	sc.mD2 = (float)rand();
-	sc.mTest = (float)rand();
 
 	mComputeCBufferSystem->Update(renderer, sc);
 	mComputeCBufferSystem->Bind(renderer);
-	mGeometryCBufferSystem->Update(renderer, sc);
 
 	CameraConstant cc = {};
-	cc.mProjectionMatrix = mScene->GetRenderer()->GetProjectionMatrix();
-	cc.mViewMatrix = mScene->GetRenderer()->GetViewMatrix();
-	cc.mInvProjectionMatrix = dx::XMMatrixInverse(nullptr, cc.mProjectionMatrix);
-	cc.mInvViewMatrix = dx::XMMatrixInverse(nullptr, cc.mViewMatrix);
-
+	cc.mProjectionMatrix = dx::XMMatrixTranspose(mScene->GetRenderer()->GetProjectionMatrix());
+	cc.mViewMatrix = dx::XMMatrixTranspose(mScene->GetRenderer()->GetViewMatrix());
 	mVertexCBufferCamera->Update(renderer, cc);
 
 	for (auto ps : mParticleSystems)
@@ -96,7 +84,7 @@ void ParticleManager::Update(Renderer* renderer)
 
 void ParticleManager::Draw(Renderer* renderer)
 {
-	ID3D11Buffer* nullBuffs[3] = { nullptr, nullptr, nullptr};
+	ID3D11Buffer* nullBuffs[1] = { nullptr };
 	uint32_t nullstrides[1] = { 0 };
 	renderer->GetContext()->IASetInputLayout(nullptr);
 	renderer->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -106,7 +94,6 @@ void ParticleManager::Draw(Renderer* renderer)
 	mParticlePixelShader->Bind(renderer);
 	mParticleGeometryShader->Bind(renderer);
 	mVertexCBufferCamera->Bind(renderer);
-	mGeometryCBufferSystem->Bind(renderer);
 
 	for (auto ps : mParticleSystems)
 	{

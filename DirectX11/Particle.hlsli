@@ -1,36 +1,29 @@
-#define DEBUG_MODE 0
-#define PI 3.1415926535897932384626433832795
-#define RandomTextureSize 1024.0
-
 static const uint numThreads = 512;
 
 cbuffer SystemBuffer : register(b0)
 {
-    float _screenWidth;
-    float _screenHeight;
     float _deltaTime;
-    float _time;
-    float _fps;
-    float3 _random;
+    float _random;
 };
 
 cbuffer ParticleEmitter : register(b1)
 {
-    float _lifeTimeMin, _lifeTimeMax, _scaleMin, _scaleMax; //16
-    int _newParticles = 0, _maxParticles = 0; //8 
-    float _gravity, _mass; //8
-    uint _emitRate, _numdispatch, _d2PE, _d3PE; // 8
-    float4 _velocityMin, _velocityMax; //32
-    float4 _positionMin, _positionMax; //32
-    float4 _position; //16
+    float4 _velocityMin, _velocityMax;
+    float4 _positionMin, _positionMax;
+    float4 _position;
+    float _lifeTimeMin, _lifeTimeMax;
+    float _scaleMin, _scaleMax;
+    int _newParticles, _maxParticles;
+    float _gravity, _mass;
+    uint _emitRate, _numdispatch;
 };
 
 struct Particle
 {
-    float age, scale, d1, d2;
     float4 velocity;
     float4 color;
     float4 position;
+    float age, scale;
 };
 
 StructuredBuffer<Particle> ParticleIn : register(t0);

@@ -24,7 +24,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     AllMemoryBarrier();
 
     currentParticleAmount = ParticleCountOut[0].x;
-    uint rand = i + (uint) _random.x;
+    uint rand = i + (uint) _random;
     
     float particlesToEmit = (float) _emitRate * _deltaTime;
     if ((float) currentParticleAmount + particlesToEmit >= (float) _maxParticles)

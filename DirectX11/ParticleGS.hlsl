@@ -1,14 +1,3 @@
-struct Particle
-{
-    float age, scale, d1, d2;
-    float3 velocity;
-    float d3;
-    float4 color;
-    float4 position;
-};
-
-StructuredBuffer<Particle> ParticleIn : register(t0);
-
 struct PS_INPUT
 {
     float4 pos : SV_POSITION;
