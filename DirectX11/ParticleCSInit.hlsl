@@ -3,7 +3,7 @@
 [numthreads(numThreads, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
-    int i = DTid.x;
+    uint i = DTid.x;
     uint particlesToEmit = clamp(mNewParticles, 0, mMaxParticles);
 
     ParticleOut[i].age = 0.0f;
