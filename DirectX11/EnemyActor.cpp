@@ -43,7 +43,7 @@ EnemyActor::EnemyActor(BaseScene* scene)
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("enemy");
-	mesh->ParseMesh(renderer, "enemy", L"Phong");
+	mesh->ParseMesh(renderer, "enemy", L"Toon");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);

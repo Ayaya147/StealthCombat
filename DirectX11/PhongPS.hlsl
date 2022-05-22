@@ -29,5 +29,5 @@ float4 main(float3 worldPos : POSITION, float3 worldNor : NORMAL, float2 tc : TE
         specular = mSpecColor * pow(max(0.0f, dot(reflectDir, viewDir)), specPower);
     }
 
-    return saturate(float4(diffuse + mAmbientLight, 1.0f) * tex.Sample(splr, tc).rgba + float4(specular, 0.0f));
+    return saturate(float4(diffuse + mAmbientLight, 1.0f) * tex.Sample(splr, tc) + float4(specular, 0.0f));
 }
