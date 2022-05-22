@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Stencil.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "Topology.h"
 #include "InputLayout.h"
 #include "Blender.h"

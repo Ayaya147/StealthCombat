@@ -4,16 +4,7 @@
 #include "assimp/postprocess.h"
 #include "Mesh.h"
 #include "Renderer.h"
-#include "IndexBuffer.h"
-#include "InputLayout.h"
-#include "PixelShader.h"
-#include "Topology.h"
-#include "VertexBuffer.h"
-#include "VertexShader.h"
-#include "ConstantBuffer.h"
-#include "Sampler.h"
-#include "Texture.h"
-#include "Blender.h"
+#include "BindableCommon.h"
 
 namespace dx = DirectX;
 
