@@ -11,19 +11,13 @@ namespace wrl = Microsoft::WRL;
 ParticleSystem::ParticleSystem(Renderer* renderer)
 	:
 	mIsInit(false),
-	mIsBackBuffer(false)
+	mIsBackBuffer(false),
+	mCurrentParticleCount(0),
+	mDispatchBufferData({ 1, 1, 1 })
 {
 	Reset();
 
 	mComputeCBufferParticle = new ComputeConstantBuffer<ParticleConstant>(renderer, 1);
-
-	mCurrentParticleCount = mData.mNewParticles;
-	int num = mCurrentParticleCount / 512 + mCurrentParticleCount % 512;
-	num = num > 1 ? num : 1;
-	num = num < D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION ? num : D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
-	mData.mNumDispatch = num;
-	mDispatchBufferData = { 1, 1, 1 };
-	mDispatchBufferData.x = mData.mNumDispatch;	
 
 	//
 	D3D11_BUFFER_DESC bd = {};
@@ -192,7 +186,6 @@ void ParticleSystem::Reset()
 		5.0f,
 		2.0f,
 		4.0f,
-		1024 * 1,
 		1024 * 512,
 		10.0f,
 		2000.0f,

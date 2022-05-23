@@ -13,7 +13,7 @@ cbuffer ParticleEmitter : register(b1)
     float4 mPosition;
     float mLifeTimeMin, mLifeTimeMax;
     float mScaleMin, mScaleMax;
-    int mNewParticles, mMaxParticles;
+    int mMaxParticles;
     float mGravity, mMass;
     uint mEmitRate, mNumdispatch;
 };

@@ -50,13 +50,12 @@ private:
 		float mLifeTimeMax;
 		float mScaleMin;
 		float mScaleMax;
-		uint32_t mNewParticles;
 		uint32_t mMaxParticles;
 		float mGravity;
 		float mMass;
 		int mRate;
 		int mNumDispatch;
-		float padding[2];
+		float padding[3];
 	};
 
 	bool mIsInit;
