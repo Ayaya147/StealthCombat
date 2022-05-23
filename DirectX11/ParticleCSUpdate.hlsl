@@ -1,6 +1,6 @@
 #include "Particle.hlsli"
 
-float3 GetAcceleration(in float3 movement, in float acceleration, in float3 velocity, in float friction, in float mass)
+float3 GetAcceleration(float3 movement, float acceleration, float3 velocity, float friction, float mass)
 {
     return movement * acceleration - (friction * mass * velocity);
 }

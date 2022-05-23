@@ -50,7 +50,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 	Renderer* renderer = GetScene()->GetRenderer();	
 	Mesh* mesh = renderer->GetMesh("player");
-	mesh->ParseMesh(renderer, "player", L"Phong");
+	mesh->ParseMesh(renderer, "player", L"Toon");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);

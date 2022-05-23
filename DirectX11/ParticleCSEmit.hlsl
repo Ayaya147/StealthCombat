@@ -3,13 +3,12 @@
 [numthreads(numThreads, 1, 1)]
 void main(uint3 DTid : SV_DispatchThreadID)
 {
-    int currentParticleAmount = ParticleCountIn[0].x;
     int i = DTid.x;
     
     if (i == 0)
     {
         uint val = 0;
-        InterlockedExchange(ParticleCountOut[0], 0, val);
+        InterlockedExchange(ParticleCountOut[0].x, 0, val);
     }
     AllMemoryBarrier();
 	
@@ -24,7 +23,7 @@ void main(uint3 DTid : SV_DispatchThreadID)
     }	
     AllMemoryBarrier();
 
-    currentParticleAmount = ParticleCountOut[0].x;
+    int currentParticleAmount = ParticleCountOut[0].x;
     uint rand = i + (uint)mRandom;
     
     float particlesToEmit = (float)mEmitRate * mDeltaTime;

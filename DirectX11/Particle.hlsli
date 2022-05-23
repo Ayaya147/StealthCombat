@@ -43,7 +43,7 @@ float WangHash(inout uint seed)
     return (float) seed / (float) 0xFFFFFFFF;
 }
 
-void SpawnParticle(inout uint rand)
+void SpawnParticle(uint rand)
 {
     uint index = 0;
     InterlockedAdd(ParticleCountOut[0].x, 1, index);
