@@ -62,7 +62,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
 {
     float3 worldPosition = worldPos;
     float time = mTime / 20.0f * mWaveSpeed;    
-    float3 p = 0.0f;
+    float3 p = (float3)0.0f;
     float3 pBi = float3(0.05f, 0.0f, 0.0f);
     float3 pTan = float3(0.0f, 0.0f, 0.05f);
     float3 vBi = worldPosition + float3(0.05f, 0.0f, 0.0f);

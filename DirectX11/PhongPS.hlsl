@@ -19,8 +19,8 @@ float4 main(float3 worldPos : POSITION, float3 worldNor : NORMAL, float2 tc : TE
     float3 viewDir = normalize(mCameraPos - worldPos);
     float3 reflectDir = normalize(reflect(-lightDir, normal));
 
-    float3 diffuse = 0.0f;
-    float3 specular = 0.0f;
+    float3 diffuse = (float3) 0.0f;
+    float3 specular = (float3) 0.0f;
     
     float nDotL = dot(normal, lightDir);
     if( nDotL > 0 )

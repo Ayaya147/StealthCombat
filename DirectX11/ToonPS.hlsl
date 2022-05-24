@@ -14,26 +14,38 @@ float4 main(float3 worldPos : POSITION, float3 worldNor : NORMAL, float2 tc : TE
 {
     float3 normal = normalize(worldNor);
     float3 lightDir = normalize(-mDirection);
+    float3 viewDir = normalize(mCameraPos - worldPos);
+    float3 reflectDir = normalize(reflect(-lightDir, normal));
     float nDotL = dot(normal, lightDir);
     
-    float3 colorToon;
-    if (nDotL < 0.33f)
+    float3 colorToon = (float3) 0.0f;
+    float3 specular = (float3) 0.0f;
+
+    if (nDotL < 0.0f)
+    {
+        float c = 0.01f;
+        colorToon = float3(c, c, c);
+    }
+    else if (nDotL < 0.33f)
     {
         float c = 0.2f;
         colorToon = float3(c, c, c);
+        specular = mSpecColor * pow(max(0.0f, dot(reflectDir, viewDir)), 50.0f);
     }
     else if (nDotL < 0.66f)
     {
         float c = 0.5f;
         colorToon = float3(c, c, c);
+        specular = mSpecColor * pow(max(0.0f, dot(reflectDir, viewDir)), 50.0f);
     }
     else
     {
         float c = 1.0f;
         colorToon = float3(c, c, c);
+        specular = mSpecColor * pow(max(0.0f, dot(reflectDir, viewDir)), 50.0f);
     }
 
-    float4 color = tex.Sample(splr, tc);
+    float4 color = saturate(tex.Sample(splr, tc) + float4(specular, 1.0f));
     color.rgb *= colorToon.rgb;
     
     return color;
