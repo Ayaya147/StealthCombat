@@ -45,12 +45,12 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mIsLockedOn(false),
 	mIsLockOnSE(false)
 {
-	SetScale(0.125f);
+	SetScale(0.18f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 
 	Renderer* renderer = GetScene()->GetRenderer();	
-	Mesh* mesh = renderer->GetMesh("player");
-	mesh->ParseMesh(renderer, "player", L"Toon");
+	Mesh* mesh = renderer->GetMesh("player1");
+	mesh->ParseMesh(renderer, "player1", L"Toon");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
@@ -61,7 +61,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 		mMoveComponent->SetForwardSpeed(8.0f);
 		mMoveComponent->SetForwardSpeedMin(600.0f / 160.0f);
 
-		float radius = 10.0f;
+		float radius = 8.0f;
 		mBody = new SphereComponent(this);
 		Sphere* sphere = new Sphere(GetPosition(), radius * GetScale().x);
 		mBody->SetSphere(sphere);
@@ -315,7 +315,7 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (mEmitterCD <= 0.0f)
 		{
 			EmissionActor* emitter = new EmissionActor(GetScene());
-			emitter->SetPosition(GetPosition() - GetForward()*1.5f + Random::GetVector()*0.08f);
+			emitter->SetPosition(GetPosition() - GetForward()*1.2f + Random::GetVector()*0.08f);
 			emitter->SetRotation(GetRotation());
 			emitter->SetScale(2.0f);
 			mEmitterCD = 0.05f;
