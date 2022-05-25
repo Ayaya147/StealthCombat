@@ -367,7 +367,7 @@ void GameScene::CreateGameActor()
 	for (int i = 0; i < mEnemies.size(); i++)
 	{
 		Actor* actor = new Actor(this);
-		mesh->ParsePlaneMesh(GetRenderer(), "enemy_guide", L"Phong", 2, 0.6f, true);
+		mesh->ParsePlaneMesh(GetRenderer(), "enemy_guide", L"Phong", 2, 0.5f, true);
 		mEnemyGuideTranslucenceComps.emplace_back(new TranslucenceComponent(actor, mesh, 400));
 	}
 }
