@@ -26,5 +26,6 @@ private:
 	bool mIsInCloud;
 	float mTimeChangeDestination;
 	float mSign;
+	float mEmitterCD;
 	DirectX::XMFLOAT3 mTargetLocationPos;
 };

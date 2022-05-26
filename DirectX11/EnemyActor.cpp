@@ -1,6 +1,7 @@
 #include "EnemyActor.h"
 #include "PlayerActor.h"
 #include "MissileActor.h"
+#include "EmissionActor.h"
 #include "GameScene.h"
 #include "MeshComponent.h"
 #include "MoveComponent.h"
@@ -22,7 +23,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	Actor(scene),
 	mIsLockedOn(false),
 	mIsInCloud(false),
-	mTimeChangeDestination(Random::GetFloatRange(6.0f, 12.0f))
+	mTimeChangeDestination(Random::GetFloatRange(6.0f, 12.0f)),
+	mEmitterCD(0.05f)
 {
 	auto game = dynamic_cast<GameScene*>(GetScene());
 	game->AddEnemy(this);
@@ -115,12 +117,22 @@ void EnemyActor::UpdateActor(float deltaTime)
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::EStraight);
 		mSign = Random::GetIntRange(0, 1) == 0 ? -1.0f : 1.0f;
 		mTimeChangeDestination -= deltaTime;
+		mEmitterCD -= deltaTime;
 	}
 
 	if (mTimeChangeDestination <= 0.0f)
 	{
 		CalcNextDestination();
 		mTimeChangeDestination = Random::GetFloatRange(6.0f, 12.0f);
+	}
+
+	if (mEmitterCD <= 0.0f)
+	{
+		EmissionActor* emission = new EmissionActor(GetScene());
+		emission->SetPosition(GetPosition() - GetForward()*1.6f + Random::GetVector()*0.08f);
+		emission->SetRotation(GetRotation());
+		emission->SetScale(1.8f);
+		mEmitterCD = 0.05f;
 	}
 }
 

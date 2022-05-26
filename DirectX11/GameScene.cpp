@@ -411,13 +411,13 @@ void GameScene::CreateUIActor()
 	tex = renderer->GetTexture("marking");
 	mMarkingEnemySprite = new SpriteComponent(sprite, tex, 110);
 	mMarkingEnemySprite->SetVisible(false);
-	sprite->SetScale(0.3f);
+	sprite->SetScale(0.27f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("marking");
 	mMarkingPlayerSprite = new SpriteComponent(sprite, tex, 110);
 	mMarkingPlayerSprite->SetVisible(false);
-	sprite->SetScale(0.3f);
+	sprite->SetScale(0.27f);
 
 	sprite = new Actor(this);
 	tex = renderer->GetTexture("speed");

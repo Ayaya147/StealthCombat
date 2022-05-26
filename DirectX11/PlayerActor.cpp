@@ -314,10 +314,10 @@ void PlayerActor::UpdateActor(float deltaTime)
 
 		if (mEmitterCD <= 0.0f)
 		{
-			EmissionActor* emitter = new EmissionActor(GetScene());
-			emitter->SetPosition(GetPosition() - GetForward()*1.2f + Random::GetVector()*0.08f);
-			emitter->SetRotation(GetRotation());
-			emitter->SetScale(2.0f);
+			EmissionActor* emission = new EmissionActor(GetScene());
+			emission->SetPosition(GetPosition() - GetForward()*1.2f + Random::GetVector()*0.08f);
+			emission->SetRotation(GetRotation());
+			emission->SetScale(2.0f);
 			mEmitterCD = 0.05f;
 		}
 
