@@ -42,8 +42,8 @@ EnemyActor::EnemyActor(BaseScene* scene)
 	CalcNextDestination();
 
 	Renderer* renderer = GetScene()->GetRenderer();
-	Mesh* mesh = renderer->GetMesh("enemy");
-	mesh->ParseMesh(renderer, "enemy", L"Toon");
+	Mesh* mesh = renderer->GetMesh("enemy1");
+	mesh->ParseMesh(renderer, "enemy1", L"Toon");
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mMoveComponent = new MoveComponent(this);
