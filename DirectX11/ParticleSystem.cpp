@@ -81,9 +81,9 @@ void ParticleSystem::Init(Renderer* renderer, ComputeShader* particleInitShader)
 
 	particleInitShader->Bind(renderer);
 	mComputeCBufferParticle->Bind(renderer);
-	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->mSRV.Get(), mParticleCount[!mIsBackBuffer]->mSRV.Get() };
+	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
-	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->mUAV.Get(), mParticleCount[mIsBackBuffer]->mUAV.Get() };
+	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->GetUAV(), mParticleCount[mIsBackBuffer]->GetUAV() };
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
 	renderer->GetContext()->DispatchIndirect(mDispatchBuffer.Get(), 0);
 	mIsBackBuffer = !mIsBackBuffer;
@@ -104,9 +104,9 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 	//
 	particleEmitShader->Bind(renderer);
 	mComputeCBufferParticle->Bind(renderer);
-	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->mSRV.Get(), mParticleCount[!mIsBackBuffer]->mSRV.Get() };
+	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
-	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->mUAV.Get(), mParticleCount[mIsBackBuffer]->mUAV.Get() };
+	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->GetUAV(), mParticleCount[mIsBackBuffer]->GetUAV() };
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs, nullptr);
 	renderer->GetContext()->DispatchIndirect(mDispatchBuffer.Get(), 0);
 	mIsBackBuffer = !mIsBackBuffer;
@@ -117,9 +117,9 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 	//
 	particleUpdateShader->Bind(renderer);
 	mComputeCBufferParticle->Bind(renderer);
-	ID3D11ShaderResourceView* srvs_[2] = { mParticles[!mIsBackBuffer]->mSRV.Get(), mParticleCount[!mIsBackBuffer]->mSRV.Get() };
+	ID3D11ShaderResourceView* srvs_[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs_);
-	ID3D11UnorderedAccessView* uavs_[2] = { mParticles[mIsBackBuffer]->mUAV.Get(), mParticleCount[mIsBackBuffer]->mUAV.Get() };
+	ID3D11UnorderedAccessView* uavs_[2] = { mParticles[mIsBackBuffer]->GetUAV(), mParticleCount[mIsBackBuffer]->GetUAV() };
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, uavs_, nullptr);
 	renderer->GetContext()->DispatchIndirect(mDispatchBuffer.Get(), 0);
 	mIsBackBuffer = !mIsBackBuffer;
@@ -134,7 +134,7 @@ void ParticleSystem::Draw(Renderer* renderer)
 	D3D11_MAPPED_SUBRESOURCE msCount = {};
 	D3D11_DRAW_INSTANCED_INDIRECT_ARGS instancedArgs = {};
 
-	renderer->GetContext()->CopyResource(mCPUParticleCountReadBuffer.Get(), mParticleCount[mIsBackBuffer]->mBuffer.Get());
+	renderer->GetContext()->CopyResource(mCPUParticleCountReadBuffer.Get(), mParticleCount[mIsBackBuffer]->GetBuffer());
 	ThrowIfFailed(renderer->GetContext()->Map(mInstancedDrawBuffer.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &msDraw));
 	ThrowIfFailed(renderer->GetContext()->Map(mCPUParticleCountReadBuffer.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &msCount));
 
@@ -146,7 +146,7 @@ void ParticleSystem::Draw(Renderer* renderer)
 	renderer->GetContext()->Unmap(mCPUParticleCountReadBuffer.Get(), 0);
 	renderer->GetContext()->Unmap(mInstancedDrawBuffer.Get(), 0);
 
-	renderer->GetContext()->VSSetShaderResources(0, 1, mParticles[!mIsBackBuffer]->mSRV.GetAddressOf());
+	renderer->GetContext()->VSSetShaderResources(0, 1, mParticles[!mIsBackBuffer]->GetSRVAddress());
 	renderer->GetContext()->DrawInstancedIndirect(mInstancedDrawBuffer.Get(), 0);
 
 	ID3D11ShaderResourceView* nullSRV =  nullptr;
