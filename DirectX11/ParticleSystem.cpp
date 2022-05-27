@@ -19,7 +19,7 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 
 	mComputeCBufferParticle = new ComputeConstantBuffer<ParticleConstant>(renderer, 1);
 
-	//
+	// create buffer for dispatch indirect
 	D3D11_BUFFER_DESC bd = {};
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	bd.BindFlags = D3D11_BIND_SHADER_RESOURCE;
@@ -32,7 +32,7 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 	sd.pSysMem = &mDispatchBufferData;
 	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&bd, &sd, &mDispatchBuffer));
 
-	//
+	// create buffer for reading particle count on CPU
 	bd = {};
 	bd.Usage = D3D11_USAGE_STAGING;
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
@@ -40,7 +40,7 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 
 	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&bd, nullptr, &mCPUParticleCountReadBuffer));
 
-	//
+	// create buffer for instanced draw
 	D3D11_DRAW_INSTANCED_INDIRECT_ARGS diiArgs = {};
 	diiArgs.InstanceCount = 1;
 	diiArgs.VertexCountPerInstance = mData.mMaxParticles;
@@ -56,7 +56,7 @@ ParticleSystem::ParticleSystem(Renderer* renderer)
 
 	ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&bd, &sd, &mInstancedDrawBuffer));
 
-	//
+	// create particles buffers
 	for (int i = 0; i < 2; i++)
 	{
 		mParticles[i] = new ComputeData(renderer, mData.mMaxParticles * sizeof(Particle), sizeof(Particle));
@@ -101,7 +101,7 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 
 	UpdateBuffers(renderer);
 
-	//
+	// emit new particles
 	particleEmitShader->Bind(renderer);
 	mComputeCBufferParticle->Bind(renderer);
 	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
@@ -114,7 +114,7 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
 
-	//
+	// simulate all particles
 	particleUpdateShader->Bind(renderer);
 	mComputeCBufferParticle->Bind(renderer);
 	ID3D11ShaderResourceView* srvs_[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
@@ -196,6 +196,7 @@ void ParticleSystem::Reset()
 
 void ParticleSystem::UpdateBuffers(Renderer* renderer)
 {
+	// update constant buffer
 	int num = mCurrentParticleCount / 512 + mCurrentParticleCount % 512;
 	num = num > 1 ? num : 1;
 	num = num < D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION ? num : D3D11_CS_DISPATCH_MAX_THREAD_GROUPS_PER_DIMENSION;
@@ -205,6 +206,7 @@ void ParticleSystem::UpdateBuffers(Renderer* renderer)
 	mData.mPosition = { at.x,at.y, at.z, 1.0f };
 	mComputeCBufferParticle->Update(renderer, mData);
 
+	// update buffer for dispatch indirect
 	mDispatchBufferData.x = mData.mNumDispatch;
 	D3D11_MAPPED_SUBRESOURCE ms = {};
 	ThrowIfFailed(renderer->GetContext()->Map(mDispatchBuffer.Get(), 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &ms));
