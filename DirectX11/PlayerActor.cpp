@@ -26,13 +26,13 @@
 
 namespace dx = DirectX;
 
-static constexpr float accelW = 2.5f;
-static constexpr float accelS = -3.5f;
-static constexpr float accelNatural = -1.0f;
-static constexpr float angularSpd = 0.8f;
-static constexpr float angularSpd1 = 1.6f;
-static constexpr float angularSpd2 = 1.2f;
-static constexpr float outCloudTimeMax = 14.0f;
+#define ACCEL_W 2.5f
+#define ACCEL_S -3.5f
+#define ACCEL_NATURAL -1.0f
+#define ANGULAR_SPD 0.8f
+#define ANGULAR_SPD1 1.3f
+#define ANGULAR_SPD2 1.0f
+#define OUT_CLOUD_TIME_MAX 14.0f
 
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
@@ -43,7 +43,9 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	mTargetEnemy(nullptr),
 	mIsInCloud(false),
 	mIsLockedOn(false),
-	mIsLockOnSE(false)
+	mIsLockOnSE(false),
+	mAttackRange(nullptr),
+	mBody(nullptr)
 {
 	SetScale(0.18f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
@@ -99,15 +101,15 @@ void PlayerActor::ActorInput()
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd * angularSpd1);
+			mMoveComponent->SetAngularSpeed(ANGULAR_SPD1);
 		}
 		else if(input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd);
+			mMoveComponent->SetAngularSpeed(ANGULAR_SPD);
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(angularSpd * angularSpd2);
+			mMoveComponent->SetAngularSpeed(ANGULAR_SPD2);
 		}
 	}
 	else if (input->GetPlayerLeftTurn() && !input->GetPlayerRightTurn())
@@ -115,15 +117,15 @@ void PlayerActor::ActorInput()
 		mMoveComponent->SetMoveType(MoveComponent::MoveType::ECornering);
 		if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd * angularSpd1);
+			mMoveComponent->SetAngularSpeed(-ANGULAR_SPD1);
 		}
 		else if (input->GetPlayerAccel() && !input->GetPlayerDecel())
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd);
+			mMoveComponent->SetAngularSpeed(-ANGULAR_SPD);
 		}
 		else
 		{
-			mMoveComponent->SetAngularSpeed(-angularSpd * angularSpd2);
+			mMoveComponent->SetAngularSpeed(-ANGULAR_SPD2);
 		}
 	}
 	else
@@ -156,7 +158,7 @@ void PlayerActor::ActorInput()
 			game->GetAudioSystem()->SetVolume(game->GetAirplaneBGM(), 1.0f);
 		}
 
-		mMoveComponent->SetAcceleration(accelW);
+		mMoveComponent->SetAcceleration(ACCEL_W);
 	}
 	else if (input->GetPlayerDecel() && !input->GetPlayerAccel())
 	{
@@ -182,7 +184,7 @@ void PlayerActor::ActorInput()
 			}
 		}
 
-		mMoveComponent->SetAcceleration(accelS);
+		mMoveComponent->SetAcceleration(ACCEL_S);
 	}
 	else
 	{
@@ -196,7 +198,7 @@ void PlayerActor::ActorInput()
 			}
 		}
 
-		mMoveComponent->SetAcceleration(accelNatural);
+		mMoveComponent->SetAcceleration(ACCEL_NATURAL);
 	}
 
 	if (game)
@@ -226,9 +228,9 @@ void PlayerActor::UpdateActor(float deltaTime)
 		if (phys->IsCollidedWithCloud(mBody))
 		{
 			mIsInCloud = true;
-			if (mOutCloudTime >= outCloudTimeMax)
+			if (mOutCloudTime >= OUT_CLOUD_TIME_MAX)
 			{
-				mOutCloudTime = outCloudTimeMax;
+				mOutCloudTime = OUT_CLOUD_TIME_MAX;
 			}
 			else if (mOutCloudTime > 0.0f)
 			{
