@@ -28,6 +28,6 @@ https://drive.google.com/file/d/1MwjNLGEArub7HwxDx7R6TRiumrw5TUVL/view?usp=shari
 
 # Development Environment
 
-* Visual Studio 2017
+* Visual Studio 2022
 * API: DirectX11
 * Language: C++
