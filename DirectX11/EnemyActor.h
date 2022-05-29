@@ -1,6 +1,5 @@
 #pragma once
 #include "Actor.h"
-#include <DirectXMath.h>
 
 class EnemyActor : public Actor
 {
