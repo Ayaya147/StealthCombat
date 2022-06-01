@@ -9,6 +9,7 @@
 #include "XMFloatHelper.h"
 #include "Random.h"
 #include "DemoScene.h"
+#include "GameScene.h"
 
 namespace dx = DirectX;
 
@@ -19,12 +20,32 @@ CameraComponent::CameraComponent(Actor* owner, CameraType type, int updateOrder)
 	mState(VibrationState::ENone),
 	mTargetDist(20.0f),
 	mVelocity(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
-	mActualPos(dx::XMFLOAT3{ 0.0f,0.0f,0.0f })
+	mActualPos(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
+	mUp(dx::XMFLOAT3{ 0.0f,0.0f,0.0f })
 {
 }
 
 void CameraComponent::ProcessInput()
 {
+	if (auto game = dynamic_cast<GameScene*>(GetOwner()->GetScene()))
+	{
+		InputSystem* input = game->GetInputSystem();
+
+		if (input->GetCameraInput())
+		{
+			mUp = GetOwner()->GetForward();
+			mUp.x *= -1.0f;
+			mUp.z *= -1.0f;
+		}
+		else
+		{
+			mUp = GetOwner()->GetForward();
+		}
+	}
+	else
+	{
+		mUp = GetOwner()->GetForward();
+	}
 }
 
 void CameraComponent::Update(float deltaTime)
@@ -43,11 +64,10 @@ void CameraComponent::Update(float deltaTime)
 
 		at = GetOwner()->GetPosition();
 
-		dx::XMFLOAT3 up = GetOwner()->GetForward();
 		view = dx::XMMatrixLookAtLH(
 			dx::XMLoadFloat3(&cameraPos),
 			dx::XMLoadFloat3(&at),
-			dx::XMLoadFloat3(&up)
+			dx::XMLoadFloat3(&mUp)
 		);
 
 		break;
@@ -62,7 +82,6 @@ void CameraComponent::Update(float deltaTime)
 		mVelocity += accel * deltaTime;
 		mActualPos += mVelocity * deltaTime;
 
-		dx::XMFLOAT3 up = GetOwner()->GetForward();
 		at = GetOwner()->GetPosition() + GetOwner()->GetForward() * 1.5f;
 
 		float strength = 0.0f;
@@ -86,7 +105,7 @@ void CameraComponent::Update(float deltaTime)
 		view = dx::XMMatrixLookAtLH(
 			dx::XMLoadFloat3(&mActualPos),
 			dx::XMLoadFloat3(&at),
-			dx::XMLoadFloat3(&up)
+			dx::XMLoadFloat3(&mUp)
 		);
 	}
 		break;

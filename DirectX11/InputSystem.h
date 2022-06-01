@@ -21,6 +21,7 @@ public:
 	bool GetPlayerAccel();
 	bool GetPlayerDecel();
 	bool GetPlayerEmitMissile();
+	bool GetCameraInput();
 
 	bool GetScenePause();
 	bool GetX();

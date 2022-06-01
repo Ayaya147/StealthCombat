@@ -94,6 +94,18 @@ bool InputSystem::GetPlayerEmitMissile()
 	}
 }
 
+bool InputSystem::GetCameraInput()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetThumbRightY() < 0;
+	}
+	else
+	{
+		return mKeyboard->GetKeyValue('R');
+	}
+}
+
 bool InputSystem::GetScenePause()
 {
 	if (mIsGamePad)
