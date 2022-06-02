@@ -31,7 +31,7 @@ VSOut main(float3 pos : POSITION, float3 n : NORMAL, float2 tc : TEXCOORD)
     vso.worldPos = (float3) worldPos;
 
     float time = mTime / 20.0f * mWaveSpeed;    
-    float3 position = 0.0f;
+    float3 position = (float3) 0.0f;
     
     for (int i = 0; i < count; i++)
     {

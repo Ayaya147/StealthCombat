@@ -42,7 +42,7 @@ float Noise2(float2 st, int seed)
 
 float3 GerstnerWave(float amp, float freq, float steep, float speed, float noise, float2 dir, float2 v, float time, int seed, float noiseStrength)
 {
-    float3 p = 0.0f;
+    float3 p = (float3) 0.0f;
     float2 d = normalize(dir);
  
     v += Noise2(v * noise + time, seed * 3) * noiseStrength;
@@ -57,8 +57,8 @@ float3 GerstnerWaveCross(float amp, float freq, float steep, float speed, float 
 {
     float2 d = normalize(dir);
     float2 d1 = float2(-d.y, d.x);
-    float3 p1 = 0.0f;
-    float3 p2 = 0.0f;
+    float3 p1 = (float3) 0.0f;
+    float3 p2 = (float3) 0.0f;
  
     float2 v1 = v + Noise2(v * noise + time * d * 10.0f, seed * 3) * noiseStrength;
     float2 v2 = v + Noise2(v * noise + time * d * 10.0f, seed * 3 + 12) * noiseStrength;
