@@ -285,6 +285,7 @@ struct aiBone {
       : mName( other.mName )
       , mNumWeights( other.mNumWeights )
       , mOffsetMatrix( other.mOffsetMatrix )
+      , mWeights(nullptr)
     {
         if (other.mWeights && other.mNumWeights)
         {

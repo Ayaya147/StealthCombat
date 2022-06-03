@@ -11,7 +11,9 @@ namespace dx = DirectX;
 Mesh::Mesh(const std::string& fileName)
 	:
 	mFileName("Asset\\Model\\" + fileName + ".obj"),
-	mIsMeshParsed(false)
+	mIsMeshParsed(false),
+	mIndexBuffer(nullptr),
+	mVerticesCount(0)
 {
 }
 
@@ -51,7 +53,7 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 		}
 
 		std::vector<unsigned short> indices;
-		indices.reserve(pMesh->mNumFaces * 3);
+		indices.reserve(static_cast<unsigned short>(pMesh->mNumFaces * 3));
 		for (unsigned int i = 0; i < pMesh->mNumFaces; i++)
 		{
 			const auto& face = pMesh->mFaces[i];
@@ -111,7 +113,7 @@ void Mesh::ParsePlaneMesh(Renderer* renderer, const std::string& fileName, const
 		}
 
 		std::vector<unsigned short> indices;
-		indices.reserve(2 * n * n - 4);
+		indices.reserve(static_cast<unsigned short>(2 * n * n - 4));
 		for (int y = 0; y < n - 1; y++)
 		{
 			for (int x = 0; x < n; x++)
