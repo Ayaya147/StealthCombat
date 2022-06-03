@@ -169,6 +169,11 @@ void ParticleSystem::ImGuiWindow()
 	ImGui::End();
 }
 
+void ParticleSystem::SetEmitParticleNumber(int n)
+{
+	mData.mRate = n;
+}
+
 void ParticleSystem::Reset()
 {
 	mData = {

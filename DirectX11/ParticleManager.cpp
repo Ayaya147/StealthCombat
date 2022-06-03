@@ -58,6 +58,7 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 
 void ParticleManager::Update(Renderer* renderer)
 {
+	// update constant buffers
 	SystemConstant sc = {};
 	sc.mDeltaTime = mScene->GetDeltaTime();
 	sc.mRandom = static_cast<float>(rand());
@@ -71,6 +72,21 @@ void ParticleManager::Update(Renderer* renderer)
 
 	mVertexCBufferCamera->Update(renderer, cc);
 
+	// update emit particles number
+	if (auto game = dynamic_cast<GameScene*>(mScene))
+	{
+		PlayerActor* player = game->GetPlayer();
+		if (player->GetOutCloudTime() > 10.0f || player->GetIsInCloud())
+		{
+			mParticleSystems[0]->SetEmitParticleNumber(5000);
+		}
+		else
+		{
+			mParticleSystems[0]->SetEmitParticleNumber(0);
+		}
+	}
+
+	// update particle systems
 	for (auto ps : mParticleSystems)
 	{
 		ps->Update(renderer, mParticleEmitShader, mParticleUpdateShader);
