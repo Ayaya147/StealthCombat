@@ -100,7 +100,7 @@ void Renderer::Draw3DScene()
 
 	// draw opaque 3D objects
 	Mesh* lastMesh = nullptr;
-	for (auto mc : mMeshComps)
+	for (auto& mc : mMeshComps)
 	{
 		for (auto m : mc.second)
 		{
@@ -174,13 +174,13 @@ void Renderer::Draw2DScene()
 
 void Renderer::UnloadData()
 {
-	for (auto i : mTextures)
+	for (auto& i : mTextures)
 	{
 		delete i.second;
 	}
 	mTextures.clear();
 
-	for (auto i : mMeshes)
+	for (auto& i : mMeshes)
 	{
 		delete i.second;
 	}
@@ -330,7 +330,7 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 		adapters.emplace_back(tmpAdapter);
 	}
 
-	for (auto adpt : adapters)
+	for (auto& adpt : adapters)
 	{
 		DXGI_ADAPTER_DESC adesc = {};
 		adpt->GetDesc(&adesc);
