@@ -17,8 +17,6 @@ public:
 	void Draw(class Renderer* renderer);
 	void ImGuiWindow();
 
-	bool GetIsInit() { return mIsInit; }
-
 private:
 	void Reset();
 	void UpdateBuffers(class Renderer* renderer);
@@ -58,7 +56,6 @@ private:
 		float padding[3];
 	};
 
-	bool mIsInit;
 	bool mIsBackBuffer;
 	unsigned int mCurrentParticleCount;
 

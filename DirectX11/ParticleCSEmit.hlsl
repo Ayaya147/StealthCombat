@@ -24,25 +24,20 @@ void main(uint3 DTid : SV_DispatchThreadID)
     AllMemoryBarrier();
 
     int currentParticleAmount = ParticleCountOut[0].x;
-    uint rand = i + (uint)mRandom;
-    
+    uint rand = i + (uint)mRandom;    
     float particlesToEmit = (float)mEmitRate * mDeltaTime;
+    const float totalThreads = (float) (mNumdispatch * numThreads);
+    
     if ((float)currentParticleAmount + particlesToEmit >= (float)mMaxParticles)
     {
         particlesToEmit = (float)(mMaxParticles - currentParticleAmount);
     }
-    const float totalThreads = (float)(mNumdispatch * numThreads);
+    
     float particlesToEmitPerThread = particlesToEmit / totalThreads;
 	
     if (particlesToEmitPerThread <= 1.0)
     {
-        if (particlesToEmitPerThread < 0.000001f)
-        {
-            return;
-        }
-
-        const float numSpawningThreads = totalThreads * particlesToEmitPerThread;
-        if (i <= floor(numSpawningThreads))
+        if (particlesToEmitPerThread >= 0.000001f && i <= floor(particlesToEmit))
         {
             SpawnParticle(rand);
         }
@@ -51,8 +46,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
     {
         const uint numParticlesPerThread = (uint)floor(particlesToEmitPerThread);
         const uint divCutoff = fmod(particlesToEmitPerThread, 1.0) * totalThreads;
-        const uint endEmit = (numParticlesPerThread + (i == 0 ? divCutoff : 0));
-        for (uint i = 0; i < endEmit; i++)
+        const uint endEmit = numParticlesPerThread + (i == 0 ? divCutoff : 0);
+        for (uint n = 0; n < endEmit; n++)
         {
             SpawnParticle(rand);
         }

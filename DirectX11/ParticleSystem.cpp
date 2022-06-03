@@ -10,7 +10,6 @@ namespace wrl = Microsoft::WRL;
 
 ParticleSystem::ParticleSystem(Renderer* renderer)
 	:
-	mIsInit(false),
 	mIsBackBuffer(false),
 	mCurrentParticleCount(0),
 	mDispatchBufferData({ 1, 1, 1 })
@@ -77,10 +76,7 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::Init(Renderer* renderer, ComputeShader* particleInitShader)
 {
-	mIsInit = true;
-
 	particleInitShader->Bind(renderer);
-	mComputeCBufferParticle->Bind(renderer);
 	ID3D11ShaderResourceView* srvs[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs);
 	ID3D11UnorderedAccessView* uavs[2] = { mParticles[mIsBackBuffer]->GetUAV(), mParticleCount[mIsBackBuffer]->GetUAV() };
@@ -114,9 +110,8 @@ void ParticleSystem::Update(Renderer* renderer, ComputeShader* particleEmitShade
 	renderer->GetContext()->CSSetShaderResources(0, 2, nullSRVs);
 	renderer->GetContext()->CSSetUnorderedAccessViews(0, 2, nullUAVs, nullptr);
 
-	// simulate all particles
+	// update all particles
 	particleUpdateShader->Bind(renderer);
-	mComputeCBufferParticle->Bind(renderer);
 	ID3D11ShaderResourceView* srvs_[2] = { mParticles[!mIsBackBuffer]->GetSRV(), mParticleCount[!mIsBackBuffer]->GetSRV() };
 	renderer->GetContext()->CSSetShaderResources(0, 2, srvs_);
 	ID3D11UnorderedAccessView* uavs_[2] = { mParticles[mIsBackBuffer]->GetUAV(), mParticleCount[mIsBackBuffer]->GetUAV() };

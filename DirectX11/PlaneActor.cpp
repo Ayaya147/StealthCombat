@@ -102,7 +102,7 @@ void PlaneActor::Reset()
 		0.80f,
 		0.25f,
 		0.75f,
-		0.12f,
+		0.10f,
 		0.20f
 	};
 }

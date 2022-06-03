@@ -52,6 +52,8 @@ void ParticleManager::CreateParticleSystem(Renderer* renderer)
 {
 	ParticleSystem* ps = new ParticleSystem(renderer);
 	mParticleSystems.emplace_back(ps);
+
+	ps->Init(renderer, mParticleInitShader);
 }
 
 void ParticleManager::Update(Renderer* renderer)
@@ -71,11 +73,6 @@ void ParticleManager::Update(Renderer* renderer)
 
 	for (auto ps : mParticleSystems)
 	{
-		if (!ps->GetIsInit())
-		{
-			ps->Init(renderer, mParticleInitShader);
-		}
-
 		ps->Update(renderer, mParticleEmitShader, mParticleUpdateShader);
 	}
 
