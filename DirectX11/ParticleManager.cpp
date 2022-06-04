@@ -76,7 +76,7 @@ void ParticleManager::Update(Renderer* renderer)
 	if (auto game = dynamic_cast<GameScene*>(mScene))
 	{
 		PlayerActor* player = game->GetPlayer();
-		if (player->GetOutCloudTime() > 10.0f || player->GetIsInCloud())
+		if (player->GetOutCloudTime() > 11.0f || player->GetIsInCloud())
 		{
 			mParticleSystems[0]->SetEmitParticleNumber(5000);
 		}

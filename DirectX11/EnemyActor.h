@@ -8,6 +8,7 @@ public:
 	~EnemyActor();
 
 	void UpdateActor(float deltaTime) override;
+	float GetDistFromPlayer();
 
 	void SetLockedOn(bool lockon) { mIsLockedOn = lockon; }
 	bool GetIsLockedOn() const { return mIsLockedOn; }

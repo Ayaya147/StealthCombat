@@ -98,7 +98,7 @@ void Minimap::Update(GameScene* game)
 	std::vector<EnemyActor*> enemies = game->GetEnemies();
 	for (auto es : mEnemySprites)
 	{
-		if (enemies[idx]->GetIsInCloud())
+		if (enemies[idx]->GetIsInCloud() || enemies[idx]->GetDistFromPlayer() <= std::powf(180.0f, 2.0f))
 		{
 			es->SetVisible(false);
 			idx++;

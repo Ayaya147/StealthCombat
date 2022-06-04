@@ -243,6 +243,16 @@ void GameScene::Update()
 
 		for (int i = 0; i < mEnemyGuideTranslucenceComps.size(); i++)
 		{
+			if (mEnemies[i]->GetIsInCloud())
+			{
+				mEnemyGuideTranslucenceComps[i]->SetVisible(false);
+				continue;
+			}
+			else
+			{
+				mEnemyGuideTranslucenceComps[i]->SetVisible(true);
+			}
+
 			float dist = 3.0f;
 			dx::XMFLOAT3 playerToEnemy = DXMath::Normalize(
 				mEnemies[i]->GetPosition() - mPlayer->GetPosition()

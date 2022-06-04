@@ -136,6 +136,14 @@ void EnemyActor::UpdateActor(float deltaTime)
 	}
 }
 
+float EnemyActor::GetDistFromPlayer()
+{
+	auto game = dynamic_cast<GameScene*>(GetScene());
+	PlayerActor* player = game->GetPlayer();
+
+	return DXMath::LengthSq(GetPosition() - player->GetPosition());
+}
+
 void EnemyActor::CalcNextDestination()
 {
 	float range = Constant::createRange * 0.9f;
