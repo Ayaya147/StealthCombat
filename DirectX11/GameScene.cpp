@@ -65,7 +65,7 @@ void GameScene::ProcessInput()
 	switch (GetSceneState())
 	{
 	case SceneState::EPlay:
-		if (GetInputSystem()->GetScenePause())
+		if (GetInputSystem()->GetScenePause() && GetFade()->GetFadeState() == Fade::FadeState::EFadeNone)
 		{
 			GetInputSystem()->GetPad()->StopVibration();
 			SetSceneState(SceneState::EPaused);
