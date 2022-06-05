@@ -40,8 +40,8 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 
 	actor = new Actor(this);
 	Mesh* mesh = renderer->GetMesh("planeScreenshot");
-	mesh->ParsePlaneMesh(renderer, "screenshot", L"Phong", 2, 16.0f, 9.0f, true);
-	playerTranslucenceComp = new TranslucenceComponent(actor, mesh);
+	mesh->ParsePlaneMesh(renderer, "screenshot", L"Phong", 2, 12.0f, 8.0f, true);
+	TranslucenceComponent* tc = new TranslucenceComponent(actor, mesh);
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,0.5f });
 	actor->SetPosition(dx::XMFLOAT3{ 1.5f,0.0f,0.0f });
 
@@ -50,17 +50,17 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 		actor = new Actor(this);
 		mesh = renderer->GetMesh("planeResult");
 		mesh->ParsePlaneMesh(renderer, "victory", L"Phong", 2, 5.0f, 4.0f, true);
-		TranslucenceComponent* playerTranslucenceComp = new TranslucenceComponent(actor, mesh);
+		tc = new TranslucenceComponent(actor, mesh);
 	}
 	else
 	{
 		actor = new Actor(this);
 		mesh = renderer->GetMesh("planeResult");
 		mesh->ParsePlaneMesh(renderer, "defeat", L"Phong", 2, 5.0f, 4.0f, true);
-		TranslucenceComponent* playerTranslucenceComp = new TranslucenceComponent(actor, mesh);
+		tc = new TranslucenceComponent(actor, mesh);
 	}
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,-0.5f });
-	actor->SetPosition(dx::XMFLOAT3{ -4.0f,0.0f,0.0f });
+	actor->SetPosition(dx::XMFLOAT3{ -3.5f,0.0f,0.0f });
 }
 
 ResultScene::~ResultScene()
@@ -114,12 +114,6 @@ void ResultScene::Update()
 
 void ResultScene::GenerateOutput()
 {
-	//Renderer* renderer = GetRenderer();
-	//renderer->Draw(false);
-	//renderer->GetContext()->PSSetShaderResources(0, 1, renderer->GetScreenshotView());
-	//playerTranslucenceComp->Draw(renderer);
-	//renderer->GetSwapChain()->Present(1, 0);
-
 	BaseScene::GenerateOutput();
 
 	if (GetSceneState() == SceneState::EQuit)
