@@ -3,6 +3,7 @@
 #include "TitleScene.h"
 #include "DemoScene.h"
 #include "GameScene.h"
+#include "ResultScene.h"
 #include "Renderer.h"
 #include "Random.h"
 #include "InputSystem.h"
@@ -58,6 +59,9 @@ void SceneManager::ChangeScene(SceneType scene, const Parameter& parameter, bool
 		break;
 	case SceneType::EGame:
 		mSceneStack.emplace(new GameScene(this, parameter));
+		break;
+	case SceneType::EResult:
+		mSceneStack.emplace(new ResultScene(this, parameter));
 		break;
 	}
 

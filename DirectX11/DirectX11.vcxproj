@@ -144,6 +144,7 @@
     <ClCompile Include="PlayerActor.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <FxCompile Include="ToonPS.hlsl">
@@ -353,6 +354,7 @@
     <ClInclude Include="PlayerActor.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SmokeActor.h" />

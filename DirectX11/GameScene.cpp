@@ -317,7 +317,7 @@ void GameScene::GenerateOutput()
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
+			GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
 		}
 		break;
 	}
