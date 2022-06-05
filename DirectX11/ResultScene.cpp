@@ -3,25 +3,58 @@
 #include "SceneManager.h"
 #include "Parameter.h"
 #include "Actor.h"
+#include "Renderer.h"
 #include "Texture.h"
 #include "SpriteComponent.h"
 #include "InputSystem.h"
 #include "AudioSystem.h"
 #include "Fade.h"
+#include "Mesh.h"
+#include "TranslucenceComponent.h"
+#include "CameraComponent.h"
+#include "Light.h"
 
 namespace dx = DirectX;
 
+static SceneManager::SceneType gNextScene = SceneManager::SceneType::EGame;
+
 ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	:
-	BaseScene(sm, parameter)
+	BaseScene(sm, parameter),
+	mIsGameWin(parameter.GetIsGameWin())
 {
-	Renderer* renderer = GetRenderer();
+	DirectionalLight light = {
+		{0.0f,-1.0f,0.0f},
+		{0.05f,0.05f,0.05f},
+		{1.0f,1.0f,1.0f},
+		{0.9f,0.9f,0.9f}
+	};
 
-	Actor* sprite = new Actor(this);
-	Texture* tex = renderer->GetTexture("title_02");
-	SpriteComponent* title2Sprite = new SpriteComponent(sprite, tex);
-	sprite->SetPosition(dx::XMFLOAT3{ 200.0f, 0.0f, 0.0f });
-	sprite->SetScale(1.0f);
+	Renderer* renderer = GetRenderer();
+	renderer->SetDirectionalLight(light);
+
+	Actor* actor = new Actor(this);
+	actor->SetPosition(dx::XMFLOAT3{ 0.0f,-12.0f,0.0f });
+	CameraComponent* cc = new CameraComponent(actor, CameraComponent::CameraType::ENormal);
+	cc->SnapToIdeal();
+
+	if (mIsGameWin)
+	{
+		actor = new Actor(this);
+		Mesh* mesh = renderer->GetMesh("planeResult");
+		mesh->ParsePlaneMesh(renderer, "victory", L"Phong", 2, 5.0f, true);
+		TranslucenceComponent* playerTranslucenceComp = new TranslucenceComponent(actor, mesh);
+	}
+	else
+	{
+		actor = new Actor(this);
+		Mesh* mesh = renderer->GetMesh("planeResult");
+		mesh->ParsePlaneMesh(renderer, "defeat", L"Phong", 2, 5.0f, true);
+		TranslucenceComponent* playerTranslucenceComp = new TranslucenceComponent(actor, mesh);
+	}
+
+	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,-0.5f });
+	actor->SetPosition(dx::XMFLOAT3{ -3.0f,0.0f,0.0f });
 }
 
 ResultScene::~ResultScene()
@@ -33,12 +66,35 @@ void ResultScene::ProcessInput()
 {
 	if (GetSceneState() == SceneState::EPlay)
 	{
-		if (GetInputSystem()->GetX())
+		if (mIsGameWin)
 		{
-			SetSceneState(SceneState::EQuit);
+			if (GetInputSystem()->GetY())
+			{
+				SetSceneState(SceneState::EQuit);
+				gNextScene = SceneManager::SceneType::ETitle;
 
-			int index = GetAudioSystem()->LoadSound("se_ok");
-			GetAudioSystem()->PlaySoundEx(index, 0);
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
+			}
+		}
+		else
+		{
+			if (GetInputSystem()->GetY())
+			{
+				SetSceneState(SceneState::EQuit);
+				gNextScene = SceneManager::SceneType::ETitle;
+
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
+			}
+			else if(GetInputSystem()->GetX())
+			{
+				SetSceneState(SceneState::EQuit);
+				gNextScene = SceneManager::SceneType::EGame;
+
+				int index = GetAudioSystem()->LoadSound("se_ok");
+				GetAudioSystem()->PlaySoundEx(index, 0);
+			}
 		}
 	}
 
@@ -61,7 +117,7 @@ void ResultScene::GenerateOutput()
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
 		}
 	}
 }

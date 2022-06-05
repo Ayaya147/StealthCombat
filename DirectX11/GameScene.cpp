@@ -28,24 +28,24 @@
 
 //#define FPS_ENABLE
 namespace dx = DirectX;
-static SceneManager::SceneType gNextScene = SceneManager::SceneType::ETitle;
+static SceneManager::SceneType gNextScene = SceneManager::SceneType::EResult;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
 	mPhysWorld(new PhysWorld(this)),
 	mPlayer(new PlayerActor(this)),
-	mWin(false),
+	mIsGameWin(false),
 	mIsCautionSE(false),
-	mQuitTime(1.5f),
+	mQuitTime(2.0f),
 	mDestroyedSpriteTime(0.0f)
 {
+	gNextScene = SceneManager::SceneType::EResult;
+
 	SetParticleManager(new ParticleManager(this, GetRenderer()));
 	GetParticleManager()->CreateParticleSystem(GetRenderer());
 
-	gNextScene = SceneManager::SceneType::ETitle;
 	GetRenderer()->ResetLight();
-
 	CreateGameActor();
 	CreateNumberActor();
 	CreateUIActor();
@@ -96,7 +96,9 @@ void GameScene::ProcessInput()
 			{
 				ui->SetUIState(PauseScreen::UIState::EClosing);
 			}
+
 			mQuitTime = 0.0f;
+			gNextScene = SceneManager::SceneType::ETitle;
 
 			int index = GetAudioSystem()->LoadSound("se_ok");
 			GetAudioSystem()->PlaySoundEx(index, 0);
@@ -104,30 +106,11 @@ void GameScene::ProcessInput()
 		break;
 
 	case SceneState::EGameEnd:
-		if (mQuitTime <= 0.0f && GetInputSystem()->GetY())
+		if (mQuitTime <= 0.0f)
 		{
 			SetSceneState(SceneState::EQuit);
-			gNextScene = SceneManager::SceneType::ETitle;
-			for (auto ui : GetPauseUIStack())
-			{
-				ui->SetUIState(PauseScreen::UIState::EClosing);
-			}
-
-			int index = GetAudioSystem()->LoadSound("se_ok");
-			GetAudioSystem()->PlaySoundEx(index, 0);
 		}
-		else if (mQuitTime <= 0.0f && GetInputSystem()->GetX() && !mWin)
-		{
-			SetSceneState(SceneState::EQuit);
-			gNextScene = SceneManager::SceneType::EGame;
-			for (auto ui : GetPauseUIStack())
-			{
-				ui->SetUIState(PauseScreen::UIState::EClosing);
-			}
 
-			int index = GetAudioSystem()->LoadSound("se_ok");
-			GetAudioSystem()->PlaySoundEx(index, 0);
-		}
 		break;
 	}
 
@@ -156,7 +139,7 @@ void GameScene::Update()
 		if (mEnemies.size() == 0)
 		{
 			SetSceneState(SceneState::EGameEnd);
-			mWin = true;
+			mIsGameWin = true;
 		}
 		else if (restTime <= 1.0f)
 		{
@@ -267,19 +250,7 @@ void GameScene::Update()
 
 	case SceneState::EGameEnd:
 		mQuitTime -= GetDeltaTime();
-		if (mQuitTime <= 0.0f)
-		{
-			mBackgroundUI->SetUIState(PauseScreen::UIState::EActive);
 
-			if (mWin)
-			{
-				mVictoryUI->SetUIState(PauseScreen::UIState::EActive);
-			}
-			else
-			{
-				mDefeatUI->SetUIState(PauseScreen::UIState::EActive);
-			}
-		}
 		break;
 	}
 
@@ -317,7 +288,8 @@ void GameScene::GenerateOutput()
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::EResult, parameter, true);
+			parameter.SetIsGameWin(mIsGameWin);
+			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
 		}
 		break;
 	}
@@ -485,16 +457,6 @@ void GameScene::CreatePauseScreen()
 	mMenuUI = new PauseScreen(this, tex);
 	mMenuUI->SetScale(0.8f);
 	mMenuUI->ComputeWorldTransform();
-
-	tex = renderer->GetTexture("victory");
-	mVictoryUI = new PauseScreen(this, tex);
-	mVictoryUI->SetScale(1.0f);
-	mVictoryUI->ComputeWorldTransform();
-
-	tex = renderer->GetTexture("defeat");
-	mDefeatUI = new PauseScreen(this, tex);
-	mDefeatUI->SetScale(1.0f);
-	mDefeatUI->ComputeWorldTransform();
 }
 
 void GameScene::CreateSound()

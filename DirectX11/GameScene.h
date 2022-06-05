@@ -57,10 +57,8 @@ private:
 	class SpriteComponent* mDestroyedSprite;
 	class PauseScreen* mBackgroundUI;
 	class PauseScreen* mMenuUI;
-	class PauseScreen* mVictoryUI;
-	class PauseScreen* mDefeatUI;
 
-	bool mWin;
+	bool mIsGameWin;
 	bool mIsCautionSE;
 	float mQuitTime;
 	float mDestroyedSpriteTime;

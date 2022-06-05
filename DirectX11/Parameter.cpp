@@ -2,7 +2,8 @@
 
 Parameter::Parameter()
 	:
-	mIsFromDemo(false)
+	mIsFromDemo(false),
+	mIsGameWin(false)
 {
 }
 
