@@ -25,7 +25,7 @@ void ComputeData::InitBuf(Renderer* renderer, int dataSize, int structSize, void
 
 	if (initData)
 	{
-		D3D11_SUBRESOURCE_DATA data;
+		D3D11_SUBRESOURCE_DATA data = {};
 		data.pSysMem = initData;
 		ThrowIfFailed(renderer->GetDevice()->CreateBuffer(&desc, &data, &mBuffer));
 	}

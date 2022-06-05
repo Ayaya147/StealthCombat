@@ -17,7 +17,7 @@ public:
 	virtual ~Mesh();
 
 	void ParseMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, bool textured = true);
-	void ParsePlaneMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int n, float size, bool textured = true);
+	void ParsePlaneMesh(class Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int n, float sizeW, float sizeH, bool textured = true);
 	void Bind(class Renderer* renderer);
 	void AddBind(class Bindable* bind);
 

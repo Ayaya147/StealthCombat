@@ -92,7 +92,14 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 	}
 }
 
-void Mesh::ParsePlaneMesh(Renderer* renderer, const std::string& fileName, const std::wstring& shaderName, int n, float size, bool textured)
+void Mesh::ParsePlaneMesh(
+	Renderer* renderer,
+	const std::string& fileName,
+	const std::wstring& shaderName,
+	int n,
+	float sizeW,
+	float sizeH,
+	bool textured)
 {
 	if (!mIsMeshParsed)
 	{
@@ -105,7 +112,7 @@ void Mesh::ParsePlaneMesh(Renderer* renderer, const std::string& fileName, const
 			for (int x = 0; x < n; x++)
 			{
 				vertices.push_back({
-					dx::XMFLOAT3{-size / 2.0f * (n - 1) + size * x, 0.0f ,size / 2.0f * (n - 1) - size * z},
+					dx::XMFLOAT3{-sizeW / 2.0f * (n - 1) + sizeW * x, 0.0f ,sizeH / 2.0f * (n - 1) - sizeH * z},
 					dx::XMFLOAT3{0.0f,1.0f,0.0f},
 					dx::XMFLOAT2{1.0f*x,1.0f*z}
 				});
@@ -149,9 +156,17 @@ void Mesh::ParsePlaneMesh(Renderer* renderer, const std::string& fileName, const
 		AddBind(new PixelShader(renderer, PSName));
 		AddBind(new InputLayout(renderer, ied, vs));
 		AddBind(new Topology(renderer, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP));
+
 		if (textured)
 		{
-			AddBind(new Texture(renderer, texName));
+			if (fileName == "screenshot")
+			{
+				AddBind(new Texture(renderer));
+			}
+			else
+			{
+				AddBind(new Texture(renderer, texName));
+			}
 		}
 
 		mIsMeshParsed = true;

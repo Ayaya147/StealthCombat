@@ -27,6 +27,9 @@ namespace dx = DirectX;
 namespace wrl = Microsoft::WRL;
 
 Renderer::Renderer(HWND hWnd, int width, int height)
+	:
+	mIsScreenshot(false),
+	mScreenshotView(nullptr)
 {
 	InitDirectX(hWnd, width, height);
 	CreateBuffer();
@@ -52,7 +55,7 @@ Renderer::~Renderer()
 	ImGui_ImplDX11_Shutdown();
 }
 
-void Renderer::Draw()
+void Renderer::Draw(bool flip)
 {
 	auto demo = dynamic_cast<DemoScene*>(mScene);
 	bool isDemo = demo && mScene->GetFade()->GetFadeState() == Fade::FadeState::EFadeNone;
@@ -88,7 +91,16 @@ void Renderer::Draw()
 
 	Draw2DScene();
 
-	mSwapChain->Present(1, 0);
+	if (mIsScreenshot)
+	{
+		Screenshot();
+		mIsScreenshot = false;
+	}
+
+	if (flip)
+	{
+		mSwapChain->Present(1, 0);
+	}
 }
 
 void Renderer::Draw3DScene()
@@ -447,4 +459,44 @@ void Renderer::CreateProjectionMatrix(int width, int height)
 		-960.0f, 960.0f, 540.0f, -540.0f, 0.0f, 1.0f
 	);
 	dx::XMStoreFloat4x4(&mProjection2D, projection2D);
+}
+
+void Renderer::Screenshot()
+{
+	wrl::ComPtr<ID3D11Texture2D> backBuffer;
+	ThrowIfFailed(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
+
+	D3D11_TEXTURE2D_DESC descBackBuffer;
+	backBuffer->GetDesc(&descBackBuffer);
+
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.ArraySize = 1;
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.Format = descBackBuffer.Format;
+	textureDesc.Height = descBackBuffer.Height;
+	textureDesc.Width = descBackBuffer.Width;
+	textureDesc.MipLevels = 1;
+	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+
+	wrl::ComPtr<ID3D11Texture2D> captureTexture;
+	ThrowIfFailed(mDevice->CreateTexture2D(&textureDesc, nullptr, &captureTexture));
+	wrl::ComPtr<ID3D11Resource> resource;
+	mRenderTargetView->GetResource(&resource);
+	mContext->CopyResource(captureTexture.Get(), resource.Get());
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = textureDesc.Format;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = -1;
+
+	ThrowIfFailed(mDevice->CreateShaderResourceView(
+		captureTexture.Get(), &srvDesc, &mScreenshotView
+	));
+
+	mContext->GenerateMips(mScreenshotView.Get());
 }

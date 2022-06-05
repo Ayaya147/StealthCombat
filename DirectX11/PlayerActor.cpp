@@ -78,7 +78,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 
 		Actor* actor = new Actor(GetScene());
 		Mesh* mesh = renderer->GetMesh("planePlayer");
-		mesh->ParsePlaneMesh(renderer, "player_guide", L"Phong", 2, 1.4f, true);
+		mesh->ParsePlaneMesh(renderer, "player_guide", L"Phong", 2, 1.4f, 1.4f, true);
 		mPlayerTranslucenceComp = new TranslucenceComponent(actor, mesh, 300);
 
 		mCameraComponent = new CameraComponent(this, CameraComponent::CameraType::ESpring);

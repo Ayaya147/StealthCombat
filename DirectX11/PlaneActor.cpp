@@ -20,7 +20,7 @@ PlaneActor::PlaneActor(BaseScene* scene)
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("plane");
-	mesh->ParsePlaneMesh(renderer, "plane", L"GerstnerWave", 101, 20.0f, false);
+	mesh->ParsePlaneMesh(renderer, "plane", L"GerstnerWave", 101, 20.0f, 20.0f, false);
 	MeshComponent* mc = new MeshComponent(this, mesh);
 
 	mVertexCBuffer = new VertexConstantBuffer<VertexConstant>(renderer, 1);

@@ -48,6 +48,15 @@ Texture::Texture(Renderer* renderer, const std::string& fileName, UINT slot)
 	renderer->GetContext()->GenerateMips(mTextureView.Get());
 }
 
+Texture::Texture(Renderer* renderer, UINT slot)
+	:
+	mHeight(0),
+	mWidth(0),
+	mSlot(slot)
+{
+	mTextureView = renderer->GetScreenshotViewPtr();
+}
+
 void Texture::Bind(Renderer* renderer)
 {
 	renderer->GetContext()->PSSetShaderResources(mSlot, 1, mTextureView.GetAddressOf());

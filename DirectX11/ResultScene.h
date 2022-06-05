@@ -13,4 +13,5 @@ public:
 
 private:
 	bool mIsGameWin;
+	class TranslucenceComponent* playerTranslucenceComp;
 };
