@@ -64,7 +64,9 @@ void GameScene::ProcessInput()
 	switch (GetSceneState())
 	{
 	case SceneState::EPlay:
-		if (GetInputSystem()->GetScenePause() && GetFade()->GetFadeState() == Fade::FadeState::EFadeNone)
+		if (GetInputSystem()->GetScenePause() &&
+			GetFade()->GetFadeState() == Fade::FadeState::EFadeNone &&
+			!mPlayer->GetIsLockedOn())
 		{
 			GetInputSystem()->GetPad()->StopVibration();
 			SetSceneState(SceneState::EPaused);
@@ -346,7 +348,7 @@ void GameScene::CreateGameActor()
 	for (int i = 0; i < mEnemies.size(); i++)
 	{
 		Actor* actor = new Actor(this);
-		mesh->ParsePlaneMesh(GetRenderer(), "enemy_guide", L"Phong", 2, 0.5f, 0.5f, true);
+		mesh->ParsePlaneMesh(GetRenderer(), "enemy_guide", L"3DSprite", 2, 0.5f, 0.5f, true);
 		mEnemyGuideTranslucenceComps.emplace_back(new TranslucenceComponent(actor, mesh, 400));
 	}
 }

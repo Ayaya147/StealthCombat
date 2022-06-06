@@ -12,7 +12,6 @@
 #include "Mesh.h"
 #include "TranslucenceComponent.h"
 #include "CameraComponent.h"
-#include "Light.h"
 #include "DefineConstant.h"
 #include "PlaneActor.h"
 
@@ -25,15 +24,8 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 {
 	PlaneActor* plane = new PlaneActor(this);
 
-	DirectionalLight light = {
-		{0.0f,-1.0f,0.0f},
-		{0.05f,0.05f,0.05f},
-		{1.0f,1.0f,1.0f},
-		{0.9f,0.9f,0.9f}
-	};
-
 	Renderer* renderer = GetRenderer();
-	renderer->SetDirectionalLight(light);
+	renderer->ResetLight();
 
 	Actor* actor = new Actor(this);
 	actor->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
@@ -42,7 +34,7 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 
 	actor = new Actor(this);
 	Mesh* mesh = renderer->GetMesh("planeScreenshot");
-	mesh->ParsePlaneMesh(renderer, "screenshot", L"3DSprite", 2, 12.0f, 8.0f, true);
+	mesh->ParsePlaneMesh(renderer, "screenshot", L"Screenshot", 2, 12.0f, 6.75f, true);
 	TranslucenceComponent* tc = new TranslucenceComponent(actor, mesh);
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,0.5f });
 	actor->SetPosition(dx::XMFLOAT3{ 1.5f,Constant::height + 12.0f,0.0f });
@@ -51,18 +43,18 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	{
 		actor = new Actor(this);
 		mesh = renderer->GetMesh("planeResult");
-		mesh->ParsePlaneMesh(renderer, "victory", L"Phong", 2, 5.0f, 4.0f, true);
+		mesh->ParsePlaneMesh(renderer, "victory", L"3DSprite", 2, 5.0f, 4.0f, true);
 		tc = new TranslucenceComponent(actor, mesh);
 	}
 	else
 	{
 		actor = new Actor(this);
 		mesh = renderer->GetMesh("planeResult");
-		mesh->ParsePlaneMesh(renderer, "defeat", L"Phong", 2, 5.0f, 4.0f, true);
+		mesh->ParsePlaneMesh(renderer, "defeat", L"3DSprite", 2, 5.0f, 4.0f, true);
 		tc = new TranslucenceComponent(actor, mesh);
 	}
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,-0.5f });
-	actor->SetPosition(dx::XMFLOAT3{ -3.5f,Constant::height + 12.0f,0.0f });
+	actor->SetPosition(dx::XMFLOAT3{ -4.0f,Constant::height + 12.0f,0.0f });
 }
 
 ResultScene::~ResultScene()
