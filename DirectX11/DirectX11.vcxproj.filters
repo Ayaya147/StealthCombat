@@ -535,10 +535,10 @@
     <FxCompile Include="3DSpritePS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="ScreenshotVS.hlsl">
+    <FxCompile Include="NegativeFilterVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="ScreenshotPS.hlsl">
+    <FxCompile Include="NegativeFilterPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

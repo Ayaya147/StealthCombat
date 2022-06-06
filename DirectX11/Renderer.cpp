@@ -473,7 +473,7 @@ void Renderer::Screenshot()
 
 	D3D11_TEXTURE2D_DESC textureDesc = {};
 	textureDesc.ArraySize = 1;
-	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;;
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.Format = descBackBuffer.Format;
 	textureDesc.Height = descBackBuffer.Height;

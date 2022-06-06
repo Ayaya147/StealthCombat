@@ -34,7 +34,7 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 
 	actor = new Actor(this);
 	Mesh* mesh = renderer->GetMesh("planeScreenshot");
-	mesh->ParsePlaneMesh(renderer, "screenshot", L"Screenshot", 2, 12.0f, 6.75f, true);
+	mesh->ParsePlaneMesh(renderer, "screenshot", L"NegativeFilter", 2, 12.0f, 6.75f, true);
 	TranslucenceComponent* tc = new TranslucenceComponent(actor, mesh);
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,0.5f });
 	actor->SetPosition(dx::XMFLOAT3{ 1.5f,Constant::height + 12.0f,0.0f });
