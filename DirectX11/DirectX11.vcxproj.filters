@@ -64,6 +64,9 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{2c3d2a91-f028-4d11-807f-9e4cf15b5716}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Filter">
+      <UniqueIdentifier>{16240427-d20c-4427-ad10-a3b71acda82e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -535,11 +538,17 @@
     <FxCompile Include="3DSpritePS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="NegativeFilterVS.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="LaplacianFilterVS.hlsl">
+      <Filter>Shaders\Filter</Filter>
+    </FxCompile>
+    <FxCompile Include="LaplacianFilterPS.hlsl">
+      <Filter>Shaders\Filter</Filter>
     </FxCompile>
     <FxCompile Include="NegativeFilterPS.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders\Filter</Filter>
+    </FxCompile>
+    <FxCompile Include="NegativeFilterVS.hlsl">
+      <Filter>Shaders\Filter</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
