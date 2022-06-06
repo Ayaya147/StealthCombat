@@ -31,6 +31,8 @@ DemoScene::DemoScene(SceneManager* sm, const Parameter& parameter)
 	mSmoke(new SmokeActor(this)),
 	mEmission(new EmissionActor(this))
 {
+	SetNextScene(SceneType::ETitle);
+
 	SetParticleManager(new ParticleManager(this, GetRenderer()));
 	GetParticleManager()->CreateParticleSystem(GetRenderer());
 	
@@ -107,7 +109,7 @@ void DemoScene::GenerateOutput()
 		{
 			Parameter parameter;
 			parameter.SetIsFromDemo(true);
-			GetSceneManager()->ChangeScene(SceneManager::SceneType::ETitle, parameter, true);
+			GetSceneManager()->ChangeScene(GetNextScene(), parameter, true);
 		}
 	}
 }

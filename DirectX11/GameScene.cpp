@@ -28,7 +28,6 @@
 
 //#define FPS_ENABLE
 namespace dx = DirectX;
-static SceneManager::SceneType gNextScene = SceneManager::SceneType::EResult;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	:
@@ -37,10 +36,10 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer(new PlayerActor(this)),
 	mIsGameWin(false),
 	mIsCautionSE(false),
-	mQuitTime(2.0f),
+	mQuitTime(0.2f),
 	mDestroyedSpriteTime(0.0f)
 {
-	gNextScene = SceneManager::SceneType::EResult;
+	SetNextScene(SceneType::EResult);
 
 	SetParticleManager(new ParticleManager(this, GetRenderer()));
 	GetParticleManager()->CreateParticleSystem(GetRenderer());
@@ -98,7 +97,7 @@ void GameScene::ProcessInput()
 			}
 
 			mQuitTime = 0.0f;
-			gNextScene = SceneManager::SceneType::ETitle;
+			SetNextScene(SceneType::ETitle);
 
 			int index = GetAudioSystem()->LoadSound("se_ok");
 			GetAudioSystem()->PlaySoundEx(index, 0);
@@ -287,7 +286,7 @@ void GameScene::GenerateOutput()
 		{
 			Parameter parameter;
 			parameter.SetIsGameWin(mIsGameWin);
-			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
+			GetSceneManager()->ChangeScene(GetNextScene(), parameter, true);
 		}
 		break;
 	}
@@ -338,10 +337,10 @@ void GameScene::CreateGameActor()
 		EnemyActor* enemy = new EnemyActor(this);
 	}
 
-	for (int i = 0; i < 28; i++)
-	{
-		CloudActor* cloud = new CloudActor(this);
-	}
+	//for (int i = 0; i < 28; i++)
+	//{
+	//	CloudActor* cloud = new CloudActor(this);
+	//}
 
 	Mesh* mesh = GetRenderer()->GetMesh("planeEnemy");
 	for (int i = 0; i < mEnemies.size(); i++)

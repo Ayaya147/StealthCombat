@@ -13,10 +13,9 @@
 #include "TranslucenceComponent.h"
 #include "CameraComponent.h"
 #include "Light.h"
+#include "DefineConstant.h"
 
 namespace dx = DirectX;
-
-static SceneManager::SceneType gNextScene = SceneManager::SceneType::EGame;
 
 ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	:
@@ -77,7 +76,7 @@ void ResultScene::ProcessInput()
 			if (GetInputSystem()->GetY())
 			{
 				SetSceneState(SceneState::EQuit);
-				gNextScene = SceneManager::SceneType::ETitle;
+				SetNextScene(SceneType::ETitle);
 
 				int index = GetAudioSystem()->LoadSound("se_ok");
 				GetAudioSystem()->PlaySoundEx(index, 0);
@@ -88,7 +87,7 @@ void ResultScene::ProcessInput()
 			if (GetInputSystem()->GetY())
 			{
 				SetSceneState(SceneState::EQuit);
-				gNextScene = SceneManager::SceneType::ETitle;
+				SetNextScene(SceneType::ETitle);
 
 				int index = GetAudioSystem()->LoadSound("se_ok");
 				GetAudioSystem()->PlaySoundEx(index, 0);
@@ -96,7 +95,7 @@ void ResultScene::ProcessInput()
 			else if(GetInputSystem()->GetX())
 			{
 				SetSceneState(SceneState::EQuit);
-				gNextScene = SceneManager::SceneType::EGame;
+				SetNextScene(SceneType::EGame);
 
 				int index = GetAudioSystem()->LoadSound("se_ok");
 				GetAudioSystem()->PlaySoundEx(index, 0);
@@ -123,7 +122,7 @@ void ResultScene::GenerateOutput()
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
+			GetSceneManager()->ChangeScene(GetNextScene(), parameter, true);
 		}
 	}
 }

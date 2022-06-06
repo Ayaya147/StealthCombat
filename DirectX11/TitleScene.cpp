@@ -19,8 +19,6 @@
 
 namespace dx = DirectX;
 
-static SceneManager::SceneType gNextScene = SceneManager::SceneType::EGame;
-
 TitleScene::TitleScene(SceneManager* sm, const Parameter& parameter)
 	:
 	BaseScene(sm, parameter),
@@ -104,7 +102,7 @@ void TitleScene::ProcessInput()
 			if (GetInputSystem()->GetX())
 			{
 				SetSceneState(SceneState::EQuit);
-				gNextScene = SceneManager::SceneType::EGame;
+				SetNextScene(SceneType::EGame);
 
 				int index = GetAudioSystem()->LoadSound("se_ok");
 				GetAudioSystem()->PlaySoundEx(index, 0);
@@ -112,7 +110,7 @@ void TitleScene::ProcessInput()
 			else if (GetInputSystem()->GetY())
 			{
 				SetSceneState(SceneState::EQuit);
-				gNextScene = SceneManager::SceneType::EDemo;
+				SetNextScene(SceneType::EDemo);
 
 				int index = GetAudioSystem()->LoadSound("se_ok");
 				GetAudioSystem()->PlaySoundEx(index, 0);
@@ -181,13 +179,13 @@ void TitleScene::GenerateOutput()
 
 		if (GetFade()->GetAlpha() >= 1.0f)
 		{
-			if (gNextScene == SceneManager::SceneType::EGame)
+			if (GetNextScene() == SceneType::EGame)
 			{
 				GetAudioSystem()->StopSoundAll();
 			}
 
 			Parameter parameter;
-			GetSceneManager()->ChangeScene(gNextScene, parameter, true);
+			GetSceneManager()->ChangeScene(GetNextScene(), parameter, true);
 		}
 	}
 }

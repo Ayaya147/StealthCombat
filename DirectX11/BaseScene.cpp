@@ -17,9 +17,10 @@ BaseScene::BaseScene(SceneManager* sm, const Parameter& parameter)
 	mUpdatingActors(false),
 	mGameTime(0.0f),
 	mDeltaTime(0.016f),
-	mSceneState(SceneState::EPlay)
+	mSceneState(SceneState::EPlay),
+	mNextScene(SceneType::ETitle),
+	mFade(new Fade(this))
 {
-	mFade = new Fade(this);
 }
 
 BaseScene::~BaseScene()

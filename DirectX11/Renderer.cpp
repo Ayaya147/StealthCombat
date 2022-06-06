@@ -199,6 +199,8 @@ void Renderer::UnloadData()
 	mMeshes.clear();
 
 	mMeshComps.clear();
+	mTranslucenceComps.clear();
+	mSpriteComps.clear();
 }
 
 void Renderer::AddSprite(SpriteComponent* sprite)
