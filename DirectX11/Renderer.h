@@ -18,7 +18,7 @@ public:
 	Renderer(HWND hWnd, int width, int height);
 	~Renderer();
 
-	void Draw(bool flip = true);
+	void Draw();
 	void Draw3DScene();
 	void Draw2DScene();
 	void UnloadData();

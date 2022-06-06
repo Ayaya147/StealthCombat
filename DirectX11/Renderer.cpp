@@ -55,7 +55,7 @@ Renderer::~Renderer()
 	ImGui_ImplDX11_Shutdown();
 }
 
-void Renderer::Draw(bool flip)
+void Renderer::Draw()
 {
 	auto demo = dynamic_cast<DemoScene*>(mScene);
 	bool isDemo = demo && mScene->GetFade()->GetFadeState() == Fade::FadeState::EFadeNone;
@@ -97,10 +97,7 @@ void Renderer::Draw(bool flip)
 		mIsScreenshot = false;
 	}
 
-	if (flip)
-	{
-		mSwapChain->Present(1, 0);
-	}
+	mSwapChain->Present(1, 0);
 }
 
 void Renderer::Draw3DScene()
@@ -402,11 +399,14 @@ void Renderer::InitDirectX(HWND hWnd, int width, int height)
 	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	ThrowIfFailed(mDevice->CreateTexture2D(&depthStencilDesc, nullptr, &depthStencilBuffer));
 
+	// create depth stencil view
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Texture2D.MipSlice = 0;
 	ThrowIfFailed(mDevice->CreateDepthStencilView(depthStencilBuffer.Get(), &dsvDesc, &mDepthStencilView));
+
+	// set render target
 	mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
 	// viewport

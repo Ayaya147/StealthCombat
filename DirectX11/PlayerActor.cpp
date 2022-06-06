@@ -37,7 +37,7 @@ namespace dx = DirectX;
 PlayerActor::PlayerActor(BaseScene* scene)
 	:
 	Actor(scene),
-	mOutCloudTime(0.1f),
+	mOutCloudTime(14.0f),
 	mEmitterCD(0.05f),
 	mPlayerTranslucenceComp(nullptr),
 	mTargetEnemy(nullptr),

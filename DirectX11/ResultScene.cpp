@@ -36,16 +36,16 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	renderer->SetDirectionalLight(light);
 
 	Actor* actor = new Actor(this);
-	actor->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height - 12.0f,0.0f });
+	actor->SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 	CameraComponent* cc = new CameraComponent(actor, CameraComponent::CameraType::ENormal);
 	cc->SnapToIdeal();
 
 	actor = new Actor(this);
 	Mesh* mesh = renderer->GetMesh("planeScreenshot");
-	mesh->ParsePlaneMesh(renderer, "screenshot", L"Phong", 2, 12.0f, 8.0f, true);
+	mesh->ParsePlaneMesh(renderer, "screenshot", L"3DSprite", 2, 12.0f, 8.0f, true);
 	TranslucenceComponent* tc = new TranslucenceComponent(actor, mesh);
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,0.5f });
-	actor->SetPosition(dx::XMFLOAT3{ 1.5f,Constant::height,0.0f });
+	actor->SetPosition(dx::XMFLOAT3{ 1.5f,Constant::height + 12.0f,0.0f });
 
 	if (mIsGameWin)
 	{
@@ -62,7 +62,7 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 		tc = new TranslucenceComponent(actor, mesh);
 	}
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,-0.5f });
-	actor->SetPosition(dx::XMFLOAT3{ -3.5f,Constant::height,0.0f });
+	actor->SetPosition(dx::XMFLOAT3{ -3.5f,Constant::height + 12.0f,0.0f });
 }
 
 ResultScene::~ResultScene()

@@ -36,7 +36,7 @@ GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
 	mPlayer(new PlayerActor(this)),
 	mIsGameWin(false),
 	mIsCautionSE(false),
-	mQuitTime(0.2f),
+	mQuitTime(2.0f),
 	mDestroyedSpriteTime(0.0f)
 {
 	SetNextScene(SceneType::EResult);
@@ -337,10 +337,10 @@ void GameScene::CreateGameActor()
 		EnemyActor* enemy = new EnemyActor(this);
 	}
 
-	//for (int i = 0; i < 28; i++)
-	//{
-	//	CloudActor* cloud = new CloudActor(this);
-	//}
+	for (int i = 0; i < 28; i++)
+	{
+		CloudActor* cloud = new CloudActor(this);
+	}
 
 	Mesh* mesh = GetRenderer()->GetMesh("planeEnemy");
 	for (int i = 0; i < mEnemies.size(); i++)
