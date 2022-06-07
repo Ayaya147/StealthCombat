@@ -40,20 +40,11 @@ ResultScene::ResultScene(SceneManager* sm, const Parameter& parameter)
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,0.5f });
 	actor->SetPosition(dx::XMFLOAT3{ 1.5f,Constant::height + 12.0f,0.0f });
 
-	if (mIsGameWin)
-	{
-		actor = new Actor(this);
-		mesh = renderer->GetMesh("planeResult");
-		mesh->ParsePlaneMesh(renderer, "victory", L"3DSprite", 2, 5.0f, 4.0f, true);
-		tc = new TranslucenceComponent(actor, mesh);
-	}
-	else
-	{
-		actor = new Actor(this);
-		mesh = renderer->GetMesh("planeResult");
-		mesh->ParsePlaneMesh(renderer, "defeat", L"3DSprite", 2, 5.0f, 4.0f, true);
-		tc = new TranslucenceComponent(actor, mesh);
-	}
+	std::string textureName = mIsGameWin ? "victory" : "defeat";
+	actor = new Actor(this);
+	mesh = renderer->GetMesh("planeResult");
+	mesh->ParsePlaneMesh(renderer, textureName, L"3DSprite", 2, 5.0f, 4.0f, true);
+	tc = new TranslucenceComponent(actor, mesh);
 	actor->SetRotation(dx::XMFLOAT3{ 0.0f,0.0f,-0.5f });
 	actor->SetPosition(dx::XMFLOAT3{ -4.0f,Constant::height + 12.0f,0.0f });
 }
