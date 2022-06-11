@@ -49,7 +49,6 @@ BaseScene::~BaseScene()
 		delete mFade;
 		mFade = nullptr;
 	}
-
 	if (mParticleManager)
 	{
 		delete mParticleManager;

@@ -114,7 +114,7 @@ bool InputSystem::GetCameraDown()
 	}
 	else
 	{
-		return mKeyboard->GetKeyValue('R');
+		return false;
 	}
 }
 
