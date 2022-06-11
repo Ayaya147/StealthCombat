@@ -37,4 +37,5 @@ private:
 	DirectX::XMFLOAT3 mVelocity;
 	DirectX::XMFLOAT3 mActualPos;
 	DirectX::XMFLOAT3 mUp;
+	DirectX::XMFLOAT3 mAt;
 };

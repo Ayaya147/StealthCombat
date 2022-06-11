@@ -94,7 +94,19 @@ bool InputSystem::GetPlayerEmitMissile()
 	}
 }
 
-bool InputSystem::GetCameraInput()
+bool InputSystem::GetCameraUp()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetThumbRightY() > 0;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool InputSystem::GetCameraDown()
 {
 	if (mIsGamePad)
 	{
@@ -103,6 +115,42 @@ bool InputSystem::GetCameraInput()
 	else
 	{
 		return mKeyboard->GetKeyValue('R');
+	}
+}
+
+bool InputSystem::GetCameraLeft()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetThumbRightX() < 0;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool InputSystem::GetCameraRight()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetThumbRightX() > 0;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool InputSystem::GetR3()
+{
+	if (mIsGamePad)
+	{
+		return mPad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed;
+	}
+	else
+	{
+		return false;
 	}
 }
 

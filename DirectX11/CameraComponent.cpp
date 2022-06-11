@@ -10,6 +10,7 @@
 #include "Random.h"
 #include "DemoScene.h"
 #include "GameScene.h"
+#include "ResultScene.h"
 
 namespace dx = DirectX;
 
@@ -21,17 +22,18 @@ CameraComponent::CameraComponent(Actor* owner, CameraType type, int updateOrder)
 	mTargetDist(20.0f),
 	mVelocity(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
 	mActualPos(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
-	mUp(dx::XMFLOAT3{ 0.0f,0.0f,0.0f })
+	mUp(dx::XMFLOAT3{ 0.0f,0.0f,0.0f }),
+	mAt(GetOwner()->GetPosition())
 {
 }
 
 void CameraComponent::ProcessInput()
 {
+	InputSystem* input = GetOwner()->GetScene()->GetInputSystem();
+
 	if (auto game = dynamic_cast<GameScene*>(GetOwner()->GetScene()))
 	{
-		InputSystem* input = game->GetInputSystem();
-
-		if (input->GetCameraInput())
+		if (input->GetCameraDown())
 		{
 			mUp = GetOwner()->GetForward();
 			mUp.x *= -1.0f;
@@ -42,9 +44,53 @@ void CameraComponent::ProcessInput()
 			mUp = GetOwner()->GetForward();
 		}
 	}
+	else if (auto result = dynamic_cast<ResultScene*>(GetOwner()->GetScene()))
+	{
+		if (input->GetCameraLeft())
+		{
+			mAt.x -= 0.1f;
+			if (mAt.x <= -3.0f)
+			{
+				mAt.x = -3.0f;
+			}
+		}
+		else if (input->GetCameraRight())
+		{
+			mAt.x += 0.1f;
+			if (mAt.x >= 3.0f)
+			{
+				mAt.x = 3.0f;
+			}
+		}
+		
+		if (input->GetCameraUp())
+		{
+			mAt.z += 0.1f;
+			if (mAt.z >= 3.0f)
+			{
+				mAt.z = 3.0f;
+			}
+		}
+		else if (input->GetCameraDown())
+		{
+			mAt.z -= 0.1f;
+			if (mAt.z <= -3.0f)
+			{
+				mAt.z = -3.0f;
+			}
+		}
+
+		if (input->GetR3())
+		{
+			mAt = GetOwner()->GetPosition();
+		}
+
+		mUp = GetOwner()->GetForward();
+	}
 	else
 	{
 		mUp = GetOwner()->GetForward();
+		mAt = GetOwner()->GetPosition();
 	}
 }
 
@@ -62,11 +108,9 @@ void CameraComponent::Update(float deltaTime)
 			GetOwner()->GetPosition().z
 		};
 
-		at = GetOwner()->GetPosition();
-
 		view = dx::XMMatrixLookAtLH(
 			dx::XMLoadFloat3(&cameraPos),
-			dx::XMLoadFloat3(&at),
+			dx::XMLoadFloat3(&mAt),
 			dx::XMLoadFloat3(&mUp)
 		);
 
