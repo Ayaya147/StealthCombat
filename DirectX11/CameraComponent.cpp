@@ -46,43 +46,99 @@ void CameraComponent::ProcessInput()
 	}
 	else if (auto result = dynamic_cast<ResultScene*>(GetOwner()->GetScene()))
 	{
+		GamePad* pad = input->GetPad();
+		float rate = 0.0f;
+		float rangeX = 3.0f;
+		float rangeY = 3.0f;
+		float speedBack = 8.0f;
+		float deltaTime = result->GetDeltaTime();
+		float speed = 4.0f;
+		float speedY = 0.0f;
+		float speedX = 0.0f;
+		if (pad->GetThumbRightY() != 0)
+		{
+			rate = abs((float)pad->GetThumbRightX() / (float)pad->GetThumbRightY());
+			speedY = sqrtf(16.0f / (rate * rate + 1));
+			speedX = rate * sqrtf(16.0f / (rate * rate + 1));
+		}
+		else
+		{
+			speedX = speed;
+			speedY = 0.0f;
+		}
+
 		if (input->GetCameraLeft())
 		{
-			mAt.x -= 0.1f;
-			if (mAt.x <= -3.0f)
+			mAt.x -= speedX * deltaTime;
+			if (mAt.x <= -rangeX)
 			{
-				mAt.x = -3.0f;
+				mAt.x = -rangeX;
 			}
 		}
 		else if (input->GetCameraRight())
 		{
-			mAt.x += 0.1f;
-			if (mAt.x >= 3.0f)
+			mAt.x += speedX * deltaTime;
+			if (mAt.x >= rangeX)
 			{
-				mAt.x = 3.0f;
+				mAt.x = rangeX;
 			}
 		}
-		
+
 		if (input->GetCameraUp())
 		{
-			mAt.z += 0.1f;
-			if (mAt.z >= 3.0f)
+			mAt.z += speedY * deltaTime;
+			if (mAt.z >= rangeY)
 			{
-				mAt.z = 3.0f;
+				mAt.z = rangeY;
 			}
 		}
 		else if (input->GetCameraDown())
 		{
-			mAt.z -= 0.1f;
-			if (mAt.z <= -3.0f)
+			mAt.z -= speedY * deltaTime;
+			if (mAt.z <= -rangeY)
 			{
-				mAt.z = -3.0f;
+				mAt.z = -rangeY;
 			}
 		}
 
-		if (input->GetR3())
+		if (!input->GetCameraLeft() &&
+			!input->GetCameraRight() &&
+			!input->GetCameraUp() &&
+			!input->GetCameraDown())
 		{
-			mAt = GetOwner()->GetPosition();
+			if (mAt.x > 0)
+			{
+				mAt.x -= speedBack * deltaTime;
+				if (mAt.x <= 0)
+				{
+					mAt.x = 0.0f;
+				}
+			}
+			else if (mAt.x < 0)
+			{
+				mAt.x += speedBack * deltaTime;
+				if (mAt.x >= 0)
+				{
+					mAt.x = 0.0f;
+				}
+			}
+
+			if (mAt.z > 0)
+			{
+				mAt.z -= speedBack * deltaTime;
+				if (mAt.z <= 0)
+				{
+					mAt.z = 0.0f;
+				}
+			}
+			else if (mAt.z < 0)
+			{
+				mAt.z += speedBack * deltaTime;
+				if (mAt.z >= 0)
+				{
+					mAt.z = 0.0f;
+				}
+			}
 		}
 
 		mUp = GetOwner()->GetForward();

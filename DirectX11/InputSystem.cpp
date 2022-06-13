@@ -142,18 +142,6 @@ bool InputSystem::GetCameraRight()
 	}
 }
 
-bool InputSystem::GetR3()
-{
-	if (mIsGamePad)
-	{
-		return mPad->GetButtonState(XINPUT_GAMEPAD_RIGHT_THUMB) == ButtonState::EPressed;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 bool InputSystem::GetScenePause()
 {
 	if (mIsGamePad)

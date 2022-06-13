@@ -25,7 +25,6 @@ public:
 	bool GetCameraDown();
 	bool GetCameraLeft();
 	bool GetCameraRight();
-	bool GetR3();
 	
 	bool GetScenePause();
 	bool GetX();
