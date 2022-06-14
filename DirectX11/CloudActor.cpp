@@ -38,7 +38,7 @@ CloudActor::CloudActor(BaseScene* scene)
 		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		Sphere tempSphere(pos, radius * GetScale().x*1.4f);
+		Sphere tempSphere(pos, radius * GetScale().x*1.1f);
 		sc->SetSphere(&tempSphere);
 
 		PhysWorld* phys = game->GetPhysWorld();
@@ -129,6 +129,7 @@ void CloudActor::ImGuiWindow()
 		ImGui::SliderFloat("Loop", &mData.mLoop, 0.0f, 64.0f, "%.f");
 
 		ImGui::Text("Noise");
+		ImGui::SliderFloat("Noise Offset", &mData.mNoiseOffset, 0.0f, 0.9f, "%.2f");
 		ImGui::SliderFloat("Noise Scale", &mData.mNoiseScale, 0.0f, 64.0f, "%.2f");
 		ImGui::SliderFloat("Radius", &mData.mRadius, 0.0f, 1.0f, "%.2f");
 
@@ -170,5 +171,6 @@ void CloudActor::Reset()
 		30.0f,
 		1.0f,
 		3,
+		0.0f,
 	};
 }

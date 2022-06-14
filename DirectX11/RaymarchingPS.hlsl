@@ -26,6 +26,7 @@ cbuffer CBuf2 : register(b2)
     float mOpacityLight;
     float mLightStepScale;
     int mLoopLight;
+    float mNoiseOffset;
 };
 
 static const float3x3 m = float3x3(
@@ -33,6 +34,9 @@ static const float3x3 m = float3x3(
     -0.80f, 0.36f, -0.48f,
     -0.60f, -0.48f, 0.64f
 );
+
+SamplerState splr : register(s0);
+Texture2D tex : register(t0);
 
 float Hash(float n)
 {
@@ -46,21 +50,49 @@ float Noise(float3 x)
     f = f * f * (3.0f - 2.0f * f);
     
     float n = p.x + p.y * 57.0f + p.z * 113.0f;
-    float res = lerp(lerp(lerp(Hash(n +   0.0f), Hash(n +   1.0f), f.x),
-                          lerp(Hash(n +  57.0f), Hash(n +  58.0f), f.x), f.y),
+    float res = lerp(lerp(lerp(Hash(n + 0.0f),   Hash(n + 1.0f),   f.x),
+                          lerp(Hash(n + 57.0f),  Hash(n + 58.0f),  f.x), f.y),
                      lerp(lerp(Hash(n + 113.0f), Hash(n + 114.0f), f.x),
                           lerp(Hash(n + 170.0f), Hash(n + 171.0f), f.x), f.y), f.z);
     
     return res;
 }
 
+float NoiseTexture(float3 x)
+{
+    float2 noiseOffset = (float2) mNoiseOffset;
+    float3 p = floor(x);
+    float3 f = frac(x);
+    f = f * f * (3.0f - 2.0f * f);
+    
+    float2 tc0 = (p.xy + noiseOffset.xy * p.z + f.xy + 0.5f) / 256.0f;
+    float2 tc1 = (p.xy + noiseOffset.xy * (p.z + 1.0f) + f.xy + 0.5f) / 256.0f;
+    
+    return lerp(tex.Sample(splr, tc0).x, tex.Sample(splr, tc1).x, f.z);
+}
+
 // fractional Brownian motion
 float FBM(float3 p)
 {
     float f = 0.0f;
-    f += 0.500f * Noise(p); p = mul(m, p) * 2.02f;
-    f += 0.250f * Noise(p); p = mul(m, p) * 2.03f;
-    f += 0.125f * Noise(p);
+
+    switch (mType)
+    {
+        case 0:
+            f += 0.500f * NoiseTexture(p); p = mul(m, p) * 2.0f;
+            f += 0.250f * NoiseTexture(p); p = mul(m, p) * 2.0f;
+            f += 0.125f * NoiseTexture(p);
+            break;
+        case 1:
+        case 2:
+        case 3:
+            f += 0.250f * Noise(p); p = mul(m, p) * 2.0f;
+            f += 0.500f * Noise(p); p = mul(m, p) * 2.0f;
+            f += 0.125f * Noise(p);
+            break;
+        default:
+            break;
+    }
     
     return f;
 }
@@ -89,16 +121,16 @@ float DensityFunction(float3 p)
     
     switch (mType)
     {
-    case 0:
-        return f * 1.0f - Sphere(p / mRadius, 0.0f);
-    case 1:
-        return f * 0.3f - Sphere(p, mRadius);
-    case 2:
-        return f * 0.2f - Torus(p, float2(mRadius, 0.04f));
-    case 3:
-        return f * 0.2f - Ellipsoid(p, float3(mRadius / 3.0f, mRadius / 3.0f, mRadius));
-    default:
-        return 0.0f;
+        case 0:
+            return f * 1.0f - Sphere(p / mRadius, 0.0f);
+        case 1:
+            return f * 0.3f - Sphere(p, mRadius);
+        case 2:
+            return f * 0.2f - Torus(p, float2(mRadius, 0.04f));
+        case 3:
+            return f * 0.2f - Ellipsoid(p, float3(mRadius / 3.0f, mRadius / 3.0f, mRadius));
+        default:
+            return 0.0f;
     }
 }
 
@@ -142,6 +174,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     int loop = floor(traverseDist / step);
     
     // raymarching loop
+    [unroll(20)]
     for (int i = 0; i < loop; i++)
     {
         float density = DensityFunction(localPos);
@@ -155,6 +188,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             float3 lightPos = localPos;
             
             // lighting loop
+            [unroll(3)]
             for (int j = 0; j < mLoopLight; j++)
             {
                 float densityLight = DensityFunction(lightPos);

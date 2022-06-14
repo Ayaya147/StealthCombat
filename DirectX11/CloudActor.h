@@ -35,7 +35,8 @@ private:
 		float mOpacityLight;
 		float mLightStepScale;
 		int mLoopLight;
-		float padding[3];
+		float mNoiseOffset;
+		float padding[2];
 	};
 
 	void Reset();
