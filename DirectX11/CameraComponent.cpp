@@ -52,14 +52,14 @@ void CameraComponent::ProcessInput()
 		float rangeY = 3.0f;
 		float speedBack = 8.0f;
 		float deltaTime = result->GetDeltaTime();
-		float speed = 4.0f;
+		float speed = 8.0f;
 		float speedY = 0.0f;
 		float speedX = 0.0f;
 		if (pad->GetThumbRightY() != 0)
 		{
 			rate = abs((float)pad->GetThumbRightX() / (float)pad->GetThumbRightY());
-			speedY = sqrtf(16.0f / (rate * rate + 1));
-			speedX = rate * sqrtf(16.0f / (rate * rate + 1));
+			speedY = sqrtf((speed * speed) / (rate * rate + 1));
+			speedX = rate * sqrtf((speed * speed) / (rate * rate + 1));
 		}
 		else
 		{

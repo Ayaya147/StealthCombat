@@ -174,7 +174,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     int loop = floor(traverseDist / step);
     
     // raymarching loop
-    [unroll(20)]
+    [unroll(24)]
     for (int i = 0; i < loop; i++)
     {
         float density = DensityFunction(localPos);
@@ -188,7 +188,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             float3 lightPos = localPos;
             
             // lighting loop
-            [unroll(3)]
+            [unroll(1)]
             for (int j = 0; j < mLoopLight; j++)
             {
                 float densityLight = DensityFunction(lightPos);

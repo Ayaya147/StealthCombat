@@ -38,7 +38,7 @@ CloudActor::CloudActor(BaseScene* scene)
 		float radius = 0.3f;
 		SphereComponent* sc = new SphereComponent(this);
 		dx::XMFLOAT3 pos = dx::XMFLOAT3{ Random::GetFloatRange(-range,range),Constant::height,Random::GetFloatRange(-range,range) };
-		Sphere tempSphere(pos, radius * GetScale().x*1.1f);
+		Sphere tempSphere(pos, radius * GetScale().x*1.4f);
 		sc->SetSphere(&tempSphere);
 
 		PhysWorld* phys = game->GetPhysWorld();
@@ -99,7 +99,7 @@ void CloudActor::UpdateActor(float deltaTime)
 
 	if (mIsAnimation)
 	{
-		mData.mNoiseScale = 10.0f + 1.5f * sin(GetScene()->GetGameTime() * mAnimationSpeed);
+		mData.mNoiseOffset = 0.5f + 0.2f * sin(GetScene()->GetGameTime() * mAnimationSpeed);
 	}
 }
 
@@ -163,9 +163,9 @@ void CloudActor::Reset()
 	mData = {
 		{0.82f, 0.82f, 0.82f},
 		32.0f,
-		0.0f,
-		10.0f,
-		0.7f,
+		0.5f,
+		15.0f,
+		0.65f,
 		40.0f,
 		85.0f,
 		20.0f,

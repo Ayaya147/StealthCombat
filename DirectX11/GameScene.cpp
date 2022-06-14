@@ -26,7 +26,7 @@
 #include "ParticleManager.h"
 #include "TranslucenceComponent.h"
 
-#define FPS_ENABLE
+//#define FPS_ENABLE
 namespace dx = DirectX;
 
 GameScene::GameScene(SceneManager* sm, const Parameter& parameter)
