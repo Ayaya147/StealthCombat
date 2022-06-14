@@ -135,6 +135,7 @@ void EmissionActor::Reset()
 	mData = {
 		{0.3f, 0.3f, 1.0f},
 		5.0f,
+		0.0f,
 		20.0f,
 		0.2f,
 		40.0f,

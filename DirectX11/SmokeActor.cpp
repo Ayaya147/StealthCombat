@@ -140,6 +140,7 @@ void SmokeActor::Reset()
 	mData = {
 		{0.3f, 0.3f, 0.3f},
 		32.0f,
+		0.0f,
 		20.0f,
 		0.0f,
 		0.0f,

@@ -162,6 +162,7 @@ void ExplosionActor::Reset()
 	mData = {
 		{1.0f, 0.1f, 0.1f},
 		32.0f,
+		0.0f,
 		20.0f,
 		0.0f,
 		0.0f,

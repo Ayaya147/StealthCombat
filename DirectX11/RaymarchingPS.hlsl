@@ -18,6 +18,7 @@ cbuffer CBuf2 : register(b2)
 {
     float3 mBaseColor;
     float mLoop;
+    float mNoiseOffset;
     float mNoiseScale;
     float mRadius;
     float mAbsorption;
@@ -26,7 +27,6 @@ cbuffer CBuf2 : register(b2)
     float mOpacityLight;
     float mLightStepScale;
     int mLoopLight;
-    float mNoiseOffset;
 };
 
 static const float3x3 m = float3x3(
