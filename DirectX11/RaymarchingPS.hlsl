@@ -65,8 +65,8 @@ float NoiseTexture(float3 x)
     float3 f = frac(x);
     f = f * f * (3.0f - 2.0f * f);
     
-    float2 tc0 = (p.xy + noiseOffset.xy * p.z + f.xy + 0.5f) / 256.0f;
-    float2 tc1 = (p.xy + noiseOffset.xy * (p.z + 1.0f) + f.xy + 0.5f) / 256.0f;
+    float2 tc0 = (p.xy + noiseOffset.xy * p.z + f.xy + 0.5f) / 512.0f;
+    float2 tc1 = (p.xy + noiseOffset.xy * (p.z + 1.0f) + f.xy + 0.5f) / 512.0f;
     
     return lerp(tex.Sample(splr, tc0).x, tex.Sample(splr, tc1).x, f.z);
 }

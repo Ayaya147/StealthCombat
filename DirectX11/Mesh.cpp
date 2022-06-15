@@ -89,7 +89,7 @@ void Mesh::ParseMesh(Renderer* renderer, const std::string& fileName, const std:
 		}
 		if (fileName == "cube")
 		{
-			AddBind(new Texture(renderer, "Asset\\Texture\\random.png"));
+			AddBind(new Texture(renderer, "Asset\\Texture\\random1.png"));
 		}
 
 		mIsMeshParsed = true;
