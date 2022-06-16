@@ -68,7 +68,7 @@ float NoiseTexture(float3 x)
     float2 tc0 = (p.xy + noiseOffset.xy * p.z + f.xy + 0.5f) / 512.0f;
     float2 tc1 = (p.xy + noiseOffset.xy * (p.z + 1.0f) + f.xy + 0.5f) / 512.0f;
     
-    return lerp(tex.Sample(splr, tc0).x, tex.Sample(splr, tc1).x, f.z);
+    return lerp(tex.SampleLevel(splr, tc0, 0).x, tex.SampleLevel(splr, tc1, 0).x, f.z);
 }
 
 // fractional Brownian motion
@@ -174,7 +174,6 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     int loop = floor(traverseDist / step);
     
     // raymarching loop
-    [unroll(24)]
     for (int i = 0; i < loop; i++)
     {
         float density = DensityFunction(localPos);
@@ -188,7 +187,6 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             float3 lightPos = localPos;
             
             // lighting loop
-            [unroll(1)]
             for (int j = 0; j < mLoopLight; j++)
             {
                 float densityLight = DensityFunction(lightPos);
