@@ -16,7 +16,6 @@
 namespace dx = DirectX;
 
 int CloudActor::mCount = 0;
-CloudActor::CloudConstant CloudActor::mData;
 PixelConstantBuffer<CloudActor::ObjectConstant>* CloudActor::mObjectCBuffer = nullptr;
 PixelConstantBuffer<CloudActor::CloudConstant>* CloudActor::mCloudCBuffer = nullptr;
 
@@ -26,6 +25,9 @@ CloudActor::CloudActor(BaseScene* scene)
 	mAnimationSpeed(1.0f),
 	mIsAnimation(true)
 {
+	mCount++;
+	Reset();
+
 	if (auto game = dynamic_cast<GameScene*>(GetScene()))
 	{
 		game->AddCloud(this);
@@ -53,9 +55,6 @@ CloudActor::CloudActor(BaseScene* scene)
 		sc->SetSphere(sphere);
 		sphere->mCenter = tempSphere.mCenter;
 	}
-
-	mCount++;
-	Reset();
 
 	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("cube");
@@ -160,13 +159,15 @@ void CloudActor::ImGuiWindow()
 
 void CloudActor::Reset()
 {
+	float absorption = Random::GetFloatRange(40.0f, 45.0f);
+
 	mData = {
 		{0.82f, 0.82f, 0.82f},
 		32.0f,
 		0.5f,
 		15.0f,
 		0.75f,
-		40.0f,
+		absorption,
 		80.0f,
 		20.0f,
 		30.0f,

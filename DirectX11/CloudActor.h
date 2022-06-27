@@ -43,8 +43,8 @@ private:
 
 	float mAnimationSpeed;
 	bool mIsAnimation;
+	CloudConstant mData;
 	static int mCount;
-	static CloudConstant mData;
 	static PixelConstantBuffer<ObjectConstant>* mObjectCBuffer;
 	static PixelConstantBuffer<CloudConstant>* mCloudCBuffer;
 };
