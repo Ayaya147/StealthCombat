@@ -161,7 +161,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
     float jitter = Hash(localPos.x + localPos.y * 10.0f + localPos.z * 100.0f + mTime);
     localPos += jitter * localStep;
     
-    float4 color = float4(mBaseColor + mAmbientLight, 0.0f);
+    float4 color = float4(mBaseColor, 0.0f);
     float transmittance = 1.0f;
     
     // calculate the max loop when ray is inside the volume
@@ -207,7 +207,7 @@ float4 main(float3 worldPos : POSITION) : SV_TARGET
             }
             
             color.a += 1.0f * (mOpacity * d * transmittance);
-            color.rgb += mDiffuseColor * (mOpacityLight * d * transmittance * transmittanceLight);
+            color.rgb += (mDiffuseColor + mAmbientLight) * (mOpacityLight * d * transmittance * transmittanceLight);
         }
         
         localPos += localStep;

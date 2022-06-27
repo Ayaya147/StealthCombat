@@ -45,7 +45,7 @@ float4 main(float3 worldPos : POSITION, float3 worldNor : NORMAL, float2 tc : TE
         specular = mSpecColor * pow(max(0.0f, dot(reflectDir, viewDir)), 50.0f);
     }
 
-    float4 color = saturate(tex.Sample(splr, tc) + float4(specular, 1.0f));
+    float4 color = saturate(tex.Sample(splr, tc) * float4(mAmbientLight + mDiffuseColor * nDotL, 1.0f) + float4(specular, 0.0f));
     color.rgb *= colorToon.rgb;
     
     return color;

@@ -51,11 +51,11 @@ float3 OceanColor(float3 worldPos, float waveHeight, float3 normal)
     specular += specular * 25.0f * saturate(mShininess - 0.05f) * mSpecColor;
 
     float3 seaReflectColor = GetSkyColor(mirrorEyeDir, mSkyColor);
-    float3 seaBaseColor = mSeaBaseColor * diffuse * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diffuse);
+    float3 seaBaseColor = mSeaBaseColor * (diffuse + mAmbientLight) * mBaseColorStrength + lerp(mSeaBaseColor, mSeaShallowColor * mShallowColorStrength, diffuse);
     float3 waterColor = lerp(seaBaseColor, seaReflectColor, fresnel);
     float3 seaColor = waterColor + mSeaShallowColor * (waveHeight * 0.5f + 0.2f) * mColorHeightOffset;
  
-    return mAmbientLight + seaColor + specular;
+    return seaColor + specular;
 }
 
 float4 main(float3 worldPos : POSITION) : SV_TARGET

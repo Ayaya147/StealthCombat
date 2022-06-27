@@ -50,7 +50,7 @@ PlayerActor::PlayerActor(BaseScene* scene)
 	SetScale(0.18f);
 	SetPosition(dx::XMFLOAT3{ 0.0f,Constant::height,0.0f });
 
-	Renderer* renderer = GetScene()->GetRenderer();	
+	Renderer* renderer = GetScene()->GetRenderer();
 	Mesh* mesh = renderer->GetMesh("player1");
 	mesh->ParseMesh(renderer, "player1", L"Toon");
 	MeshComponent* mc = new MeshComponent(this, mesh);
