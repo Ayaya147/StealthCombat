@@ -4,10 +4,6 @@ Stealth Combat is a 2.5D flight stealth game.
 
 ![](https://user-images.githubusercontent.com/52908352/162648349-ed6987ac-ca81-45c6-a883-ba932accb541.png)
 
-# Play Video
-
-https://drive.google.com/file/d/1MwjNLGEArub7HwxDx7R6TRiumrw5TUVL/view?usp=sharing
-
 # Features
 
 * Clouds by ray marching
